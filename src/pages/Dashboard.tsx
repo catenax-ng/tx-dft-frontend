@@ -26,12 +26,7 @@ import { useLocation } from 'react-router-dom';
 // components
 import Nav from '../components/Nav';
 import Sidebar from '../components/Sidebar';
-<<<<<<< Updated upstream
-import UploadFileOutlinedIcon from '@mui/icons-material/UploadFileOutlined';
-import Notification from '../components/Notification';
-=======
 // import UploadFileOutlinedIcon from '@mui/icons-material/UploadFileOutlined';
->>>>>>> Stashed changes
 
 // models
 import { File } from '../models/File';
@@ -48,12 +43,8 @@ import { useAppDispatch } from '../store/store';
 import { setSelectedFiles, setUploadStatus } from '../store/providerSlice';
 import PoliciesDialog from '../components/policies/PoliciesDialog';
 import { setPageLoading } from '../store/appSlice';
-<<<<<<< Updated upstream
-import { useTheme } from '@mui/material';
-=======
 import { Box } from '@mui/material';
 import { PageNotifications } from 'cx-portal-shared-components';
->>>>>>> Stashed changes
 
 const Dashboard: React.FC = () => {
   // const theme = useTheme();
@@ -143,29 +134,6 @@ const Dashboard: React.FC = () => {
     }
   };
   return (
-<<<<<<< Updated upstream
-    <div
-      className="max-w-screen-4xl my-0 mx-auto overflow-y-auto overflow-x-hidden h-screen block"
-      onDragOver={(e: SyntheticEvent) => e.preventDefault()}
-      onDragEnter={dragEnter}
-      onDragLeave={dragLeave}
-      onDrop={fileDrop}
-    >
-      {!isDragging && (
-        <main className="flex-1 flex flex-row justify-start min-h-screen pt-16 relative">
-          <Nav getIsExpanded={(expanded: boolean) => handleExpanded(expanded)} />
-          <div className="flex">
-            <Sidebar isExpanded={isExpanded} />
-          </div>
-          {errorMessage !== '' && (
-            <div className={`${isExpanded ? 'left-64' : 'left-14'} absolute top-16 z-50 w-screen`}>
-              <Notification errorMessage={errorMessage} clear={() => setErrorMessage('')} />
-            </div>
-          )}
-
-          <div className="flex w-screen">{layout()}</div>
-        </main>
-=======
     <Box
       sx={{ my: 0, mx: 'auto', overflowY: 'auto', overflowX: 'hidden', height: '100vh' }}
       // onDragOver={(e: SyntheticEvent) => e.preventDefault()}
@@ -194,7 +162,6 @@ const Dashboard: React.FC = () => {
         </Box>
       ) : (
         ''
->>>>>>> Stashed changes
       )}
       {/* {!isDragging && ( */}
       <Box
@@ -213,20 +180,6 @@ const Dashboard: React.FC = () => {
       </Box>
       {/* )} */}
 
-<<<<<<< Updated upstream
-      {isDragging && (
-        <div className="relative w-full h-full bg-[#03a9f4]">
-          <div className="inset-x-0 inset-y-1/2 absolute z-5 flex flex-col justify-center gap-y-2 text-center">
-            <span>
-              <UploadFileOutlinedIcon style={{ fontSize: 60 }} sx={{ color: theme.palette.common.white }} />
-            </span>
-            <h1 className="text-4xl text-white">Drop it like it's hot :)</h1>
-            <p className="text-lg text-white">Upload your file by dropping it in this window</p>
-          </div>
-        </div>
-      )}
-    </div>
-=======
       {/* {isDragging && (
         <Box className="relative w-full h-full bg-[#03a9f4]">
           <Box sx={{}} className="inset-x-0 inset-y-1/2 absolute z-5 flex flex-col justify-center gap-y-2 text-center">
@@ -243,7 +196,6 @@ const Dashboard: React.FC = () => {
         </Box>
       )} */}
     </Box>
->>>>>>> Stashed changes
   );
 };
 
