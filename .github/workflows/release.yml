@@ -1,10 +1,13 @@
-name: Release-Helm Charts
+name: Release - Helm Charts
+
 on:
   push:
     paths:
       - 'charts/**'
     branches:
       - main
+  workflow_dispatch:
+
 jobs:
   release:
     # depending on default permission settings for your org (contents being read-only or read-write for workloads), you will have to add permissions
@@ -30,8 +33,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       
-     - name: Add Helm repos
-       run: |
+      - name: Add Helm repos
+        run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
 
       - name: Run chart-releaser
