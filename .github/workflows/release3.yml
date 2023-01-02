@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: rel-Itr
+name: release3.0
 
 on:
   push:
