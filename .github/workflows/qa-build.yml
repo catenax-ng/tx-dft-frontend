@@ -18,7 +18,7 @@ name: qa-itr1
 on:
   push:
     branches:
-      - 'release3/DST_PIP7_ITR1'
+      - 'main'
     tags:
       - 'v*.*.*'
       - 'v*.*.*-*'
@@ -63,6 +63,9 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}
             type=semver,pattern={{major}}.{{minor}}
+          flavor: |
+              latest=true
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
