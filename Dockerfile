@@ -13,14 +13,11 @@ RUN npm install && npm run build
 
 #### Stage 2: Serve the application from Nginx
 
-FROM nginx:1.22.1-alpine
+#FROM nginx:1.22.1-alpine
 
-ENV CURL_VERSION=7.87.0
+FROM nginx:latest
 
-RUN set -eux; \
-      apk add --no-cache \
-        curl="${CURL_VERSION}" \
-        libcurl="${CURL_VERSION}" \
+#ENV CURL_VERSION=7.87.0
 
 
 # Nginx config
@@ -34,6 +31,7 @@ RUN chmod -R 777 /var/cache/nginx/ && chmod -R 777 /var/run
 
 # Static build
 COPY --from=builder /app/build /usr/share/nginx/html/
+
 WORKDIR /usr/share/nginx/html
 
 COPY ./env.sh .
