@@ -38,9 +38,9 @@ COPY --from=builder /app/build /usr/share/nginx/html/
 # Copy .env file and shell script to container
 WORKDIR /usr/share/nginx/html
 
-RUN chmod -R 755 /usr/share/nginx/html/env.sh
-
 COPY ./env.sh .
+
+RUN chmod -R 755 /usr/share/nginx/html/env.sh
 
 USER nginx
 
