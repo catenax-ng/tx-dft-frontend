@@ -34,13 +34,9 @@ RUN chmod -R 777 /var/cache/nginx/ && chmod -R 777 /var/run
 
 # Static build
 COPY --from=builder /app/build /usr/share/nginx/html/
-
-# Copy .env file and shell script to container
 WORKDIR /usr/share/nginx/html
 
-COPY env.sh .
-
-RUN chmod -R 755 /usr/share/nginx/html/env.sh
+COPY ./env.sh .
 
 USER nginx
 
@@ -52,4 +48,5 @@ EXPOSE 8080
 #EXPOSE 8080
 
 #CMD ["nginx", "-g", "daemon off;"]
-CMD ["/bin/sh", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
+
+CMD ["/bin/bash", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
