@@ -18,7 +18,7 @@ name: build
 on:
   push:
     branches:
-      - 'main'
+      - 'Release3.1/DST_PIP7_ITR1'
     tags:
       - 'v*.*.*'
       - 'v*.*.*-*'
@@ -63,8 +63,8 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}
             type=semver,pattern={{major}}.{{minor}}
-          flavor: |
-              latest=true
+  #        flavor: |
+  #            latest=true
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
