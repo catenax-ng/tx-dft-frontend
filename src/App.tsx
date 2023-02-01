@@ -35,7 +35,6 @@ import PageNotFound from './pages/PageNotFound';
 import UploadHistory from './pages/UploadHistory';
 
 function App({ loggedUser }: { loggedUser: IUser }) {
-  console.log('APP===>', loggedUser);
   return (
     <>
       <BrowserRouter>
