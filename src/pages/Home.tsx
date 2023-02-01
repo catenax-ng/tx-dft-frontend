@@ -70,7 +70,7 @@ export default function Home() {
   const openInNewTab = (url: string) => {
     window.open(url, '_blank');
   };
-
+  console.log('HOMEPAGE====>');
   return (
     <Box sx={{ flex: 1, p: 4 }}>
       <Grid container spacing={2} alignItems="center">

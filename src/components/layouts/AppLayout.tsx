@@ -34,9 +34,10 @@ export default function AppLayout(props: any) {
     dispatch(setLoggedInUser(props.loggedUser));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  console.log('APPLAYOUT===>', props.loggedUser);
   return (
     <Box sx={{ my: 0, mx: 'auto', overflowY: 'auto', overflowX: 'hidden', height: '100vh' }}>
+      {'APPLAYOUT' + props.loggedUser}
       <Box>
         <Nav />
         <Box sx={{ display: 'flex', mt: 8, height: 'calc(100vh - 64px)', overflow: 'hidden' }}>

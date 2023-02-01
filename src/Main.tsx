@@ -27,11 +27,12 @@ import UserService from './services/UserService';
 
 export default function Main({ loggedUser }: { loggedUser: IUser }) {
   document.title = useTranslation().t('title');
-
+  console.log('MAIN===>', loggedUser);
   return (
     <>
       {UserService.hasValidResource() ? (
         <AppLayout loggedUser={loggedUser}>
+          {'MAIN' + loggedUser}
           <Outlet />
         </AppLayout>
       ) : (

@@ -18,7 +18,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-
+console.log('HELLO THERE');
 import './index.scss';
 
 import { SharedCssBaseline, SharedThemeProvider } from 'cx-portal-shared-components';
@@ -30,12 +30,11 @@ import App from './App';
 import I18nService from './services/i18nService';
 import UserService from './services/UserService';
 import { store } from './store/store';
-import { clearConsoles } from './utils/utils';
 
-clearConsoles();
 I18nService.init();
-
+console.log('HELLO THERE2');
 UserService.initKeycloak(user => {
+  console.log('INDEX====>', user);
   ReactDOM.render(
     <React.StrictMode>
       <SharedCssBaseline />
