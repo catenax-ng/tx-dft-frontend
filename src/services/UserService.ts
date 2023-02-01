@@ -57,13 +57,15 @@ const hasRole = (roles: string[]) => roles.some((role: string) => KC.hasRealmRol
 
 const isLoggedIn = () => !!KC.token;
 
-const hasValidResource = () =>
-  KC.tokenParsed?.resource_access?.hasOwnProperty(keycloakConfig.clientId);
+const getRoles = () => KC.tokenParsed?.resource_access[keycloakConfig.clientId]?.roles;
+
+const hasValidResource = () => KC.tokenParsed?.resource_access?.hasOwnProperty(keycloakConfig.clientId);
 
 const getLoggedUser = () => ({
   userName: getUsername(),
   name: getName(),
   email: getEmail(),
+  roles: getRoles(),
   company: getCompany(),
   bpn: getBpn(),
   tenant: getTenant(),
@@ -115,6 +117,7 @@ const UserService = {
   getEmail,
   hasRole,
   getLoggedUser,
+  getRoles,
   hasValidResource,
 };
 
