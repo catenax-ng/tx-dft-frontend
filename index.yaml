@@ -1,0 +1,28 @@
+apiVersion: v1
+entries:
+  dftfrontend:
+  - apiVersion: v2
+    appVersion: 1.9.0
+    created: "2023-03-15T17:28:49.363917+05:30"
+    description: A Helm chart for Kubernetes
+    digest: e34e1b652fe8db1e61fe4589e46b30009fde384d6819976c59fdea2f70cd7028
+    name: dftfrontend
+    sources:
+    - https://github.com/eclipse-tractusx/dft-frontend
+    type: application
+    urls:
+    - https://catenax-ng.github.io/tx-dft-frontend/dftfrontend-1.9.0.tgz
+    version: 1.9.0
+  - apiVersion: v2
+    appVersion: 1.8.1
+    created: "2023-03-15T17:28:49.363042+05:30"
+    description: A Helm chart for Kubernetes
+    digest: c068137e373e5d91b5567ea48b422b7f4d0efc8266607b3b0479253321aabdfd
+    name: dftfrontend
+    sources:
+    - https://github.com/eclipse-tractusx/dft-frontend
+    type: application
+    urls:
+    - https://catenax-ng.github.io/tx-dft-frontend/dftfrontend-1.8.1.tgz
+    version: 1.8.1
+generated: "2023-03-15T17:28:49.361877+05:30"
