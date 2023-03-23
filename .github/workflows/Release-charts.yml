@@ -5,7 +5,7 @@ on:
     paths:
       - 'charts/**'
     branches:
-      - main
+      - argocd-sde-frontend
   workflow_dispatch:
 
 jobs:

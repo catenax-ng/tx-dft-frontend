@@ -34,10 +34,9 @@ WORKDIR /usr/share/nginx/html
 
 COPY ./env.sh .
 
-USER nginx
-
 EXPOSE 8080
 
 # Start Nginx server
 
-CMD ["/bin/bash", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
+#CMD ["/bin/bash", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
+CMD ["/bin/bash", "-c", "nginx -g \"daemon off;\""] 
