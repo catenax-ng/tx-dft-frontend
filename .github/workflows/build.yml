@@ -18,8 +18,7 @@ name: build
 on:
   push:
     branches:
-
-      - 'DST_PIP8_ITR3'
+      - 'argocd-sde-frontend'
     tags:
       - 'v*.*.*'
       - 'v*.*.*-*'
