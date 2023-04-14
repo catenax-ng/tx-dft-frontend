@@ -19,7 +19,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Button, Dialog, DialogActions, DialogContent, DialogHeader } from 'cx-portal-shared-components';
+import { Button, Dialog, DialogActions, DialogContent, DialogHeader, Typography } from 'cx-portal-shared-components';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -29,8 +29,9 @@ import { handleDialogClose } from '../../features/provider/policies/slice';
 import { clearRows } from '../../features/provider/submodels/slice';
 import { removeSelectedFiles, setUploadData, setUploadStatus } from '../../features/provider/upload/slice';
 import { useAppDispatch, useAppSelector } from '../../features/store';
-import { ProcessReport, Status } from '../../models/ProcessReport';
+import { ProcessReport } from '../../models/ProcessReport';
 import ProviderService from '../../services/ProviderService';
+import { Status } from '../../utils/constants';
 import AccessPolicy from './AccessPolicy';
 import UsagePolicy from './UsagePolicy';
 
@@ -265,6 +266,19 @@ export default function PoliciesDialog() {
         title={t('content.policies.title')}
       />
       <DialogContent>
+        <Typography variant="body2">
+          {t('content.policies.description')}
+          <ol>
+            <li>
+              {t('content.policies.description_1')}
+              <ul>
+                <li>{t('content.policies.description_1_1')}</li>
+                <li>{t('content.policies.description_1_2')}</li>
+              </ul>
+            </li>
+            <li>{t('content.policies.description_2')}</li>
+          </ol>
+        </Typography>
         <AccessPolicy />
         <UsagePolicy />
       </DialogContent>

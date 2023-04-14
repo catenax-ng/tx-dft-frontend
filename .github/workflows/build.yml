@@ -18,12 +18,11 @@ name: build
 on:
   push:
     branches:
-      - 'argocd-sde-frontend'
+      - 'main'
     tags:
       - 'v*.*.*'
       - 'v*.*.*-*'
-
-      
+     
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
