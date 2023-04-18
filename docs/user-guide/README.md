@@ -232,6 +232,7 @@ The table has the following columns:
 - Status
 - Created Date
 
+
 User can delete and download any uploaded data offer by clicking on the respective action icon present at the end of each row.
 The delete icon will only be visible if the Number of Deleted Items count is 0.
 After the successful data offer deletion, new row will be generated which shows the new process id and the reference id of the deleted data offer.
