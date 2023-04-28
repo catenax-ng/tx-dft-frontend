@@ -14,7 +14,7 @@
   - [Provider](#provider)
     - [Create Data](#create-data)
       - [Upload File](#upload-file)
-      - [Tabular Entry](#tabular-entry)
+      - [Manual Entry](#manual-entry)
         - [Serial Part Typization](#serial-part-typization)
         - [Batch](#batch)
         - [Assembly Part Relationship](#assembly-part-relationship)
@@ -22,14 +22,6 @@
         - [Single Level Bom As Planned](#single-level-bom-as-planned)
         - [Part Site Information As Planned](#part-site-information-as-planned)
         - [Single Level Usage As Built](#single-level-usage-as-built)
-      - [JSON Entry](#manual-json-entry)
-        - [Serial Part Typization](#serial-part-typization-1)
-        - [Batch](#batch-1)
-        - [Assembly Part Relationship](#assembly-part-relationship-1)
-        - [Part As Planned](#part-as-planned-1)
-        - [Single Level Bom As Planned](#single-level-bom-as-planned-1)
-        - [Part Site Information As Planned](#part-site-information-as-planned-1)
-        - [Single Level Usage As Built](#single-level-usage-as-built-1)
     - [Upload history](#upload-history)
     - [Contracts](#provider-contracts)
     - [Help](#help)
@@ -149,7 +141,7 @@ If we selected Restricted option for any usage policy, then we need to enter res
 Once configuring both the policies, we need to click on "SUBMIT" button and wait for upload to finish.
 This is the process of creating new data offer through SDE application by uploading CSV file.
 
-- ### Tabular entry
+- ### Manual entry
 
 #### Serial Part Typization
 
@@ -182,72 +174,40 @@ This is the process of creating new data offer through SDE application by upload
 You can add and submit multiple data offers via Tabular entry option for particular submodel by clicking on "Add Row" button to bulk upload the multiple data offers in one go. Once you enter details in all of the required fields for a particular row, you need to select which offers we need to upload by ticking the checkboxes for the respective rows and then we need to click on "NEXT STEP - CONFIGURE POLICIES" button to configure Access and Usage policies and then you need to click on Submit button from policy dialog to uplod the data. You can upload the data for multiple submodels by selecting the respective submodel from the top level Select submodel dropdwon.
 We also can delete multiple rows by selecting which rows we want to delete and then click on Delete Row(s) button.
 
-- ### Manual JSON entry
-
-#### Serial Part Typization
-
-<img src="images/sde-serial-part-json.png" height="60%" width="60%" />
-
-#### Batch
-
-<img src="images/sde-batch-json.png" height="60%" width="60%" />
-
-#### Assembly Part Relationship
-
-<img src="images/sde-assembly-json.png" height="60%" width="60%" />
-
-#### Part As Planned
-
-<img src="images/sde-part-planned-json.png" height="60%" width="60%" />
-
-#### Single Level Bom As Planned
-
-<img src="images/sde-single-bom-json.png" height="60%" width="60%" />
-
-#### Part Site Information As Planned
-
-<img src="images/sde-part-site-info-json.png" height="60%" width="60%" />
-
-#### Single Level Usage As Built
-
-<img src="images/sde-single-level-usage-json.png" height="60%" width="60%" />
-
-You can also add and submit multiple data offers via Manual JSON entry for various supported submodels by clicking on respective textarea inputbox and entering submodel json schema in form of array or list of multiple objects mentioned in the placeholder for each teaxtarea. The textarea populates the placeholder text which shows the data format alongwith field names which will help to prepare the JSON structure.
 Then you need to configure Access and Usage policies by clicking on "NEXT STEP - CONFIGURE POLICIES" button and after successful configuration, click on Submit button from policy dialog to upload bulk data offers at once.
 
 ## Upload history
 
-<img src="images/upload-history-new.png" height="60%" width="60%" />
+<img src="images/sde-upload-history.png" height="60%" width="60%" />
 
-In this menu you can see a table with audit trail logs of the uploaded data offers.
+In this menu you can see the list of uploaded data offers.
 
-The table has the following columns columns:
+The table has the following columns:
 
-- Process Id (id of process);
-- CSV Type (ASPECT or ASPECT RELATIONSHIP or BATCH or PARTASPLANNED or SINGLELEVELBOMASPLANNED);
-- Number of Created Items (number of Successfully Created items);
-- Number of Updated Items (number of Successfully Updated items);
-- Number of Deleted Items (number of Successfully Deleted items);
-- Number of Failed Items (number of failed items);
-- Status (Completed or Completed with warnings or failed);
-- Start Date (start date of upload history);
-- Duration (duration of uplaod);
-
-<img src="images/sde-delete-data-offer.png" height="60%" width="60%" />
+- Process Id
+- CSV Type
+- Created(number of Successfully Created items)
+- Updated(number of Successfully Updated items)
+- Deleted(number of Successfully Deleted items)
+- Failed(number of failed items)
+- Status
+- Created Date
 
 User can delete any data offer or submodel by clicking on the delete action icon present at the end of each row.
 The delete icon will only be visible if the Number of Deleted Items count is 0.
 After the successful data offer deletion, new row will be generated which shows the new process id and the reference id of the deleted data offer.
-
 Uploaded submodel details can also be downloaded from here as CSV. Only for the deleted entry download option won't be visible.
-
 We can fetch the updated data offers by manually clicking on Refresh button present at top right section of the Upload History page.
+
+User can see the detailed error logs during the upload data by clicking "View errors" link.
+
+<img src="images/sde-upload-error-logs.png" height="60%" width="60%" />
 
 ## Provider Contracts
 
 <img src="images/sde-provider-contracts.png" height="60%" width="60%" />
 
-This page contains an overview of the data exchange contracts your organization has with other Catena-X members to provide data.
+This page contains an overview of the data exchange contracts your organization has with other Catena-X members to provide data. User can decline the data except the contracts which have status CONFIRMED, DECLINED, ERROR. 
 
 The table includes below columns:
 

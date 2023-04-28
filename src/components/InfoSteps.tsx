@@ -1,5 +1,4 @@
 /********************************************************************************
- * Copyright (c) 2021,2022 FEV Consulting GmbH
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
@@ -18,18 +17,29 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
+import InfoIcon from '@mui/icons-material/Info';
+import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
+import { Box, SxProps } from '@mui/material';
+import { Typography } from 'cx-portal-shared-components';
+import { ReactElement } from 'react';
+import { useTranslation } from 'react-i18next';
 
-@import './fonts';
-@import './colors';
-
-body {
-  margin: 0;
-  font-family: 'LibreFranklin', 'Libre Franklin', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif !important;
-  color: color(text-primary) !important;
-  font-weight: 300 !important;
-}
-
-*:focus {
-  outline: none !important;
-  box-shadow: none !important;
+export default function InfoSteps({ steps, icon, sx }: { steps: string[]; icon: string; sx?: SxProps }) {
+  const { t } = useTranslation();
+  const ICON_MAPPING: { [key: string]: ReactElement } = {
+    tips: <TipsAndUpdatesIcon color="disabled" />,
+    info: <InfoIcon color="disabled" />,
+  };
+  return (
+    <Box display={'flex'} alignItems={'center'} sx={sx}>
+      <Box mr={2}>{ICON_MAPPING[icon]}</Box>
+      <Box>
+        {steps?.map((step: string) => (
+          <Typography variant="body2" key={step}>
+            {t(step)}
+          </Typography>
+        ))}
+      </Box>
+    </Box>
+  );
 }

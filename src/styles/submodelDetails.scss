@@ -1,6 +1,6 @@
 /********************************************************************************
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
- * Copyright (c) 2021,2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -18,26 +18,17 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Config } from '../utils/config';
-import UserService from './UserService';
-
-export const getHeaders = () => ({
-  headers: {
-    authorization: `Bearer ${UserService.getToken()}`,
-  },
-});
-
-export const apiBaseQuery = () => ({
-  baseUrl: Config.REACT_APP_API_URL,
-  prepareHeaders: (headers: Headers) => {
-    headers.set('authorization', `Bearer ${UserService.getToken()}`);
-    return headers;
-  },
-});
-
-const RequestService = {
-  getHeaders,
-  apiBaseQuery,
-};
-
-export default RequestService;
+.submodel-detail-table {
+  border-collapse: collapse;
+  padding: 4px 10px;
+  td,
+  th {
+    width: 100%;
+    border: 1px solid #dadada;
+    border-collapse: collapse;
+    padding: 4px 10px;
+    &:first-child {
+      background-color: rgb(236, 240, 244);
+    }
+  }
+}
