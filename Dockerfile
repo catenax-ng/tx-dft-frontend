@@ -8,12 +8,11 @@ COPY ./package.json .
 
 COPY ./ .
 
-
 RUN npm install && npm run build
 
 #### Stage 2: Serve the application from Nginx
 
-FROM nginx:1.23.4
+FROM nginx:1.23.3
 
 # Nginx config
 RUN rm -rf /etc/nginx/conf.d
