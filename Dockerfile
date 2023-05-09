@@ -25,7 +25,7 @@ COPY ./conf /etc/nginx
 
 RUN chmod -R 777 /var/cache/nginx/ && chmod -R 777 /var/run
 
-RUN adduser -DH nginx && addgroup nginx nginx
+RUN  addgroup nginx nginx
 
 # Static build
 COPY --from=builder /app/build /usr/share/nginx/html/
