@@ -25,7 +25,7 @@ COPY ./conf /etc/nginx
 
 RUN chmod -R 777 /var/cache/nginx/ && chmod -R 777 /var/run
 
-#RUN chmod -R 777 /var/lib/nginx && chmod -R 777 /var/log/nginx/
+RUN adduser -DH nginx && addgroup nginx nginx
 
 # Static build
 COPY --from=builder /app/build /usr/share/nginx/html/
@@ -35,6 +35,8 @@ RUN chmod -R 755 /usr/share/nginx/html/
 WORKDIR /usr/share/nginx/html
 
 COPY ./env.sh .
+
+USER nginx
 
 EXPOSE 8080
 
