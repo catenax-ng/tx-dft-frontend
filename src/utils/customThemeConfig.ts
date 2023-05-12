@@ -1,5 +1,4 @@
 /********************************************************************************
- * Copyright (c) 2021,2022 FEV Consulting GmbH
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
@@ -19,34 +18,42 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import './styles/index.scss';
+// Values inside theme is to replace the existing styles in Catena-X theme
+// Learn more about MUI theming - https://mui.com/material-ui/customization/theming/
 
-import { ThemeProvider } from '@mui/material';
-import { SharedCssBaseline } from 'cx-portal-shared-components';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+export const customConfig = {
+  theme: {},
+  poweredBy: {
+    visible: false,
+    name: '',
+    logoUrl: '',
+    redirectUrl: '',
+  },
+};
 
-import App from './App';
-import { store } from './features/store';
-import I18nService from './services/i18nService';
-import UserService from './services/UserService';
-import { sdeTheme } from './utils/theme';
-import { clearConsoles } from './utils/utils';
-
-clearConsoles();
-I18nService.init();
-
-UserService.initKeycloak(user => {
-  ReactDOM.render(
-    <React.StrictMode>
-      <SharedCssBaseline />
-      <Provider store={store}>
-        <ThemeProvider theme={sdeTheme}>
-          <App loggedUser={user} />
-        </ThemeProvider>
-      </Provider>
-    </React.StrictMode>,
-    document.getElementById('root'),
-  );
-});
+// export const customConfig = {
+//   theme: {
+//     palette: {
+//       primary: {
+//         main: '#e20074',
+//         dark: '#e20074',
+//         contrastText: '#fff',
+//       },
+//       secondary: {
+//         main: '#11cb5f',
+//         dark: '#d4e3fe',
+//         contrastText: '#0f71cb',
+//       },
+//       brand: {
+//         brand01: '#e20074',
+//         brand02: '#B3CB2D',
+//       },
+//     },
+//   },
+//   poweredBy: {
+//     visible: true,
+//     name: '<b>Powered by</b><br/>Data Intelligence Hub',
+//     logoUrl: 'https://placehold.co/100x100',
+//     redirectUrl: 'https://dih.telekom.com/en',
+//   },
+// };

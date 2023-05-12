@@ -25,6 +25,7 @@ import { MenuItems } from '../../helpers/SidebarHelper';
 import CollapseMenuItem from './CollapseMenuItem';
 import MenuItemHeading from './MenuHeading';
 import MenuItem from './MenuItem';
+import PoweredByMenuItem from './PoweredByMenuItem';
 
 export default function Sidebar() {
   const theme = useTheme();
@@ -60,7 +61,8 @@ export default function Sidebar() {
           ))}
         </Box>
         <Box>
-          <CollapseMenuItem />
+          <CollapseMenuItem sidebarExpanded={sidebarExpanded} />
+          <PoweredByMenuItem sidebarExpanded={sidebarExpanded} />
         </Box>
       </List>
     </Box>

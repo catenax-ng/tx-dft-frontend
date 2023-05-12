@@ -5,13 +5,12 @@ import { theme } from 'cx-portal-shared-components';
 import { useTranslation } from 'react-i18next';
 
 import { setSidebarExpanded } from '../../features/app/slice';
-import { useAppDispatch, useAppSelector } from '../../features/store';
+import { useAppDispatch } from '../../features/store';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { version } = require('../../../package.json');
 
-export default function CollapseMenuItem() {
-  const { sidebarExpanded } = useAppSelector(state => state.appSlice);
+export default function CollapseMenuItem({ sidebarExpanded }: { sidebarExpanded: boolean }) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
