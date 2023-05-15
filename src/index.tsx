@@ -31,7 +31,7 @@ import App from './App';
 import { store } from './features/store';
 import I18nService from './services/i18nService';
 import UserService from './services/UserService';
-import { sdeTheme } from './utils/theme';
+import { sdeTheme } from './theme';
 import { clearConsoles } from './utils/utils';
 
 clearConsoles();
