@@ -1,5 +1,4 @@
 /********************************************************************************
- * Copyright (c) 2021,2022 FEV Consulting GmbH
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
@@ -36,7 +35,9 @@ export default function InfoSteps({ steps, icon, sx }: { steps: string[]; icon: 
       <Box mr={2}>{ICON_MAPPING[icon]}</Box>
       <Box>
         {steps?.map((step: string) => (
-          <Typography variant="body2">{t(step)}</Typography>
+          <Typography variant="body2" key={step}>
+            {t(step)}
+          </Typography>
         ))}
       </Box>
     </Box>

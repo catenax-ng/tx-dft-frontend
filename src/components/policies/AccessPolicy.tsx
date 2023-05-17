@@ -118,7 +118,6 @@ export default function AccessPolicy() {
     } else {
       setbpnError(false);
       await validateBpn(inputBpn);
-      console.log(data);
     }
   };
 
@@ -136,7 +135,7 @@ export default function AccessPolicy() {
 
   return (
     <>
-      <Typography>{t('content.policies.accessPolicy')}</Typography>
+      <Typography fontWeight={'bold'}>{t('content.policies.accessPolicy')}</Typography>
       <RadioGroup
         aria-labelledby="demo-controlled-radio-buttons-group"
         name="controlled-radio-buttons-group"
@@ -192,8 +191,8 @@ export default function AccessPolicy() {
                     loading={filterCompanyOptionsLoading}
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     onChange={(e, value: any) => dispatch(setInputBpn(value.bpn))}
-                    onInputChange={debounce((event, newInputValue) => {
-                      onChangeSearchInputValue(newInputValue);
+                    onInputChange={debounce(async (event, newInputValue) => {
+                      await onChangeSearchInputValue(newInputValue);
                     }, 1000)}
                     onClose={() => setsearchPopup(false)}
                     onBlur={() => setsearchPopup(false)}

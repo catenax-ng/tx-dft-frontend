@@ -32,7 +32,7 @@
         "subscribeDataOffer": "Subscribe to data contract offer",
         "manageContracts": "View & manage contracts"
       },
-      "sdeDescription": "Simple Data Exchanger is your easy way to publish data in the Catena-X network. It makes your automotive data available to other participants respecting your individual access and usage rules. It allows you to discover data of other participants and to establish data contracts, so that you can access their data within the use cases that interest you.",
+      "sdeDescription": "Simple Data Exchanger is your easy way to provide and consume data within the Catena-X network. It makes your data available to other participants respecting your individual access and usage rules. It allows you to discover data of other participants and to establish data contracts, so that you can access their data within the use cases that interest you.",
       "learnSde": "Learn how it works"
     },
     "provider": {
@@ -43,6 +43,7 @@
       "placeHolder": "Please select a submodel (use case) for creating data.",
       "selectSubmodel": "Select Submodel",
       "uploadFile": "Upload File",
+      "uploadedFile": "Uploaded File",
       "table": "Manual entry",
       "json": "JSON",
       "uploadInstruction": "Upload your file by dropping it here.",
@@ -51,6 +52,7 @@
       "dropInstruction": "Upload your file by dropping it here.",
       "addRow": "Add row",
       "deleteRow": "Delete row(s)",
+      "previewTableTitle": "Preview of {{ submodel }} Submodel including help description",
       "uploadStep_1": "1. Choose the file you want to upload.",
       "uploadStep_2": "2. Click on “Next Step – Configure Policies” to manage with whom to share your data and register the digital twin(s)",
       "manualStep_1": "1. For manual entries click 'add a row' and enter the values by clicking inside the respective fields.",
@@ -87,7 +89,7 @@
       "roleNote": "Usage allowed only by individuals with the following roles/characteristics",
       "custom": "Custom restriction",
       "customNote": "Usage must comply to the following additional conditions",
-      "purposeLabel": "Describe the purpose",
+      "purposeLabel": "Select the purpose",
       "roleLabel": "Enter a role/characteristic",
       "customLabel": "Enter your custom conditions"
     },
@@ -153,6 +155,15 @@
         "state": "Status"
       }
     },
+    "dropzone": {
+      "title": "Drag & drop your files here",
+      "subTitle": "or %browse files% on your computer.",
+      "errorTitle": "Sorry",
+      "placeholder": "",
+      "uploadError": "Not Uploaded",
+      "uploadSuccess": "Uploaded",
+      "uploadProgess": "Uploaded % of % files"
+    },
     "common": {
       "loading": "Loading...",
       "downloading": "Downloading...",
@@ -210,7 +221,8 @@
     "declineContract": "Decline Contract"
   },
   "alerts": {
-    "invalidFile": "File not permitted!",
+    "invalidFile": "Invalid file format!",
+    "largeFile": "File size is too large!",
     "uploadSuccess": "Upload completed!",
     "uploadWarning": "Upload completed with warnings!",
     "uploadError": "Upload failed!",
