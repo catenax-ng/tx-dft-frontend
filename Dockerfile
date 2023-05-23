@@ -14,7 +14,7 @@ RUN npm install && npm run build
 
 FROM nginx:1.24.0-alpine3.17
 
-RUN apk update && apk upgrade
+RUN apk update && apk upgrade & apk add bash
 
 RUN  addgroup nginx nginx
 
@@ -32,19 +32,9 @@ RUN chmod -R 755 /usr/share/nginx/html/
 
 WORKDIR /usr/share/nginx/html
 
-RUN ls -l
-
-RUN pwd
-
 COPY ./env.sh .
-
-RUN ls -l
-
-RUN pwd
 
 EXPOSE 8080
 
 # Start Nginx server
-CMD /usr/share/nginx/html/env.sh && nginx -g 'daemon off;'
-
-#CMD ["/bin/sh", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
+CMD ["/bin/sh", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
