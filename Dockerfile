@@ -32,7 +32,11 @@ RUN chmod -R 755 /usr/share/nginx/html/
 
 WORKDIR /usr/share/nginx/html
 
+RUN ls -l
+
 COPY ./env.sh .
+
+RUN ls -l
 
 EXPOSE 8080
 
