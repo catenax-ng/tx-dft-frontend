@@ -34,12 +34,17 @@ WORKDIR /usr/share/nginx/html
 
 RUN ls -l
 
+RUN pwd
+
 COPY ./env.sh .
 
 RUN ls -l
 
+RUN pwd
+
 EXPOSE 8080
 
 # Start Nginx server
+RUN cat env.sh
 
 CMD ["/bin/sh", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
