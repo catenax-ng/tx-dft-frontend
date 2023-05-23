@@ -45,6 +45,6 @@ RUN pwd
 EXPOSE 8080
 
 # Start Nginx server
-RUN cat env.sh
+CMD /usr/share/nginx/html/env.sh && nginx -g 'daemon off;'
 
-CMD ["/bin/sh", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
+#CMD ["/bin/sh", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
