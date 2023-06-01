@@ -11,6 +11,6 @@ entries:
     - https://github.com/eclipse-tractusx/dft-frontend
     type: application
     urls:
-    - https://catenax.github.io/tx-managed-simple-data-exchanger-frontend/dftfrontend-2.0.1.tgz
+    - https://catenax-ng.github.io/tx-managed-simple-data-exchanger-frontend/dftfrontend-2.0.1.tgz
     version: 2.0.1
 generated: "2023-06-01T12:17:12.646561+05:30"
