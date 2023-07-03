@@ -14,7 +14,7 @@ RUN npm install && npm run build
 
 FROM nginx:1.24.0-alpine3.17
 
-RUN apk update && apk upgrade && add apk bash
+RUN apk update && apk upgrade && apk add --no-cache bash
 
 RUN  addgroup -S nginx nginx
 
