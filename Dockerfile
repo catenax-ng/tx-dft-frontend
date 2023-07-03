@@ -38,6 +38,8 @@ RUN chown nginx:nginx env.sh env-config.js
 
 EXPOSE 8080
 
+USER nginx 
+
 # Start Nginx server
 
 CMD ["/bin/sh", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
