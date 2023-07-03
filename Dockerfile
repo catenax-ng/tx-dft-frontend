@@ -14,9 +14,9 @@ RUN npm install && npm run build
 
 FROM nginx:1.24.0-alpine3.17
 
-RUN apk update && apk upgrade && apk add bash
+RUN apk update && apk upgrade 
 
-RUN  addgroup nginx nginx
+RUN  addgroup -S nginx nginx
 
 # Nginx config
 RUN rm -rf /etc/nginx/conf.d
@@ -35,6 +35,8 @@ WORKDIR /usr/share/nginx/html
 COPY ./env.sh .
 
 EXPOSE 8080
+
+USER nginx
 
 # Start Nginx server
 
