@@ -34,6 +34,8 @@ WORKDIR /usr/share/nginx/html
 
 COPY ./env.sh .
 
+RUN chown nginx:nginx env.sh env-config.js
+
 EXPOSE 8080
 
 # Start Nginx server
