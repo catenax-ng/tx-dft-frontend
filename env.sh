@@ -3,6 +3,7 @@
 # Recreate config file
 rm -rf ./env-config.js
 touch ./env-config.js
+chown nginx:nginx ./env-config.js
 
 rm -rf .env
 cp /app/configuration.properties .env
