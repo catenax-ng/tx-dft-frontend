@@ -19,7 +19,9 @@ FROM nginxinc/nginx-unprivileged:1.25.1-perl
 # Nginx config
 RUN rm -rf /etc/nginx/conf.d
 
-RUN  addgroup nginx nginx
+USER root 
+
+RUN  addgroup 101 101
 
 COPY ./conf /etc/nginx
 
@@ -33,6 +35,8 @@ WORKDIR /usr/share/nginx/html
 COPY ./env.sh .
 
 EXPOSE 8080
+
+USER 101
 
 # Start Nginx server
 
