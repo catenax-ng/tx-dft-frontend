@@ -21,14 +21,12 @@ RUN rm -rf /etc/nginx/conf.d
 
 USER root 
 
-RUN  addgroup 101 101
-
 COPY ./conf /etc/nginx
 
 # Static build
 COPY --from=builder /app/build /usr/share/nginx/html/
 
-RUN chmod +wx /usr/share/nginx/html/
+RUN chmod ugo+rwx /usr/share/nginx/html/
 
 WORKDIR /usr/share/nginx/html
 
