@@ -19,10 +19,14 @@ FROM nginxinc/nginx-unprivileged:1.25.1-perl
 # Nginx config
 RUN rm -rf /etc/nginx/conf.d
 
+RUN  addgroup nginx nginx
+
 COPY ./conf /etc/nginx
 
 # Static build
 COPY --from=builder /app/build /usr/share/nginx/html/
+
+RUN chmod +wx /usr/share/nginx/html/
 
 WORKDIR /usr/share/nginx/html
 
@@ -34,4 +38,4 @@ EXPOSE 8080
 
 #CMD ["nginx", "-g", "daemon off;"]
 
-CMD ["/bin/sh", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
+CMD ["/bin/bash", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
