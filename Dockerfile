@@ -18,7 +18,7 @@ USER root
 COPY ./conf /etc/nginx
 # Static build
 COPY --from=builder /app/build /usr/share/nginx/html/
-RUN chmod ugo+rwx /usr/share/nginx/html/
+RUN chmod ug+rwx /usr/share/nginx/html/
 WORKDIR /usr/share/nginx/html
 COPY ./env.sh .
 EXPOSE 8080
