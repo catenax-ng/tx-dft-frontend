@@ -13,13 +13,13 @@ COPY ./ .
 RUN npm install && npm run build
 
 #### Stage 2: Serve the application from Nginx
-
 FROM nginxinc/nginx-unprivileged:1.25.1-perl
 
 # Nginx config
 RUN rm -rf /etc/nginx/conf.d
 USER root 
 COPY ./conf /etc/nginx
+
 # Static build
 COPY --from=builder /app/build /usr/share/nginx/html/
 RUN chmod ug+rwx /usr/share/nginx/html/
