@@ -23,7 +23,7 @@ name: build
 on:
   push:
     branches:
-      - 'DST_PIP9_ITR5'
+      - 'vr-2.0.8'
     tags:
       - 'v*.*.*'
       - 'v*.*.*-*'
