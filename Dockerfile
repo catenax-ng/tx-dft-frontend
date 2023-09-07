@@ -43,10 +43,10 @@ COPY ./conf /etc/nginx
 WORKDIR /usr/share/nginx/html
 COPY --from=builder /app/build .
 COPY ./env.sh .
-RUN chown 101:101 /usr/share/nginx/html/  
+RUN chown 101:101 /usr/share/nginx/html/
 RUN chmod ug+rwx /usr/share/nginx/html/
 HEALTHCHECK NONE
 EXPOSE 8080
 USER 101
 # Start Nginx server
-CMD ["/bin/sh", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
+CMD ["/bin/bash", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
