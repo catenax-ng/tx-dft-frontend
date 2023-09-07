@@ -45,8 +45,7 @@ COPY --from=builder /app/build .
 COPY ./env.sh .
 RUN chown 101:101 /usr/share/nginx/html/    
 RUN chmod ug+rwx /usr/share/nginx/html/
-HEALTHCHECK --interval=30s --timeout=3s \
-    CMD curl -f http://localhost/ || exit 1
+HEALTHCHECK NONE
 EXPOSE 8080
 USER 101
 # Start Nginx server
