@@ -43,8 +43,10 @@ COPY ./conf /etc/nginx
 WORKDIR /usr/share/nginx/html
 COPY --from=builder /app/build .
 COPY ./env.sh .
-RUN chown 101:101 /usr/share/nginx/html/
+RUN chown 101:101 /usr/share/nginx/html/    
 RUN chmod ug+rwx /usr/share/nginx/html/
+HEALTHCHECK --interval=30s --timeout=3s \
+    CMD curl -f http://localhost/ || exit 1
 EXPOSE 8080
 USER 101
 # Start Nginx server
