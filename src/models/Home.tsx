@@ -54,7 +54,7 @@ export const provideDataSteps: IDataSteps[] = [
     stepLink: {
       text: 'pages.createData',
       routeUrl: '/provider/create-data',
-      icon: icons.AddCircleOutlineIcon,
+      icon: icons.UploadIcon,
     },
   },
   {

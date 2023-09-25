@@ -5,6 +5,8 @@
     "home": "Home",
     "provider": "Datenanbieter",
     "createData": "Daten anbieten",
+    "manualUpload": "Manual anbieten",
+    "recurringUpload": "Wiederkehrender Upload",
     "uploadHistory": "Upload-Verlauf",
     "help": "Hilfe",
     "consumer": "Datenempfänger",

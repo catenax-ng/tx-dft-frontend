@@ -89,16 +89,41 @@ const PURPOSE_VALUES: ISelectList[] = [
   },
 ];
 
+const SCHEDULE_TYPE: ISelectList[] = [
+  { id: 0, value: 'HOURLY', title: 'Hourly' },
+  { id: 1, value: 'DAILY', title: 'Daily' },
+  { id: 2, value: 'WEEKLY', title: 'Weekly' },
+];
+
+const WEEK_DAYS: ISelectList[] = [
+  { id: 0, value: 'sunday', title: 'Sunday' },
+  { id: 1, value: 'monday', title: 'Monday' },
+  { id: 2, value: 'tuesday', title: 'Tuesday' },
+  { id: 2, value: 'wednesday', title: 'Wednesday' },
+  { id: 2, value: 'thursday', title: 'Thursday' },
+  { id: 2, value: 'friday', title: 'Friday' },
+  { id: 2, value: 'saturday', title: 'Saturday' },
+];
+
+const HOURS: ISelectList[] = [...Array(24)].map((_e, i) => ({
+  id: i + 1,
+  value: `${i + 1}`,
+  title: `Every ${i + 1} hour`,
+}));
+
 export {
   ALPHA_NUM_REGEX,
   CONTRACT_STATES,
   DATE_TIME_FORMAT,
   DURATION_UNIT_MAPPING,
   DURATION_UNITS,
+  HOURS,
   ONLY_NUM_REGEX,
   PURPOSE_VALUES,
+  SCHEDULE_TYPE,
   SPACE_CHECK_REGEX,
   STATUS_COLOR_MAPPING,
   USER_GUIDE_URL,
   USER_TYPE_SWITCH,
+  WEEK_DAYS,
 };
