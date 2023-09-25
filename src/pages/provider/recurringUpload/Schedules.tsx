@@ -23,8 +23,9 @@ import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { Button, SelectList } from 'cx-portal-shared-components';
 import moment from 'moment';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { v4 as uuid } from 'uuid';
 
 import { ISelectList } from '../../../models/Common';
 import { HOURS, SCHEDULE_TYPE, WEEK_DAYS } from '../../../utils/constants';
@@ -41,26 +42,32 @@ function Schedules() {
   const [hour, setHour] = useState<Partial<ISelectList>>({});
   const [time, setTime] = useState('');
   const [day, setDay] = useState<Partial<ISelectList>>({});
+  const [conKey, setConKey] = useState(uuid());
+
   const {
     control,
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      type: type.value,
-      hour: hour.value,
-      time: time,
-      day: day.value,
+      type: SCHEDULE_TYPE[0].value,
+      hour: '',
+      time: '',
+      day: '',
     },
   });
-  const handleResetState = () => {
+
+  const handleResetState = useCallback(() => {
     setHour({});
     setTime('');
     setDay({});
-  };
+    setConKey(uuid());
+    reset({ type: SCHEDULE_TYPE[0].value, hour: '', time: '', day: '' });
+  }, [reset]);
 
-  const onSubmit = (data: unknown) => {
+  const onSubmit = (data: FormData) => {
     console.log(data);
     handleResetState();
   };
@@ -131,7 +138,7 @@ function Schedules() {
 
   const renderTimePicker = () =>
     handleRenderTimePicker() && (
-      <FormControl sx={{ width: 200 }}>
+      <FormControl sx={{ width: 200, mr: 3 }}>
         <Controller
           name="time"
           control={control}
@@ -139,6 +146,7 @@ function Schedules() {
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <TimePicker
                 {...register('time', { required: true })}
+                key={conKey}
                 ref={ref}
                 label={'Select the time'}
                 value={time}
@@ -148,7 +156,23 @@ function Schedules() {
                   onChange(timeStamp);
                   setTime(val);
                 }}
-                renderInput={(params: TextFieldProps) => <TextField {...params} error={!!error} />}
+                renderInput={(params: TextFieldProps) => (
+                  <TextField
+                    {...params}
+                    error={!!error}
+                    placeholder="Select the time"
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        pt: '0px!important',
+                        minHeight: '55px',
+                        backgroundColor: ' #F7F7F7',
+                        borderRadius: '6px 6px 0 0',
+                        marginTop: 5.5,
+                      },
+                      '& .MuiOutlinedInput-notchedOutline': { borderColor: 'transparent' },
+                    }}
+                  />
+                )}
               />
             </LocalizationProvider>
           )}
