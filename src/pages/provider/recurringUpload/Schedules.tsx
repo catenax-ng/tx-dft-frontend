@@ -23,10 +23,14 @@ import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { Button, SelectList } from 'cx-portal-shared-components';
 import moment from 'moment';
-import { useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { v4 as uuid } from 'uuid';
 
+import {
+  useGetScheduleConfigQuery,
+  usePutScheduleConfigMutation,
+} from '../../../features/provider/recurringUpload/apiSlice';
 import { ISelectList } from '../../../models/Common';
 import { SchedulesFormData } from '../../../models/RecurringUpload.models';
 import { HOURS, SCHEDULE_TYPE, WEEK_DAYS } from '../../../utils/constants';
@@ -38,25 +42,37 @@ function Schedules() {
   const [day, setDay] = useState<Partial<ISelectList>>({});
   const [conKey, setConKey] = useState(uuid());
 
+  const { data, isSuccess } = useGetScheduleConfigQuery({});
+  const [putScheduleConfig] = usePutScheduleConfigMutation();
+
   const { control, handleSubmit, register, reset } = useForm<SchedulesFormData>({
     defaultValues: {
-      type: SCHEDULE_TYPE[0].value,
+      type: type.value,
       hour: '',
       time: '',
       day: '',
     },
   });
 
-  const handleResetState = useCallback(() => {
+  useEffect(() => {
+    reset({ type: type.value, hour: '', time: '', day: '' });
+  }, [data, reset, type.value]);
+
+  const handleResetState = () => {
     setHour({});
     setTime('');
     setDay({});
     setConKey(uuid());
-    reset({ type: SCHEDULE_TYPE[0].value, hour: '', time: '', day: '' });
-  }, [reset]);
+  };
 
-  const onSubmit = (data: SchedulesFormData) => {
-    console.log(data);
+  const onSubmit = (formData: SchedulesFormData) => {
+    let payload;
+    if (formData.type === SCHEDULE_TYPE[0].value) {
+      payload = { type: formData.type, time: formData.hour, day: formData.day };
+    } else {
+      payload = { type: formData.type, time: formData.time, day: formData.day };
+    }
+    putScheduleConfig(payload);
     handleResetState();
   };
 
@@ -173,7 +189,7 @@ function Schedules() {
               disableClearable={true}
               defaultValue={day}
               onChangeItem={val => {
-                onChange(val.value);
+                onChange(val.id);
                 setDay(val);
               }}
             />
@@ -182,22 +198,24 @@ function Schedules() {
       </FormControl>
     );
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {renderDurationSelector()}
+  if (isSuccess) {
+    return (
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {renderDurationSelector()}
 
-      {renderHourlyInput()}
+        {renderHourlyInput()}
 
-      {renderTimePicker()}
+        {renderTimePicker()}
 
-      {renderDayPicker()}
+        {renderDayPicker()}
 
-      <FormControl fullWidth sx={{ mt: 3 }}>
-        <Button sx={{ width: 100 }} type="submit">
-          Submit
-        </Button>
-      </FormControl>
-    </form>
-  );
+        <FormControl fullWidth sx={{ mt: 3 }}>
+          <Button sx={{ width: 100 }} type="submit">
+            Submit
+          </Button>
+        </FormControl>
+      </form>
+    );
+  } else return null;
 }
 export default Schedules;

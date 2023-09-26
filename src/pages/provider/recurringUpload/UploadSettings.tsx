@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -18,8 +19,51 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { FormControl, FormControlLabel } from '@mui/material';
+import { Checkbox } from 'cx-portal-shared-components';
+import { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+
+import ButtonLoading from '../../../components/form/ButtonLoading';
+import {
+  useGetSettingsConfigQuery,
+  usePutSettingsConfigMutation,
+} from '../../../features/provider/recurringUpload/apiSlice';
+import { UploadSettingsFormData } from '../../../models/RecurringUpload.models';
+import { UPLOAD_CONFIG_FORM_FIELDS } from '../../../utils/constants';
+
 function UploadSettings() {
-  return <div>UploadSettings</div>;
+  const { data, isSuccess, isLoading } = useGetSettingsConfigQuery({});
+  const [putSettingsConfig, { isLoading: isPutSettings }] = usePutSettingsConfigMutation();
+
+  const { control, handleSubmit, reset } = useForm<UploadSettingsFormData>();
+
+  useEffect(() => {
+    reset(data);
+  }, [data, reset]);
+
+  if (isSuccess) {
+    return (
+      <form onSubmit={handleSubmit(putSettingsConfig)} style={{ width: 200 }}>
+        {UPLOAD_CONFIG_FORM_FIELDS.map(({ name, label }: any) => (
+          <FormControl key={name + label} sx={{ mb: 2 }} fullWidth>
+            <Controller
+              name={name}
+              control={control}
+              render={({ field: { ref, onChange, value } }) => (
+                <FormControlLabel
+                  inputRef={ref}
+                  control={<Checkbox checked={!!value} onChange={onChange} name={name} />}
+                  label={label}
+                />
+              )}
+            />
+          </FormControl>
+        ))}
+        <ButtonLoading type="submit" loading={isLoading || isPutSettings} />
+      </form>
+    );
+  } else return null;
 }
 
 export default UploadSettings;

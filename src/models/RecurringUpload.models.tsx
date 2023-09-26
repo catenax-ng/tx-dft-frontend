@@ -53,3 +53,8 @@ export class EmailConfig {
     this.cc_email = config.cc_email.toString();
   }
 }
+
+export type UploadSettingsFormData = {
+  automatic_upload: string;
+  email_notification: string;
+};

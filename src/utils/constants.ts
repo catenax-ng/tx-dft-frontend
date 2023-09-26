@@ -127,6 +127,11 @@ const EMAIL_CONFIG_FORM_FIELDS = [
   { name: 'cc_email', label: 'Port Name', placeholder: 'Enter cc email address', type: 'email' },
 ];
 
+const UPLOAD_CONFIG_FORM_FIELDS = [
+  { name: 'automatic_upload', label: 'Automatic Upload', placeholder: '' },
+  { name: 'email_notification', label: 'Email Notification', placeholder: '' },
+];
+
 const HOURS: ISelectList[] = [...Array(24)].map((_e, i) => ({
   id: i + 1,
   value: `${i + 1}`,
@@ -147,6 +152,7 @@ export {
   SFTP_FORM_FIELDS,
   SPACE_CHECK_REGEX,
   STATUS_COLOR_MAPPING,
+  UPLOAD_CONFIG_FORM_FIELDS,
   USER_GUIDE_URL,
   USER_TYPE_SWITCH,
   WEEK_DAYS,

@@ -55,5 +55,13 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryInterceptor,
   endpoints: () => ({}),
-  tagTypes: ['UploadHistory', 'DeleteContract', 'DownloadHistoryList', 'SftpConfig', 'EmailConfig'],
+  tagTypes: [
+    'UploadHistory',
+    'DeleteContract',
+    'DownloadHistoryList',
+    'SftpConfig',
+    'EmailConfig',
+    'SettingsConfig',
+    'ScheduleConfig',
+  ],
 });

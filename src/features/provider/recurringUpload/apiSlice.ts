@@ -20,6 +20,24 @@ import { apiSlice } from '../../app/apiSlice';
 
 export const recurringUploadApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
+    getScheduleConfig: builder.query({
+      query: () => {
+        return {
+          url: '/scheduler',
+        };
+      },
+      providesTags: ['ScheduleConfig'],
+    }),
+    putScheduleConfig: builder.mutation({
+      query: body => {
+        return {
+          url: '/scheduler',
+          method: 'PUT',
+          body,
+        };
+      },
+      invalidatesTags: ['ScheduleConfig'],
+    }),
     getSftpConfig: builder.query({
       query: () => {
         return {
@@ -56,8 +74,34 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
       },
       invalidatesTags: ['EmailConfig'],
     }),
+    getSettingsConfig: builder.query({
+      query: () => {
+        return {
+          url: '/job-maintenance',
+        };
+      },
+      providesTags: ['SettingsConfig'],
+    }),
+    putSettingsConfig: builder.mutation({
+      query: body => {
+        return {
+          url: '/job-maintenance',
+          method: 'PUT',
+          body,
+        };
+      },
+      invalidatesTags: ['SettingsConfig'],
+    }),
   }),
 });
 
-export const { useGetSftpConfigQuery, usePutSftpConfigMutation, useGetEmailConfigQuery, usePutEmailConfigMutation } =
-  recurringUploadApiSlice;
+export const {
+  useGetScheduleConfigQuery,
+  usePutScheduleConfigMutation,
+  useGetSftpConfigQuery,
+  usePutSftpConfigMutation,
+  useGetEmailConfigQuery,
+  usePutEmailConfigMutation,
+  useGetSettingsConfigQuery,
+  usePutSettingsConfigMutation,
+} = recurringUploadApiSlice;
