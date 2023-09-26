@@ -29,7 +29,7 @@ function FormControllerInput({ name, control, label, placeholder, register, type
       <Controller
         name={name}
         control={control}
-        render={({ field: { name: fieldName, ref, onChange }, fieldState: { error } }) => (
+        render={({ field: { name: fieldName, ref, onChange, value }, fieldState: { error } }) => (
           <>
             <TextField
               {...register(fieldName, { required: true })}
@@ -41,6 +41,7 @@ function FormControllerInput({ name, control, label, placeholder, register, type
               placeholder={placeholder}
               onChange={onChange}
               type={type || 'text'}
+              value={value}
             />
           </>
         )}

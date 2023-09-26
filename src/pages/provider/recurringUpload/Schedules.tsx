@@ -55,7 +55,7 @@ function Schedules() {
     reset({ type: SCHEDULE_TYPE[0].value, hour: '', time: '', day: '' });
   }, [reset]);
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: SchedulesFormData) => {
     console.log(data);
     handleResetState();
   };

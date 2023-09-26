@@ -18,38 +18,18 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-export type SchedulesFormData = {
-  type: string;
-  hour: string; // 1 to 24 max
-  time: string; // timeStamp only in hours
-  day: string; // time 0 - 6, SUN-SAT
-};
+import { CircularProgress } from '@mui/material';
+import { Button } from 'cx-portal-shared-components';
+import { useTranslation } from 'react-i18next';
 
-export type SftpFormData = {
-  host: string;
-  port: number;
-  username: string;
-  password: string;
-  accessKey: null;
-  toBeProcessedLocation: string;
-  inProgressLocation: string;
-  successLocation: string;
-  partialSuccessLocation: string;
-  failedLocation: string;
-};
-
-export type EmailConfigFormData = {
-  cc_email: string;
-  to_email: string;
-};
-
-export class EmailConfig {
-  to_email: string;
-
-  cc_email: string;
-
-  constructor(config: EmailConfigFormData) {
-    this.to_email = config.to_email.toString();
-    this.cc_email = config.cc_email.toString();
-  }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function ButtonLoading({ loading, type }: { loading?: boolean; type?: any }) {
+  const { t } = useTranslation();
+  return (
+    <Button type={type || 'submit'} endIcon={loading && <CircularProgress size={20} color="inherit" />}>
+      {t('button.submit')}
+    </Button>
+  );
 }
+
+export default ButtonLoading;

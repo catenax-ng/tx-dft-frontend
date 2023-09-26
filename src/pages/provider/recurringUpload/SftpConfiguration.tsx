@@ -18,48 +18,42 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Button } from 'cx-portal-shared-components';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
+import ButtonLoading from '../../../components/form/ButtonLoading';
 import FormControllerInput from '../../../components/form/FormControllerInput';
+import { useGetSftpConfigQuery, usePutSftpConfigMutation } from '../../../features/provider/recurringUpload/apiSlice';
 import { SftpFormData } from '../../../models/RecurringUpload.models';
 import { SFTP_FORM_FIELDS } from '../../../utils/constants';
 
 function SftpConfiguration() {
-  const { control, handleSubmit, register } = useForm<SftpFormData>({
-    defaultValues: {
-      host: '',
-      port: null,
-      username: '',
-      password: '',
-      accessKey: null,
-      toBeProcessedLocation: '',
-      inProgressLocation: '',
-      successLocation: '',
-      partialSuccessLocation: '',
-      failedLocation: '',
-    },
-  });
+  const { data, isSuccess, isFetching } = useGetSftpConfigQuery({});
+  const [putSftpConfig, { isLoading: isPuttingConfig }] = usePutSftpConfigMutation();
 
-  const onSubmit = (data: FormData) => {
-    console.log(JSON.stringify(data));
-  };
+  const { control, handleSubmit, register, reset } = useForm<SftpFormData>();
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} style={{ width: 300 }}>
-      {SFTP_FORM_FIELDS.map(({ name, label, placeholder }) => (
-        <FormControllerInput
-          key={placeholder + label}
-          name={name}
-          control={control}
-          label={label}
-          placeholder={placeholder}
-          register={register}
-        />
-      ))}
-      <Button type="submit">submit</Button>
-    </form>
-  );
+  useEffect(() => {
+    reset(data);
+  }, [data, reset]);
+
+  if (isSuccess) {
+    return (
+      <form onSubmit={handleSubmit(putSftpConfig)} style={{ width: 300 }}>
+        {SFTP_FORM_FIELDS.map(({ name, label, placeholder }) => (
+          <FormControllerInput
+            key={placeholder + label}
+            name={name}
+            control={control}
+            label={label}
+            placeholder={placeholder}
+            register={register}
+          />
+        ))}
+        <ButtonLoading type="submit" loading={isFetching || isPuttingConfig} />
+      </form>
+    );
+  } else return null;
 }
 
 export default SftpConfiguration;

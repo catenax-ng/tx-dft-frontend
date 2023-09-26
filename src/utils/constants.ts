@@ -123,8 +123,8 @@ const SFTP_FORM_FIELDS = [
 ];
 
 const EMAIL_CONFIG_FORM_FIELDS = [
-  { name: 'toEmail', label: 'To email address', placeholder: 'Enter to email address', type: 'email' },
-  { name: 'ccEmail', label: 'Port Name', placeholder: 'Enter cc email address', type: 'email' },
+  { name: 'to_email', label: 'To email address', placeholder: 'Enter to email address', type: 'email' },
+  { name: 'cc_email', label: 'Port Name', placeholder: 'Enter cc email address', type: 'email' },
 ];
 
 const HOURS: ISelectList[] = [...Array(24)].map((_e, i) => ({
