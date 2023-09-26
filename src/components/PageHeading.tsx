@@ -21,7 +21,7 @@
 import { Refresh } from '@mui/icons-material';
 import { Grid } from '@mui/material';
 import { LoadingButton, Typography } from 'cx-portal-shared-components';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 interface IPageHeading {
   refetch?: () => void;
   isFetching?: boolean;
@@ -30,6 +30,7 @@ interface IPageHeading {
   showRefresh?: boolean;
 }
 function PageHeading({ refetch, isFetching, title, description, showRefresh = false }: IPageHeading) {
+  const { t } = useTranslation();
   return (
     <Grid container spacing={2} alignItems="center" mb={4}>
       <Grid item xs={9}>
