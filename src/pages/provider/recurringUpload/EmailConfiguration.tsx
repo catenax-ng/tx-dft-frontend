@@ -18,8 +18,45 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Button } from 'cx-portal-shared-components';
+import { useForm } from 'react-hook-form';
+
+import FormControllerInput from '../../../components/form/FormControllerInput';
+import { EmailConfigFormData } from '../../../models/RecurringUpload.models';
+import { EMAIL_CONFIG_FORM_FIELDS } from '../../../utils/constants';
+
 function EmailConfiguration() {
-  return <div>EmailConfiguration</div>;
+  const {
+    control,
+    handleSubmit,
+    register,
+  } = useForm<EmailConfigFormData>({
+    defaultValues: {
+      toEmail: '',
+      ccEmail: '',
+    },
+  });
+
+  const onSubmit = (data: FormData) => {
+    console.log(JSON.stringify(data));
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} style={{ width: 300 }}>
+      {EMAIL_CONFIG_FORM_FIELDS.map(({ name, label, placeholder, type }) => (
+        <FormControllerInput
+          key={placeholder + label}
+          name={name}
+          control={control}
+          label={label}
+          placeholder={placeholder}
+          register={register}
+          type={type}
+        />
+      ))}
+      <Button type="submit">submit</Button>
+    </form>
+  );
 }
 
 export default EmailConfiguration;

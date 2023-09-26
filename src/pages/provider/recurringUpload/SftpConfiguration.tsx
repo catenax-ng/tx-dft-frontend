@@ -18,8 +18,48 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Button } from 'cx-portal-shared-components';
+import { useForm } from 'react-hook-form';
+
+import FormControllerInput from '../../../components/form/FormControllerInput';
+import { SftpFormData } from '../../../models/RecurringUpload.models';
+import { SFTP_FORM_FIELDS } from '../../../utils/constants';
+
 function SftpConfiguration() {
-  return <div>SftpConfiguration</div>;
+  const { control, handleSubmit, register } = useForm<SftpFormData>({
+    defaultValues: {
+      host: '',
+      port: null,
+      username: '',
+      password: '',
+      accessKey: null,
+      toBeProcessedLocation: '',
+      inProgressLocation: '',
+      successLocation: '',
+      partialSuccessLocation: '',
+      failedLocation: '',
+    },
+  });
+
+  const onSubmit = (data: FormData) => {
+    console.log(JSON.stringify(data));
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} style={{ width: 300 }}>
+      {SFTP_FORM_FIELDS.map(({ name, label, placeholder }) => (
+        <FormControllerInput
+          key={placeholder + label}
+          name={name}
+          control={control}
+          label={label}
+          placeholder={placeholder}
+          register={register}
+        />
+      ))}
+      <Button type="submit">submit</Button>
+    </form>
+  );
 }
 
 export default SftpConfiguration;

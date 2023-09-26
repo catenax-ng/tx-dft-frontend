@@ -28,14 +28,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { v4 as uuid } from 'uuid';
 
 import { ISelectList } from '../../../models/Common';
+import { SchedulesFormData } from '../../../models/RecurringUpload.models';
 import { HOURS, SCHEDULE_TYPE, WEEK_DAYS } from '../../../utils/constants';
-
-type FormData = {
-  type: string;
-  hour: string; // 1 to 24 max
-  time: string; // timeStamp only in hours
-  day: string; // time 0 - 6, SUN-SAT
-};
 
 function Schedules() {
   const [type, setType] = useState(SCHEDULE_TYPE[0]);
@@ -44,13 +38,7 @@ function Schedules() {
   const [day, setDay] = useState<Partial<ISelectList>>({});
   const [conKey, setConKey] = useState(uuid());
 
-  const {
-    control,
-    handleSubmit,
-    register,
-    reset,
-    formState: { errors },
-  } = useForm<FormData>({
+  const { control, handleSubmit, register, reset } = useForm<SchedulesFormData>({
     defaultValues: {
       type: SCHEDULE_TYPE[0].value,
       hour: '',
@@ -75,7 +63,6 @@ function Schedules() {
   const handleRenderTimePicker = () => {
     return type.value === SCHEDULE_TYPE[2].value || type.value === SCHEDULE_TYPE[1].value;
   };
-  console.log('errors', errors);
 
   const renderDurationSelector = () => (
     <FormControl sx={{ width: 200, mr: 3 }}>
@@ -138,7 +125,7 @@ function Schedules() {
 
   const renderTimePicker = () =>
     handleRenderTimePicker() && (
-      <FormControl sx={{ width: 200, mr: 3 }}>
+      <FormControl sx={{ width: 200, mr: 3, mt: 3.2 }}>
         <Controller
           name="time"
           control={control}
@@ -157,21 +144,7 @@ function Schedules() {
                   setTime(val);
                 }}
                 renderInput={(params: TextFieldProps) => (
-                  <TextField
-                    {...params}
-                    error={!!error}
-                    placeholder="Select the time"
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        pt: '0px!important',
-                        minHeight: '55px',
-                        backgroundColor: ' #F7F7F7',
-                        borderRadius: '6px 6px 0 0',
-                        marginTop: 5.5,
-                      },
-                      '& .MuiOutlinedInput-notchedOutline': { borderColor: 'transparent' },
-                    }}
-                  />
+                  <TextField {...params} error={!!error} placeholder="Select the time" variant="filled" />
                 )}
               />
             </LocalizationProvider>

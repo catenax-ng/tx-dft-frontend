@@ -105,6 +105,28 @@ const WEEK_DAYS: ISelectList[] = [
   { id: 2, value: 'saturday', title: 'Saturday' },
 ];
 
+const SFTP_FORM_FIELDS = [
+  { name: 'host', label: 'Host Name', placeholder: 'Enter host name' },
+  { name: 'port', label: 'Port Name', placeholder: 'Enter port name' },
+  { name: 'username', label: 'User name', placeholder: 'Enter user name' },
+  { name: 'password', label: 'Password', placeholder: 'Enter password' },
+  { name: 'accessKey', label: 'Access Key', placeholder: 'Enter access key' },
+  { name: 'toBeProcessedLocation', label: 'To Be Processed Location', placeholder: 'Enter to be processed location' },
+  { name: 'inProgressLocation', label: 'In Progress Location', placeholder: 'Enter in progress location' },
+  { name: 'successLocation', label: 'Success Location', placeholder: 'Enter success location' },
+  {
+    name: 'partialSuccessLocation',
+    label: 'Partial Success Location',
+    placeholder: 'Enter partial success location',
+  },
+  { name: 'failedLocation', label: 'Failed Location', placeholder: 'Enter failed location' },
+];
+
+const EMAIL_CONFIG_FORM_FIELDS = [
+  { name: 'toEmail', label: 'To email address', placeholder: 'Enter to email address', type: 'email' },
+  { name: 'ccEmail', label: 'Port Name', placeholder: 'Enter cc email address', type: 'email' },
+];
+
 const HOURS: ISelectList[] = [...Array(24)].map((_e, i) => ({
   id: i + 1,
   value: `${i + 1}`,
@@ -117,10 +139,12 @@ export {
   DATE_TIME_FORMAT,
   DURATION_UNIT_MAPPING,
   DURATION_UNITS,
+  EMAIL_CONFIG_FORM_FIELDS,
   HOURS,
   ONLY_NUM_REGEX,
   PURPOSE_VALUES,
   SCHEDULE_TYPE,
+  SFTP_FORM_FIELDS,
   SPACE_CHECK_REGEX,
   STATUS_COLOR_MAPPING,
   USER_GUIDE_URL,
