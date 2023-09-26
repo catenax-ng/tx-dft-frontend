@@ -26,11 +26,12 @@ const PageNotFound = lazy(() => import('../pages/PageNotFound'));
 const About = lazy(() => import('../pages/About'));
 
 // Provider Pages
+const ConsumeData = lazy(() => import('../pages/consumer/ConsumeData'));
+const RecurringUpload = lazy(() => import('../pages/provider/recurringUpload'));
 const ProviderContracts = lazy(() => import('../pages/ProviderContracts'));
 const UploadHistoryNew = lazy(() => import('../pages/UploadHistoryNew'));
 
 // Consumer Pages
-const ConsumeData = lazy(() => import('../pages/consumer/ConsumeData'));
 const ConsumerContracts = lazy(() => import('../pages/consumer/ConsumerContracts'));
 const CreateData = lazy(() => import('../pages/CreateData'));
 const OffersDownloadHistory = lazy(() => import('../pages/consumer/OffersDownloadHistory'));
@@ -61,8 +62,13 @@ export const ROUTES: IRoutes[] = [
   },
   // Provider routes
   {
-    path: '/provider/create-data',
+    path: '/provider/manual-upload',
     element: <CreateData />,
+    permissions: ['provider_create_contract_offer'],
+  },
+  {
+    path: '/provider/recurring-upload',
+    element: <RecurringUpload />,
     permissions: ['provider_create_contract_offer'],
   },
   {

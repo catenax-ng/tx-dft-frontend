@@ -45,7 +45,7 @@ export default function CreateData() {
   return (
     <>
       <Typography variant="h3" mb={2}>
-        {t('content.provider.heading')}
+        {t('pages.manualUpload')}
       </Typography>
       <Typography variant="body1">{t('content.provider.description_1')}</Typography>
       <Typography variant="body1">{t('content.provider.description_2')}</Typography>

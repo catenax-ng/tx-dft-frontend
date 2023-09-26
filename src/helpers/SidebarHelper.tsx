@@ -18,16 +18,18 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import BusinessIcon from '@mui/icons-material/Business';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import HistoryIcon from '@mui/icons-material/History';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import UploadIcon from '@mui/icons-material/Upload';
 
 export const icons = {
-  AddCircleOutlineIcon,
+  CloudUploadIcon,
+  UploadIcon,
   HistoryIcon,
   HelpOutlineIcon,
   ManageSearchIcon,
@@ -70,10 +72,17 @@ export const MenuItems: IntMenu[] = [
     isHeading: true,
     childrens: [
       {
-        text: 'pages.createData',
-        menuIcon: 'AddCircleOutlineIcon',
-        to: '/provider/create-data',
-        dataId: 'uploadFileMenu',
+        text: 'pages.manualUpload',
+        menuIcon: 'UploadIcon',
+        to: '/provider/manual-upload',
+        dataId: 'manualUpload',
+        permissions: ['provider_create_contract_offer'],
+      },
+      {
+        text: 'pages.recurringUpload',
+        menuIcon: 'CloudUploadIcon',
+        to: '/provider/recurring-upload',
+        dataId: 'recurringUpload',
         permissions: ['provider_create_contract_offer'],
       },
       {

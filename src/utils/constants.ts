@@ -89,16 +89,71 @@ const PURPOSE_VALUES: ISelectList[] = [
   },
 ];
 
+const SCHEDULE_TYPE: ISelectList[] = [
+  { id: 0, value: 'HOURLY', title: 'Hourly' },
+  { id: 1, value: 'DAILY', title: 'Daily' },
+  { id: 2, value: 'WEEKLY', title: 'Weekly' },
+];
+
+const WEEK_DAYS: ISelectList[] = [
+  { id: 0, value: 'sunday', title: 'Sunday' },
+  { id: 1, value: 'monday', title: 'Monday' },
+  { id: 2, value: 'tuesday', title: 'Tuesday' },
+  { id: 2, value: 'wednesday', title: 'Wednesday' },
+  { id: 2, value: 'thursday', title: 'Thursday' },
+  { id: 2, value: 'friday', title: 'Friday' },
+  { id: 2, value: 'saturday', title: 'Saturday' },
+];
+
+const SFTP_FORM_FIELDS = [
+  { name: 'host', label: 'Host Name', placeholder: 'Enter host name' },
+  { name: 'port', label: 'Port Name', placeholder: 'Enter port name' },
+  { name: 'username', label: 'User name', placeholder: 'Enter user name' },
+  { name: 'password', label: 'Password', placeholder: 'Enter password' },
+  { name: 'accessKey', label: 'Access Key', placeholder: 'Enter access key' },
+  { name: 'toBeProcessedLocation', label: 'To Be Processed Location', placeholder: 'Enter to be processed location' },
+  { name: 'inProgressLocation', label: 'In Progress Location', placeholder: 'Enter in progress location' },
+  { name: 'successLocation', label: 'Success Location', placeholder: 'Enter success location' },
+  {
+    name: 'partialSuccessLocation',
+    label: 'Partial Success Location',
+    placeholder: 'Enter partial success location',
+  },
+  { name: 'failedLocation', label: 'Failed Location', placeholder: 'Enter failed location' },
+];
+
+const EMAIL_CONFIG_FORM_FIELDS = [
+  { name: 'to_email', label: 'To email address', placeholder: 'Enter to email address', type: 'email' },
+  { name: 'cc_email', label: 'Port Name', placeholder: 'Enter cc email address', type: 'email' },
+];
+
+const UPLOAD_CONFIG_FORM_FIELDS = [
+  { name: 'automatic_upload', label: 'Automatic Upload', placeholder: '' },
+  { name: 'email_notification', label: 'Email Notification', placeholder: '' },
+];
+
+const HOURS: ISelectList[] = [...Array(24)].map((_e, i) => ({
+  id: i + 1,
+  value: `${i + 1}`,
+  title: `Every ${i + 1} hour`,
+}));
+
 export {
   ALPHA_NUM_REGEX,
   CONTRACT_STATES,
   DATE_TIME_FORMAT,
   DURATION_UNIT_MAPPING,
   DURATION_UNITS,
+  EMAIL_CONFIG_FORM_FIELDS,
+  HOURS,
   ONLY_NUM_REGEX,
   PURPOSE_VALUES,
+  SCHEDULE_TYPE,
+  SFTP_FORM_FIELDS,
   SPACE_CHECK_REGEX,
   STATUS_COLOR_MAPPING,
+  UPLOAD_CONFIG_FORM_FIELDS,
   USER_GUIDE_URL,
   USER_TYPE_SWITCH,
+  WEEK_DAYS,
 };
