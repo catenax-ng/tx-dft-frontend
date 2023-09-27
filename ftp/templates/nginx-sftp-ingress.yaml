@@ -21,11 +21,7 @@ spec:
   tls:
     - hosts:
         - {{ .hostname }}
-      {{- if .tls.secretName }}
-      secretName: {{ .tls.secretName }}
-      {{- else }}
       secretName: {{ $ingressName }}-tls
-      {{- end }}
   {{- end }}
   rules:
   {{- range .Values.ingress.hosts }}
