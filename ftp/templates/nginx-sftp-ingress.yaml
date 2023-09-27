@@ -2,7 +2,7 @@
 {{- $fullName := include "nginx-sftp.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
 {{- $ingressName := printf "%s-%s" $fullName .hostname }}
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
@@ -17,21 +17,19 @@ metadata:
 {{- end }}
 spec:
   ingressClassName: {{ .Values.ingress.className | quote }}
-  {{- if .Values.ingress.tls }}
   tls:
     - hosts:
         - {{ .hostname }}
       secretName: {{ $ingressName }}-tls
-  {{- end }}
   rules:
   {{- range .Values.ingress.hosts }}
     - host: {{ . }}
       http:
         paths:
           - path: {{ $ingressPath }}
-            {{- if eq "true" (include "common.ingress.supportsPathType" $) }}
             pathType: {{ $.Values.ingress.pathType }}
-            {{- end }}
-            backend: {{- include "common.ingress.backend" (dict "serviceName" (include "common.names.fullname" $) "servicePort" $.Values.service.ingressPort "context" $) | nindent 14 }}
+            backend: 
+              serviceName: {{ $fullName }}
+              servicePort: 8080
   {{- end }}
 {{- end }}
