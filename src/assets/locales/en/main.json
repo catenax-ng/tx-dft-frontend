@@ -67,6 +67,7 @@
     },
     "policies": {
       "title": "Policies",
+      "addPolicy": "Add Policy",
       "description": "Here you can manage the access policies with which partner you want to share your data.",
       "description_1": "Select with whom you want to share the uploaded data",
       "description_1_1": "Unrestricted: everybody within the network can see the data",

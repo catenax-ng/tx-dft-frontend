@@ -23,8 +23,8 @@ import { Tab, TabPanel, Tabs } from 'cx-portal-shared-components';
 import { ReactElement, SyntheticEvent, useState } from 'react';
 
 import PageHeading from '../../../components/PageHeading';
+import Policies from '../../Policies';
 import EmailConfiguration from './EmailConfiguration';
-import Policies from './Policies';
 import Schedules from './Schedules';
 import SftpConfiguration from './SftpConfiguration';
 import UploadSettings from './UploadSettings';

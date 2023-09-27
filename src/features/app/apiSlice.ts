@@ -63,5 +63,6 @@ export const apiSlice = createApi({
     'EmailConfig',
     'SettingsConfig',
     'ScheduleConfig',
+    'Policies',
   ],
 });

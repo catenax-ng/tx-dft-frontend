@@ -67,6 +67,7 @@
     },
     "policies": {
       "title": "Policies",
+      "addPolicy": "Richtlinie hinzufügen",
       "description": "Hier legen Sie fest mit wem sie die Daten teilen möchten (via „Access Policies“) und mit welchen Einschränkungen (via „Usage Policies“).",
       "description_1": "Wählen Sie die Geschäftspartner aus, mit denen die Daten geteilt werden sollen (Suche via BPN oder über Name).",
       "description_1_1": "Uneingeschränkt: Jeder im Netzwerk kann die Daten sehen",

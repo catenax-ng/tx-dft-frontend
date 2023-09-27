@@ -22,6 +22,41 @@ import { apiSlice } from '../../app/apiSlice';
 
 export const policiesApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
+    getPolicies: builder.query({
+      query: params => {
+        return {
+          url: '/policy',
+          params,
+        };
+      },
+      providesTags: ['Policies'],
+    }),
+    createPolicy: builder.mutation({
+      query: body => {
+        return {
+          url: '/policy',
+          method: 'POST',
+          body,
+        };
+      },
+      invalidatesTags: ['Policies'],
+    }),
+    deletePolicy: builder.mutation({
+      query: uuid => {
+        return {
+          url: `/policy/${uuid}`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: ['Policies'],
+    }),
+    getSinglePolicy: builder.query({
+      query: uuid => {
+        return {
+          url: `/policy/${uuid}`,
+        };
+      },
+    }),
     validateBpn: builder.mutation({
       query: bpn => {
         return {
@@ -32,4 +67,10 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useValidateBpnMutation } = policiesApiSlice;
+export const {
+  useValidateBpnMutation,
+  useGetPoliciesQuery,
+  useGetSinglePolicyQuery,
+  useCreatePolicyMutation,
+  useDeletePolicyMutation,
+} = policiesApiSlice;

@@ -19,7 +19,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { FormControl, TextField } from '@mui/material';
+import { FormControl } from '@mui/material';
+import { Input } from 'cx-portal-shared-components';
 import { Controller } from 'react-hook-form';
 
 // Reusable input component
@@ -31,7 +32,7 @@ function FormControllerInput({ name, control, label, placeholder, register, type
         control={control}
         render={({ field: { name: fieldName, ref, onChange, value }, fieldState: { error } }) => (
           <>
-            <TextField
+            <Input
               {...register(fieldName, { required: true })}
               variant="filled"
               name={fieldName}

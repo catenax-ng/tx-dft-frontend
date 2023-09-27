@@ -19,7 +19,16 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Button, Dialog, DialogActions, DialogContent, DialogHeader, Typography } from 'cx-portal-shared-components';
+import { Box } from '@mui/material';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogHeader,
+  Input,
+  Typography,
+} from 'cx-portal-shared-components';
 import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -27,6 +36,7 @@ import { useTranslation } from 'react-i18next';
 import { Status } from '../../enums';
 import { setPageLoading } from '../../features/app/slice';
 import { setSnackbarMessage } from '../../features/notifiication/slice';
+import { useCreatePolicyMutation } from '../../features/provider/policies/apiSlice';
 import { handleDialogClose } from '../../features/provider/policies/slice';
 import { clearRows } from '../../features/provider/submodels/slice';
 import { removeSelectedFiles, setUploadData, setUploadStatus } from '../../features/provider/upload/slice';
@@ -51,7 +61,7 @@ const defaultUploadData: ProcessReport = {
   endDate: undefined,
 };
 
-export default function PoliciesDialog() {
+export default function AddPolicy() {
   const {
     openDialog,
     accessType,
@@ -221,6 +231,20 @@ export default function PoliciesDialog() {
     }
   };
 
+  // Add Policy
+  const [policyName, setPolicyName] = useState('');
+  const [nameError, setNameError] = useState(false);
+  const [createPolicy] = useCreatePolicyMutation();
+
+  const handleCreatePolicy = async () => {
+    const policyNameCheck = Boolean(policyName.length);
+    setNameError(!policyNameCheck);
+    if (policyNameCheck) {
+      await createPolicy({ policy_name: policyName, ...payload });
+      dispatch(handleDialogClose());
+    }
+  };
+
   async function handleSubmitData() {
     if (showError) return;
     switch (uploadType) {
@@ -229,6 +253,9 @@ export default function PoliciesDialog() {
         break;
       case 'json':
         await submitData();
+        break;
+      case 'createPolicy':
+        await handleCreatePolicy();
         break;
       default:
         break;
@@ -240,7 +267,7 @@ export default function PoliciesDialog() {
       <DialogHeader
         closeWithIcon
         onCloseWithIcon={() => dispatch(handleDialogClose())}
-        title={t('content.policies.title')}
+        title={t(uploadType === 'createPolicy' ? 'content.policies.addPolicy' : 'content.policies.title')}
       />
       <DialogContent>
         <Typography variant="body2">
@@ -257,6 +284,23 @@ export default function PoliciesDialog() {
             <Typography variant="body2">{t('content.policies.description_3')}</Typography>
           </li>
         </ol>
+        {uploadType === 'createPolicy' && (
+          <Box mb={3} width={300}>
+            <Input
+              variant="filled"
+              label="Policy Name"
+              placeholder="Enter policy name"
+              value={policyName}
+              error={nameError}
+              onChange={e => {
+                const val = e.target.value;
+                setNameError(!Boolean(val.length));
+                setPolicyName(val);
+              }}
+              fullWidth
+            />
+          </Box>
+        )}
         <AccessPolicy />
         <UsagePolicy />
       </DialogContent>
