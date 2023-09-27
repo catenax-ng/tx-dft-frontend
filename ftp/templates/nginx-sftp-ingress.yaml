@@ -1,6 +1,7 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "nginx-sftp.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
+{{- $ingressName := printf "%s-%s" $fullName .hostname }}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -15,7 +16,7 @@ metadata:
 {{ toYaml . | indent 4 }}
 {{- end }}
 spec:
-  ingressClassName: {{ .Values.ingress.ingressClassName | quote }}
+  ingressClassName: {{ .Values.ingress.className | quote }}
   {{- if .Values.ingress.tls }}
   tls:
     - hosts:
@@ -23,7 +24,7 @@ spec:
       {{- if .tls.secretName }}
       secretName: {{ .tls.secretName }}
       {{- else }}
-      secretName: {{ $fullName }}-tls
+      secretName: {{ $ingressName }}-tls
       {{- end }}
   {{- end }}
   rules:
