@@ -25,6 +25,8 @@ import { IDefaultObject, ISelectList } from '../models/Common';
 const USER_GUIDE_URL =
   'https://github.com/eclipse-tractusx/managed-simple-data-exchanger-frontend/blob/main/docs/user-guide/README.md';
 
+const MAX_CONTRACTS_AGREEMENTS = 2147483647;
+
 const ONLY_NUM_REGEX = /^[1-9]\d*$/;
 
 const ALPHA_NUM_REGEX = /[a-zA-Z0-9]$/;
@@ -146,6 +148,7 @@ export {
   DURATION_UNITS,
   EMAIL_CONFIG_FORM_FIELDS,
   HOURS,
+  MAX_CONTRACTS_AGREEMENTS,
   ONLY_NUM_REGEX,
   PURPOSE_VALUES,
   SCHEDULE_TYPE,

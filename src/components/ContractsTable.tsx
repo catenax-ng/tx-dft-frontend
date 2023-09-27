@@ -30,9 +30,9 @@ import { useTranslation } from 'react-i18next';
 import { setPageLoading } from '../features/app/slice';
 import { useDeleteContractMutation, useGetContractsQuery } from '../features/provider/contracts/apiSlice';
 import { useAppDispatch } from '../features/store';
-import { handleBlankCellValues, MAX_CONTRACTS_AGREEMENTS } from '../helpers/ConsumerOfferHelper';
+import { handleBlankCellValues } from '../helpers/ConsumerOfferHelper';
 import { IDefaultObject } from '../models/Common';
-import { CONTRACT_STATES, DURATION_UNIT_MAPPING, STATUS_COLOR_MAPPING, USER_TYPE_SWITCH } from '../utils/constants';
+import { CONTRACT_STATES, DURATION_UNIT_MAPPING, MAX_CONTRACTS_AGREEMENTS, STATUS_COLOR_MAPPING, USER_TYPE_SWITCH } from '../utils/constants';
 import { convertEpochToDate, epochToDate } from '../utils/utils';
 import NoDataPlaceholder from './NoDataPlaceholder';
 

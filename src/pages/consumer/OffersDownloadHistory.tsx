@@ -35,11 +35,10 @@ import { setPageLoading } from '../../features/app/slice';
 import { useOffersDownloadHistoryQuery } from '../../features/consumer/offersDownloadHistory/apiSlice';
 import { setSnackbarMessage } from '../../features/notifiication/slice';
 import { useAppDispatch } from '../../features/store';
-import { MAX_CONTRACTS_AGREEMENTS } from '../../helpers/ConsumerOfferHelper';
 import { IDefaultObject } from '../../models/Common';
 import { ProcessReport } from '../../models/ProcessReport';
 import ConsumerService from '../../services/ConsumerService';
-import { DATE_TIME_FORMAT, STATUS_COLOR_MAPPING } from '../../utils/constants';
+import { DATE_TIME_FORMAT, MAX_CONTRACTS_AGREEMENTS, STATUS_COLOR_MAPPING } from '../../utils/constants';
 
 function OffersDownloadHistory() {
   const [page, setPage] = useState<number>(0);

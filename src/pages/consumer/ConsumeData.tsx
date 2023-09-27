@@ -72,8 +72,9 @@ import {
 } from '../../features/consumer/types';
 import { setSnackbarMessage } from '../../features/notifiication/slice';
 import { useAppDispatch, useAppSelector } from '../../features/store';
-import { arraysEqual, handleBlankCellValues, MAX_CONTRACTS_AGREEMENTS } from '../../helpers/ConsumerOfferHelper';
+import { arraysEqual, handleBlankCellValues } from '../../helpers/ConsumerOfferHelper';
 import ConsumerService from '../../services/ConsumerService';
+import { MAX_CONTRACTS_AGREEMENTS } from '../../utils/constants';
 
 const ITEMS: IntConnectorItem[] = [
   {

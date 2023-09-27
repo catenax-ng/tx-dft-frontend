@@ -38,11 +38,10 @@ import {
 } from '../features/provider/history/apiSlice';
 import { setCurrentProcessId, setErrorsList, setIsLoding } from '../features/provider/history/slice';
 import { useAppDispatch } from '../features/store';
-import { MAX_CONTRACTS_AGREEMENTS } from '../helpers/ConsumerOfferHelper';
 import { csvFileDownload } from '../helpers/FileDownloadHelper';
 import { ProcessReport } from '../models/ProcessReport';
 import ProviderService from '../services/ProviderService';
-import { STATUS_COLOR_MAPPING } from '../utils/constants';
+import { MAX_CONTRACTS_AGREEMENTS, STATUS_COLOR_MAPPING } from '../utils/constants';
 import { formatDate } from '../utils/utils';
 
 function UploadHistoryNew() {
