@@ -124,7 +124,7 @@ const SFTP_FORM_FIELDS = [
 
 const EMAIL_CONFIG_FORM_FIELDS = [
   { name: 'to_email', label: 'To email address', placeholder: 'Enter to email address', type: 'email' },
-  { name: 'cc_email', label: 'Port Name', placeholder: 'Enter cc email address', type: 'email' },
+  { name: 'cc_email', label: 'CC email address', placeholder: 'Enter cc email address', type: 'email' },
 ];
 
 const UPLOAD_CONFIG_FORM_FIELDS = [
