@@ -2,8 +2,18 @@ apiVersion: v1
 entries:
   ftp:
   - apiVersion: v2
+    appVersion: 0.4.0
+    created: "2023-09-27T19:54:30.773591+05:30"
+    description: A Helm chart for Kubernetes
+    digest: 8bc1c3498758b24c4724f7e951fb299a5677487aeda2fccfa7a58a884fe221d3
+    name: ftp
+    type: application
+    urls:
+    - https://catenax-ng.github.io/tx-managed-simple-data-exchanger-frontend/ftp-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
     appVersion: 0.3.0
-    created: "2023-09-27T19:48:41.429734+05:30"
+    created: "2023-09-27T19:54:30.772206+05:30"
     description: A Helm chart for Kubernetes
     digest: f4ca3c44075563647abe28e5200ba5ce03f2d2076ddf2ad948a0e740ebaec02a
     name: ftp
@@ -13,7 +23,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: 0.2.0
-    created: "2023-09-27T19:48:41.428765+05:30"
+    created: "2023-09-27T19:54:30.771324+05:30"
     description: A Helm chart for Kubernetes
     digest: 9deb961d6451345d8fae840ab618ee24c6d45f364210bdbc232de8b3941b0519
     name: ftp
@@ -23,7 +33,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-09-27T19:48:41.427869+05:30"
+    created: "2023-09-27T19:54:30.770352+05:30"
     description: A Helm chart for Kubernetes
     digest: bdf3fa8ccf07252a54343f757eae5e95adc85b5e04873b357cefd2033b9e3406
     name: ftp
@@ -31,4 +41,4 @@ entries:
     urls:
     - https://catenax-ng.github.io/tx-managed-simple-data-exchanger-frontend/ftp-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-27T19:48:41.426586+05:30"
+generated: "2023-09-27T19:54:30.769314+05:30"
