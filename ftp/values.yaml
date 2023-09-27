@@ -47,7 +47,7 @@ commonAnnotations: {}
 # Declare variables to be passed into your templates.
 
 statefulset:
-  enabled: false
+  enabled: true
 
 ## By default deploymentStrategy is set to rollingUpdate with maxSurge of 25% and maxUnavailable of 25% .
 ## You can change type to `Recreate` or can uncomment `rollingUpdate` specification and adjust them to your usage.
@@ -57,23 +57,23 @@ deploymentStrategy: {}
   #   maxUnavailable: 25%
   # type: RollingUpdate
 
-# 副本个数
+
 replicaCount: 1
 
-# 容器image及tag
+
 image:
   registry: docker.io
   repository: bitnami/nginx
-  tag: 1.14.2
+  tag: 1.14.2-r125
   pullPolicy: IfNotPresent # IfNotPresent: 有则不拉（减少流量和操作步骤），Always: 不管tag总拉（适合tag不变时更新）
   pullSecrets: []
   #  - private-registry-key
 
 service:
-  type: ClusterIP  # 一般不用修改
+  type: ClusterIP  
   ingressPort: 8080
   ports:
-    http:  # 多端口暴露时，复制一段
+    http:  
       port: 8080  # Service port number for client-a port.
       protocol: TCP  # Service port protocol for client-a port.
     ssh:
@@ -97,29 +97,16 @@ startCommand: []
 #  - "-Duser.timezone=GMT+08"
 
 ## nginx server configure
-vhost: ""
-#vhost: |-
-#   # example PHP-FPM vhost
-#   server {
-#     listen 0.0.0.0:8080;
-#     root /app;
-#     location / {
-#       index index.html index.php;
-#     }
-#     location ~ \.php$ {
-#       fastcgi_pass phpfpm-server:9000;
-#       fastcgi_index index.php;
-#       include fastcgi.conf;
-#     }
-#   }
-
-## Enable configmap and add data in configmap
-config:
-  enabled: false
-  mountPath: /conf
-  subPath: ""
-  readOnly: true	
-  data: {}
+vhost: |-
+   server {
+     listen 8080;
+     server_name  localhost;
+     location / {
+       root  /usr/share/nginx/html;      
+       index  index.html;
+       try_files $uri $uri/index.html /index.html
+     }
+   }
 
 ## To use an additional secret, set enable to true and add data
 secret:
@@ -133,16 +120,16 @@ secret:
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
 healthCheck:
   enabled: false
-  type: http  # http/tcp
-  port: http  # 上面的端口名或端口
-  httpPath: '/'  # http时必须设置
-  livenessInitialDelaySeconds: 10  # 初始延迟秒数
-  livenessPeriodSeconds: 10  # 检测周期，默认值10，最小为1
-  readinessInitialDelaySeconds: 10  # 初始延迟秒数
-  readinessPeriodSeconds: 10   # 检测周期，默认值10，最小为1
+  type: http  
+  port: http  
+  httpPath: '/'  
+  livenessInitialDelaySeconds: 10  
+  livenessPeriodSeconds: 10  
+  readinessInitialDelaySeconds: 10  
+  readinessPeriodSeconds: 10  
  
 resources: {}
-  # 容器资源设置
+  # 
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -167,8 +154,8 @@ annotations: {}
 ## Enable persistence using Persistent Volume Claims
 ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
 ##
-persistentVolume:   # 是否存储持久化
-  enabled: false
+persistentVolume:   
+  enabled: true
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
   ## If undefined (the default) or set to null, no storageClassName spec is
@@ -179,8 +166,8 @@ persistentVolume:   # 是否存储持久化
   accessMode: ReadWriteMany
   annotations: {}
   #  helm.sh/resource-policy: keep
-  size: 500Mi  # 大小
-  existingClaim: {}  # 使用已存在的pvc
+  size: 1Gi  
+  existingClaim: {}  
   mountPaths: 
     - mountPath: /opt/bitnami/nginx/html/example
       name: data-storage
@@ -189,21 +176,22 @@ persistentVolume:   # 是否存储持久化
   #    mountPath: /data
   #    subPath: data
 
-ingress:  # 是否使用nginx暴露域名或端口
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  ingressClassName: ""
+ingress:  
+  enabled: true
+  annotations: 
+     kubernetes.io/ingress.class: nginx
+     kubernetes.io/tls-acme: "true"
+  ingressClassName: "nginx"
   path: /
   pathType: ImplementationSpecific
   hosts:
-    - chart-example.local
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
-
+    - sftp.cx.dih-cloud.com
+  tls:
+    enabled: true
+    secretName: ""
+    certManager:
+      clusterIssuer: "letsencrypt-prod"
+    
 ## sftp 
 ##
 sftp:
