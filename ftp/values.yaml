@@ -184,17 +184,17 @@ persistentVolume:
 ingress:  
   enabled: true
   annotations: 
-     kubernetes.io/tls-acme: "true"
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
   className: "nginx"
   path: /
   pathType: ImplementationSpecific
   hosts:
-    - sftp.cx.dih-cloud.com
+    - host: sftpserver.cx.dih-cloud.com
   tls:
-    enabled: true
-    secretName: ""
-    certManager:
-      clusterIssuer: "letsencrypt-prod"
+    - hosts:
+        - sftpserver.cx.dih-cloud.com
+      secretName: sftpserver
     
 ## sftp 
 ##

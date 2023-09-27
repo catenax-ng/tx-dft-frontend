@@ -18,9 +18,14 @@ metadata:
 spec:
   ingressClassName: {{ .Values.ingress.className | quote }}
   tls:
+    {{- range .Values.ingress.tls }}
     - hosts:
-        - {{ .Values.ingress.hosts }}
-      secretName: {{ include "nginx-sftp.fullname" . }}-tls
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
   rules:
   {{- range .Values.ingress.hosts }}
     - host: {{ . }}
