@@ -35,7 +35,7 @@ spec:
             pathType: {{ $.Values.ingress.pathType }}
             backend: 
               service:
-                name: {{ $fullName }}
+                name: nginx-sftp
                 port:
                   number: 8080
   {{- end }}
