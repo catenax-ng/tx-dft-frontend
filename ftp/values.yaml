@@ -172,10 +172,10 @@ persistentVolume:
   annotations: {}
   #  helm.sh/resource-policy: keep
   size: 1Gi  
-  existingClaim: {}  
-  mountPaths: 
-    - mountPath: /opt/bitnami/nginx/html/example
-      name: data-storage
+#  existingClaim: {}  
+#  mountPaths: 
+#    - mountPath: /opt/bitnami/nginx/html/example
+#      name: data-storage
   #    subPath: html
   #  - name: data-storage
   #    mountPath: /data
@@ -190,7 +190,7 @@ ingress:
   path: /
   pathType: ImplementationSpecific
   hosts:
-    - host: sftpserver.cx.dih-cloud.com
+    - sftpserver.cx.dih-cloud.com
   tls:
     - hosts:
         - sftpserver.cx.dih-cloud.com
