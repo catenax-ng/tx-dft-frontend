@@ -36,6 +36,7 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
           body,
         };
       },
+      extraOptions: { showNotification: true, message: 'Schedule configurations updated!', type: 'success' },
       invalidatesTags: ['ScheduleConfig'],
     }),
     getSftpConfig: builder.query({
@@ -54,6 +55,7 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
           body,
         };
       },
+      extraOptions: { showNotification: true, message: 'SFTP configurations updated!', type: 'success' },
       invalidatesTags: ['SftpConfig'],
     }),
     getEmailConfig: builder.query({
@@ -72,6 +74,7 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
           body,
         };
       },
+      extraOptions: { showNotification: true, message: 'Email configurations updated!', type: 'success' },
       invalidatesTags: ['EmailConfig'],
     }),
     getSettingsConfig: builder.query({
@@ -90,6 +93,7 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
           body,
         };
       },
+      extraOptions: { showNotification: true, message: 'Settings updated successfully!', type: 'success' },
       invalidatesTags: ['SettingsConfig'],
     }),
   }),

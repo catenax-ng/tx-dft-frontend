@@ -71,7 +71,7 @@ function Policies() {
       flex: 1,
       renderCell: ({ row }) => {
         const duration = find(row?.usage_policies, { type: 'DURATION' });
-        return duration?.value ? `${duration?.value} ${duration.durationUnit}` : 'NA';
+        return duration?.value ? `${duration?.value} ${duration?.durationUnit}` : 'NA';
       },
     },
     {
@@ -83,7 +83,7 @@ function Policies() {
       flex: 1,
       renderCell: ({ row }) => {
         const purpose = find(row?.usage_policies, { type: 'PURPOSE' });
-        return purpose.value || 'NA';
+        return purpose?.value || 'NA';
       },
     },
     {
