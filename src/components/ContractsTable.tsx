@@ -32,7 +32,13 @@ import { useDeleteContractMutation, useGetContractsQuery } from '../features/pro
 import { useAppDispatch } from '../features/store';
 import { handleBlankCellValues } from '../helpers/ConsumerOfferHelper';
 import { IDefaultObject } from '../models/Common';
-import { CONTRACT_STATES, DURATION_UNIT_MAPPING, MAX_CONTRACTS_AGREEMENTS, STATUS_COLOR_MAPPING, USER_TYPE_SWITCH } from '../utils/constants';
+import {
+  CONTRACT_STATES,
+  DURATION_UNIT_MAPPING,
+  MAX_CONTRACTS_AGREEMENTS,
+  STATUS_COLOR_MAPPING,
+  USER_TYPE_SWITCH,
+} from '../utils/constants';
 import { convertEpochToDate, epochToDate } from '../utils/utils';
 import NoDataPlaceholder from './NoDataPlaceholder';
 

@@ -20,7 +20,7 @@
 
 import { theme } from 'cx-portal-shared-components';
 
-import { IDefaultObject, ISelectList } from '../models/Common';
+import { IDefaultObject } from '../models/Common';
 
 const USER_GUIDE_URL =
   'https://github.com/eclipse-tractusx/managed-simple-data-exchanger-frontend/blob/main/docs/user-guide/README.md';
@@ -35,7 +35,7 @@ const SPACE_CHECK_REGEX = /^\S*$/;
 
 const DATE_TIME_FORMAT = 'DD-MM-YYYY H:mm:ss';
 
-const CONTRACT_STATES: string[] = ['FINALIZED', 'DECLINED', 'TERMINATED', 'ERROR'];
+const CONTRACT_STATES = ['FINALIZED', 'DECLINED', 'TERMINATED', 'ERROR'];
 
 const STATUS_COLOR_MAPPING: IDefaultObject = {
   IN_PROGRESS: theme.palette.info.main,
@@ -53,7 +53,7 @@ const USER_TYPE_SWITCH: IDefaultObject = {
   consumer: 'provider',
 };
 
-const DURATION_UNITS: ISelectList[] = [
+const DURATION_UNITS = [
   {
     id: 0,
     title: 'Hour',
@@ -83,7 +83,7 @@ const DURATION_UNIT_MAPPING = {
   YEAR: 'years',
 };
 
-const PURPOSE_VALUES: ISelectList[] = [
+const PURPOSE_VALUES = [
   {
     id: 0,
     title: 'ID 3.0 Trace',
@@ -91,20 +91,20 @@ const PURPOSE_VALUES: ISelectList[] = [
   },
 ];
 
-const SCHEDULE_TYPE: ISelectList[] = [
+const SCHEDULE_TYPE = [
   { id: 0, value: 'HOURLY', title: 'Hourly' },
   { id: 1, value: 'DAILY', title: 'Daily' },
   { id: 2, value: 'WEEKLY', title: 'Weekly' },
 ];
 
-const WEEK_DAYS: ISelectList[] = [
+const WEEK_DAYS = [
   { id: 0, value: 'sunday', title: 'Sunday' },
   { id: 1, value: 'monday', title: 'Monday' },
   { id: 2, value: 'tuesday', title: 'Tuesday' },
-  { id: 2, value: 'wednesday', title: 'Wednesday' },
-  { id: 2, value: 'thursday', title: 'Thursday' },
-  { id: 2, value: 'friday', title: 'Friday' },
-  { id: 2, value: 'saturday', title: 'Saturday' },
+  { id: 3, value: 'wednesday', title: 'Wednesday' },
+  { id: 4, value: 'thursday', title: 'Thursday' },
+  { id: 5, value: 'friday', title: 'Friday' },
+  { id: 6, value: 'saturday', title: 'Saturday' },
 ];
 
 const SFTP_FORM_FIELDS = [
@@ -134,7 +134,7 @@ const UPLOAD_CONFIG_FORM_FIELDS = [
   { name: 'email_notification', label: 'Email Notification', placeholder: '' },
 ];
 
-const HOURS: ISelectList[] = [...Array(24)].map((_e, i) => ({
+const HOURS = [...Array(24)].map((_e, i) => ({
   id: i + 1,
   value: `${i + 1}`,
   title: `Every ${i + 1} hour`,

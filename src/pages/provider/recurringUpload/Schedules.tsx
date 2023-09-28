@@ -18,10 +18,11 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { FormControl, TextField, TextFieldProps } from '@mui/material';
+import { FormControl, Grid, TextFieldProps } from '@mui/material';
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { Button, SelectList } from 'cx-portal-shared-components';
+import { Button, Input, SelectList, Typography } from 'cx-portal-shared-components';
+import { capitalize, find, isEmpty } from 'lodash';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -78,6 +79,18 @@ function Schedules() {
 
   const handleRenderTimePicker = () => {
     return type.value === SCHEDULE_TYPE[2].value || type.value === SCHEDULE_TYPE[1].value;
+  };
+
+  const handleCurrentSchedule = () => {
+    if (data.type) {
+      return (
+        <>
+          {capitalize(data.type)},
+          {!isEmpty(data?.day) ? find(WEEK_DAYS, { id: Number(data.day) })?.title : ''}{' '}
+          {data.type === SCHEDULE_TYPE[0].value ? `${data.time} times` : data.time}
+        </>
+      );
+    } else return 'NA';
   };
 
   const renderDurationSelector = () => (
@@ -141,7 +154,7 @@ function Schedules() {
 
   const renderTimePicker = () =>
     handleRenderTimePicker() && (
-      <FormControl sx={{ width: 200, mr: 3, mt: 3.2 }}>
+      <FormControl sx={{ width: 200, mr: 3 }}>
         <Controller
           name="time"
           control={control}
@@ -160,7 +173,7 @@ function Schedules() {
                   setTime(val);
                 }}
                 renderInput={(params: TextFieldProps) => (
-                  <TextField {...params} error={!!error} placeholder="Select the time" variant="filled" />
+                  <Input {...params} error={!!error} placeholder="Select the time" variant="filled" />
                 )}
               />
             </LocalizationProvider>
@@ -200,21 +213,31 @@ function Schedules() {
 
   if (isSuccess) {
     return (
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {renderDurationSelector()}
+      <Grid container display={'flex'} alignItems={'center'}>
+        <Grid item xs={7}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {renderDurationSelector()}
 
-        {renderHourlyInput()}
+            {renderHourlyInput()}
 
-        {renderTimePicker()}
+            {renderTimePicker()}
 
-        {renderDayPicker()}
+            {renderDayPicker()}
 
-        <FormControl fullWidth sx={{ mt: 3 }}>
-          <Button sx={{ width: 100 }} type="submit">
-            Submit
-          </Button>
-        </FormControl>
-      </form>
+            <FormControl fullWidth sx={{ mt: 3 }}>
+              <Button sx={{ width: 100 }} type="submit">
+                Submit
+              </Button>
+            </FormControl>
+          </form>
+        </Grid>
+        <Grid item>
+          <Typography variant="body1" mt={-4}>
+            <b>Current schedule: </b>
+            {handleCurrentSchedule()}
+          </Typography>
+        </Grid>
+      </Grid>
     );
   } else return null;
 }
