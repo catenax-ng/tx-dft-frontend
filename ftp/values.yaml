@@ -63,7 +63,7 @@ image:
   registry: docker.io
   repository: bitnami/nginx
   tag: 1.14.2-r125
-  pullPolicy: IfNotPresent # IfNotPresent: 有则不拉（减少流量和操作步骤），Always: 不管tag总拉（适合tag不变时更新）
+  pullPolicy: IfNotPresent 
   pullSecrets: []
   #  - private-registry-key
 
@@ -169,8 +169,8 @@ persistentVolume:
   ##
   storageClass: "-"
   accessMode: ReadWriteMany
-  annotations: {}
-  #  helm.sh/resource-policy: keep
+  annotations: 
+    storageclass.kubernetes.io/is-default-class
   size: 1Gi  
 #  existingClaim: {}  
 #  mountPaths: 

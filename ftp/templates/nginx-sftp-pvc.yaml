@@ -1,6 +1,6 @@
 {{- if not .Values.statefulset.enabled -}}
 {{- if and .Values.persistentVolume.enabled (not .Values.persistentVolume.existingClaim) }}
-apiVersion: apps/v1
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   {{- if .Values.persistentVolume.annotations }}
