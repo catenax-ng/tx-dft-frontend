@@ -20,6 +20,14 @@ import { apiSlice } from '../../app/apiSlice';
 
 export const recurringUploadApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
+    triggerUpload: builder.mutation({
+      query: () => {
+        return {
+          url: '/fire',
+          method: 'POST',
+        };
+      },
+    }),
     getScheduleConfig: builder.query({
       query: () => {
         return {
@@ -36,7 +44,7 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
           body,
         };
       },
-      extraOptions: { showNotification: true, message: 'Schedule configurations updated!', type: 'success' },
+      extraOptions: { showNotification: true, message: 'Schedule configurations updated!' },
       invalidatesTags: ['ScheduleConfig'],
     }),
     getSftpConfig: builder.query({
@@ -55,7 +63,7 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
           body,
         };
       },
-      extraOptions: { showNotification: true, message: 'SFTP configurations updated!', type: 'success' },
+      extraOptions: { showNotification: true, message: 'SFTP configurations updated!' },
       invalidatesTags: ['SftpConfig'],
     }),
     getEmailConfig: builder.query({
@@ -74,7 +82,7 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
           body,
         };
       },
-      extraOptions: { showNotification: true, message: 'Email configurations updated!', type: 'success' },
+      extraOptions: { showNotification: true, message: 'Email configurations updated!' },
       invalidatesTags: ['EmailConfig'],
     }),
     getSettingsConfig: builder.query({
@@ -93,7 +101,7 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
           body,
         };
       },
-      extraOptions: { showNotification: true, message: 'Settings updated successfully!', type: 'success' },
+      extraOptions: { showNotification: true, message: 'Settings updated successfully!' },
       invalidatesTags: ['SettingsConfig'],
     }),
   }),
@@ -108,4 +116,5 @@ export const {
   usePutEmailConfigMutation,
   useGetSettingsConfigQuery,
   usePutSettingsConfigMutation,
+  useTriggerUploadMutation,
 } = recurringUploadApiSlice;

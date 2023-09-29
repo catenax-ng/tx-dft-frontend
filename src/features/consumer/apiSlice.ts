@@ -52,7 +52,7 @@ export const consumerApiSlice = apiSlice.injectEndpoints({
           responseHandler: res => res.blob(),
         };
       },
-      extraOptions: { showNotification: true, message: 'alerts.subscriptionSuccess', type: 'success' },
+      extraOptions: { showNotification: true, message: 'alerts.subscriptionSuccess' },
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           dispatch(setPageLoading(true));

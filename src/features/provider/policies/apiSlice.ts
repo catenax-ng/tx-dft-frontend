@@ -39,7 +39,7 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
           body,
         };
       },
-      extraOptions: { showNotification: true, message: 'Policy created successfully!', type: 'success' },
+      extraOptions: { showNotification: true, message: 'Policy created successfully!' },
       invalidatesTags: ['Policies'],
     }),
     deletePolicy: builder.mutation({
@@ -49,7 +49,7 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
           method: 'DELETE',
         };
       },
-      extraOptions: { showNotification: true, message: 'Policy deleted successfully!', type: 'success' },
+      extraOptions: { showNotification: true, message: 'Policy deleted successfully!' },
       invalidatesTags: ['Policies'],
     }),
     getSinglePolicy: builder.query({

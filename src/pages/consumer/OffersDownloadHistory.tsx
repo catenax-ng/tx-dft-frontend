@@ -214,7 +214,8 @@ function OffersDownloadHistory() {
           isFetching={isFetching}
           title="pages.offerDownloadHistory"
           description="content.offerDownloadHistory.description"
-          showRefresh={true}
+          showButton={true}
+          buttonText="button.refresh"
         />
         <Table
           loading={isFetching}

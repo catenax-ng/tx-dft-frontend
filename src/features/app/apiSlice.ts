@@ -39,12 +39,12 @@ const baseQueryInterceptor: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQu
         type: 'error',
       }),
     );
-  } else if (extraOptions?.showNotification) {
+  } else if (data) {
     // Backend should send/handle success messages, which isnt done
     api.dispatch(
       setSnackbarMessage({
-        message: extraOptions.message,
-        type: extraOptions.type,
+        message: data?.msg ? data.msg : extraOptions.message,
+        type: 'success',
       }),
     );
   }

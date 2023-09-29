@@ -23,6 +23,7 @@ import { Tab, TabPanel, Tabs } from 'cx-portal-shared-components';
 import { ReactElement, SyntheticEvent, useState } from 'react';
 
 import PageHeading from '../../../components/PageHeading';
+import { useTriggerUploadMutation } from '../../../features/provider/recurringUpload/apiSlice';
 import Policies from '../../Policies';
 import EmailConfiguration from './EmailConfiguration';
 import Schedules from './Schedules';
@@ -47,10 +48,18 @@ function RecurringUpload() {
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
+  const [trigger, { isLoading }] = useTriggerUploadMutation();
 
   return (
     <>
-      <PageHeading title="pages.recurringUpload" description="content.recurringUpload.description" />
+      <PageHeading
+        title="pages.recurringUpload"
+        description="content.recurringUpload.description"
+        showButton={true}
+        buttonText="Trigger Now"
+        refetch={trigger}
+        isFetching={isLoading}
+      />
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={activeTab} onChange={handleChange} aria-label="recurring upload tabs" sx={{ pt: 0 }}>
           {RECURRING_UPLOAD_TABS.map(e => (

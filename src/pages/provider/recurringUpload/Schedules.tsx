@@ -85,8 +85,7 @@ function Schedules() {
     if (data.type) {
       return (
         <>
-          {capitalize(data.type)},
-          {!isEmpty(data?.day) ? find(WEEK_DAYS, { id: Number(data.day) })?.title : ''}{' '}
+          {capitalize(data.type)},{!isEmpty(data?.day) ? find(WEEK_DAYS, { id: Number(data.day) })?.title : ''}{' '}
           {data.type === SCHEDULE_TYPE[0].value ? `${data.time} times` : data.time}
         </>
       );

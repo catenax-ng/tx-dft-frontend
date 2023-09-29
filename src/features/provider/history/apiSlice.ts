@@ -35,7 +35,7 @@ export const providerHistorySlice = apiSlice.injectEndpoints({
         url: `${csvType}/delete/${processId}`,
         method: 'DELETE',
       }),
-      extraOptions: { showNotification: true, message: 'alerts.deleteSuccess', type: 'success' },
+      extraOptions: { showNotification: true, message: 'alerts.deleteSuccess' },
       invalidatesTags: ['UploadHistory'],
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {

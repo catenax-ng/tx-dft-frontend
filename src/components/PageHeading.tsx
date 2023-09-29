@@ -23,13 +23,16 @@ import { Grid } from '@mui/material';
 import { LoadingButton, Typography } from 'cx-portal-shared-components';
 import { useTranslation } from 'react-i18next';
 interface IPageHeading {
-  refetch?: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  refetch?: any;
   isFetching?: boolean;
   title: string;
   description: string;
-  showRefresh?: boolean;
+  showButton?: boolean;
+  buttonText?: string;
 }
-function PageHeading({ refetch, isFetching, title, description, showRefresh = false }: IPageHeading) {
+
+function PageHeading({ refetch, isFetching, title, description, showButton = false, buttonText }: IPageHeading) {
   const { t } = useTranslation();
   return (
     <Grid container spacing={2} alignItems="center" mb={4}>
@@ -40,11 +43,11 @@ function PageHeading({ refetch, isFetching, title, description, showRefresh = fa
         <Typography variant="body1">{t(description)}</Typography>
       </Grid>
       <Grid item xs={3} display={'flex'} justifyContent={'flex-end'}>
-        {showRefresh && (
+        {showButton && (
           <LoadingButton
             size="small"
             variant="contained"
-            label={t('button.refresh')}
+            label={t(buttonText)}
             onButtonClick={refetch}
             startIcon={<Refresh />}
             loadIndicator={t('content.common.loading')}
