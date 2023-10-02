@@ -1,0 +1,29 @@
+affinity: {}
+configuration: null
+fullnameOverride: ""
+image:
+  pullPolicy: Always
+  repository: linuxserver/openssh-server
+  tag: "version-9.3_p2-r0"
+imagePullSecrets: []
+initContainers: []
+nameOverride: ""
+nodeSelector: {}
+podSecurityContext: {}
+replicaCount: 1
+resources: {}
+securityContext: {}
+service:
+  type: LoadBalancer    
+serviceAccount:
+  annotations: {}
+  create: true
+  name: null
+tolerations: []  
+resources:
+  limits:
+    cpu: 600m
+    memory: 400Mi
+  requests:
+    cpu: 200m
+    memory: 400Mi
