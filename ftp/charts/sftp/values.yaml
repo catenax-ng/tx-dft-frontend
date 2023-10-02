@@ -19,11 +19,9 @@ serviceAccount:
   annotations: {}
   create: true
   name: null
+storage:
+  volumeMounts: []
+  volumes: []
 tolerations: []  
-resources:
-  limits:
-    cpu: 600m
-    memory: 400Mi
-  requests:
-    cpu: 200m
-    memory: 400Mi
+
+
