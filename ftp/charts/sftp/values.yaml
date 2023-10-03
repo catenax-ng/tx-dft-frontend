@@ -1,6 +1,11 @@
 affinity: {}
 
 configuration:
+  Global:
+    Chroot :
+    - Directory: ""
+      StartPath: ""
+      Directories: "%u"
   Users:
   - Username: "sftpuser"
     Password: ""
