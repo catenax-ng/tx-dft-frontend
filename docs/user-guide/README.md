@@ -33,7 +33,7 @@ This work is licensed under the [Apache-2.0](https://www.apache.org/licenses/LIC
         - [Part Site Information As Planned](#part-site-information-as-planned)
         - [Single Level Usage As Built](#single-level-usage-as-built)
         - [Product Carbon Footprint](#product-carbon-footprint)
-    - [Recurring Upload](#recurring upload)
+    - [Recurring Upload](#recurring-upload)
     - [Upload history](#upload-history)
     - [Contracts](#provider-contracts)
     - [Help](#help)
