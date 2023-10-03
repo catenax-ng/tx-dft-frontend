@@ -240,7 +240,11 @@ export default function AddPolicy() {
     const policyNameCheck = Boolean(policyName.length);
     setNameError(!policyNameCheck);
     if (policyNameCheck) {
-      await createPolicy({ policy_name: policyName, ...payload });
+      await createPolicy({ policy_name: policyName, ...payload })
+        .unwrap()
+        .then(() => {
+          setPolicyName('');
+        });
       dispatch(handleDialogClose());
     }
   };

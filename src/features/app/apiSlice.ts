@@ -41,12 +41,14 @@ const baseQueryInterceptor: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQu
     );
   } else if (data) {
     // Backend should send/handle success messages, which isnt done
-    api.dispatch(
-      setSnackbarMessage({
-        message: data?.msg ? data.msg : extraOptions.message,
-        type: 'success',
-      }),
-    );
+    if (extraOptions?.showNotification) {
+      api.dispatch(
+        setSnackbarMessage({
+          message: data?.msg ? data.msg : extraOptions?.message,
+          type: 'success',
+        }),
+      );
+    }
   }
   return { data };
 };

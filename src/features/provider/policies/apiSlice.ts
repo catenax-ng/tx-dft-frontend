@@ -19,6 +19,7 @@
  ********************************************************************************/
 
 import { apiSlice } from '../../app/apiSlice';
+import { setPageLoading } from '../../app/slice';
 
 export const policiesApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -41,6 +42,14 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
       },
       extraOptions: { showNotification: true, message: 'Policy created successfully!' },
       invalidatesTags: ['Policies'],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          dispatch(setPageLoading(true));
+          await queryFulfilled;
+        } finally {
+          dispatch(setPageLoading(false));
+        }
+      },
     }),
     deletePolicy: builder.mutation({
       query: uuid => {
