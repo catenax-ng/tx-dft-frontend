@@ -31,7 +31,7 @@ spec:
   type: LoadBalancer
   ports:
     - port: 22
-      targetPort: 2222
+      targetPort: 22
       protocol: TCP
       name: ssh
   selector:

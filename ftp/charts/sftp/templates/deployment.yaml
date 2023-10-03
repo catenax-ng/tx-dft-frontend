@@ -37,7 +37,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: ssh
-              containerPort: 2222
+              containerPort: 22
               protocol: TCP
           {{- if or .Values.configuration .Values.storage.volumeMounts }}
           volumeMounts:
