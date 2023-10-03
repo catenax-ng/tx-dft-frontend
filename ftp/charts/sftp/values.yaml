@@ -1,5 +1,12 @@
 affinity: {}
-configuration: null
+
+configuration:
+  Users:
+  - Username: "sftpuser"
+    Password: ""
+    PublicKeys: ""
+    Directories: "/sftpuser/upload"
+
 fullnameOverride: ""
 image:
   pullPolicy: Always
