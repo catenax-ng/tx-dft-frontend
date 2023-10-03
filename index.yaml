@@ -2,16 +2,6 @@ apiVersion: v1
 entries:
   sftp-fileserver:
   - apiVersion: v2
-    appVersion: 4.0.0
-    created: "2023-10-03T13:07:20.663695+05:30"
-    description: A Helm chart to deploy SFTP
-    digest: 417053006aade5a66a31a52bf6cff4d43efb5f758ef8195565c3541fcd326547
-    name: sftp-fileserver
-    type: application
-    urls:
-    - https://catenax-ng.github.io/tx-managed-simple-data-exchanger-frontend/sftp-fileserver-4.0.0.tgz
-    version: 4.0.0
-  - apiVersion: v2
     appVersion: 3.0.0
     created: "2023-10-03T13:07:20.663019+05:30"
     description: A Helm chart to deploy SFTP
