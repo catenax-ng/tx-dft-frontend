@@ -2,53 +2,13 @@ apiVersion: v1
 entries:
   sftp-fileserver:
   - apiVersion: v2
-    appVersion: 4.0.0
-    created: "2023-10-03T15:48:43.751887+05:30"
+    appVersion: 0.0.1
+    created: "2023-10-03T16:08:25.621447+05:30"
     description: A Helm chart to deploy SFTP
-    digest: 731cbc1b7673e6efb178eeb528ff8e7128716816ecd6f3d4e68642810fbeb984
+    digest: 5f4bfa9fe332d18a6e064eb77f1296789cb5d466e6e6facc4e0cb0033f6070ae
     name: sftp-fileserver
     type: application
     urls:
-    - https://catenax-ng.github.io/tx-managed-simple-data-exchanger-frontend/sftp-fileserver-4.0.0.tgz
-    version: 4.0.0
-  - apiVersion: v2
-    appVersion: 3.0.0
-    created: "2023-10-03T15:48:43.747292+05:30"
-    description: A Helm chart to deploy SFTP
-    digest: f00db43a73a59e006c4ac90ed1bab7545e46e58d88169ba9f8054600292313c1
-    name: sftp-fileserver
-    type: application
-    urls:
-    - https://catenax-ng.github.io/tx-managed-simple-data-exchanger-frontend/sftp-fileserver-3.0.0.tgz
-    version: 3.0.0
-  - apiVersion: v2
-    appVersion: 2.0.0
-    created: "2023-10-03T15:48:43.739888+05:30"
-    description: A Helm chart to deploy SFTP
-    digest: c2317c1d993e77cfa26bddb2c86f7f04dd9bf5e64cf1dbf51dbf16da31a44f7e
-    name: sftp-fileserver
-    type: application
-    urls:
-    - https://catenax-ng.github.io/tx-managed-simple-data-exchanger-frontend/sftp-fileserver-2.0.0.tgz
-    version: 2.0.0
-  - apiVersion: v2
-    appVersion: 1.0.0
-    created: "2023-10-03T15:48:43.732239+05:30"
-    description: A Helm chart to deploy SFTP
-    digest: 99665245dc6ce3a8de8e436d2e807f04b6059595b14d40a0093e08777a9b8c42
-    name: sftp-fileserver
-    type: application
-    urls:
-    - https://catenax-ng.github.io/tx-managed-simple-data-exchanger-frontend/sftp-fileserver-1.0.0.tgz
-    version: 1.0.0
-  - apiVersion: v2
-    appVersion: 0.0.5
-    created: "2023-10-03T15:48:43.724413+05:30"
-    description: A Helm chart to deploy SFTP
-    digest: ad366d29e0c98651072e541efbf99f02a4ed33c456dddb6b21ded391a25fdd5f
-    name: sftp-fileserver
-    type: application
-    urls:
-    - https://catenax-ng.github.io/tx-managed-simple-data-exchanger-frontend/sftp-fileserver-0.0.5.tgz
-    version: 0.0.5
-generated: "2023-10-03T15:48:43.723572+05:30"
+    - https://catenax-ng.github.io/tx-managed-simple-data-exchanger-frontend/sftp-fileserver-0.0.1.tgz
+    version: 0.0.1
+generated: "2023-10-03T16:08:25.620637+05:30"
