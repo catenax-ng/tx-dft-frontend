@@ -5,13 +5,13 @@ configuration:
   - Username: "sftpuser"
     Password: ""
     PublicKeys: ""
-    Directories: "/sftpuser/upload"
+    Directories: ""
 
 fullnameOverride: ""
 image:
   pullPolicy: Always
-  repository: linuxserver/openssh-server
-  tag: "version-9.3_p2-r0"
+  repository: emberstack/sftp
+  tag: "latest"
 imagePullSecrets: []
 initContainers: []
 nameOverride: ""
