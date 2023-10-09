@@ -112,7 +112,6 @@ const SFTP_FORM_FIELDS = [
   { name: 'port', label: 'Port Name', placeholder: 'Enter port name' },
   { name: 'username', label: 'User name', placeholder: 'Enter user name' },
   { name: 'password', label: 'Password', placeholder: 'Enter password' },
-  { name: 'accessKey', label: 'Access Key', placeholder: 'Enter access key' },
   { name: 'toBeProcessedLocation', label: 'To Be Processed Location', placeholder: 'Enter to be processed location' },
   { name: 'inProgressLocation', label: 'In Progress Location', placeholder: 'Enter in progress location' },
   { name: 'successLocation', label: 'Success Location', placeholder: 'Enter success location' },
