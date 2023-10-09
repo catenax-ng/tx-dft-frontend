@@ -38,4 +38,7 @@ export interface IAccessPolicyState {
   customValue: string;
   durationUnit: ISelectList;
   showValidationError: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  policyData: any;
+  policyDialogType: string;
 }

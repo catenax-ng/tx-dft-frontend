@@ -83,7 +83,7 @@ export const MenuItems: IntMenu[] = [
         menuIcon: 'CloudUploadIcon',
         to: '/provider/recurring-upload',
         dataId: 'recurringUpload',
-        permissions: ['provider_create_contract_offer'],
+        permissions: ['auto_config_management'],
       },
       {
         text: 'pages.uploadHistory',

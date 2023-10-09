@@ -298,7 +298,7 @@ export default function AddPolicy() {
               error={nameError}
               onChange={e => {
                 const val = e.target.value;
-                setNameError(!Boolean(val.length));
+                setNameError(!val.length);
                 setPolicyName(val);
               }}
               fullWidth

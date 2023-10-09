@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -17,6 +18,10 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
+
+import { find } from 'lodash';
+
+import { DURATION_UNITS, PURPOSE_VALUES } from '../utils/constants';
 
 export type SchedulesFormData = {
   type: string;
@@ -58,3 +63,49 @@ export type UploadSettingsFormData = {
   automatic_upload: string;
   email_notification: string;
 };
+
+export class PolicyModel {
+  uuid: string;
+
+  policy_name: string;
+
+  inputBpn: string;
+
+  type_of_access: string;
+
+  usage_policies: any;
+
+  bpn_numbers: string[];
+
+  constructor(policyData: any) {
+    this.uuid = policyData.uuid;
+    this.policy_name = policyData.policy_name;
+    this.inputBpn = policyData.inputBpn;
+    this.type_of_access = policyData.type_of_access;
+    this.bpn_numbers = policyData.bpn_numbers;
+    this.usage_policies = {
+      duration: {
+        type: 'DURATION',
+        typeOfAccess: policyData.usage_policies.duration.typeOfAccess,
+        value: policyData.usage_policies.duration.value,
+        durationUnit:
+          find(DURATION_UNITS, e => e.value === policyData.usage_policies.duration.durationUnit) || DURATION_UNITS[0],
+      },
+      purpose: {
+        type: 'PURPOSE',
+        typeOfAccess: policyData.usage_policies.purpose.typeOfAccess,
+        value: find(PURPOSE_VALUES, e => e.value === policyData.usage_policies.purpose.value) || PURPOSE_VALUES[0],
+      },
+      role: {
+        type: 'ROLE',
+        typeOfAccess: 'UNRESTRICTED',
+        value: '',
+      },
+      custom: {
+        type: 'CUSTOM',
+        typeOfAccess: 'UNRESTRICTED',
+        value: '',
+      },
+    };
+  }
+}

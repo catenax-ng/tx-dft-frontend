@@ -21,6 +21,8 @@
 import { theme } from 'cx-portal-shared-components';
 
 import { IDefaultObject } from '../models/Common';
+import { PolicyModel } from '../models/RecurringUpload.models';
+import { Config } from './config';
 
 const USER_GUIDE_URL =
   'https://github.com/eclipse-tractusx/managed-simple-data-exchanger-frontend/blob/main/docs/user-guide/README.md';
@@ -83,6 +85,19 @@ const DURATION_UNIT_MAPPING = {
   YEAR: 'years',
 };
 
+const BPN_TYPE_FIELDS = [
+  {
+    id: 1,
+    title: 'Company Name',
+    value: 'company',
+  },
+  {
+    id: 2,
+    title: 'Business Partner Number',
+    value: 'bpn',
+  },
+];
+
 const PURPOSE_VALUES = [
   {
     id: 0,
@@ -140,10 +155,43 @@ const HOURS = [...Array(24)].map((_e, i) => ({
   title: `Every ${i + 1} hour`,
 }));
 
+const DEFAULT_POLICY_DATA: PolicyModel = {
+  uuid: '',
+  policy_name: '',
+  inputBpn: '',
+  type_of_access: 'restricted',
+  bpn_numbers: [Config.REACT_APP_DEFAULT_COMPANY_BPN],
+  usage_policies: {
+    duration: {
+      type: 'DURATION',
+      typeOfAccess: 'UNRESTRICTED',
+      value: '',
+      durationUnit: DURATION_UNITS[0].value,
+    },
+    purpose: {
+      type: 'PURPOSE',
+      typeOfAccess: 'UNRESTRICTED',
+      value: PURPOSE_VALUES[0].value,
+    },
+    role: {
+      type: 'ROLE',
+      typeOfAccess: 'UNRESTRICTED',
+      value: '',
+    },
+    custom: {
+      type: 'CUSTOM',
+      typeOfAccess: 'UNRESTRICTED',
+      value: '',
+    },
+  },
+};
+
 export {
   ALPHA_NUM_REGEX,
+  BPN_TYPE_FIELDS,
   CONTRACT_STATES,
   DATE_TIME_FORMAT,
+  DEFAULT_POLICY_DATA,
   DURATION_UNIT_MAPPING,
   DURATION_UNITS,
   EMAIL_CONFIG_FORM_FIELDS,

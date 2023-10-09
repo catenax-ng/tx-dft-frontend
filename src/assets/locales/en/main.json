@@ -78,7 +78,7 @@
       "accessPolicy": "Access Policies",
       "restricted": "Restricted",
       "unrestricted": "Unrestricted",
-      "note": "Note: Your own organization will always be allowed to access the data",
+      "note": "Note: If you do not assign a BPN, the data can only be accessible to your own organisation.",
       "unAccess": "Unrestricted Access!",
       "warningText": "If you do not assign a BPN, the data can only be accessible to you.",
       "usagePolicy": "Usage Policies",
