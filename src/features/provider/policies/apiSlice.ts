@@ -33,10 +33,10 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
       providesTags: ['Policies'],
     }),
     createPolicy: builder.mutation({
-      query: body => {
+      query: ({ body, method }) => {
         return {
           url: '/policy',
-          method: 'POST',
+          method: method,
           body,
         };
       },

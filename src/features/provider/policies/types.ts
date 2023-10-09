@@ -18,6 +18,7 @@
  ********************************************************************************/
 
 import { ISelectList } from '../../../models/Common';
+import { PolicyModel } from '../../../models/RecurringUpload.models';
 
 export interface IAccessPolicyState {
   uploadUrl: string;
@@ -38,7 +39,7 @@ export interface IAccessPolicyState {
   customValue: string;
   durationUnit: ISelectList;
   showValidationError: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  policyData: any;
+  policyData: PolicyModel;
+  policyDialog: boolean;
   policyDialogType: string;
 }

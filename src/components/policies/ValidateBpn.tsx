@@ -19,7 +19,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Autocomplete, Box, FormControl, Grid, Stack } from '@mui/material';
+import { Autocomplete, Box, Divider, FormControl, Grid, Stack } from '@mui/material';
 import {
   Button,
   Chip,
@@ -63,13 +63,13 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
 
   const addBpn = () => {
     if (inputBpn) {
-      setValue('bpn_numbers', uniq([...getValues().bpn_numbers, inputBpn]));
+      setValue('bpn_numbers', uniq([...getValues('bpn_numbers'), inputBpn]));
       resetField('inputBpn');
     }
   };
   const deleteBpn = (bpn: string) => {
     if (bpn !== Config.REACT_APP_DEFAULT_COMPANY_BPN) {
-      const newList = getValues().bpn_numbers.filter((item: string) => item !== bpn);
+      const newList = getValues('bpn_numbers').filter((item: string) => item !== bpn);
       replace(newList);
     }
   };
@@ -84,7 +84,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
   useEffect(() => {
     if (data?.bpnStatus === 'FULL_PARTNER') {
       dispatch(setSnackbarMessage({ message: data?.msg, type: 'success' }));
-      setValue('bpn_numbers', uniq([...getValues().bpn_numbers, inputBpn]));
+      setValue('bpn_numbers', uniq([...getValues('bpn_numbers'), inputBpn]));
     } else if (data?.bpnStatus === 'PARTNER') setAddBpnPrompt(true);
     else if (data?.bpnStatus === 'NOT_PARTNER') dispatch(setSnackbarMessage({ message: data?.msg, type: 'error' }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -117,8 +117,8 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
 
   return (
     <>
-      <Grid container spacing={2} alignItems="center">
-        <Grid item xs={5}>
+      <Grid container spacing={2} alignItems="flex-end">
+        <Grid item xs={4}>
           <SelectList
             keyTitle="title"
             label={t('content.consumeData.selectType')}
@@ -135,7 +135,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
         </Grid>
         <Grid item xs={4}>
           {selectType.value === 'bpn' ? (
-            <FormControl fullWidth sx={{ mb: 3 }}>
+            <FormControl fullWidth>
               <Controller
                 name="inputBpn"
                 control={control}
@@ -166,7 +166,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
               />
             </FormControl>
           ) : (
-            <FormControl fullWidth sx={{ mb: 3 }}>
+            <FormControl fullWidth>
               <Controller
                 name="inputBpn"
                 control={control}
@@ -232,16 +232,11 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
         </Grid>
       </Grid>
       <Box sx={{ mt: 2 }}>
-        <Typography variant="body2">
+        <Typography variant="body2" mb={2}>
           <i> {t('content.policies.note')}</i>
         </Typography>
-        <Stack
-          direction="row"
-          spacing={1}
-          mt={getValues().bpn_numbers.length ? 3 : 0}
-          sx={{ flexWrap: 'wrap', gap: 1 }}
-        >
-          {getValues().bpn_numbers.map((bpnNum: string) => (
+        <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+          {getValues('bpn_numbers').map((bpnNum: string) => (
             <Chip
               color="secondary"
               label={bpnNum}
@@ -252,7 +247,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
           ))}
         </Stack>
       </Box>
-      <hr style={{ marginBottom: 50, marginTop: 30 }} />
+      <Divider sx={{ my: 3 }} />
       {addBpnPrompt ? (
         <Dialog open={addBpnPrompt}>
           <DialogHeader title={t('content.consumeData.noConnectors')} />

@@ -109,3 +109,48 @@ export class PolicyModel {
     };
   }
 }
+
+export class PolicyPayload {
+  uuid: string;
+
+  policy_name: string;
+
+  inputBpn: string;
+
+  type_of_access: string;
+
+  usage_policies: any;
+
+  bpn_numbers: string[];
+
+  constructor(policyData: any) {
+    this.uuid = policyData.uuid;
+    this.policy_name = policyData.policy_name;
+    this.inputBpn = policyData.inputBpn;
+    this.type_of_access = policyData.type_of_access;
+    this.bpn_numbers = policyData.bpn_numbers;
+    this.usage_policies = {
+      duration: {
+        type: 'DURATION',
+        typeOfAccess: policyData.usage_policies.duration.typeOfAccess,
+        value: policyData.usage_policies.duration.value,
+        durationUnit: policyData.usage_policies.duration.durationUnit.value,
+      },
+      purpose: {
+        type: 'PURPOSE',
+        typeOfAccess: policyData.usage_policies.purpose.typeOfAccess,
+        value: policyData.usage_policies.purpose.value.value,
+      },
+      role: {
+        type: 'ROLE',
+        typeOfAccess: 'UNRESTRICTED',
+        value: '',
+      },
+      custom: {
+        type: 'CUSTOM',
+        typeOfAccess: 'UNRESTRICTED',
+        value: '',
+      },
+    };
+  }
+}

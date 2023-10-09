@@ -46,8 +46,9 @@ const initialState: IAccessPolicyState = {
   customValue: '',
   durationUnit: DURATION_UNITS[0],
   showValidationError: true,
-  policyData: {},
-  policyDialogType: 'Add',
+  policyData: {} as PolicyModel,
+  policyDialog: false,
+  policyDialogType: '',
 };
 
 export const accessUsagePolicySlice = createSlice({
@@ -55,7 +56,12 @@ export const accessUsagePolicySlice = createSlice({
   initialState,
   reducers: {
     setPolicyData: (state, action: PayloadAction<PolicyModel>) => {
-      state.policyData = action.payload;
+      console.log('raw data', action.payload);
+      state.policyData = new PolicyModel(action.payload);
+      console.log('policydata', state.policyData);
+    },
+    setPolicyDialog: (state, action: PayloadAction<boolean>) => {
+      state.policyDialog = action.payload;
     },
     setPolicyDialogType: (state, action: PayloadAction<string>) => {
       state.policyDialogType = action.payload;
@@ -125,6 +131,7 @@ export const accessUsagePolicySlice = createSlice({
 export const {
   setAccessType,
   setPolicyData,
+  setPolicyDialog,
   setPolicyDialogType,
   setInputBpn,
   addBpn,
