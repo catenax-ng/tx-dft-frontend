@@ -1,7 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2021,2022,2023 T-Systems International GmbH
+ * Copyright (c) 2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
- *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -17,32 +16,28 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-import { KeycloakTokenParsed } from 'keycloak-js';
 
-import { IAlertColors } from '../notifiication/types';
-export interface IUser {
-  userName: string;
-  name: string;
-  email: string;
-  company: string;
-  bpn: string;
-  tenant: string;
-  token: string;
-  parsedToken: KeycloakTokenParsed;
-}
-export interface IAppSlice {
-  pageLoading: boolean;
-  loggedInUser: IUser;
-  permissions: string[];
-  selectedUseCases: string[];
-  sidebarExpanded: boolean;
-}
-export interface IUseCase {
-  id: string;
-  title: string;
-}
-export interface IExtraOptions {
-  showNotification?: boolean;
-  message?: string;
-  type?: IAlertColors;
-}
+import { apiSlice } from '../app/apiSlice';
+import { setPageLoading } from '../app/slice';
+
+export const homeApiSlice = apiSlice.injectEndpoints({
+  endpoints: builder => ({
+    getUseCases: builder.query({
+      query: () => {
+        return {
+          url: '/usecases',
+        };
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          dispatch(setPageLoading(true));
+          await queryFulfilled;
+        } finally {
+          dispatch(setPageLoading(false));
+        }
+      },
+    }),
+  }),
+});
+
+export const { useGetUseCasesQuery } = homeApiSlice;

@@ -22,6 +22,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { Card, CardContent, Grid } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { Table, Tooltips, Typography } from 'cx-portal-shared-components';
+import { isEmpty } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import DownloadSamples from '../components/DownloadSamples';
@@ -78,6 +79,11 @@ export default function Help() {
         <Typography variant="h3" mb={1}>
           {t('pages.help')}
         </Typography>
+        {!isEmpty(selectedUseCases) && (
+          <Typography variant="h4" mb={2} textTransform={'capitalize'}>
+            Selected use cases: {selectedUseCases.join(', ')}
+          </Typography>
+        )}
         <Typography variant="body1" mb={4}>
           {t('content.help.description')}
         </Typography>

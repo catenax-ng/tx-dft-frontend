@@ -20,7 +20,7 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { fetchUseCases, fetchUserPermissions } from './actions';
+import { fetchUserPermissions } from './actions';
 import { IAppSlice, IUser } from './types';
 
 const initialState: IAppSlice = {
@@ -36,7 +36,6 @@ const initialState: IAppSlice = {
     parsedToken: {},
   },
   permissions: [],
-  useCases: [],
   sidebarExpanded: true,
   selectedUseCases: [],
 };
@@ -63,13 +62,6 @@ export const appSlice = createSlice({
     });
     builder.addCase(fetchUserPermissions.fulfilled, (state, action) => {
       state.permissions = action.payload;
-      state.pageLoading = false;
-    });
-    builder.addCase(fetchUseCases.pending, state => {
-      state.pageLoading = true;
-    });
-    builder.addCase(fetchUseCases.fulfilled, (state, action) => {
-      state.useCases = action.payload;
       state.pageLoading = false;
     });
   },

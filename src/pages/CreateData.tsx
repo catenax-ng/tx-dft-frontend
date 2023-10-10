@@ -36,6 +36,7 @@ import { useAppSelector } from '../features/store';
 export default function CreateData() {
   const [activeTab, setActiveTab] = useState(0);
   const { selectedSubmodel } = useAppSelector(state => state.submodelSlice);
+  const { selectedUseCases } = useAppSelector(state => state.appSlice);
   const { t } = useTranslation();
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
@@ -47,6 +48,11 @@ export default function CreateData() {
       <Typography variant="h3" mb={2}>
         {t('pages.manualUpload')}
       </Typography>
+      {!isEmpty(selectedUseCases) && (
+        <Typography variant="h4" mb={2} textTransform={'capitalize'}>
+          Selected use cases: {selectedUseCases.join(', ')}
+        </Typography>
+      )}
       <Typography variant="body1">{t('content.provider.description_1')}</Typography>
       <Typography variant="body1">{t('content.provider.description_2')}</Typography>
       <ul style={{ margin: 0 }}>

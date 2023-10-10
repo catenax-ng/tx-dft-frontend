@@ -23,13 +23,13 @@ import '../styles/home.scss';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Avatar, Box, FormControl, Grid, Stack } from '@mui/material';
 import { Button, Tab, TabPanel, Tabs, Typography } from 'cx-portal-shared-components';
-import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
+import { SyntheticEvent, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { DataExchangeStepper } from '../components/DataExchangeStepper';
-import { fetchUseCases } from '../features/app/actions';
 import { setSelectedUseCases } from '../features/app/slice';
 import { IUseCase } from '../features/app/types';
+import { useGetUseCasesQuery } from '../features/home/apiSlice';
 import { clearRows, setSelectedSubmodel } from '../features/provider/submodels/slice';
 import { ISubmodelList } from '../features/provider/submodels/types';
 import { removeSelectedFiles, setUploadStatus } from '../features/provider/upload/slice';
@@ -40,13 +40,10 @@ import { openInNewTab } from '../utils/utils';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState(0);
-  const { loggedInUser, useCases, selectedUseCases } = useAppSelector(state => state.appSlice);
+  const { loggedInUser, selectedUseCases } = useAppSelector(state => state.appSlice);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    dispatch(fetchUseCases());
-  }, [dispatch]);
+  const { data, isSuccess } = useGetUseCasesQuery({});
 
   const handleUseCaseChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,26 +110,28 @@ export default function Home() {
           {t('content.home.selectUsecasesSubheader')}
         </Typography>
         <FormControl component="fieldset" variant="standard">
-          <Stack direction="row" spacing={1} mt={3} sx={{ flexWrap: 'wrap', gap: 1 }}>
-            {useCases.map((item: IUseCase) => (
-              <Box className="usecase-tile" key={item.id}>
-                <input
-                  type="checkbox"
-                  name={item.title}
-                  value={item.id}
-                  id={item.id}
-                  onChange={handleUseCaseChange}
-                  checked={selectedUseCases.includes(item.id)}
-                />
-                <label className="usecase-tile-content" htmlFor={item.id}>
-                  <Stack className="usecase-tile-content-wrapper" spacing={2}>
-                    <Avatar src={`images/${item.id}.png`} sx={{ width: 60, height: 60 }} />
-                    <Typography variant="subtitle1">{item.title}</Typography>
-                  </Stack>
-                </label>
-              </Box>
-            ))}
-          </Stack>
+          {isSuccess && (
+            <Stack direction="row" spacing={1} mt={3} sx={{ flexWrap: 'wrap', gap: 1 }}>
+              {data?.map((item: IUseCase) => (
+                <Box className="usecase-tile" key={item.id}>
+                  <input
+                    type="checkbox"
+                    name={item.title}
+                    value={item.id}
+                    id={item.id}
+                    onChange={handleUseCaseChange}
+                    checked={selectedUseCases.includes(item.id)}
+                  />
+                  <label className="usecase-tile-content" htmlFor={item.id}>
+                    <Stack className="usecase-tile-content-wrapper" spacing={2}>
+                      <Avatar src={`images/${item.id}.png`} sx={{ width: 60, height: 60 }} />
+                      <Typography variant="subtitle1">{item.title}</Typography>
+                    </Stack>
+                  </label>
+                </Box>
+              ))}
+            </Stack>
+          )}
         </FormControl>
       </Grid>
       <Grid item xs={12} my={5}>
