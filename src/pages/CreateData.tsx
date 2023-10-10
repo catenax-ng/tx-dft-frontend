@@ -19,11 +19,13 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import InfoIcon from '@mui/icons-material/Info';
 import { Box, Grid } from '@mui/material';
-import { CustomAccordion, Tab, TabPanel, Tabs, Typography } from 'cx-portal-shared-components';
+import { CustomAccordion, Tab, TabPanel, Tabs, Tooltips, Typography } from 'cx-portal-shared-components';
 import { isEmpty } from 'lodash';
 import { SyntheticEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import DownloadSamples from '../components/DownloadSamples';
 import PoliciesDialog from '../components/policies/AddPolicy';
@@ -66,6 +68,15 @@ export default function CreateData() {
       <Grid container spacing={2} mb={3} display={'flex'} alignItems={'flex-end'}>
         <Grid item xs={3}>
           <SelectSubmodel />
+        </Grid>
+        <Grid item justifyContent={'center'}>
+          <Tooltips tooltipPlacement="top" tooltipText={t('content.common.moreSubmodelInfo')}>
+            <span>
+              <Link style={{ color: 'white' }} to={'/provider/help'}>
+                <InfoIcon color="primary" />
+              </Link>
+            </span>
+          </Tooltips>
         </Grid>
         {!isEmpty(selectedSubmodel) ? (
           <Grid item xs={6}>

@@ -190,7 +190,8 @@
       "agree": "I agree",
       "ownConnector": "Connector of own organization:",
       "collapseSidebar": "Collapse sidebar",
-      "introduction": "Introduction"
+      "introduction": "Introduction",
+      "moreSubmodelInfo": "More info about submodels"
     }
   },
   "dialog": {

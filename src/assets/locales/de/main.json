@@ -190,7 +190,8 @@
       "agree": "Ich stimme zu",
       "ownConnector": "Connector der eigenen Organisation:",
       "collapseSidebar": "Seitenleiste einklappen",
-      "introduction": "Einleitung"
+      "introduction": "Einleitung",
+      "moreSubmodelInfo": "Weitere Informationen zu Untermodellen"
     }
   },
   "dialog": {
