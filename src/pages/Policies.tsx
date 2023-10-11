@@ -19,20 +19,19 @@
  ********************************************************************************/
 
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import { Grid, LinearProgress } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { Button, IconButton, Table, Tooltips, Typography } from 'cx-portal-shared-components';
-import { find } from 'lodash';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import NoDataPlaceholder from '../components/NoDataPlaceholder';
-import Permissions from '../components/Permissions';
-import PoliciesDialog from '../components/policies/AddPolicy';
+import AddEditPolicy from '../components/policies/AddEditPolicy';
 import { useDeletePolicyMutation, useGetPoliciesQuery } from '../features/provider/policies/apiSlice';
-import { handleDialogOpen } from '../features/provider/policies/slice';
+import { setPolicyData, setPolicyDialog, setPolicyDialogType } from '../features/provider/policies/slice';
 import { useAppDispatch } from '../features/store';
-import { MAX_CONTRACTS_AGREEMENTS } from '../utils/constants';
+import { DEFAULT_POLICY_DATA, MAX_CONTRACTS_AGREEMENTS } from '../utils/constants';
 
 function Policies() {
   const [page, setPage] = useState<number>(0);
@@ -70,7 +69,7 @@ function Policies() {
       sortable: false,
       flex: 1,
       renderCell: ({ row }) => {
-        const duration = find(row?.usage_policies, { type: 'DURATION' });
+        const duration = row?.usage_policies?.DURATION;
         return duration?.value ? `${duration?.value} ${duration?.durationUnit}` : 'NA';
       },
     },
@@ -82,20 +81,35 @@ function Policies() {
       sortable: false,
       flex: 1,
       renderCell: ({ row }) => {
-        const purpose = find(row?.usage_policies, { type: 'PURPOSE' });
-        return purpose?.value || 'NA';
+        return row?.usage_policies?.PURPOSE?.value || 'NA';
       },
     },
     {
       field: 'actions',
       headerName: '',
-      align: 'center',
+      align: 'right',
       headerAlign: 'center',
       sortable: false,
       flex: 1,
       renderCell: ({ row }) => {
         return (
-          <Permissions values={['consumer_download_data_offer']}>
+          <>
+            <Tooltips tooltipPlacement="bottom" tooltipText="Edit">
+              <span>
+                <IconButton
+                  aria-label="edit"
+                  size="small"
+                  sx={{ mr: 3 }}
+                  onClick={() => {
+                    dispatch(setPolicyDialogType('Edit'));
+                    dispatch(setPolicyData(row));
+                    dispatch(setPolicyDialog(true));
+                  }}
+                >
+                  <EditIcon color="action" fontSize="small" />
+                </IconButton>
+              </span>
+            </Tooltips>
             <Tooltips tooltipPlacement="bottom" tooltipText="Delete">
               <span>
                 <IconButton aria-label="delete" size="small" onClick={() => deletePolicy(row.uuid)}>
@@ -103,7 +117,7 @@ function Policies() {
                 </IconButton>
               </span>
             </Tooltips>
-          </Permissions>
+          </>
         );
       },
     },
@@ -122,7 +136,9 @@ function Policies() {
               variant="contained"
               size="small"
               onClick={() => {
-                dispatch(handleDialogOpen({ type: 'createPolicy' }));
+                dispatch(setPolicyDialogType('Add'));
+                dispatch(setPolicyData(DEFAULT_POLICY_DATA));
+                dispatch(setPolicyDialog(true));
               }}
             >
               {t('content.policies.addPolicy')}
@@ -160,7 +176,7 @@ function Policies() {
             NoResultsOverlay: () => NoDataPlaceholder('content.common.noResults'),
           }}
         />
-        <PoliciesDialog />
+        <AddEditPolicy />
       </>
     );
   } else return null;

@@ -78,7 +78,7 @@
       "accessPolicy": "Zugriffsrichtlinien",
       "restricted": "eingeschränkt",
       "unrestricted": "uneingeschränkt",
-      "note": "Hinweis: Ihre Organisation gehört stets zu den berechtigten Empfängern.",
+      "note": "Hinweis: Wenn Sie keine BPN vergeben, sind die Daten nur für Ihre Organisation zugänglich.",
       "unAccess": "Uneingeschränkter Zugang!",
       "warningText": "Wenn Sie keine BPN vergeben, sind die Daten nur für Sie zugänglich.",
       "usagePolicy": "Nutzungsrichtlinien",

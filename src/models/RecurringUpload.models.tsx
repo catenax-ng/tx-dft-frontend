@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -17,6 +18,10 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
+
+import { find } from 'lodash';
+
+import { DURATION_UNITS, PURPOSE_VALUES } from '../utils/constants';
 
 export type SchedulesFormData = {
   type: string;
@@ -58,3 +63,87 @@ export type UploadSettingsFormData = {
   automatic_upload: string;
   email_notification: string;
 };
+
+export class PolicyModel {
+  uuid: string;
+
+  policy_name: string;
+
+  inputBpn: string;
+
+  type_of_access: string;
+
+  usage_policies: any;
+
+  bpn_numbers: string[];
+
+  constructor(policyData: any) {
+    this.uuid = policyData.uuid;
+    this.policy_name = policyData.policy_name;
+    this.inputBpn = policyData.inputBpn;
+    this.type_of_access = policyData.type_of_access;
+    this.bpn_numbers = policyData.bpn_numbers;
+    this.usage_policies = {
+      DURATION: {
+        typeOfAccess: policyData?.usage_policies?.DURATION?.typeOfAccess,
+        value: policyData.usage_policies.DURATION.value,
+        durationUnit:
+          find(DURATION_UNITS, e => e.value === policyData?.usage_policies?.DURATION?.durationUnit) ||
+          DURATION_UNITS[0],
+      },
+      PURPOSE: {
+        typeOfAccess: policyData?.usage_policies?.PURPOSE?.typeOfAccess,
+        value: find(PURPOSE_VALUES, e => e.value === policyData?.usage_policies?.PURPOSE?.value) || '',
+      },
+      ROLE: {
+        typeOfAccess: 'UNRESTRICTED',
+        value: '',
+      },
+      CUSTOM: {
+        typeOfAccess: 'UNRESTRICTED',
+        value: '',
+      },
+    };
+  }
+}
+
+export class PolicyPayload {
+  uuid: string;
+
+  policy_name: string;
+
+  inputBpn: string;
+
+  type_of_access: string;
+
+  usage_policies: any;
+
+  bpn_numbers: string[];
+
+  constructor(policyData: any) {
+    this.uuid = policyData.uuid;
+    this.policy_name = policyData.policy_name;
+    this.inputBpn = policyData.inputBpn;
+    this.type_of_access = policyData.type_of_access;
+    this.bpn_numbers = policyData.bpn_numbers;
+    this.usage_policies = {
+      DURATION: {
+        typeOfAccess: policyData.usage_policies.DURATION.typeOfAccess,
+        value: policyData.usage_policies.DURATION.value,
+        durationUnit: policyData.usage_policies.DURATION.durationUnit.value,
+      },
+      PURPOSE: {
+        typeOfAccess: policyData.usage_policies.PURPOSE.typeOfAccess,
+        value: policyData.usage_policies.PURPOSE.value.value,
+      },
+      ROLE: {
+        typeOfAccess: 'UNRESTRICTED',
+        value: '',
+      },
+      CUSTOM: {
+        typeOfAccess: 'UNRESTRICTED',
+        value: '',
+      },
+    };
+  }
+}

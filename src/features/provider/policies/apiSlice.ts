@@ -51,6 +51,25 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
+    updatePolicy: builder.mutation({
+      query: body => {
+        return {
+          url: `/policy/${body.uuid}`,
+          method: 'PUT',
+          body,
+        };
+      },
+      extraOptions: { showNotification: true, message: 'Policy updated successfully!' },
+      invalidatesTags: ['Policies'],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          dispatch(setPageLoading(true));
+          await queryFulfilled;
+        } finally {
+          dispatch(setPageLoading(false));
+        }
+      },
+    }),
     deletePolicy: builder.mutation({
       query: uuid => {
         return {
@@ -84,4 +103,5 @@ export const {
   useGetSinglePolicyQuery,
   useCreatePolicyMutation,
   useDeletePolicyMutation,
+  useUpdatePolicyMutation,
 } = policiesApiSlice;

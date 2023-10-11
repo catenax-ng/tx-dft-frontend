@@ -22,6 +22,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { isEmpty } from 'lodash';
 
 import { ISelectList } from '../../../models/Common';
+import { PolicyModel } from '../../../models/RecurringUpload.models';
 import { Config } from '../../../utils/config';
 import { DURATION_UNITS } from '../../../utils/constants';
 import { IAccessPolicyState } from './types';
@@ -45,12 +46,26 @@ const initialState: IAccessPolicyState = {
   customValue: '',
   durationUnit: DURATION_UNITS[0],
   showValidationError: true,
+  policyData: {} as PolicyModel,
+  policyDialog: false,
+  policyDialogType: '',
 };
 
 export const accessUsagePolicySlice = createSlice({
   name: 'accessUsagePolicySlice',
   initialState,
   reducers: {
+    setPolicyData: (state, action: PayloadAction<PolicyModel>) => {
+      console.log('raw data', action.payload);
+      state.policyData = new PolicyModel(action.payload);
+      console.log('policydata', state.policyData);
+    },
+    setPolicyDialog: (state, action: PayloadAction<boolean>) => {
+      state.policyDialog = action.payload;
+    },
+    setPolicyDialogType: (state, action: PayloadAction<string>) => {
+      state.policyDialogType = action.payload;
+    },
     setAccessType: (state, action: PayloadAction<string>) => {
       state.accessType = action.payload;
     },
@@ -115,6 +130,9 @@ export const accessUsagePolicySlice = createSlice({
 
 export const {
   setAccessType,
+  setPolicyData,
+  setPolicyDialog,
+  setPolicyDialogType,
   setInputBpn,
   addBpn,
   deleteBpn,

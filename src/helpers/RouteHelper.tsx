@@ -18,6 +18,8 @@
  ********************************************************************************/
 import { lazy, ReactElement } from 'react';
 
+import AddEditPolicy from '../components/policies/AddEditPolicy';
+
 // General Pages
 const Help = lazy(() => import('../pages/Help'));
 const Home = lazy(() => import('../pages/Home'));
@@ -60,6 +62,10 @@ export const ROUTES: IRoutes[] = [
     path: '/logout',
     element: <Logout />,
   },
+  {
+    path: '/policy',
+    element: <AddEditPolicy />,
+  },
   // Provider routes
   {
     path: '/provider/manual-upload',
@@ -69,7 +75,7 @@ export const ROUTES: IRoutes[] = [
   {
     path: '/provider/recurring-upload',
     element: <RecurringUpload />,
-    permissions: ['provider_create_contract_offer'],
+    permissions: ['auto_config_management'],
   },
   {
     path: 'provider/upload-history',
