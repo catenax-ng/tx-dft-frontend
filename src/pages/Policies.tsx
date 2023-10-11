@@ -60,6 +60,13 @@ function Policies() {
       headerName: 'Access BPNs',
       flex: 1,
       sortable: false,
+      renderCell: ({ row }) => {
+        return (
+          <Tooltips tooltipPlacement="bottom" tooltipText={row.bpn_numbers.join(', ')}>
+            <span>{row.bpn_numbers.join(', ')}</span>
+          </Tooltips>
+        );
+      },
     },
     {
       field: 'durationUnit',
@@ -128,7 +135,10 @@ function Policies() {
       <>
         <Grid container spacing={2} alignItems="center" mb={4}>
           <Grid item xs={9}>
-            <Typography variant="h4">Policies List</Typography>
+            <Typography variant="h3" mb={1}>
+              Policies
+            </Typography>
+            <Typography variant="body1">Some description from Mehran</Typography>
           </Grid>
           <Grid item xs={3} display={'flex'} justifyContent={'flex-end'}>
             <Button

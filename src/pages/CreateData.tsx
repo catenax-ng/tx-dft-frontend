@@ -47,7 +47,7 @@ export default function CreateData() {
 
   return (
     <>
-      <Typography variant="h3" mb={2}>
+      <Typography variant="h3" mb={1}>
         {t('pages.manualUpload')}
       </Typography>
       {!isEmpty(selectedUseCases) && (

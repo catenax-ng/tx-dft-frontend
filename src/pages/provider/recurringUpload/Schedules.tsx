@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { FormControl, Grid, TextFieldProps } from '@mui/material';
+import { CircularProgress, FormControl, Grid, TextFieldProps } from '@mui/material';
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { Button, Input, SelectList, Typography } from 'cx-portal-shared-components';
@@ -238,6 +238,6 @@ function Schedules() {
         </Grid>
       </Grid>
     );
-  } else return null;
+  } else return <CircularProgress color="primary" />;
 }
 export default Schedules;

@@ -24,7 +24,6 @@ import { ReactElement, SyntheticEvent, useState } from 'react';
 
 import PageHeading from '../../../components/PageHeading';
 import { useTriggerUploadMutation } from '../../../features/provider/recurringUpload/apiSlice';
-import Policies from '../../Policies';
 import EmailConfiguration from './EmailConfiguration';
 import Schedules from './Schedules';
 import SftpConfiguration from './SftpConfiguration';
@@ -36,7 +35,6 @@ interface IUploadTabs {
 }
 
 const RECURRING_UPLOAD_TABS: IUploadTabs[] = [
-  { label: 'Policies', component: <Policies /> },
   { label: 'Schedules', component: <Schedules /> },
   { label: 'SFTP Configuration', component: <SftpConfiguration /> },
   { label: 'Email Configuration', component: <EmailConfiguration /> },

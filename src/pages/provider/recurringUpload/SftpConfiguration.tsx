@@ -18,6 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { CircularProgress } from '@mui/material';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -53,7 +54,7 @@ function SftpConfiguration() {
         <ButtonLoading type="submit" loading={isFetching || isPuttingConfig} />
       </form>
     );
-  } else return null;
+  } else return <CircularProgress color="primary" />;
 }
 
 export default SftpConfiguration;

@@ -32,6 +32,7 @@ const ConsumeData = lazy(() => import('../pages/consumer/ConsumeData'));
 const RecurringUpload = lazy(() => import('../pages/provider/recurringUpload'));
 const ProviderContracts = lazy(() => import('../pages/ProviderContracts'));
 const UploadHistoryNew = lazy(() => import('../pages/UploadHistoryNew'));
+const Policies = lazy(() => import('../pages/Policies'));
 
 // Consumer Pages
 const ConsumerContracts = lazy(() => import('../pages/consumer/ConsumerContracts'));
@@ -76,6 +77,11 @@ export const ROUTES: IRoutes[] = [
     path: '/provider/recurring-upload',
     element: <RecurringUpload />,
     permissions: ['auto_config_management'],
+  },
+  {
+    path: '/provider/policies',
+    element: <Policies />,
+    permissions: ['policy_management'],
   },
   {
     path: 'provider/upload-history',

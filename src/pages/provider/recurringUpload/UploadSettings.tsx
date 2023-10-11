@@ -19,7 +19,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { FormControl, FormControlLabel } from '@mui/material';
+import { CircularProgress, FormControl, FormControlLabel } from '@mui/material';
 import { Checkbox } from 'cx-portal-shared-components';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -63,7 +63,7 @@ function UploadSettings() {
         <ButtonLoading type="submit" loading={isLoading || isPutSettings} />
       </form>
     );
-  } else return null;
+  } else return <CircularProgress color="primary" />;
 }
 
 export default UploadSettings;

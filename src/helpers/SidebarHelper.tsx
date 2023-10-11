@@ -25,6 +25,7 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import HistoryIcon from '@mui/icons-material/History';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import UploadIcon from '@mui/icons-material/Upload';
 
 export const icons = {
@@ -36,6 +37,7 @@ export const icons = {
   HomeOutlinedIcon,
   FormatListBulletedIcon,
   BusinessIcon,
+  TextSnippetIcon,
 };
 
 export interface IntMenuItem {
@@ -84,6 +86,13 @@ export const MenuItems: IntMenu[] = [
         to: '/provider/recurring-upload',
         dataId: 'recurringUpload',
         permissions: ['auto_config_management'],
+      },
+      {
+        text: 'content.policies.title',
+        menuIcon: 'TextSnippetIcon',
+        to: '/provider/policies',
+        dataId: 'policies',
+        permissions: ['policy_management'],
       },
       {
         text: 'pages.uploadHistory',
