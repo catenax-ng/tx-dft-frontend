@@ -67,6 +67,7 @@
     },
     "policies": {
       "title": "Policies",
+      "subtitle": "On this page, you need to define the policy to be used for your 'Recurring Upload' process. The policy name should be included in your upload file, and it must be unique. Please refrain from using short phrases like 'sh' or 'pa' that could be part of a generic file name.",
       "addPolicy": "Add Policy",
       "description": "Here you can manage the access policies with which partner you want to share your data.",
       "description_1": "Select with whom you want to share the uploaded data",

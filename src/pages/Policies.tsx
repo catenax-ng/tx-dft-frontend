@@ -136,9 +136,9 @@ function Policies() {
         <Grid container spacing={2} alignItems="center" mb={4}>
           <Grid item xs={9}>
             <Typography variant="h3" mb={1}>
-              Policies
+              {t('content.policies.title')}
             </Typography>
-            <Typography variant="body1">Some description from Mehran</Typography>
+            <Typography variant="body1">{t('content.policies.subtitle')}</Typography>
           </Grid>
           <Grid item xs={3} display={'flex'} justifyContent={'flex-end'}>
             <Button

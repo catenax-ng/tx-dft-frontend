@@ -67,6 +67,7 @@
     },
     "policies": {
       "title": "Policies",
+      "subtitle":"Auf dieser Seite müssen Sie die 'Policy' (Richtlinie) festlegen, die Sie für Ihren 'Recurring Upload' -Prozess (automatische upload von CSv-Files) verwenden möchten. Der Name dieser Richtlinie sollte in Ihrer Upload-Datei enthalten sein und muss eindeutig sein. Bitte verwenden Sie keine kurzen Begriffe wie 'sh' oder 'pa', die in einem neutralen Dateinamen vorkommen könnten.",
       "addPolicy": "Richtlinie hinzufügen",
       "description": "Hier legen Sie fest mit wem sie die Daten teilen möchten (via „Access Policies“) und mit welchen Einschränkungen (via „Usage Policies“).",
       "description_1": "Wählen Sie die Geschäftspartner aus, mit denen die Daten geteilt werden sollen (Suche via BPN oder über Name).",
