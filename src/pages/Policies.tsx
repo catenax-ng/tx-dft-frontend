@@ -23,7 +23,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Grid, LinearProgress } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { Button, IconButton, Table, Tooltips, Typography } from 'cx-portal-shared-components';
-import { find } from 'lodash';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -70,7 +69,7 @@ function Policies() {
       sortable: false,
       flex: 1,
       renderCell: ({ row }) => {
-        const duration = find(row?.usage_policies, { type: 'DURATION' });
+        const duration = row?.usage_policies?.DURATION;
         return duration?.value ? `${duration?.value} ${duration?.durationUnit}` : 'NA';
       },
     },
@@ -82,8 +81,7 @@ function Policies() {
       sortable: false,
       flex: 1,
       renderCell: ({ row }) => {
-        const purpose = find(row?.usage_policies, { type: 'PURPOSE' });
-        return purpose?.value || 'NA';
+        return row?.usage_policies?.PURPOSE?.value || 'NA';
       },
     },
     {

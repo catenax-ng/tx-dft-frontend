@@ -34,7 +34,7 @@ import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { useCreatePolicyMutation } from '../../features/provider/policies/apiSlice';
+import { useCreatePolicyMutation, useUpdatePolicyMutation } from '../../features/provider/policies/apiSlice';
 import { setPolicyDialog } from '../../features/provider/policies/slice';
 import { useAppDispatch, useAppSelector } from '../../features/store';
 import { PolicyModel, PolicyPayload } from '../../models/RecurringUpload.models';
@@ -55,18 +55,27 @@ function AddEditPolicy() {
   }, [policyData, reset]);
 
   const inputBpn = watch('inputBpn');
-  const purposeType = watch('usage_policies.purpose.typeOfAccess');
-  const durationType = watch('usage_policies.duration.typeOfAccess');
+  const purposeType = watch('usage_policies.PURPOSE.typeOfAccess');
+  const durationType = watch('usage_policies.DURATION.typeOfAccess');
 
   const [createPolicy] = useCreatePolicyMutation();
+  const [updatePolicy] = useUpdatePolicyMutation();
 
   const onSubmit = async (data: PolicyModel) => {
     const payload = new PolicyPayload(data);
-    await createPolicy({ data: { ...payload }, method: policyDialogType === 'Add' ? 'POST' : 'PUT' })
-      .unwrap()
-      .then(() => {
-        dispatch(setPolicyDialog(false));
-      });
+    if (policyDialogType === 'Add') {
+      await createPolicy({ ...payload })
+        .unwrap()
+        .then(() => {
+          dispatch(setPolicyDialog(false));
+        });
+    } else if (policyDialogType === 'Edit') {
+      await updatePolicy({ ...payload })
+        .unwrap()
+        .then(() => {
+          dispatch(setPolicyDialog(false));
+        });
+    }
   };
 
   return (
@@ -131,14 +140,14 @@ function AddEditPolicy() {
               <Controller
                 rules={{ required: true }}
                 control={control}
-                name="usage_policies.duration.typeOfAccess"
+                name="usage_policies.DURATION.typeOfAccess"
                 render={({ field }) => (
                   <RadioGroup
                     {...field}
                     row
                     onChange={e => {
                       field.onChange(e);
-                      resetField('usage_policies.duration.value');
+                      resetField('usage_policies.DURATION.value');
                     }}
                   >
                     <FormControlLabel value="UNRESTRICTED" control={<Radio />} label="Unrestricted" />
@@ -153,7 +162,7 @@ function AddEditPolicy() {
                 <Grid container spacing={3}>
                   <Grid item xs={3}>
                     <Controller
-                      name="usage_policies.duration.value"
+                      name="usage_policies.DURATION.value"
                       control={control}
                       rules={{
                         required: durationType === 'RESTRICTED',
@@ -174,7 +183,7 @@ function AddEditPolicy() {
                   </Grid>
                   <Grid item xs={2}>
                     <Controller
-                      name="usage_policies.duration.durationUnit"
+                      name="usage_policies.DURATION.durationUnit"
                       control={control}
                       rules={{
                         required: durationType === 'RESTRICTED',
@@ -207,14 +216,14 @@ function AddEditPolicy() {
             <Controller
               rules={{ required: true }}
               control={control}
-              name="usage_policies.purpose.typeOfAccess"
+              name="usage_policies.PURPOSE.typeOfAccess"
               render={({ field }) => (
                 <RadioGroup
                   {...field}
                   row
                   onChange={e => {
                     field.onChange(e);
-                    resetField('usage_policies.purpose.value');
+                    resetField('usage_policies.PURPOSE.value');
                   }}
                 >
                   <FormControlLabel value="UNRESTRICTED" control={<Radio />} label="Unrestricted" />
@@ -227,7 +236,7 @@ function AddEditPolicy() {
             <FormControl sx={{ mb: 3, width: 300 }}>
               <Typography variant="body1">{t('content.policies.purposeNote')}</Typography>
               <Controller
-                name="usage_policies.purpose.value"
+                name="usage_policies.PURPOSE.value"
                 control={control}
                 rules={{
                   required: purposeType === 'RESTRICTED',

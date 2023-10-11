@@ -19,16 +19,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Box } from '@mui/material';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogHeader,
-  Input,
-  Typography,
-} from 'cx-portal-shared-components';
+import { Button, Dialog, DialogActions, DialogContent, DialogHeader, Typography } from 'cx-portal-shared-components';
 import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -36,7 +27,6 @@ import { useTranslation } from 'react-i18next';
 import { Status } from '../../enums';
 import { setPageLoading } from '../../features/app/slice';
 import { setSnackbarMessage } from '../../features/notifiication/slice';
-import { useCreatePolicyMutation } from '../../features/provider/policies/apiSlice';
 import { handleDialogClose } from '../../features/provider/policies/slice';
 import { clearRows } from '../../features/provider/submodels/slice';
 import { removeSelectedFiles, setUploadData, setUploadStatus } from '../../features/provider/upload/slice';
@@ -176,29 +166,25 @@ export default function AddPolicy() {
     bpn_numbers: accessType === 'restricted' ? [companyBpn, ...bpnList] : [],
     type_of_access: accessType,
     row_data: uploadData,
-    usage_policies: [
-      {
-        type: 'DURATION',
+    usage_policies: {
+      DURATION: {
         typeOfAccess: duration,
         value: durationValue,
         durationUnit: durationUnit.value,
       },
-      {
-        type: 'ROLE',
+      ROLE: {
         typeOfAccess: role,
         value: roleValue,
       },
-      {
-        type: 'PURPOSE',
+      PURPOSE: {
         typeOfAccess: purpose,
         value: purposeValue.value,
       },
-      {
-        type: 'CUSTOM',
+      CUSTOM: {
         typeOfAccess: custom,
         value: customValue,
       },
-    ],
+    },
   };
 
   const submitData = async () => {
@@ -230,25 +216,6 @@ export default function AddPolicy() {
       clearUpload();
     }
   };
-
-  // Add Policy
-  const [policyName, setPolicyName] = useState('');
-  const [nameError, setNameError] = useState(false);
-  const [createPolicy] = useCreatePolicyMutation();
-
-  const handleCreatePolicy = async () => {
-    const policyNameCheck = Boolean(policyName.length);
-    setNameError(!policyNameCheck);
-    if (policyNameCheck) {
-      await createPolicy({ policy_name: policyName, ...payload })
-        .unwrap()
-        .then(() => {
-          setPolicyName('');
-        });
-      dispatch(handleDialogClose());
-    }
-  };
-
   async function handleSubmitData() {
     if (showError) return;
     switch (uploadType) {
@@ -257,9 +224,6 @@ export default function AddPolicy() {
         break;
       case 'json':
         await submitData();
-        break;
-      case 'createPolicy':
-        await handleCreatePolicy();
         break;
       default:
         break;
@@ -288,23 +252,6 @@ export default function AddPolicy() {
             <Typography variant="body2">{t('content.policies.description_3')}</Typography>
           </li>
         </ol>
-        {uploadType === 'createPolicy' && (
-          <Box mb={3} width={300}>
-            <Input
-              variant="filled"
-              label="Policy Name"
-              placeholder="Enter policy name"
-              value={policyName}
-              error={nameError}
-              onChange={e => {
-                const val = e.target.value;
-                setNameError(!val.length);
-                setPolicyName(val);
-              }}
-              fullWidth
-            />
-          </Box>
-        )}
         <AccessPolicy />
         <UsagePolicy />
       </DialogContent>

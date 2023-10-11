@@ -33,14 +33,33 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
       providesTags: ['Policies'],
     }),
     createPolicy: builder.mutation({
-      query: ({ body, method }) => {
+      query: body => {
         return {
           url: '/policy',
-          method: method,
+          method: 'POST',
           body,
         };
       },
       extraOptions: { showNotification: true, message: 'Policy created successfully!' },
+      invalidatesTags: ['Policies'],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          dispatch(setPageLoading(true));
+          await queryFulfilled;
+        } finally {
+          dispatch(setPageLoading(false));
+        }
+      },
+    }),
+    updatePolicy: builder.mutation({
+      query: body => {
+        return {
+          url: `/policy/${body.uuid}`,
+          method: 'PUT',
+          body,
+        };
+      },
+      extraOptions: { showNotification: true, message: 'Policy updated successfully!' },
       invalidatesTags: ['Policies'],
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
@@ -84,4 +103,5 @@ export const {
   useGetSinglePolicyQuery,
   useCreatePolicyMutation,
   useDeletePolicyMutation,
+  useUpdatePolicyMutation,
 } = policiesApiSlice;

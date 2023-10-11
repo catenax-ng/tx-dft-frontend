@@ -84,25 +84,22 @@ export class PolicyModel {
     this.type_of_access = policyData.type_of_access;
     this.bpn_numbers = policyData.bpn_numbers;
     this.usage_policies = {
-      duration: {
-        type: 'DURATION',
-        typeOfAccess: policyData.usage_policies.duration.typeOfAccess,
-        value: policyData.usage_policies.duration.value,
+      DURATION: {
+        typeOfAccess: policyData?.usage_policies?.DURATION?.typeOfAccess,
+        value: policyData.usage_policies.DURATION.value,
         durationUnit:
-          find(DURATION_UNITS, e => e.value === policyData.usage_policies.duration.durationUnit) || DURATION_UNITS[0],
+          find(DURATION_UNITS, e => e.value === policyData?.usage_policies?.DURATION?.durationUnit) ||
+          DURATION_UNITS[0],
       },
-      purpose: {
-        type: 'PURPOSE',
-        typeOfAccess: policyData.usage_policies.purpose.typeOfAccess,
-        value: find(PURPOSE_VALUES, e => e.value === policyData.usage_policies.purpose.value) || PURPOSE_VALUES[0],
+      PURPOSE: {
+        typeOfAccess: policyData?.usage_policies?.PURPOSE?.typeOfAccess,
+        value: find(PURPOSE_VALUES, e => e.value === policyData?.usage_policies?.PURPOSE?.value) || '',
       },
-      role: {
-        type: 'ROLE',
+      ROLE: {
         typeOfAccess: 'UNRESTRICTED',
         value: '',
       },
-      custom: {
-        type: 'CUSTOM',
+      CUSTOM: {
         typeOfAccess: 'UNRESTRICTED',
         value: '',
       },
@@ -130,24 +127,20 @@ export class PolicyPayload {
     this.type_of_access = policyData.type_of_access;
     this.bpn_numbers = policyData.bpn_numbers;
     this.usage_policies = {
-      duration: {
-        type: 'DURATION',
-        typeOfAccess: policyData.usage_policies.duration.typeOfAccess,
-        value: policyData.usage_policies.duration.value,
-        durationUnit: policyData.usage_policies.duration.durationUnit.value,
+      DURATION: {
+        typeOfAccess: policyData.usage_policies.DURATION.typeOfAccess,
+        value: policyData.usage_policies.DURATION.value,
+        durationUnit: policyData.usage_policies.DURATION.durationUnit.value,
       },
-      purpose: {
-        type: 'PURPOSE',
-        typeOfAccess: policyData.usage_policies.purpose.typeOfAccess,
-        value: policyData.usage_policies.purpose.value.value,
+      PURPOSE: {
+        typeOfAccess: policyData.usage_policies.PURPOSE.typeOfAccess,
+        value: policyData.usage_policies.PURPOSE.value.value,
       },
-      role: {
-        type: 'ROLE',
+      ROLE: {
         typeOfAccess: 'UNRESTRICTED',
         value: '',
       },
-      custom: {
-        type: 'CUSTOM',
+      CUSTOM: {
         typeOfAccess: 'UNRESTRICTED',
         value: '',
       },
