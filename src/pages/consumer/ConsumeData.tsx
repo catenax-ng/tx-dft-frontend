@@ -39,7 +39,7 @@ import {
   Typography,
 } from 'cx-portal-shared-components';
 import saveAs from 'file-saver';
-import { debounce, isEmpty } from 'lodash';
+import { debounce, isEmpty, isEqual } from 'lodash';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
@@ -72,7 +72,7 @@ import {
 } from '../../features/consumer/types';
 import { setSnackbarMessage } from '../../features/notifiication/slice';
 import { useAppDispatch, useAppSelector } from '../../features/store';
-import { arraysEqual, handleBlankCellValues } from '../../helpers/ConsumerOfferHelper';
+import { handleBlankCellValues } from '../../helpers/ConsumerOfferHelper';
 import ConsumerService from '../../services/ConsumerService';
 import { MAX_CONTRACTS_AGREEMENTS } from '../../utils/constants';
 
@@ -262,19 +262,15 @@ export default function ConsumeData() {
       toggleDialog(true);
       return;
     }
-    let isUsagePoliciesEqual = false;
     const useCasesList: any[] = [];
     selectedOffersList.forEach((offer: IConsumerDataOffers) => {
-      if (offer.usagePolicies.length > 0) {
+      if (!isEmpty(offer.usagePolicies)) {
         useCasesList.push(offer.usagePolicies);
       } else {
         useCasesList.push([]);
       }
     });
-    useCasesList.forEach(useCase => {
-      if (arraysEqual(useCasesList[0], useCase)) isUsagePoliciesEqual = true;
-      else isUsagePoliciesEqual = false;
-    });
+    const isUsagePoliciesEqual = useCasesList.every((item, index, array) => isEqual(item, array[0]));
     if (isUsagePoliciesEqual) {
       setIsOpenOfferDialog(true);
       dispatch(setIsMultipleContractSubscription(true));

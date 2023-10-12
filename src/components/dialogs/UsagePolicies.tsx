@@ -20,6 +20,7 @@
 
 import { Grid } from '@mui/material';
 import { Typography } from 'cx-portal-shared-components';
+import { isEmpty } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import { IUsageControl } from '../../features/consumer/types';
@@ -28,11 +29,12 @@ function UsagePolicies({ usagePolicies }: { usagePolicies: IUsageControl[] }) {
   const { t } = useTranslation();
   return (
     <>
-      {usagePolicies.length ? (
-        usagePolicies.map(item => (
-          <Grid item xs={6} sx={{ mb: 1 }} key={item.type}>
+      {!isEmpty(usagePolicies) ? (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        Object.entries(usagePolicies).map(([key, item]: any) => (
+          <Grid item xs={6} sx={{ mb: 1 }} key={key}>
             <Typography variant="body2" sx={{ textTransform: 'capitalize' }}>
-              {item.type.toLowerCase()}
+              {key.toLowerCase()}
             </Typography>
             <Typography variant="body2">
               {t('dialog.offerDetails.type')}:<strong>{item.typeOfAccess}</strong>

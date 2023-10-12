@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (c) 2021,2022,2023 T-Systems International GmbH
+ * Copyright (c) 2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
@@ -66,7 +66,8 @@ function AddEditPolicy() {
     if (policyDialogType === 'Add') {
       await createPolicy({ ...payload })
         .unwrap()
-        .then(() => {
+        .then(res => {
+          console.log(res);
           dispatch(setPolicyDialog(false));
         });
     } else if (policyDialogType === 'Edit') {

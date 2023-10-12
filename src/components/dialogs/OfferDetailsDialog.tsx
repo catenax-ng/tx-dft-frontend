@@ -102,38 +102,6 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
                 </Typography>
               </Grid>
             </Grid>
-
-            {/* <Divider sx={{ m: 1 }} />
-            <Grid container>
-              <Grid item xs={12}>
-                <Typography variant="body1" sx={{ mb: 1, display: 'block' }}>
-                  {t('dialog.offerDetails.accessType')}
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body2">{t('dialog.offerDetails.type')}</Typography>
-                <Typography variant="body2">
-                  <strong>{typeOfAccess}</strong>
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                {typeOfAccess.toLowerCase() !== 'unrestricted' && (
-                  <>
-                    <Typography variant="body2">{t('dialog.offerDetails.bpnNumbers')}</Typography>
-                    <Typography variant="body2" sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                      {bpnNumbers.map((i, k) => {
-                        return (
-                          <strong key={k}>
-                            {k !== 0 ? ', ' : ''} {i}
-                          </strong>
-                        );
-                      })}
-                    </Typography>
-                  </>
-                )}
-              </Grid>
-            </Grid> */}
-
             <Divider sx={{ m: 1 }} />
             <Grid container>
               <Grid item xs={12}>

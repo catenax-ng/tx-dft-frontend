@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
@@ -41,7 +43,6 @@ const initialState: ISubmodelsSlice = {
   previewTableDescriptions: [],
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleColumnTypes = (value: any) => {
   if (value.type.includes('number')) {
     return value.enum?.length ? 'singleSelect' : 'number';
@@ -122,18 +123,12 @@ export const submodelSlice = createSlice({
       // for submodel description table
       state.previewTableHeadings = ['Field name', ...Object.keys(payload.items.properties)];
       state.previewTableDescriptions = Object.entries(payload.items.properties).map(
-        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
         ([key, value]: any) => value.description,
       );
       state.previewTableData = [
-        [
-          'Example entries',
-          // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-          ...Object.entries(payload.items.properties).map(([key, value]: any) => value.examples[0]),
-        ],
+        ['Example entries', ...Object.entries(payload.items.properties).map(([key, value]: any) => value.examples[0])],
         [
           'Mandatory',
-          // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
           ...Object.entries(payload.items.properties).map(([key, value]: any) =>
             indexOf(payload.items.required, key) > -1 ? 'true' : 'false',
           ),

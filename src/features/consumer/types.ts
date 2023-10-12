@@ -19,7 +19,6 @@
  ********************************************************************************/
 
 export interface IUsageControl {
-  type: string;
   typeOfAccess: string;
   value?: string;
   durationUnit?: string | Record<string, never>;
