@@ -91,7 +91,10 @@ function OffersDownloadHistory() {
           await refetch();
         }
       })
-      .catch(async error => console.log(error))
+      .catch(async error => {
+        console.log(error);
+        await refetch();
+      })
       .finally(() => dispatch(setPageLoading(false)));
   }
 

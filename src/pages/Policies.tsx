@@ -20,7 +20,7 @@
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Grid, LinearProgress } from '@mui/material';
+import { Box, Grid, LinearProgress } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { Button, IconButton, Table, Tooltips, Typography } from 'cx-portal-shared-components';
 import { useState } from 'react';
@@ -31,7 +31,7 @@ import AddEditPolicy from '../components/policies/AddEditPolicy';
 import { useDeletePolicyMutation, useGetPoliciesQuery } from '../features/provider/policies/apiSlice';
 import { setPolicyData, setPolicyDialog, setPolicyDialogType } from '../features/provider/policies/slice';
 import { useAppDispatch } from '../features/store';
-import { DEFAULT_POLICY_DATA, MAX_CONTRACTS_AGREEMENTS } from '../utils/constants';
+import { DEFAULT_POLICY_DATA } from '../utils/constants';
 
 function Policies() {
   const [page, setPage] = useState<number>(0);
@@ -41,8 +41,8 @@ function Policies() {
 
   // Get
   const { data, isSuccess, isFetching } = useGetPoliciesQuery({
-    offset: 0,
-    maxLimit: MAX_CONTRACTS_AGREEMENTS,
+    pageSize: pageSize,
+    page: page,
   });
 
   // Delete
@@ -155,37 +155,40 @@ function Policies() {
             </Button>
           </Grid>
         </Grid>
-        <Table
-          loading={isFetching}
-          rowCount={data.totalItems}
-          title={''}
-          getRowId={row => row.uuid}
-          disableColumnMenu
-          disableColumnSelector
-          disableDensitySelector
-          disableSelectionOnClick
-          columns={columns}
-          rows={data.items}
-          pageSize={pageSize}
-          onPageSizeChange={setPageSize}
-          page={page}
-          onPageChange={setPage}
-          rowsPerPageOptions={[10, 15, 20, 100]}
-          sx={{
-            '& .MuiDataGrid-columnHeaderTitle': {
-              textOverflow: 'clip',
-              whiteSpace: 'break-spaces !important',
-              maxHeight: 'none !important',
-              lineHeight: 1.4,
-            },
-            '& .MuiBox-root': { display: 'none' },
-          }}
-          components={{
-            LoadingOverlay: LinearProgress,
-            NoRowsOverlay: () => NoDataPlaceholder('content.common.noData'),
-            NoResultsOverlay: () => NoDataPlaceholder('content.common.noResults'),
-          }}
-        />
+        <Box>
+          <Table
+            title=""
+            loading={isFetching}
+            rowCount={data.totalItems}
+            getRowId={row => row.uuid}
+            disableColumnMenu
+            disableColumnSelector
+            disableDensitySelector
+            disableSelectionOnClick
+            columns={columns}
+            paginationMode="server"
+            rows={data.items}
+            pageSize={pageSize}
+            onPageSizeChange={setPageSize}
+            page={page}
+            onPageChange={setPage}
+            rowsPerPageOptions={[10, 15, 20, 100]}
+            sx={{
+              '& .MuiDataGrid-columnHeaderTitle': {
+                textOverflow: 'clip',
+                whiteSpace: 'break-spaces !important',
+                maxHeight: 'none !important',
+                lineHeight: 1.4,
+              },
+              '& .MuiBox-root': { display: 'none' },
+            }}
+            components={{
+              LoadingOverlay: LinearProgress,
+              NoRowsOverlay: () => NoDataPlaceholder('content.common.noData'),
+              NoResultsOverlay: () => NoDataPlaceholder('content.common.noResults'),
+            }}
+          />
+        </Box>
         <AddEditPolicy />
       </>
     );
