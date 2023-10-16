@@ -108,10 +108,10 @@ export const submodelSlice = createSlice({
         headerName: `${value.title}${indexOf(payload.items.required, key) > -1 ? '*' : ''}`,
         editable: true,
         sortable: false,
-        flex: 1,
         headerAlign: 'left',
         type: handleColumnTypes(value),
         valueOptions: value.enum,
+        minWidth: 200,
       }));
       Object.entries(payload.items.properties).forEach(([key, value]: any) => {
         if (value.enum?.length) {

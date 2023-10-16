@@ -18,8 +18,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 import { Box } from '@mui/material';
-import { GridCellEditCommitParams, GridRowId } from '@mui/x-data-grid';
-import { Button, Table } from 'cx-portal-shared-components';
+import { DataGrid, GridCellEditCommitParams, GridRowId } from '@mui/x-data-grid';
+import { Button } from 'cx-portal-shared-components';
 import { useTranslation } from 'react-i18next';
 
 import { addRows, deleteRows, setRows, setSelectionModel } from '../features/provider/submodels/slice';
@@ -28,7 +28,7 @@ import { schemaValidator } from '../helpers/SchemaValidator';
 import InfoSteps from './InfoSteps';
 
 export default function DataTable() {
-  const { submodelDetails, columns, rows, selectionModel, selectedRows } = useAppSelector(state => state.submodelSlice);
+  const { columns, rows, selectionModel, selectedRows } = useAppSelector(state => state.submodelSlice);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
@@ -60,8 +60,7 @@ export default function DataTable() {
           </Button>
         </Box>
       </Box>
-      <Table
-        title={submodelDetails.title}
+      <DataGrid
         getRowId={row => row.rowId}
         autoHeight
         rows={rows}
@@ -83,6 +82,7 @@ export default function DataTable() {
             whiteSpace: 'break-spaces',
             lineHeight: 1.5,
             textAlign: 'center',
+            fontSize: 14,
           },
           '& .MuiDataGrid-columnHeader': {
             padding: '0 10px',
