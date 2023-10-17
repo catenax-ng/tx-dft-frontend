@@ -159,6 +159,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
                         field.onChange(e);
                       }
                     }}
+                    onPaste={e => e.preventDefault()}
                     error={!!error}
                     helperText="Incorrect BPN"
                   />

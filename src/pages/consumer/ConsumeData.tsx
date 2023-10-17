@@ -421,7 +421,7 @@ export default function ConsumeData() {
               value={filterProviderUrl}
               type="url"
               onChange={e => dispatch(setFilterProviderUrl(e.target.value))}
-              onKeyPress={handleKeypress}
+              onKeyDown={handleKeypress}
               fullWidth
               size="small"
               label={t('content.consumeData.enterURL')}
@@ -441,6 +441,7 @@ export default function ConsumeData() {
                     inputProps={{ maxLength: 16 }}
                     error={bpnError}
                     onChange={handleBPNchange}
+                    onPaste={e => e.preventDefault()}
                     helperText={t('alerts.bpnValidation')}
                   />
                 ) : (

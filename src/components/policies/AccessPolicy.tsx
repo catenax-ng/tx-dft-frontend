@@ -158,6 +158,7 @@ export default function AccessPolicy() {
               value={inputBpn}
               inputProps={{ maxLength: 16 }}
               onChange={handleEnterBpn}
+              onPaste={e => e.preventDefault()}
               error={bpnError}
               helperText="Incorrect BPN"
             />
