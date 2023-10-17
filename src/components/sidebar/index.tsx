@@ -18,7 +18,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-import { Box, List, useTheme } from '@mui/material';
+import { Box, Divider, List, useTheme } from '@mui/material';
 
 import { useAppSelector } from '../../features/store';
 import { MenuItems } from '../../helpers/SidebarHelper';
@@ -33,7 +33,7 @@ export default function Sidebar() {
   return (
     <Box
       sx={{
-        width: sidebarExpanded ? 200 : 56,
+        width: sidebarExpanded ? 210 : 56,
         height: '100vh',
         overflow: 'hidden',
         borderRight: `1px solid ${theme.palette.grey[300]}`,
@@ -48,15 +48,28 @@ export default function Sidebar() {
           height: 'calc(100vh - 64px)',
         }}
       >
-        <Box>
-          {MenuItems.map((menuItem, index) => (
-            <Box key={index}>
+        <Box overflow={'scroll'}>
+          {MenuItems.map(menuItem => (
+            <Box key={menuItem.text}>
               {/* Menu heading */}
-              {menuItem.isHeading ? <MenuItemHeading text={menuItem.text} /> : <MenuItem key={index} item={menuItem} />}
+              {menuItem.isHeading ? (
+                <MenuItemHeading text={menuItem.text} />
+              ) : (
+                <>
+                  <MenuItem key={menuItem.text} item={menuItem} />
+                  <Divider />
+                </>
+              )}
               {/* Menu children */}
-              {menuItem.childrens?.map((children, k) => (
-                <MenuItem key={k} item={children} />
-              ))}
+              {menuItem.childrens ? (
+                <>
+                  <Divider />
+                  {menuItem.childrens.map(children => (
+                    <MenuItem key={children.text} item={children} />
+                  ))}
+                  <Divider />
+                </>
+              ) : null}
             </Box>
           ))}
         </Box>

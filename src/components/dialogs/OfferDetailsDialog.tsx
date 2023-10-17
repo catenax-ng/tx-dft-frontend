@@ -25,23 +25,20 @@ import { useTranslation } from 'react-i18next';
 
 import Permissions from '../../components/Permissions';
 import { IConsumerDataOffers } from '../../features/consumer/types';
+import UsagePolicies from './UsagePolicies';
 
 interface IntDialogProps {
   open: boolean;
   offerObj?: IConsumerDataOffers;
-  handleButtonEvent?: (flag: string) => void;
+  handleConfirm?: (state: boolean) => void;
+  handleClose?: (state: boolean) => void;
   isMultiple?: boolean;
 }
 
-const OfferDetailsDialog = ({ open, offerObj, handleButtonEvent, isMultiple }: IntDialogProps) => {
+const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMultiple }: IntDialogProps) => {
   const [offer] = useState(offerObj);
-  // const { typeOfAccess, bpnNumbers, title, created, description, publisher, usagePolicies, fileContentType } = offer;
   const { title, created, description, publisher, usagePolicies, fileContentType } = offer;
   const { t } = useTranslation();
-
-  const closeModal = (flag: string) => {
-    handleButtonEvent(flag);
-  };
 
   function splitWithFirstOcc(str: string) {
     const regX = /:(.*)/s;
@@ -50,7 +47,7 @@ const OfferDetailsDialog = ({ open, offerObj, handleButtonEvent, isMultiple }: I
 
   return (
     <Dialog open={open}>
-      <DialogHeader closeWithIcon onCloseWithIcon={() => closeModal('close')} title={t('dialog.offerDetails.title')} />
+      <DialogHeader closeWithIcon onCloseWithIcon={() => handleClose(false)} title={t('dialog.offerDetails.title')} />
       {isMultiple ? (
         <>
           <DialogContent dividers sx={{ pt: 3 }}>
@@ -60,26 +57,7 @@ const OfferDetailsDialog = ({ open, offerObj, handleButtonEvent, isMultiple }: I
                   {t('content.policies.usagePolicy')}
                 </Typography>
               </Grid>
-              {usagePolicies.map((item, index) => {
-                return (
-                  <Grid item xs={6} sx={{ mb: 1 }} key={index}>
-                    <Typography variant="body2" sx={{ textTransform: 'capitalize' }}>
-                      {item.type.toLowerCase()}
-                    </Typography>
-                    <Typography variant="body2">
-                      {t('dialog.offerDetails.type')}:<strong>{item.typeOfAccess}</strong>
-                    </Typography>
-
-                    {item.typeOfAccess.toLowerCase() !== 'unrestricted' && (
-                      <>
-                        <Typography variant="body2">
-                          {t('dialog.offerDetails.value')}:<strong>{item.value || '-'}</strong>
-                        </Typography>
-                      </>
-                    )}
-                  </Grid>
-                );
-              })}
+              <UsagePolicies usagePolicies={usagePolicies} />
             </Grid>
           </DialogContent>
         </>
@@ -124,38 +102,6 @@ const OfferDetailsDialog = ({ open, offerObj, handleButtonEvent, isMultiple }: I
                 </Typography>
               </Grid>
             </Grid>
-
-            {/* <Divider sx={{ m: 1 }} />
-            <Grid container>
-              <Grid item xs={12}>
-                <Typography variant="body1" sx={{ mb: 1, display: 'block' }}>
-                  {t('dialog.offerDetails.accessType')}
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body2">{t('dialog.offerDetails.type')}</Typography>
-                <Typography variant="body2">
-                  <strong>{typeOfAccess}</strong>
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                {typeOfAccess.toLowerCase() !== 'unrestricted' && (
-                  <>
-                    <Typography variant="body2">{t('dialog.offerDetails.bpnNumbers')}</Typography>
-                    <Typography variant="body2" sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                      {bpnNumbers.map((i, k) => {
-                        return (
-                          <strong key={k}>
-                            {k !== 0 ? ', ' : ''} {i}
-                          </strong>
-                        );
-                      })}
-                    </Typography>
-                  </>
-                )}
-              </Grid>
-            </Grid> */}
-
             <Divider sx={{ m: 1 }} />
             <Grid container>
               <Grid item xs={12}>
@@ -163,42 +109,18 @@ const OfferDetailsDialog = ({ open, offerObj, handleButtonEvent, isMultiple }: I
                   {t('content.policies.usagePolicy')}
                 </Typography>
               </Grid>
-              {usagePolicies.map((item, index) => {
-                return (
-                  <Grid item xs={6} sx={{ mb: 1 }} key={index}>
-                    <Typography variant="body2" sx={{ textTransform: 'capitalize' }}>
-                      {item.type.toLowerCase()}
-                    </Typography>
-                    <Typography variant="body2">
-                      {t('dialog.offerDetails.type')}:<strong>{item.typeOfAccess}</strong>
-                    </Typography>
-
-                    {item.typeOfAccess.toLowerCase() !== 'unrestricted' && (
-                      <>
-                        <Typography variant="body2">
-                          {t('dialog.offerDetails.value')}:
-                          <strong>
-                            {item.type.toLowerCase() === 'duration'
-                              ? `${item.value} ${item.durationUnit}` || '-'
-                              : item.value || '-'}
-                          </strong>
-                        </Typography>
-                      </>
-                    )}
-                  </Grid>
-                );
-              })}
+              <UsagePolicies usagePolicies={usagePolicies} />
             </Grid>
           </DialogContent>
         </>
       )}
       <DialogActions>
-        <Button variant="outlined" onClick={() => closeModal('close')}>
+        <Button variant="outlined" onClick={() => handleClose(false)}>
           {t('button.close')}
         </Button>
-        <Permissions values={['consumer_establish_contract_agreement']}>
-          <Button variant="contained" onClick={() => closeModal('subscribe')}>
-            {t('button.subscribe')}
+        <Permissions values={['consumer_subscribe_download_data_offers']}>
+          <Button variant="contained" onClick={() => handleConfirm(true)}>
+            {t('button.subscribeSelected')}
           </Button>
         </Permissions>
       </DialogActions>

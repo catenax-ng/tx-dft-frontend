@@ -40,12 +40,13 @@ abstract class HttpService {
       (response: AxiosResponse) => {
         return response;
       },
-      (error: AxiosError) => {
+      async (error: AxiosError) => {
+        // in order to get the error message from blob type response, it should be parsed
+        const errorMessage = JSON.parse(await error.response.data.text()).msg;
         // Need to remove this store usage to avoid circlular dependecy issues
-        const errorMessage = error.response?.data?.msg;
         store.dispatch(
           setSnackbarMessage({
-            message: errorMessage ? errorMessage : 'alerts.somethingWrong',
+            message: errorMessage || 'alerts.somethingWrong',
             type: 'error',
           }),
         );

@@ -1,3 +1,4 @@
+################################################################################
 # Copyright (c) 2021-2022 Contributors to the Eclipse Foundation
 
 # See the NOTICE file(s) distributed with this work for additional
@@ -14,6 +15,7 @@
 # under the License.
 
 # SPDX-License-Identifier: Apache-2.0
+################################################################################
 ---
 
 name: "Trivy"
@@ -71,7 +73,7 @@ jobs:
         if: always()
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: "ghcr.io/catenax-ng/tx-dft-frontend:latest"
+          image-ref: "tractusx/managed-simple-data-exchanger-frontend:latest"
           format: "sarif"
           output: "trivy-results2.sarif"
           exit-code: "1"

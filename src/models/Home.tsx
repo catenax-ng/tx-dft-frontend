@@ -53,8 +53,8 @@ export const provideDataSteps: IDataSteps[] = [
     stepTitle: 'content.home.provideDataStep.createDataText',
     stepLink: {
       text: 'pages.createData',
-      routeUrl: '/provider/create-data',
-      icon: icons.AddCircleOutlineIcon,
+      routeUrl: '/provider/manual-upload',
+      icon: icons.UploadIcon,
     },
   },
   {

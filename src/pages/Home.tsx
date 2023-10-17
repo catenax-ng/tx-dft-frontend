@@ -23,30 +23,27 @@ import '../styles/home.scss';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Avatar, Box, FormControl, Grid, Stack } from '@mui/material';
 import { Button, Tab, TabPanel, Tabs, Typography } from 'cx-portal-shared-components';
-import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
+import { SyntheticEvent, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { DataExchangeStepper } from '../components/DataExchangeStepper';
-import { fetchUseCases } from '../features/app/actions';
 import { setSelectedUseCases } from '../features/app/slice';
 import { IUseCase } from '../features/app/types';
+import { useGetUseCasesQuery } from '../features/home/apiSlice';
 import { clearRows, setSelectedSubmodel } from '../features/provider/submodels/slice';
 import { ISubmodelList } from '../features/provider/submodels/types';
 import { removeSelectedFiles, setUploadStatus } from '../features/provider/upload/slice';
 import { useAppDispatch, useAppSelector } from '../features/store';
 import { consumeDataSteps, provideDataSteps } from '../models/Home';
-
-const userGuideUrl = 'https://github.com/catenax-ng/tx-dft-frontend/tree/main/docs/user-guide';
+import { USER_GUIDE_URL } from '../utils/constants';
+import { openInNewTab } from '../utils/utils';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState(0);
-  const { loggedInUser, useCases, selectedUseCases } = useAppSelector(state => state.appSlice);
+  const { loggedInUser, selectedUseCases } = useAppSelector(state => state.appSlice);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    dispatch(fetchUseCases());
-  }, [dispatch]);
+  const { data, isSuccess } = useGetUseCasesQuery({});
 
   const handleUseCaseChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,56 +67,52 @@ export default function Home() {
     setActiveTab(newValue);
   };
 
-  const openInNewTab = (url: string) => {
-    window.open(url, '_blank');
-  };
-
   return (
-    <Box sx={{ flex: 1, p: 4 }}>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <Typography variant="h3">{t('content.home.header')}</Typography>
-          <Typography variant="body1" my={2}>
-            {loggedInUser.company}
-          </Typography>
-          <Typography variant="h4" mb={1}>
-            {t('content.common.introduction')}
-          </Typography>
-          <Box>
-            <Typography>{t('content.home.sdeDescription')}</Typography>
-            <Button
-              variant="text"
-              size="medium"
-              onClick={() => openInNewTab(userGuideUrl)}
-              endIcon={<ArrowForwardIcon />}
-              sx={{
-                p: 0,
-                mt: 2,
-                '&:hover': {
-                  backgroundColor: 'transparent',
-                  textDecoration: 'underline',
-                },
-              }}
-            >
-              {t('content.home.accessDescription')}
-            </Button>
-          </Box>
-        </Grid>
-        <Grid item xs={6}>
-          <Box>
-            <img src="images/sde.png" width={'100%'} />
-          </Box>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h4" mt={3} mb={1}>
-            {t('content.home.selectUsecasesHeader')} (optional)
-          </Typography>
-          <Typography variant="body1" maxWidth={1000}>
-            {t('content.home.selectUsecasesSubheader')}
-          </Typography>
-          <FormControl component="fieldset" variant="standard">
+    <Grid container spacing={2}>
+      <Grid item xs={6}>
+        <Typography variant="h3">{t('content.home.header')}</Typography>
+        <Typography variant="body1" my={2}>
+          {loggedInUser.company}
+        </Typography>
+        <Typography variant="h4" mb={1}>
+          {t('content.common.introduction')}
+        </Typography>
+        <Box>
+          <Typography>{t('content.home.sdeDescription')}</Typography>
+          <Button
+            variant="text"
+            size="medium"
+            onClick={() => openInNewTab(USER_GUIDE_URL)}
+            endIcon={<ArrowForwardIcon />}
+            sx={{
+              p: 0,
+              mt: 2,
+              '&:hover': {
+                backgroundColor: 'transparent',
+                textDecoration: 'underline',
+              },
+            }}
+          >
+            {t('content.home.accessDescription')}
+          </Button>
+        </Box>
+      </Grid>
+      <Grid item xs={6}>
+        <Box>
+          <img src="images/sde.png" width={'100%'} />
+        </Box>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="h4" mt={3} mb={1}>
+          {t('content.home.selectUsecasesHeader')} (optional)
+        </Typography>
+        <Typography variant="body1" maxWidth={1000}>
+          {t('content.home.selectUsecasesSubheader')}
+        </Typography>
+        <FormControl component="fieldset" variant="standard">
+          {isSuccess && (
             <Stack direction="row" spacing={1} mt={3} sx={{ flexWrap: 'wrap', gap: 1 }}>
-              {useCases.map((item: IUseCase) => (
+              {data?.map((item: IUseCase) => (
                 <Box className="usecase-tile" key={item.id}>
                   <input
                     type="checkbox"
@@ -138,36 +131,36 @@ export default function Home() {
                 </Box>
               ))}
             </Stack>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} my={5}>
-          <Typography variant="h4" mb={1}>
-            {t('content.home.exchangeDataHeader')}
-          </Typography>
-          <Typography variant="body1" maxWidth={1000}>
-            {t('content.home.exchangeDataDescription')}
-          </Typography>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }} mt={4} className="exchange-data-wrapper">
-            <Tabs
-              value={activeTab}
-              onChange={(_event: SyntheticEvent, newValue: number) => handleTabChange(_event, newValue)}
-              aria-label="Connector views: tabs"
-              sx={{ pt: 0 }}
-            >
-              <Tab label={t('content.home.provideDataTab')} />
-              <Tab label={t('content.home.consumeDataTab')} />
-            </Tabs>
-          </Box>
-          <Box>
-            <TabPanel value={activeTab} index={0}>
-              <DataExchangeStepper data={provideDataSteps} />
-            </TabPanel>
-            <TabPanel value={activeTab} index={1}>
-              <DataExchangeStepper data={consumeDataSteps} />
-            </TabPanel>
-          </Box>
-        </Grid>
+          )}
+        </FormControl>
       </Grid>
-    </Box>
+      <Grid item xs={12} my={5}>
+        <Typography variant="h4" mb={1}>
+          {t('content.home.exchangeDataHeader')}
+        </Typography>
+        <Typography variant="body1" maxWidth={1000}>
+          {t('content.home.exchangeDataDescription')}
+        </Typography>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }} mt={4} className="exchange-data-wrapper">
+          <Tabs
+            value={activeTab}
+            onChange={(_event: SyntheticEvent, newValue: number) => handleTabChange(_event, newValue)}
+            aria-label="Connector views: tabs"
+            sx={{ pt: 0 }}
+          >
+            <Tab label={t('content.home.provideDataTab')} />
+            <Tab label={t('content.home.consumeDataTab')} />
+          </Tabs>
+        </Box>
+        <Box>
+          <TabPanel value={activeTab} index={0}>
+            <DataExchangeStepper data={provideDataSteps} />
+          </TabPanel>
+          <TabPanel value={activeTab} index={1}>
+            <DataExchangeStepper data={consumeDataSteps} />
+          </TabPanel>
+        </Box>
+      </Grid>
+    </Grid>
   );
 }

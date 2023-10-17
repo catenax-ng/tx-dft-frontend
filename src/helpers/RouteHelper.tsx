@@ -16,17 +16,28 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-import { ReactElement } from 'react';
+import { lazy, ReactElement } from 'react';
 
-import ConsumeData from '../pages/ConsumeData';
-import ConsumerContracts from '../pages/ConsumerContracts';
-import CreateData from '../pages/CreateData';
-import Help from '../pages/Help';
-import Home from '../pages/Home';
-import Logout from '../pages/Logout';
-import PageNotFound from '../pages/PageNotFound';
-import ProviderContracts from '../pages/ProviderContracts';
-import UploadHistoryNew from '../pages/UploadHistoryNew';
+import AddEditPolicy from '../components/policies/AddEditPolicy';
+
+// General Pages
+const Help = lazy(() => import('../pages/Help'));
+const Home = lazy(() => import('../pages/Home'));
+const Logout = lazy(() => import('../pages/Logout'));
+const PageNotFound = lazy(() => import('../pages/PageNotFound'));
+const About = lazy(() => import('../pages/About'));
+
+// Provider Pages
+const ConsumeData = lazy(() => import('../pages/consumer/ConsumeData'));
+const RecurringUpload = lazy(() => import('../pages/provider/recurringUpload'));
+const ProviderContracts = lazy(() => import('../pages/ProviderContracts'));
+const UploadHistoryNew = lazy(() => import('../pages/UploadHistoryNew'));
+const Policies = lazy(() => import('../pages/Policies'));
+
+// Consumer Pages
+const ConsumerContracts = lazy(() => import('../pages/consumer/ConsumerContracts'));
+const CreateData = lazy(() => import('../pages/CreateData'));
+const OffersDownloadHistory = lazy(() => import('../pages/consumer/OffersDownloadHistory'));
 
 export interface IRoutes {
   key?: string;
@@ -41,6 +52,10 @@ export const ROUTES: IRoutes[] = [
     element: <Home />,
   },
   {
+    path: '/about',
+    element: <About />,
+  },
+  {
     path: '*',
     element: <PageNotFound />,
   },
@@ -48,11 +63,25 @@ export const ROUTES: IRoutes[] = [
     path: '/logout',
     element: <Logout />,
   },
+  {
+    path: '/policy',
+    element: <AddEditPolicy />,
+  },
   // Provider routes
   {
-    path: '/provider/create-data',
+    path: '/provider/manual-upload',
     element: <CreateData />,
     permissions: ['provider_create_contract_offer'],
+  },
+  {
+    path: '/provider/recurring-upload',
+    element: <RecurringUpload />,
+    permissions: ['auto_config_management'],
+  },
+  {
+    path: '/provider/policies',
+    element: <Policies />,
+    permissions: ['policy_management'],
   },
   {
     path: 'provider/upload-history',
@@ -82,5 +111,10 @@ export const ROUTES: IRoutes[] = [
     path: '/consumer/contracts',
     element: <ConsumerContracts />,
     permissions: ['consumer_view_contract_agreement'],
+  },
+  {
+    path: '/consumer/offers-download-history',
+    element: <OffersDownloadHistory />,
+    permissions: ['consumer_view_download_history'],
   },
 ];

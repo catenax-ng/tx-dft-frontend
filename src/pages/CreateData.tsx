@@ -19,16 +19,18 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import InfoIcon from '@mui/icons-material/Info';
 import { Box, Grid } from '@mui/material';
-import { Tab, TabPanel, Tabs, Typography } from 'cx-portal-shared-components';
-import _ from 'lodash';
+import { CustomAccordion, Tab, TabPanel, Tabs, Tooltips, Typography } from 'cx-portal-shared-components';
+import { isEmpty } from 'lodash';
 import { SyntheticEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
-import DataTable from '../components/DataTable';
-import DownloadCSV from '../components/DownloadCSV';
-import PoliciesDialog from '../components/policies/PoliciesDialog';
+import DownloadSamples from '../components/DownloadSamples';
+import PoliciesDialog from '../components/policies/AddPolicy';
 import SelectSubmodel from '../components/SelectSubmodel';
+import SubmodelDataTable from '../components/SubmodelDataTable';
 import SubmodelInfo from '../components/SubmodelInfo';
 import UploadFile from '../components/UploadFile';
 import { useAppSelector } from '../features/store';
@@ -36,6 +38,7 @@ import { useAppSelector } from '../features/store';
 export default function CreateData() {
   const [activeTab, setActiveTab] = useState(0);
   const { selectedSubmodel } = useAppSelector(state => state.submodelSlice);
+  const { selectedUseCases } = useAppSelector(state => state.appSlice);
   const { t } = useTranslation();
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
@@ -43,10 +46,15 @@ export default function CreateData() {
   };
 
   return (
-    <Box sx={{ flex: 1, p: 4 }}>
-      <Typography variant="h3" mb={2}>
-        {t('pages.createData')}
+    <>
+      <Typography variant="h3" mb={1}>
+        {t('pages.manualUpload')}
       </Typography>
+      {!isEmpty(selectedUseCases) && (
+        <Typography variant="h4" mb={2} textTransform={'capitalize'}>
+          Selected use cases: {selectedUseCases.join(', ')}
+        </Typography>
+      )}
       <Typography variant="body1">{t('content.provider.description_1')}</Typography>
       <Typography variant="body1">{t('content.provider.description_2')}</Typography>
       <ul style={{ margin: 0 }}>
@@ -61,15 +69,39 @@ export default function CreateData() {
         <Grid item xs={3}>
           <SelectSubmodel />
         </Grid>
-        {!_.isEmpty(selectedSubmodel) ? (
+        <Grid item justifyContent={'center'}>
+          <Tooltips tooltipPlacement="top" tooltipText={t('content.common.moreSubmodelInfo')}>
+            <span>
+              <Link style={{ color: 'white' }} to={'/provider/help'}>
+                <InfoIcon color="primary" />
+              </Link>
+            </span>
+          </Tooltips>
+        </Grid>
+        {!isEmpty(selectedSubmodel) ? (
           <Grid item xs={6}>
-            <DownloadCSV submodel={selectedSubmodel.value} />
+            <DownloadSamples submodel={selectedSubmodel.value} />
           </Grid>
         ) : null}
       </Grid>
-      {!_.isEmpty(selectedSubmodel) ? (
+      {!isEmpty(selectedSubmodel) ? (
         <Box>
-          <SubmodelInfo />
+          <CustomAccordion
+            items={[
+              {
+                children: <SubmodelInfo />,
+                color: 'background.background07',
+                expanded: false,
+                icon: null,
+                id: 'panel-1',
+                onChange: () => {},
+                title: t('content.provider.previewTableTitle'),
+                sx: {
+                  marginTop: 30,
+                },
+              },
+            ]}
+          />
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={activeTab} onChange={handleChange} aria-label="upload types: tabs" sx={{ pt: 0 }}>
               <Tab label={t('content.provider.uploadFile')} />
@@ -81,7 +113,7 @@ export default function CreateData() {
               <UploadFile />
             </TabPanel>
             <TabPanel value={activeTab} index={1}>
-              <DataTable />
+              <SubmodelDataTable />
             </TabPanel>
           </Box>
         </Box>
@@ -91,6 +123,6 @@ export default function CreateData() {
         </Box>
       )}
       <PoliciesDialog />
-    </Box>
+    </>
   );
 }

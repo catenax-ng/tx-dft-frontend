@@ -19,10 +19,13 @@
  ********************************************************************************/
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import _ from 'lodash';
+import { isEmpty } from 'lodash';
 
+import { ISelectList } from '../../../models/Common';
+import { PolicyModel } from '../../../models/RecurringUpload.models';
 import { Config } from '../../../utils/config';
-import { IAccessPolicyState, ISelectList } from './types';
+import { DURATION_UNITS } from '../../../utils/constants';
+import { IAccessPolicyState } from './types';
 
 const initialState: IAccessPolicyState = {
   uploadUrl: '',
@@ -41,14 +44,28 @@ const initialState: IAccessPolicyState = {
   purposeValue: {} as ISelectList,
   roleValue: '',
   customValue: '',
-  durationUnit: 'HOUR',
+  durationUnit: DURATION_UNITS[0],
   showValidationError: true,
+  policyData: {} as PolicyModel,
+  policyDialog: false,
+  policyDialogType: '',
 };
 
 export const accessUsagePolicySlice = createSlice({
   name: 'accessUsagePolicySlice',
   initialState,
   reducers: {
+    setPolicyData: (state, action: PayloadAction<PolicyModel>) => {
+      console.log('raw data', action.payload);
+      state.policyData = new PolicyModel(action.payload);
+      console.log('policydata', state.policyData);
+    },
+    setPolicyDialog: (state, action: PayloadAction<boolean>) => {
+      state.policyDialog = action.payload;
+    },
+    setPolicyDialogType: (state, action: PayloadAction<string>) => {
+      state.policyDialogType = action.payload;
+    },
     setAccessType: (state, action: PayloadAction<string>) => {
       state.accessType = action.payload;
     },
@@ -79,7 +96,7 @@ export const accessUsagePolicySlice = createSlice({
     setDurationValue: (state, action: PayloadAction<string>) => {
       state.durationValue = action.payload;
     },
-    setDurationUnit: (state, action: PayloadAction<string>) => {
+    setDurationUnit: (state, action: PayloadAction<ISelectList>) => {
       state.durationUnit = action.payload;
     },
     setPurposeValue: (state, action: PayloadAction<ISelectList>) => {
@@ -100,7 +117,7 @@ export const accessUsagePolicySlice = createSlice({
     handleDialogClose: state => Object.assign(state, initialState),
     checkFieldValidations: state => {
       const durationCheck = state.duration === 'RESTRICTED' && state.durationValue === '';
-      const purposeCheck = state.purpose === 'RESTRICTED' && _.isEmpty(state.purposeValue);
+      const purposeCheck = state.purpose === 'RESTRICTED' && isEmpty(state.purposeValue);
       const roleCheck = state.role === 'RESTRICTED' && state.roleValue === '';
       if (durationCheck || purposeCheck || roleCheck) {
         state.showValidationError = true;
@@ -113,6 +130,9 @@ export const accessUsagePolicySlice = createSlice({
 
 export const {
   setAccessType,
+  setPolicyData,
+  setPolicyDialog,
+  setPolicyDialogType,
   setInputBpn,
   addBpn,
   deleteBpn,

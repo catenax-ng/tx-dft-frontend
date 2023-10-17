@@ -39,14 +39,16 @@ const baseQueryInterceptor: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQu
         type: 'error',
       }),
     );
-  } else if (extraOptions?.showNotification) {
+  } else if (data) {
     // Backend should send/handle success messages, which isnt done
-    api.dispatch(
-      setSnackbarMessage({
-        message: extraOptions.message,
-        type: extraOptions.type,
-      }),
-    );
+    if (extraOptions?.showNotification) {
+      api.dispatch(
+        setSnackbarMessage({
+          message: data?.msg ? data.msg : extraOptions?.message,
+          type: 'success',
+        }),
+      );
+    }
   }
   return { data };
 };
@@ -55,5 +57,14 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryInterceptor,
   endpoints: () => ({}),
-  tagTypes: ['UploadHistory', 'DeleteContract'],
+  tagTypes: [
+    'UploadHistory',
+    'DeleteContract',
+    'DownloadHistoryList',
+    'SftpConfig',
+    'EmailConfig',
+    'SettingsConfig',
+    'ScheduleConfig',
+    'Policies',
+  ],
 });

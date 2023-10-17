@@ -20,18 +20,34 @@
 
 import { theme } from 'cx-portal-shared-components';
 
-interface IDefaultObject {
-  [key: string]: string;
-}
-const CONTRACT_STATES: string[] = ['CONFIRMED', 'DECLINED', 'ERROR'];
+import { IDefaultObject } from '../models/Common';
+import { PolicyModel } from '../models/RecurringUpload.models';
+import { Config } from './config';
+
+const USER_GUIDE_URL =
+  'https://github.com/eclipse-tractusx/managed-simple-data-exchanger-frontend/blob/main/docs/user-guide/README.md';
+
+const MAX_CONTRACTS_AGREEMENTS = 2147483647;
+
+const ONLY_NUM_REGEX = /^[1-9]\d*$/;
+
+const ALPHA_NUM_REGEX = /[a-zA-Z0-9]$/;
+
+const SPACE_CHECK_REGEX = /^\S*$/;
+
+const DATE_TIME_FORMAT = 'DD-MM-YYYY H:mm:ss';
+
+const CONTRACT_STATES = ['FINALIZED', 'DECLINED', 'TERMINATED', 'ERROR'];
 
 const STATUS_COLOR_MAPPING: IDefaultObject = {
   IN_PROGRESS: theme.palette.info.main,
-  CONFIRMED: theme.palette.success.main,
+  FINALIZED: theme.palette.success.main,
   COMPLETED: theme.palette.success.main,
+  TERMINATED: theme.palette.error.main,
   DECLINED: theme.palette.error.main,
   ERROR: theme.palette.error.main,
   FAILED: theme.palette.error.main,
+  PARTIALLY_FAILED: theme.palette.error.main,
 };
 
 const USER_TYPE_SWITCH: IDefaultObject = {
@@ -62,6 +78,26 @@ const DURATION_UNITS = [
   },
 ];
 
+const DURATION_UNIT_MAPPING = {
+  HOUR: 'hours',
+  DAY: 'days',
+  MONTH: 'months',
+  YEAR: 'years',
+};
+
+const BPN_TYPE_FIELDS = [
+  {
+    id: 1,
+    title: 'Company Name',
+    value: 'company',
+  },
+  {
+    id: 2,
+    title: 'Business Partner Number',
+    value: 'bpn',
+  },
+];
+
 const PURPOSE_VALUES = [
   {
     id: 0,
@@ -70,4 +106,100 @@ const PURPOSE_VALUES = [
   },
 ];
 
-export { CONTRACT_STATES, DURATION_UNITS, PURPOSE_VALUES, STATUS_COLOR_MAPPING, USER_TYPE_SWITCH };
+const SCHEDULE_TYPE = [
+  { id: 0, value: 'HOURLY', title: 'Hourly' },
+  { id: 1, value: 'DAILY', title: 'Daily' },
+  { id: 2, value: 'WEEKLY', title: 'Weekly' },
+];
+
+const WEEK_DAYS = [
+  { id: 0, value: 'sunday', title: 'Sunday' },
+  { id: 1, value: 'monday', title: 'Monday' },
+  { id: 2, value: 'tuesday', title: 'Tuesday' },
+  { id: 3, value: 'wednesday', title: 'Wednesday' },
+  { id: 4, value: 'thursday', title: 'Thursday' },
+  { id: 5, value: 'friday', title: 'Friday' },
+  { id: 6, value: 'saturday', title: 'Saturday' },
+];
+
+const SFTP_FORM_FIELDS = [
+  { name: 'host', label: 'Host Name', placeholder: 'Enter host name' },
+  { name: 'port', label: 'Port Name', placeholder: 'Enter port name' },
+  { name: 'username', label: 'User name', placeholder: 'Enter user name' },
+  { name: 'password', label: 'Password', placeholder: 'Enter password' },
+  { name: 'toBeProcessedLocation', label: 'To Be Processed Location', placeholder: 'Enter to be processed location' },
+  { name: 'inProgressLocation', label: 'In Progress Location', placeholder: 'Enter in progress location' },
+  { name: 'successLocation', label: 'Success Location', placeholder: 'Enter success location' },
+  {
+    name: 'partialSuccessLocation',
+    label: 'Partial Success Location',
+    placeholder: 'Enter partial success location',
+  },
+  { name: 'failedLocation', label: 'Failed Location', placeholder: 'Enter failed location' },
+];
+
+const EMAIL_CONFIG_FORM_FIELDS = [
+  { name: 'to_email', label: 'To email address', placeholder: 'Enter to email address', type: 'email' },
+  { name: 'cc_email', label: 'CC email address', placeholder: 'Enter cc email address', type: 'email' },
+];
+
+const UPLOAD_CONFIG_FORM_FIELDS = [
+  { name: 'automatic_upload', label: 'Automatic Upload', placeholder: '' },
+  { name: 'email_notification', label: 'Email Notification', placeholder: '' },
+];
+
+const HOURS = [...Array(24)].map((_e, i) => ({
+  id: i + 1,
+  value: `${i + 1}`,
+  title: `Every ${i + 1} hour`,
+}));
+
+const DEFAULT_POLICY_DATA: PolicyModel = {
+  uuid: '',
+  policy_name: '',
+  inputBpn: '',
+  type_of_access: 'restricted',
+  bpn_numbers: [Config.REACT_APP_DEFAULT_COMPANY_BPN],
+  usage_policies: {
+    DURATION: {
+      typeOfAccess: 'UNRESTRICTED',
+      value: '',
+      durationUnit: DURATION_UNITS[0].value,
+    },
+    PURPOSE: {
+      typeOfAccess: 'UNRESTRICTED',
+      value: '',
+    },
+    ROLE: {
+      typeOfAccess: 'UNRESTRICTED',
+      value: '',
+    },
+    CUSTOM: {
+      typeOfAccess: 'UNRESTRICTED',
+      value: '',
+    },
+  },
+};
+
+export {
+  ALPHA_NUM_REGEX,
+  BPN_TYPE_FIELDS,
+  CONTRACT_STATES,
+  DATE_TIME_FORMAT,
+  DEFAULT_POLICY_DATA,
+  DURATION_UNIT_MAPPING,
+  DURATION_UNITS,
+  EMAIL_CONFIG_FORM_FIELDS,
+  HOURS,
+  MAX_CONTRACTS_AGREEMENTS,
+  ONLY_NUM_REGEX,
+  PURPOSE_VALUES,
+  SCHEDULE_TYPE,
+  SFTP_FORM_FIELDS,
+  SPACE_CHECK_REGEX,
+  STATUS_COLOR_MAPPING,
+  UPLOAD_CONFIG_FORM_FIELDS,
+  USER_GUIDE_URL,
+  USER_TYPE_SWITCH,
+  WEEK_DAYS,
+};

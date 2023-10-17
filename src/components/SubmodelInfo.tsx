@@ -21,40 +21,37 @@ import '../styles/submodelDetails.scss';
 
 import InfoIcon from '@mui/icons-material/Info';
 import { Box } from '@mui/material';
-import { Tooltips, Typography } from 'cx-portal-shared-components';
-import { Trans } from 'react-i18next';
+import { Tooltips } from 'cx-portal-shared-components';
+import { v4 as uuidv4 } from 'uuid';
 
 import { useAppSelector } from '../features/store';
 
 export default function SubmodelInfo() {
-  const { previewTableHeadings, previewTableData, previewTableDescriptions, selectedSubmodel } = useAppSelector(
+  const { previewTableHeadings, previewTableData, previewTableDescriptions } = useAppSelector(
     state => state.submodelSlice,
   );
 
   return (
     <>
-      <Typography variant="body1" fontWeight={'bold'} mb={2}>
-        <Trans i18nKey={'content.provider.previewTableTitle'} values={{ submodel: selectedSubmodel.title }} />
-      </Typography>
-      <Box overflow={'scroll'} mb={3}>
+      <Box overflow={'scroll'} mb={3} sx={{ background: 'white' }}>
         <table className="submodel-detail-table">
           <tbody>
             <tr>
-              {previewTableHeadings.map((title: string, index: number) => (
-                <th key={index}>{title}</th>
+              {previewTableHeadings.map((title: string) => (
+                <th key={uuidv4()}>{title}</th>
               ))}
             </tr>
-            {previewTableData.map((data: string[], i: number) => (
-              <tr key={i}>
-                {data.map((e: string, index: number) => (
-                  <td key={index}>{e}</td>
+            {previewTableData.map((data: string[]) => (
+              <tr key={uuidv4()}>
+                {data.map((e: string) => (
+                  <td key={uuidv4()}>{e}</td>
                 ))}
               </tr>
             ))}
             <tr>
               <td>Description</td>
-              {previewTableDescriptions.map((desc: string, index: number) => (
-                <td key={index}>
+              {previewTableDescriptions.map((desc: string) => (
+                <td key={uuidv4()}>
                   <Tooltips tooltipPlacement="top" tooltipText={desc}>
                     <span>
                       <InfoIcon color="primary" />

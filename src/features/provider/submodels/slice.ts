@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
@@ -20,7 +22,7 @@
  ********************************************************************************/
 import { GridSelectionModel, GridValidRowModel } from '@mui/x-data-grid';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import _ from 'lodash';
+import { includes, indexOf } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 
 import { fetchSubmodelDetails, fetchSubmodelList } from './actions';
@@ -41,7 +43,6 @@ const initialState: ISubmodelsSlice = {
   previewTableDescriptions: [],
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleColumnTypes = (value: any) => {
   if (value.type.includes('number')) {
     return value.enum?.length ? 'singleSelect' : 'number';
@@ -60,11 +61,12 @@ export const submodelSlice = createSlice({
       state.selectedSubmodel = action.payload;
     },
     addRows: state => {
-      state.rows = state.rows.concat({ id: state.rows.length, ...state.row, uuid: `urn:uuid:${uuidv4()}` });
+      const genUUID = () => (includes(Object.keys(state.row), 'uuid') ? { uuid: `urn:uuid:${uuidv4()}` } : {});
+      state.rows = state.rows.concat({ rowId: state.rows.length, ...state.row, ...genUUID() });
     },
     deleteRows: state => {
       const selectedIDs = new Set(state.selectionModel);
-      state.rows = state.rows.filter(x => !selectedIDs.has(x.id));
+      state.rows = state.rows.filter(x => !selectedIDs.has(x.rowId));
     },
     setRows: (state, action: PayloadAction<GridValidRowModel>) => {
       const { id, field, value, isEditable } = action.payload;
@@ -77,7 +79,7 @@ export const submodelSlice = createSlice({
     setSelectionModel: (state, action: PayloadAction<GridSelectionModel>) => {
       state.selectionModel = action.payload;
       const selectedIDs = new Set(state.selectionModel);
-      state.selectedRows = state.rows.filter(row => selectedIDs.has(row.id));
+      state.selectedRows = state.rows.filter(row => selectedIDs.has(row.rowId));
     },
     setJsonInputData: (state, action: PayloadAction<string>) => {
       state.jsonInputData = action.payload;
@@ -103,13 +105,13 @@ export const submodelSlice = createSlice({
       state.submodelDetails = payload;
       state.columns = Object.entries(payload.items.properties).map(([key, value]: any) => ({
         field: key,
-        headerName: `${value.title}${_.indexOf(payload.items.required, key) > -1 ? '*' : ''}`,
+        headerName: `${value.title}${indexOf(payload.items.required, key) > -1 ? '*' : ''}`,
         editable: true,
         sortable: false,
-        flex: 1,
         headerAlign: 'left',
         type: handleColumnTypes(value),
         valueOptions: value.enum,
+        minWidth: 200,
       }));
       Object.entries(payload.items.properties).forEach(([key, value]: any) => {
         if (value.enum?.length) {
@@ -121,20 +123,14 @@ export const submodelSlice = createSlice({
       // for submodel description table
       state.previewTableHeadings = ['Field name', ...Object.keys(payload.items.properties)];
       state.previewTableDescriptions = Object.entries(payload.items.properties).map(
-        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
         ([key, value]: any) => value.description,
       );
       state.previewTableData = [
-        [
-          'Example entries',
-          // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-          ...Object.entries(payload.items.properties).map(([key, value]: any) => value.examples[0]),
-        ],
+        ['Example entries', ...Object.entries(payload.items.properties).map(([key, value]: any) => value.examples[0])],
         [
           'Mandatory',
-          // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
           ...Object.entries(payload.items.properties).map(([key, value]: any) =>
-            _.indexOf(payload.items.required, key) > -1 ? 'true' : 'false',
+            indexOf(payload.items.required, key) > -1 ? 'true' : 'false',
           ),
         ],
       ];

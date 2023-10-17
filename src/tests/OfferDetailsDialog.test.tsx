@@ -40,7 +40,6 @@ test('Snapshot OfferDetailsDialog - load and diaplay offer details component', (
     typeOfAccess: 'restricted',
     usagePolicies: [
       {
-        type: 'Duration',
         typeOfAccess: 'Unrestricted',
         value: '1',
       },

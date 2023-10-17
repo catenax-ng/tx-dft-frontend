@@ -18,8 +18,9 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Autocomplete, Box, Button, debounce, FormControlLabel, Grid, Radio, RadioGroup, Stack } from '@mui/material';
+import { Autocomplete, Box, Button, debounce, Grid, Stack } from '@mui/material';
 import {
+  Alert,
   Chip,
   Dialog,
   DialogActions,
@@ -30,18 +31,19 @@ import {
   SelectList,
   Typography,
 } from 'cx-portal-shared-components';
-import _ from 'lodash';
+import { inRange, isEmpty } from 'lodash';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { v4 as uuid } from 'uuid';
 
 import { setFfilterCompanyOptionsLoading, setFilterCompanyOptions } from '../../features/consumer/slice';
 import { ILegalEntityContent, IntConnectorItem, IntOption } from '../../features/consumer/types';
 import { setSnackbarMessage } from '../../features/notifiication/slice';
 import { useValidateBpnMutation } from '../../features/provider/policies/apiSlice';
-import { addBpn, deleteBpn, setAccessType, setInputBpn } from '../../features/provider/policies/slice';
+import { addBpn, deleteBpn, setInputBpn } from '../../features/provider/policies/slice';
 import { useAppDispatch, useAppSelector } from '../../features/store';
 import ConsumerService from '../../services/ConsumerService';
-
+import { ALPHA_NUM_REGEX } from '../../utils/constants';
 const ITEMS = [
   {
     id: 1,
@@ -56,29 +58,19 @@ const ITEMS = [
 ];
 
 export default function AccessPolicy() {
-  const { accessType, bpnList, inputBpn } = useAppSelector(state => state.accessUsagePolicySlice);
+  const { bpnList, inputBpn } = useAppSelector(state => state.accessUsagePolicySlice);
   const { filterCompanyOptions, filterCompanyOptionsLoading } = useAppSelector(state => state.consumerSlice);
   const [searchFilterByType, setsearchFilterByType] = useState<IntConnectorItem>({
     id: 1,
     title: 'Company Name',
     value: 'company',
   });
-  const [dialogOpen, setdialogOpen] = useState(false);
   const [searchPopup, setsearchPopup] = useState(false);
   const [bpnError, setbpnError] = useState(false);
+  const [conKey, setConKey] = useState(uuid());
 
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-
-  const showAddDialog = () => {
-    setdialogOpen(prev => !prev);
-  };
-
-  const handleAccessTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const newAccessType = event.target.value;
-    dispatch(setAccessType(newAccessType));
-    if (newAccessType === 'unrestricted') showAddDialog();
-  };
 
   // get company name on input change
   const onChangeSearchInputValue = async (params: string) => {
@@ -112,13 +104,19 @@ export default function AccessPolicy() {
 
   const [validateBpn, { isLoading, data }] = useValidateBpnMutation();
   const [addBpnPrompt, setAddBpnPrompt] = useState(false);
+
   const handleAddBpn = async () => {
-    if (_.inRange(inputBpn.length, 1, 16)) {
+    if (inRange(inputBpn.length, 1, 16)) {
       setbpnError(true);
     } else {
       setbpnError(false);
       await validateBpn(inputBpn);
-      console.log(data);
+      setConKey(uuid());
+    }
+  };
+  const handleEnterBpn = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === '' || ALPHA_NUM_REGEX.test(e.target.value)) {
+      dispatch(setInputBpn(e.target.value));
     }
   };
 
@@ -137,153 +135,109 @@ export default function AccessPolicy() {
   return (
     <>
       <Typography fontWeight={'bold'}>{t('content.policies.accessPolicy')}</Typography>
-      <RadioGroup
-        aria-labelledby="demo-controlled-radio-buttons-group"
-        name="controlled-radio-buttons-group"
-        value={accessType}
-        onChange={handleAccessTypeChange}
-      >
-        <FormControlLabel
-          sx={{ mt: 2 }}
-          value="restricted"
-          control={<Radio />}
-          label={t('content.policies.restricted')}
-        />
-        {accessType === 'restricted' && (
-          <>
-            <Grid container spacing={2} alignItems="end">
-              <Grid item xs={5}>
-                <SelectList
-                  keyTitle="title"
-                  label={t('content.consumeData.selectType')}
+      <Grid container spacing={2} alignItems="end">
+        <Grid item xs={5}>
+          <SelectList
+            keyTitle="title"
+            label={t('content.consumeData.selectType')}
+            fullWidth
+            size="small"
+            onChangeItem={e => handleSearchTypeChange(e)}
+            items={ITEMS}
+            defaultValue={searchFilterByType}
+            disableClearable={true}
+            placeholder={t('content.consumeData.selectType')}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          {searchFilterByType.value === 'bpn' ? (
+            <Input
+              label={t('content.consumeData.enterBPN')}
+              placeholder={t('content.consumeData.enterBPN')}
+              size="small"
+              value={inputBpn}
+              inputProps={{ maxLength: 16 }}
+              onChange={handleEnterBpn}
+              onPaste={e => e.preventDefault()}
+              error={bpnError}
+              helperText="Incorrect BPN"
+            />
+          ) : (
+            <Autocomplete
+              key={conKey}
+              open={searchPopup}
+              options={filterCompanyOptions}
+              includeInputInList
+              loading={filterCompanyOptionsLoading}
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              onChange={(e, value: any) => dispatch(setInputBpn(value.bpn))}
+              onInputChange={debounce(async (event, newInputValue) => {
+                await onChangeSearchInputValue(newInputValue);
+              }, 1000)}
+              onClose={() => setsearchPopup(false)}
+              onBlur={() => setsearchPopup(false)}
+              isOptionEqualToValue={(option, value) => option.value === value.value}
+              getOptionLabel={option => {
+                return typeof option === 'string' ? option : `${option.value}`;
+              }}
+              noOptionsText={t('content.consumeData.noCompany')}
+              renderInput={params => (
+                <Input
+                  {...params}
+                  label={t('content.consumeData.searchCompany')}
+                  placeholder={t('content.consumeData.searchPlaceholder')}
                   fullWidth
-                  size="small"
-                  onChangeItem={e => handleSearchTypeChange(e)}
-                  items={ITEMS}
-                  value={searchFilterByType}
-                  defaultValue={searchFilterByType}
-                  disableClearable={true}
-                  placeholder={t('content.consumeData.selectType')}
-                  hiddenLabel
                 />
-              </Grid>
-              <Grid item xs={4}>
-                {searchFilterByType.value === 'bpn' ? (
-                  <Input
-                    label={t('content.consumeData.enterBPN')}
-                    placeholder={t('content.consumeData.enterBPN')}
-                    size="small"
-                    value={inputBpn}
-                    inputProps={{ maxLength: 16 }}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      const regex = /[a-zA-Z0-9]$/;
-                      if (e.target.value === '' || regex.test(e.target.value)) {
-                        dispatch(setInputBpn(e.target.value));
-                      }
-                    }}
-                    error={bpnError}
-                    helperText="Incorrect BPN"
-                  />
-                ) : (
-                  <Autocomplete
-                    open={searchPopup}
-                    options={filterCompanyOptions}
-                    includeInputInList
-                    loading={filterCompanyOptionsLoading}
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    onChange={(e, value: any) => dispatch(setInputBpn(value.bpn))}
-                    onInputChange={debounce((event, newInputValue) => {
-                      onChangeSearchInputValue(newInputValue);
-                    }, 1000)}
-                    onClose={() => setsearchPopup(false)}
-                    onBlur={() => setsearchPopup(false)}
-                    isOptionEqualToValue={(option, value) => option.value === value.value}
-                    getOptionLabel={option => {
-                      return typeof option === 'string' ? option : `${option.value}`;
-                    }}
-                    noOptionsText={t('content.consumeData.noCompany')}
-                    renderInput={params => (
-                      <Input
-                        {...params}
-                        label={t('content.consumeData.searchCompany')}
-                        placeholder={t('content.consumeData.searchPlaceholder')}
-                        fullWidth
-                      />
-                    )}
-                    renderOption={(props, option: IntOption) => (
-                      <Box
-                        component="li"
-                        {...props}
-                        key={option.bpn}
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'initial!important',
-                          justifyContent: 'initial',
-                        }}
-                      >
-                        <Typography variant="subtitle1">{option.value}</Typography>
-                        <Typography variant="subtitle2">{option.bpn}</Typography>
-                      </Box>
-                    )}
-                  />
-                )}
-              </Grid>
-              <Grid item>
-                <LoadingButton
-                  sx={{ marginLeft: 1 }}
-                  variant="contained"
-                  label={t('button.add')}
-                  onButtonClick={handleAddBpn}
-                  loadIndicator={t('content.common.loading')}
-                  loading={isLoading}
-                />
-              </Grid>
-            </Grid>
-            <Box sx={{ mt: 2 }}>
-              <Typography variant="body2">
-                <i> {t('content.policies.note')}</i>
-              </Typography>
-              <Stack direction="row" spacing={1} mt={bpnList.length ? 3 : 0} sx={{ flexWrap: 'wrap', gap: 1 }}>
-                {bpnList.map((bpnNum: string) => (
-                  <Chip color="secondary" label={bpnNum} key={bpnNum + 1} onClick={() => dispatch(deleteBpn(bpnNum))} />
-                ))}
-              </Stack>
-            </Box>
-          </>
-        )}
-        <FormControlLabel
-          sx={{ mt: 2 }}
-          value="unrestricted"
-          control={<Radio />}
-          label={t('content.policies.unrestricted')}
-        />
-      </RadioGroup>
-      <hr style={{ marginBottom: 50, marginTop: 30 }} />
-      <Dialog open={dialogOpen}>
-        <DialogHeader title={t('content.policies.unAccess')} />
-        <DialogContent>{t('content.policies.warningText')}</DialogContent>
-        <DialogActions>
-          <Button
-            variant="outlined"
-            onClick={() => {
-              dispatch(setAccessType('restricted'));
-              showAddDialog();
-            }}
-          >
-            {t('button.cancel')}
-          </Button>
-          <Button
+              )}
+              renderOption={(props, option: IntOption) => (
+                <Box
+                  component="li"
+                  {...props}
+                  key={option.bpn}
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'initial!important',
+                    justifyContent: 'initial',
+                  }}
+                >
+                  <Typography variant="subtitle1">{option.value}</Typography>
+                  <Typography variant="subtitle2">{option.bpn}</Typography>
+                </Box>
+              )}
+            />
+          )}
+        </Grid>
+        <Grid item>
+          <LoadingButton
+            sx={{ marginLeft: 1 }}
             variant="contained"
-            onClick={() => {
-              dispatch(setAccessType('unrestricted'));
-              showAddDialog();
-            }}
-          >
-            {t('button.confirm')}
-          </Button>
-        </DialogActions>
-      </Dialog>
+            label={t('button.add')}
+            onButtonClick={handleAddBpn}
+            loadIndicator={t('content.common.loading')}
+            loading={isLoading}
+            disabled={isEmpty(inputBpn)}
+          />
+        </Grid>
+      </Grid>
+      <Box sx={{ mt: 2 }}>
+        {isEmpty(bpnList) ? (
+          <Box mb={2}>
+            <Alert severity="warning" width="90%">
+              <span>{t('content.policies.warningText')}</span>
+            </Alert>
+          </Box>
+        ) : null}
+        <Typography variant="body2">
+          <i> {t('content.policies.note')}</i>
+        </Typography>
+        <Stack direction="row" spacing={1} mt={bpnList.length ? 3 : 0} sx={{ flexWrap: 'wrap', gap: 1 }}>
+          {bpnList.map((bpnNum: string) => (
+            <Chip color="secondary" label={bpnNum} key={bpnNum + 1} onClick={() => dispatch(deleteBpn(bpnNum))} />
+          ))}
+        </Stack>
+      </Box>
+      <hr style={{ marginBottom: 50, marginTop: 30 }} />
       {addBpnPrompt ? (
         <Dialog open={addBpnPrompt}>
           <DialogHeader title={t('content.consumeData.noConnectors')} />

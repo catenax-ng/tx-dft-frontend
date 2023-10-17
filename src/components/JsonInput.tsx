@@ -32,11 +32,11 @@ export default function JsonInput() {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
-  const submitData = (data: string) => {
+  const submitData = async (data: string) => {
     try {
       const json = JSON.parse(data.trim());
       if (json) {
-        schemaValidator(json);
+        await schemaValidator(json);
       }
     } catch (e) {
       dispatch(
@@ -63,7 +63,7 @@ export default function JsonInput() {
           variant="contained"
           size="small"
           onClick={() => submitData(jsonInputData)}
-          disabled={!Boolean(jsonInputData.length)}
+          disabled={!jsonInputData.length}
         >
           {t('content.policies.configure')}
         </Button>

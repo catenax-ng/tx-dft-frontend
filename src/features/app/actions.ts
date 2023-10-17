@@ -30,13 +30,4 @@ const fetchUserPermissions = createAsyncThunk('/user/permissions', async () => {
   }
 });
 
-const fetchUseCases = createAsyncThunk('/usecases', async () => {
-  try {
-    const res = await AppService.getInstance().getUseCases();
-    return res.data;
-  } catch (error) {
-    console.log('api call error:', error);
-  }
-});
-
-export { fetchUseCases, fetchUserPermissions };
+export { fetchUserPermissions };

@@ -18,20 +18,26 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import BusinessIcon from '@mui/icons-material/Business';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import HistoryIcon from '@mui/icons-material/History';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import TextSnippetIcon from '@mui/icons-material/TextSnippet';
+import UploadIcon from '@mui/icons-material/Upload';
 
 export const icons = {
-  AddCircleOutlineIcon,
+  CloudUploadIcon,
+  UploadIcon,
   HistoryIcon,
   HelpOutlineIcon,
   ManageSearchIcon,
   HomeOutlinedIcon,
   FormatListBulletedIcon,
+  BusinessIcon,
+  TextSnippetIcon,
 };
 
 export interface IntMenuItem {
@@ -57,15 +63,36 @@ export const MenuItems: IntMenu[] = [
     isHeading: false,
   },
   {
+    text: 'pages.about',
+    menuIcon: 'BusinessIcon',
+    to: '/about',
+    dataId: 'aboutPage',
+    isHeading: false,
+  },
+  {
     text: 'pages.provider',
     isHeading: true,
     childrens: [
       {
-        text: 'pages.createData',
-        menuIcon: 'AddCircleOutlineIcon',
-        to: '/provider/create-data',
-        dataId: 'uploadFileMenu',
+        text: 'pages.manualUpload',
+        menuIcon: 'UploadIcon',
+        to: '/provider/manual-upload',
+        dataId: 'manualUpload',
         permissions: ['provider_create_contract_offer'],
+      },
+      {
+        text: 'pages.recurringUpload',
+        menuIcon: 'CloudUploadIcon',
+        to: '/provider/recurring-upload',
+        dataId: 'recurringUpload',
+        permissions: ['auto_config_management'],
+      },
+      {
+        text: 'content.policies.title',
+        menuIcon: 'TextSnippetIcon',
+        to: '/provider/policies',
+        dataId: 'policies',
+        permissions: ['policy_management'],
       },
       {
         text: 'pages.uploadHistory',
@@ -103,6 +130,13 @@ export const MenuItems: IntMenu[] = [
           'consumer_view_contract_offers',
           'consumer_establish_contract_agreement',
         ],
+      },
+      {
+        text: 'pages.offerDownloadHistory',
+        menuIcon: 'HistoryIcon',
+        to: '/consumer/offers-download-history',
+        dataId: 'offersDownloadHistoryMenu',
+        permissions: ['consumer_view_download_history'],
       },
       {
         text: 'pages.contracts',

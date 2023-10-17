@@ -34,7 +34,6 @@ export interface IAppSlice {
   pageLoading: boolean;
   loggedInUser: IUser;
   permissions: string[];
-  useCases: IUseCase[];
   selectedUseCases: string[];
   sidebarExpanded: boolean;
 }
