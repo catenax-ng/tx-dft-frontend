@@ -24,17 +24,34 @@
 # Learn more about MUI theming - https://mui.com/material-ui/customization/theming/
 
 custom_theme_config='{
-  theme: {},
-  showSdeVersion: true,
-  poweredBy: {
-    visible: false,
-    name: "",
-    logoUrl: "",
-    redirectUrl: ""
+“theme”: {
+    “palette”: {
+      “primary”: {
+        “main”: “#E20074”,
+        “dark”: “#E20074”,
+        “contrastText”: “#fff”
+      },
+      “secondary”: {
+        “main”: “#11CB5F”,
+        “dark”: “#D4E3FE”,
+        “contrastText”: “#0F71CB”
+      },
+      “brand”: {
+        “brand01": “#E20074”,
+        “brand02": “#B3CB2D”
+      }
+    }
+  },
+  “showSdeVersion”: false,
+  “poweredBy”: {
+    “visible”: true,
+    “name”: “<b>Powered by</b><br/>Data Intelligence Hub”,
+    “logoUrl”: “https: //placehold.co/100x100”,
+    “redirectUrl”: “https: //dih.telekom.com/en”
   }
 }'
 
-echo "Final json '$custom_theme_config'"
+echo -e "Updated configuration 🍻: \n\n$custom_theme_config\n\n"
 
 # Write the final result to custom-theme.json
 echo "$custom_theme_config" >src/assets/customConfig/custom-theme.json
