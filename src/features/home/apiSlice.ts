@@ -18,7 +18,8 @@
  ********************************************************************************/
 
 import { apiSlice } from '../app/apiSlice';
-import { setPageLoading } from '../app/slice';
+import { setPageLoading, setUseCases } from '../app/slice';
+import { UseCaseSelectionModel } from '../app/types';
 
 export const homeApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -31,7 +32,8 @@ export const homeApiSlice = apiSlice.injectEndpoints({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           dispatch(setPageLoading(true));
-          await queryFulfilled;
+          const data = UseCaseSelectionModel.create((await queryFulfilled).data);
+          dispatch(setUseCases(data));
         } finally {
           dispatch(setPageLoading(false));
         }

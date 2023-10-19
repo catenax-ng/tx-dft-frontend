@@ -18,10 +18,10 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 import { fetchUserPermissions } from './actions';
-import { IAppSlice, IUser } from './types';
+import { IAppSlice } from './types';
 
 const initialState: IAppSlice = {
   pageLoading: false,
@@ -37,23 +37,31 @@ const initialState: IAppSlice = {
   },
   permissions: [],
   sidebarExpanded: true,
+  useCases: [],
   selectedUseCases: [],
+  checkedUseCases: [],
 };
 export const appSlice = createSlice({
   name: 'appSlice',
   initialState,
   reducers: {
-    setPageLoading: (state, action: PayloadAction<boolean>) => {
+    setPageLoading: (state, action) => {
       state.pageLoading = action.payload;
     },
-    setLoggedInUser: (state, action: PayloadAction<IUser>) => {
+    setLoggedInUser: (state, action) => {
       state.loggedInUser = action.payload;
     },
     setSidebarExpanded: state => {
       state.sidebarExpanded = !state.sidebarExpanded;
     },
-    setSelectedUseCases: (state, action: PayloadAction<string[]>) => {
+    setSelectedUseCases: (state, action) => {
       state.selectedUseCases = action.payload;
+    },
+    setCheckeduseCases: (state, { payload }) => {
+      state.checkedUseCases = payload;
+    },
+    setUseCases: (state, { payload }) => {
+      state.useCases = payload;
     },
   },
   extraReducers: builder => {
@@ -67,5 +75,12 @@ export const appSlice = createSlice({
   },
 });
 
-export const { setPageLoading, setLoggedInUser, setSelectedUseCases, setSidebarExpanded } = appSlice.actions;
+export const {
+  setPageLoading,
+  setLoggedInUser,
+  setSelectedUseCases,
+  setSidebarExpanded,
+  setCheckeduseCases,
+  setUseCases,
+} = appSlice.actions;
 export default appSlice.reducer;

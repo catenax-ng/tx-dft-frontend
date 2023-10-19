@@ -26,6 +26,7 @@ import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import customConfig from '../assets/customConfig/custom-theme.json';
 import { useAppSelector } from '../features/store';
 import I18nService from '../services/i18nService';
 import { USER_GUIDE_URL } from '../utils/constants';
@@ -72,7 +73,7 @@ const Nav = () => {
       >
         <Box>
           <Typography variant="h4" color="white">
-            {t('logo')}
+            {customConfig.title}
           </Typography>
         </Box>
         <Box display={'flex'} alignItems={'center'} position={'relative'}>

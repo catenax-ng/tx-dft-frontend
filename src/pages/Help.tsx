@@ -23,7 +23,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { Box, Card, CardContent, Grid } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { Button, IconButton, Table, Tooltips, Typography } from 'cx-portal-shared-components';
-import { isEmpty } from 'lodash';
+import { filter, isEmpty } from 'lodash';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -72,8 +72,8 @@ const columns: GridColDef[] = [
 
 export default function Help() {
   const { t } = useTranslation();
-  const { selectedUseCases } = useAppSelector(state => state.appSlice);
-  const { isSuccess, data } = useGetHelpPageDataQuery({ usecases: selectedUseCases });
+  const { useCases } = useAppSelector(state => state.appSlice);
+  const { isSuccess, data } = useGetHelpPageDataQuery({ usecases: filter(useCases, 'checked').map(e => e.id) });
   const refScrollUp = useRef(null);
 
   const handleScrollUp = () => {
@@ -87,9 +87,12 @@ export default function Help() {
         <Typography variant="h3" mb={1}>
           {t('pages.help')}
         </Typography>
-        {!isEmpty(selectedUseCases) && (
-          <Typography variant="h4" mb={1} textTransform={'capitalize'}>
-            Selected use cases: {selectedUseCases.join(', ')}
+        {!isEmpty(filter(useCases, 'checked')) && (
+          <Typography variant="h4" mb={2} textTransform={'capitalize'}>
+            Selected use cases:{' '}
+            {filter(useCases, 'checked')
+              .map(e => e.title)
+              .join(', ')}
           </Typography>
         )}
         <Typography variant="body1" mb={2}>

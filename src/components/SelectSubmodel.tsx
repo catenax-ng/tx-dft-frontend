@@ -18,6 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 import { SelectList } from 'cx-portal-shared-components';
+import { filter } from 'lodash';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -29,7 +30,7 @@ import { useAppDispatch, useAppSelector } from '../features/store';
 
 const SelectSubmodel = () => {
   const { submodelList, selectedSubmodel } = useAppSelector(state => state.submodelSlice);
-  const { selectedUseCases } = useAppSelector(state => state.appSlice);
+  const { useCases } = useAppSelector(state => state.appSlice);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
@@ -45,8 +46,8 @@ const SelectSubmodel = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchSubmodelList(selectedUseCases));
-  }, [dispatch, selectedUseCases]);
+    dispatch(fetchSubmodelList(filter(useCases, 'checked').map(e => e.id)));
+  }, [dispatch, useCases]);
 
   return (
     <SelectList

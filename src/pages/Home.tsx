@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -21,15 +23,16 @@
 import '../styles/home.scss';
 
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Avatar, Box, FormControl, Grid, Stack } from '@mui/material';
-import { Button, Tab, TabPanel, Tabs, Typography } from 'cx-portal-shared-components';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Avatar, Box, FormControlLabel, Grid } from '@mui/material';
+import { Button, Checkbox, Tab, TabPanel, Tabs, Typography } from 'cx-portal-shared-components';
 import { SyntheticEvent, useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
+import customConfig from '../assets/customConfig/custom-theme.json';
 import { DataExchangeStepper } from '../components/DataExchangeStepper';
-import { setSelectedUseCases } from '../features/app/slice';
+import { setUseCases } from '../features/app/slice';
 import { IUseCase } from '../features/app/types';
-import { useGetUseCasesQuery } from '../features/home/apiSlice';
 import { clearRows, setSelectedSubmodel } from '../features/provider/submodels/slice';
 import { ISubmodelList } from '../features/provider/submodels/types';
 import { removeSelectedFiles, setUploadStatus } from '../features/provider/upload/slice';
@@ -40,27 +43,23 @@ import { openInNewTab } from '../utils/utils';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState(0);
-  const { loggedInUser, selectedUseCases } = useAppSelector(state => state.appSlice);
+  const { loggedInUser, useCases } = useAppSelector(state => state.appSlice);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const { data, isSuccess } = useGetUseCasesQuery({});
 
   const handleUseCaseChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (usecase: IUseCase) => {
       // Clearing all the ongoing uploads
       dispatch(setSelectedSubmodel({} as ISubmodelList));
       dispatch(setUploadStatus(true));
       dispatch(clearRows());
       dispatch(removeSelectedFiles());
 
-      const { value, checked } = event.target;
-      if (checked) {
-        dispatch(setSelectedUseCases([...selectedUseCases, value]));
-      } else {
-        dispatch(setSelectedUseCases(selectedUseCases.filter((e: string) => e !== value)));
-      }
+      const res = useCases.map(item => (item.id === usecase.id ? { ...item, checked: !item.checked } : item));
+      console.log(res);
+      dispatch(setUseCases(res));
     },
-    [dispatch, selectedUseCases],
+    [dispatch, useCases],
   );
 
   const handleTabChange = (_event: SyntheticEvent, newValue: number) => {
@@ -78,7 +77,9 @@ export default function Home() {
           {t('content.common.introduction')}
         </Typography>
         <Box>
-          <Typography>{t('content.home.sdeDescription')}</Typography>
+          <Typography>
+            <Trans i18nKey={'content.home.sdeDescription'} values={{ title: customConfig.title }} />
+          </Typography>
           <Button
             variant="text"
             size="medium"
@@ -109,30 +110,32 @@ export default function Home() {
         <Typography variant="body1" maxWidth={1000}>
           {t('content.home.selectUsecasesSubheader')}
         </Typography>
-        <FormControl component="fieldset" variant="standard">
-          {isSuccess && (
-            <Stack direction="row" spacing={1} mt={3} sx={{ flexWrap: 'wrap', gap: 1 }}>
-              {data?.map((item: IUseCase) => (
-                <Box className="usecase-tile" key={item.id}>
-                  <input
-                    type="checkbox"
-                    name={item.title}
-                    value={item.id}
-                    id={item.id}
-                    onChange={handleUseCaseChange}
-                    checked={selectedUseCases.includes(item.id)}
-                  />
-                  <label className="usecase-tile-content" htmlFor={item.id}>
-                    <Stack className="usecase-tile-content-wrapper" spacing={2}>
+        {useCases && (
+          <Grid container spacing={3} mt={0}>
+            {useCases.map((item: IUseCase) => (
+              <Grid item key={item.id}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={item.checked}
+                      onChange={() => handleUseCaseChange(item)}
+                      sx={{ '&.MuiCheckbox-root': { display: 'none' } }}
+                    />
+                  }
+                  label={
+                    <Box className="usecase-tile-content">
+                      {item.checked && (
+                        <CheckCircleIcon color="primary" sx={{ position: 'absolute', top: 15, right: 15 }} />
+                      )}
                       <Avatar src={`images/${item.id}.png`} sx={{ width: 60, height: 60 }} />
                       <Typography variant="subtitle1">{item.title}</Typography>
-                    </Stack>
-                  </label>
-                </Box>
-              ))}
-            </Stack>
-          )}
-        </FormControl>
+                    </Box>
+                  }
+                />
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Grid>
       <Grid item xs={12} my={5}>
         <Typography variant="h4" mb={1}>

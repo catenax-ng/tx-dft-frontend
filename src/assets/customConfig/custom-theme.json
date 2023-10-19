@@ -1,6 +1,7 @@
 {
   "theme": {},
   "showSdeVersion": true,
+  "title": "Simple Data Exchanger",
   "poweredBy": {
     "visible": false,
     "name": "",

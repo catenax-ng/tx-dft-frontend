@@ -18,9 +18,10 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { createTheme } from '@mui/material/styles';
 import { theme as CxTheme } from 'cx-portal-shared-components';
 import { merge } from 'lodash';
 
 import customConfig from './assets/customConfig/custom-theme.json';
 
-export const sdeTheme = merge(CxTheme, customConfig.theme);
+export const sdeTheme = createTheme(merge(CxTheme, customConfig.theme));
