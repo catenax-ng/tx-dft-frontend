@@ -29,7 +29,7 @@ import { Button, Checkbox, Tab, TabPanel, Tabs, Typography } from 'cx-portal-sha
 import { SyntheticEvent, useCallback, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import customConfig from '../assets/customConfig/custom-theme.json';
+import customConfig from '../assets/customConfig/custom-config.json';
 import { DataExchangeStepper } from '../components/DataExchangeStepper';
 import { setUseCases } from '../features/app/slice';
 import { IUseCase } from '../features/app/types';

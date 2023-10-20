@@ -20,7 +20,7 @@
 import { ErrorPage } from 'cx-portal-shared-components';
 import { Outlet } from 'react-router-dom';
 
-import customConfig from './assets/customConfig/custom-theme.json';
+import customConfig from './assets/customConfig/custom-config.json';
 import AppLayout from './components/layouts/AppLayout';
 import { IUser } from './features/app/types';
 import UserService from './services/UserService';

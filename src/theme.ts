@@ -22,6 +22,6 @@ import { createTheme } from '@mui/material/styles';
 import { theme as CxTheme } from 'cx-portal-shared-components';
 import { merge } from 'lodash';
 
-import customConfig from './assets/customConfig/custom-theme.json';
+import customConfig from './assets/customConfig/custom-config.json';
 
 export const sdeTheme = createTheme(merge(CxTheme, customConfig.theme));

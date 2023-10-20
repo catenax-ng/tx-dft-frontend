@@ -26,7 +26,7 @@ import { useTranslation } from 'react-i18next';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import appPackageJson from '../../../package.json';
-import customConfig from '../../assets/customConfig/custom-theme.json';
+import customConfig from '../../assets/customConfig/custom-config.json';
 import { setSidebarExpanded } from '../../features/app/slice';
 import { useAppDispatch } from '../../features/store';
 
