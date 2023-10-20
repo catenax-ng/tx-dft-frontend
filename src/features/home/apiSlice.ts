@@ -18,7 +18,7 @@
  ********************************************************************************/
 
 import { apiSlice } from '../app/apiSlice';
-import { setPageLoading, setUseCases } from '../app/slice';
+import { setPageLoading, setPermissions, setUseCases } from '../app/slice';
 import { UseCaseSelectionModel } from '../app/types';
 
 export const homeApiSlice = apiSlice.injectEndpoints({
@@ -39,7 +39,23 @@ export const homeApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
+    getPermissions: builder.query({
+      query: () => {
+        return {
+          url: '/user/role/permissions',
+        };
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          dispatch(setPageLoading(true));
+          const data = (await queryFulfilled).data;
+          dispatch(setPermissions(data));
+        } finally {
+          dispatch(setPageLoading(false));
+        }
+      },
+    }),
   }),
 });
 
-export const { useGetUseCasesQuery } = homeApiSlice;
+export const { useGetUseCasesQuery, useGetPermissionsQuery } = homeApiSlice;

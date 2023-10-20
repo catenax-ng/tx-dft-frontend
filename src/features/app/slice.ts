@@ -20,7 +20,6 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchUserPermissions } from './actions';
 import { IAppSlice } from './types';
 
 const initialState: IAppSlice = {
@@ -38,8 +37,6 @@ const initialState: IAppSlice = {
   permissions: [],
   sidebarExpanded: true,
   useCases: [],
-  selectedUseCases: [],
-  checkedUseCases: [],
 };
 export const appSlice = createSlice({
   name: 'appSlice',
@@ -54,33 +51,14 @@ export const appSlice = createSlice({
     setSidebarExpanded: state => {
       state.sidebarExpanded = !state.sidebarExpanded;
     },
-    setSelectedUseCases: (state, action) => {
-      state.selectedUseCases = action.payload;
-    },
-    setCheckeduseCases: (state, { payload }) => {
-      state.checkedUseCases = payload;
-    },
     setUseCases: (state, { payload }) => {
       state.useCases = payload;
     },
-  },
-  extraReducers: builder => {
-    builder.addCase(fetchUserPermissions.pending, state => {
-      state.pageLoading = true;
-    });
-    builder.addCase(fetchUserPermissions.fulfilled, (state, action) => {
-      state.permissions = action.payload;
-      state.pageLoading = false;
-    });
+    setPermissions: (state, { payload }) => {
+      state.permissions = payload;
+    },
   },
 });
 
-export const {
-  setPageLoading,
-  setLoggedInUser,
-  setSelectedUseCases,
-  setSidebarExpanded,
-  setCheckeduseCases,
-  setUseCases,
-} = appSlice.actions;
+export const { setPageLoading, setLoggedInUser, setSidebarExpanded, setUseCases, setPermissions } = appSlice.actions;
 export default appSlice.reducer;

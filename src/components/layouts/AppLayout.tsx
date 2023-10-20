@@ -18,11 +18,9 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 import { Box } from '@mui/material';
-import { useEffect } from 'react';
 
-import { fetchUserPermissions } from '../../features/app/actions';
 import { setLoggedInUser } from '../../features/app/slice';
-import { useGetUseCasesQuery } from '../../features/home/apiSlice';
+import { useGetPermissionsQuery, useGetUseCasesQuery } from '../../features/home/apiSlice';
 import { useAppDispatch } from '../../features/store';
 import Nav from '../Nav';
 import Sidebar from '../sidebar';
@@ -30,12 +28,10 @@ import Sidebar from '../sidebar';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function AppLayout(props: any) {
   useGetUseCasesQuery({});
+  useGetPermissionsQuery({});
+
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(fetchUserPermissions());
-    dispatch(setLoggedInUser(props.loggedUser));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  dispatch(setLoggedInUser(props.loggedUser));
 
   return (
     <Box sx={{ my: 0, mx: 'auto', overflowY: 'auto', overflowX: 'hidden', height: '100vh' }}>
