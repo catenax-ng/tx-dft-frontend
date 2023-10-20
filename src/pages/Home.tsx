@@ -56,7 +56,6 @@ export default function Home() {
       dispatch(removeSelectedFiles());
 
       const res = useCases.map(item => (item.id === usecase.id ? { ...item, checked: !item.checked } : item));
-      console.log(res);
       dispatch(setUseCases(res));
     },
     [dispatch, useCases],

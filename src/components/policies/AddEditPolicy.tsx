@@ -66,8 +66,7 @@ function AddEditPolicy() {
     if (policyDialogType === 'Add') {
       await createPolicy({ ...payload })
         .unwrap()
-        .then(res => {
-          console.log(res);
+        .then(() => {
           dispatch(setPolicyDialog(false));
         });
     } else if (policyDialogType === 'Edit') {
