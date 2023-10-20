@@ -34,7 +34,7 @@ RUN npm install && npm run build
 
 #### Stage 2: Serve the application from Nginx
 
-FROM nginx:1.25.2-bookworm
+FROM nginxinc/nginx-unprivileged:alpine3.18-perl
 # Nginx config
 RUN rm -rf /etc/nginx/conf.d
 USER root 
@@ -45,8 +45,9 @@ COPY --from=builder /app/build .
 COPY ./env.sh .
 RUN chown 101:101 /usr/share/nginx/html/
 RUN chmod ug+rwx /usr/share/nginx/html/
-HEALTHCHECK NONE
 EXPOSE 8080
 USER 101
 # Start Nginx server
-CMD ["/bin/bash", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
+
+CMD ["/bin/sh", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
+#CMD ["nginx", "-g", "daemon off;"]
