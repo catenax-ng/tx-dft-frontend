@@ -256,7 +256,7 @@ export default function AddPolicy() {
         <UsagePolicy />
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" sx={{ mr: 2 }} onClick={() => dispatch(handleDialogClose())}>
+        <Button variant="contained" sx={{ mr: 2 }} onClick={() => dispatch(handleDialogClose())}>
           {t('button.close')}
         </Button>
         <Button variant="contained" onClick={handleSubmitData} disabled={showError}>

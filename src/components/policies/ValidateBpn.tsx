@@ -255,7 +255,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
           <DialogContent>{data?.msg}</DialogContent>
           <DialogActions>
             <Button
-              variant="outlined"
+              variant="contained"
               onClick={() => {
                 setAddBpnPrompt(false);
               }}

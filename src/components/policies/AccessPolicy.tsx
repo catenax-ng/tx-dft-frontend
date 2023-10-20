@@ -244,7 +244,7 @@ export default function AccessPolicy() {
           <DialogContent>{data.msg}</DialogContent>
           <DialogActions>
             <Button
-              variant="outlined"
+              variant="contained"
               onClick={() => {
                 setAddBpnPrompt(false);
               }}

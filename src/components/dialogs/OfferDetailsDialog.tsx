@@ -115,7 +115,7 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
         </>
       )}
       <DialogActions>
-        <Button variant="outlined" onClick={() => handleClose(false)}>
+        <Button variant="contained" onClick={() => handleClose(false)}>
           {t('button.close')}
         </Button>
         <Permissions values={['consumer_subscribe_download_data_offers']}>

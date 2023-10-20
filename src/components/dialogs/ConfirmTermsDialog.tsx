@@ -85,7 +85,7 @@ const ConfirmTermsDialog: React.FC<IntDialogProps> = ({
         )}
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" disabled={isProgress} onClick={() => handleClose(false)}>
+        <Button variant="contained" disabled={isProgress} onClick={() => handleClose(false)}>
           {t('button.cancel')}
         </Button>
         <LoadingButton

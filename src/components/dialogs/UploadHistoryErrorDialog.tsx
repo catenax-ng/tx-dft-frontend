@@ -120,7 +120,7 @@ const UploadHistoryErrorDialog: React.FC<UploadHistoryErrorDialogProps> = ({ ope
         </>
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={() => handleClose()}>
+        <Button variant="contained" onClick={() => handleClose()}>
           {t('button.close')}
         </Button>
       </DialogActions>
