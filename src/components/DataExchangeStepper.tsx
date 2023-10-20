@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import { IDataSteps } from '../models/Home';
+import { sdeTheme } from '../theme';
 
 interface IDataExchangeStepper {
   data: IDataSteps[];
@@ -48,7 +49,7 @@ export const DataExchangeStepper: React.FC<IDataExchangeStepper> = ({ data }) =>
                   }}
                 >
                   <Typography variant="h5">{step.stepNum}</Typography>
-                  <Divider sx={{ background: '#0F71CB' }} />
+                  <Divider sx={{ background: sdeTheme.palette.primary.main }} />
                   <Typography variant="subtitle1" mt={2}>
                     {t(step.stepTitle)}
                   </Typography>

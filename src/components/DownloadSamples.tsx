@@ -61,7 +61,6 @@ export default function DownloadSamples({ submodel }: { submodel: string }) {
         loading={downloadingSample}
         onButtonClick={() => download('sample')}
         size="small"
-        variant="outlined"
       />
       <LoadingButton
         endIcon={<FileDownloadIcon />}
@@ -70,7 +69,6 @@ export default function DownloadSamples({ submodel }: { submodel: string }) {
         loading={downloadingTemplate}
         onButtonClick={() => download('template')}
         size="small"
-        variant="outlined"
       />
     </Stack>
   );

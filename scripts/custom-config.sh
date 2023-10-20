@@ -24,14 +24,31 @@
 # Learn more about MUI theming - https://mui.com/material-ui/customization/theming/
 
 custom_theme_config='{
-  "theme": {},
-  "showSdeVersion": true,
-  "title": "Simple Data Exchanger",
+  "theme": {
+    "palette": {
+      "primary": {
+        "main": "#E20074",
+        "dark": "#E20074",
+        "contrastText": "#fff"
+      },
+      "secondary": {
+        "main": "#F7F7F8",
+        "dark": "#F7F7F8",
+        "contrastText": "#E20074"
+      },
+      "brand": {
+        "brand01": "#E20074",
+        "brand02": "#B3CB2D"
+      }
+    }
+  },
+  "title": "Connect Advanced",
+  "showSdeVersion": false,
   "poweredBy": {
-    "visible": false,
-    "name": "",
-    "logoUrl": "",
-    "redirectUrl": ""
+    "visible": true,
+    "name": "<b>Powered by</b><br/>Data Intelligence Hub",
+    "logoUrl": "image/back-image.jpg",
+    "redirectUrl": "https://portal.dih.telekom.com/"
   }
 }'
 
