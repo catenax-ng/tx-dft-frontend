@@ -21,7 +21,8 @@
 
 import './styles/index.scss';
 
-import { SharedCssBaseline, SharedThemeProvider } from 'cx-portal-shared-components';
+import { ThemeProvider } from '@mui/material';
+import { SharedCssBaseline } from 'cx-portal-shared-components';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -30,6 +31,7 @@ import App from './App';
 import { store } from './features/store';
 import I18nService from './services/i18nService';
 import UserService from './services/UserService';
+import { sdeTheme } from './theme';
 import { clearConsoles } from './utils/utils';
 
 clearConsoles();
@@ -40,9 +42,9 @@ UserService.initKeycloak(user => {
     <React.StrictMode>
       <SharedCssBaseline />
       <Provider store={store}>
-        <SharedThemeProvider>
+        <ThemeProvider theme={sdeTheme}>
           <App loggedUser={user} />
-        </SharedThemeProvider>
+        </ThemeProvider>
       </Provider>
     </React.StrictMode>,
     document.getElementById('root'),

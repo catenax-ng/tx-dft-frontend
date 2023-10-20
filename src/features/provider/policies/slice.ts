@@ -56,9 +56,7 @@ export const accessUsagePolicySlice = createSlice({
   initialState,
   reducers: {
     setPolicyData: (state, action: PayloadAction<PolicyModel>) => {
-      console.log('raw data', action.payload);
       state.policyData = new PolicyModel(action.payload);
-      console.log('policydata', state.policyData);
     },
     setPolicyDialog: (state, action: PayloadAction<boolean>) => {
       state.policyDialog = action.payload;

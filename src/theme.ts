@@ -1,6 +1,7 @@
 /********************************************************************************
  * Copyright (c) 2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -17,29 +18,10 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { apiSlice } from '../app/apiSlice';
-import { setPageLoading, setUseCases } from '../app/slice';
-import { UseCaseSelectionModel } from '../app/types';
+import { createTheme } from '@mui/material/styles';
+import { theme as CxTheme } from 'cx-portal-shared-components';
+import { merge } from 'lodash';
 
-export const homeApiSlice = apiSlice.injectEndpoints({
-  endpoints: builder => ({
-    getUseCases: builder.query({
-      query: () => {
-        return {
-          url: '/usecases',
-        };
-      },
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          dispatch(setPageLoading(true));
-          const data = UseCaseSelectionModel.create((await queryFulfilled).data);
-          dispatch(setUseCases(data));
-        } finally {
-          dispatch(setPageLoading(false));
-        }
-      },
-    }),
-  }),
-});
+import customConfig from './assets/customConfig/custom-config.json';
 
-export const { useGetUseCasesQuery } = homeApiSlice;
+export const sdeTheme = createTheme(merge(CxTheme, customConfig.theme));

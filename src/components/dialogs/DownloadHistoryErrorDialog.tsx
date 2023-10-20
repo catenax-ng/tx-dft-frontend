@@ -129,7 +129,7 @@ const DownloadHistoryErrorDialog: React.FC<IDownloadHistoryErrorDialog> = ({
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={handleDialogClose}>
+        <Button variant="contained" onClick={handleDialogClose}>
           {t('button.close')}
         </Button>
       </DialogActions>

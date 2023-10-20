@@ -66,8 +66,7 @@ function AddEditPolicy() {
     if (policyDialogType === 'Add') {
       await createPolicy({ ...payload })
         .unwrap()
-        .then(res => {
-          console.log(res);
+        .then(() => {
           dispatch(setPolicyDialog(false));
         });
     } else if (policyDialogType === 'Edit') {
@@ -266,7 +265,7 @@ function AddEditPolicy() {
         </form>
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" sx={{ mr: 2 }} onClick={() => dispatch(setPolicyDialog(false))}>
+        <Button variant="contained" sx={{ mr: 2 }} onClick={() => dispatch(setPolicyDialog(false))}>
           {t('button.close')}
         </Button>
         <Button variant="contained" type="submit" onClick={handleSubmit(onSubmit)}>

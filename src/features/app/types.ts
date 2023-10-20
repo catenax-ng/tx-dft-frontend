@@ -35,14 +35,25 @@ export interface IAppSlice {
   loggedInUser: IUser;
   permissions: string[];
   selectedUseCases: string[];
+  checkedUseCases: UseCaseSelectionModel[];
+  useCases: IUseCase[];
   sidebarExpanded: boolean;
 }
 export interface IUseCase {
   id: string;
   title: string;
+  checked?: boolean;
 }
 export interface IExtraOptions {
   showNotification?: boolean;
   message?: string;
   type?: IAlertColors;
+}
+
+export class UseCaseSelectionModel {
+  static create(useCase: IUseCase[]) {
+    return useCase.map(item => {
+      return { id: item.id, title: item.title, checked: false };
+    });
+  }
 }

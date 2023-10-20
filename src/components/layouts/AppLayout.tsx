@@ -22,12 +22,14 @@ import { useEffect } from 'react';
 
 import { fetchUserPermissions } from '../../features/app/actions';
 import { setLoggedInUser } from '../../features/app/slice';
+import { useGetUseCasesQuery } from '../../features/home/apiSlice';
 import { useAppDispatch } from '../../features/store';
 import Nav from '../Nav';
 import Sidebar from '../sidebar';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function AppLayout(props: any) {
+  useGetUseCasesQuery({});
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchUserPermissions());

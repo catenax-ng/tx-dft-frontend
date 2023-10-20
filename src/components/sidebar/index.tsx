@@ -73,7 +73,7 @@ export default function Sidebar() {
           ))}
         </Box>
         <Box>
-          <CollapseMenuItem />
+          <CollapseMenuItem sidebarExpanded={sidebarExpanded} />
         </Box>
       </List>
     </Box>

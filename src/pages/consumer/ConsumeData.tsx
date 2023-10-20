@@ -636,7 +636,7 @@ export default function ConsumeData() {
         <DialogHeader title={t('dialog.samePolicies.title')} />
         <DialogContent>{t('dialog.samePolicies.content')}</DialogContent>
         <DialogActions>
-          <Button variant="outlined" onClick={showAddDialog}>
+          <Button variant="contained" onClick={showAddDialog}>
             {t('button.okay')}
           </Button>
         </DialogActions>

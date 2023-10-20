@@ -18,15 +18,15 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 import { ErrorPage } from 'cx-portal-shared-components';
-import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
 
+import customConfig from './assets/customConfig/custom-config.json';
 import AppLayout from './components/layouts/AppLayout';
 import { IUser } from './features/app/types';
 import UserService from './services/UserService';
 
 export default function Main({ loggedUser }: { loggedUser: IUser }) {
-  document.title = useTranslation().t('title');
+  document.title = customConfig.title;
 
   return (
     <>
