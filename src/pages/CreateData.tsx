@@ -22,13 +22,14 @@
 import InfoIcon from '@mui/icons-material/Info';
 import { Box, Grid } from '@mui/material';
 import { CustomAccordion, Tab, TabPanel, Tabs, Tooltips, Typography } from 'cx-portal-shared-components';
-import { filter, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import { SyntheticEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import DownloadSamples from '../components/DownloadSamples';
 import PoliciesDialog from '../components/policies/AddPolicy';
+import SelectedUseCases from '../components/SelectedUseCases';
 import SelectSubmodel from '../components/SelectSubmodel';
 import SubmodelDataTable from '../components/SubmodelDataTable';
 import SubmodelInfo from '../components/SubmodelInfo';
@@ -38,7 +39,6 @@ import { useAppSelector } from '../features/store';
 export default function CreateData() {
   const [activeTab, setActiveTab] = useState(0);
   const { selectedSubmodel } = useAppSelector(state => state.submodelSlice);
-  const { useCases } = useAppSelector(state => state.appSlice);
   const { t } = useTranslation();
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
@@ -50,14 +50,7 @@ export default function CreateData() {
       <Typography variant="h3" mb={1}>
         {t('pages.manualUpload')}
       </Typography>
-      {!isEmpty(filter(useCases, 'checked')) && (
-        <Typography variant="h4" mb={2} textTransform={'capitalize'}>
-          Selected use cases:{' '}
-          {filter(useCases, 'checked')
-            .map(e => e.title)
-            .join(', ')}
-        </Typography>
-      )}
+      <SelectedUseCases />
       <Typography variant="body1">{t('content.provider.description_1')}</Typography>
       <Typography variant="body1">{t('content.provider.description_2')}</Typography>
       <ul style={{ margin: 0 }}>

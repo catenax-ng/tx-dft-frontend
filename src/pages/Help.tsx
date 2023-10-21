@@ -23,11 +23,12 @@ import InfoIcon from '@mui/icons-material/Info';
 import { Box, Card, CardContent, Grid } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { Button, IconButton, Table, Tooltips, Typography } from 'cx-portal-shared-components';
-import { filter, isEmpty } from 'lodash';
+import { filter } from 'lodash';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import DownloadSamples from '../components/DownloadSamples';
+import SelectedUseCases from '../components/SelectedUseCases';
 import { useGetHelpPageDataQuery } from '../features/provider/submodels/apiSlice';
 import { HelpPageData } from '../features/provider/submodels/types';
 import { useAppSelector } from '../features/store';
@@ -87,14 +88,7 @@ export default function Help() {
         <Typography variant="h3" mb={1}>
           {t('pages.help')}
         </Typography>
-        {!isEmpty(filter(useCases, 'checked')) && (
-          <Typography variant="h4" mb={2} textTransform={'capitalize'}>
-            Selected use cases:{' '}
-            {filter(useCases, 'checked')
-              .map(e => e.title)
-              .join(', ')}
-          </Typography>
-        )}
+        <SelectedUseCases />
         <Typography variant="body1" mb={2}>
           {t('content.help.description')}
         </Typography>
