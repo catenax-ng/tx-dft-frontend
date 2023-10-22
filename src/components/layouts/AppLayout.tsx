@@ -19,8 +19,8 @@
  ********************************************************************************/
 import { Box } from '@mui/material';
 
+import { useGetPermissionsQuery, useGetUseCasesQuery } from '../../features/app/apiSlice';
 import { setLoggedInUser } from '../../features/app/slice';
-import { useGetPermissionsQuery, useGetUseCasesQuery } from '../../features/home/apiSlice';
 import { useAppDispatch } from '../../features/store';
 import Nav from '../Nav';
 import Sidebar from '../sidebar';

@@ -21,7 +21,8 @@ import { BaseQueryFn, createApi, FetchArgs, fetchBaseQuery, FetchBaseQueryError 
 
 import { apiBaseQuery } from '../../services/RequestService';
 import { setSnackbarMessage } from '../notifiication/slice';
-import { IExtraOptions } from './types';
+import { setPageLoading, setPermissions, setUseCases } from './slice';
+import { IExtraOptions, UseCaseSelectionModel } from './types';
 
 const baseQuery = fetchBaseQuery(apiBaseQuery());
 const baseQueryInterceptor: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, IExtraOptions> = async (
@@ -56,7 +57,40 @@ const baseQueryInterceptor: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQu
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryInterceptor,
-  endpoints: () => ({}),
+  endpoints: builder => ({
+    getUseCases: builder.query({
+      query: () => {
+        return {
+          url: '/usecases',
+        };
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          dispatch(setPageLoading(true));
+          const data = UseCaseSelectionModel.create((await queryFulfilled).data);
+          dispatch(setUseCases(data));
+        } finally {
+          dispatch(setPageLoading(false));
+        }
+      },
+    }),
+    getPermissions: builder.query({
+      query: () => {
+        return {
+          url: '/user/role/permissions',
+        };
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          dispatch(setPageLoading(true));
+          const data = (await queryFulfilled).data;
+          dispatch(setPermissions(data));
+        } finally {
+          dispatch(setPageLoading(false));
+        }
+      },
+    }),
+  }),
   tagTypes: [
     'UploadHistory',
     'DeleteContract',
@@ -68,3 +102,5 @@ export const apiSlice = createApi({
     'Policies',
   ],
 });
+
+export const { useGetUseCasesQuery, useGetPermissionsQuery } = apiSlice;
