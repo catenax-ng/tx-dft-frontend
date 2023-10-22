@@ -20,17 +20,17 @@
  ********************************************************************************/
 import { Box } from '@mui/material';
 import { Button, DropArea, DropPreview, UploadStatus } from 'cx-portal-shared-components';
-import { isEqual } from 'lodash';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 
-import { FileSize, FileType } from '../enums';
 import { setPageLoading } from '../features/app/slice';
 import { setSnackbarMessage } from '../features/notifiication/slice';
-import { handleDialogOpen } from '../features/provider/policies/slice';
-import { removeSelectedFiles, setSelectedFiles, setUploadStatus } from '../features/provider/upload/slice';
+import { setPolicyData, setPolicyDialog, setPolicyDialogType } from '../features/provider/policies/slice';
+import { removeSelectedFiles, setUploadStatus } from '../features/provider/upload/slice';
 import { useAppDispatch, useAppSelector } from '../features/store';
+import { csvHeaderValidation, fileSizeCheck } from '../helpers/FileDownloadHelper';
 import { Config } from '../utils/config';
+import { DEFAULT_POLICY_DATA } from '../utils/constants';
 import { trimText } from '../utils/utils';
 import InfoSteps from './InfoSteps';
 
@@ -40,33 +40,12 @@ export default function UploadFile() {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
-  function csvValidation(file: File) {
-    const reader = new FileReader();
-    reader.onload = async function (e) {
-      // Access to content with e.target.result
-      const fileData: any = e.target.result;
-      // seperate header from first row and columns from rest all
-      const [header] = fileData.split('\n').map((item: any) => item.trim().split(';'));
-      const validateHeaders = isEqual(header, Object.keys(row));
-      if (validateHeaders) dispatch(setSelectedFiles(file));
-      else dispatch(setSnackbarMessage({ type: 'error', message: 'alerts.incorrectColumns' }));
-    };
-    reader.readAsText(file);
-  }
-
   const handleFiles = (file: File) => {
     dispatch(setUploadStatus(false));
     dispatch(setPageLoading(false));
     const maxFileSize = parseInt(Config.REACT_APP_FILESIZE);
     if (file.size < maxFileSize) {
-      if (file.type === FileType.csv) csvValidation(file);
-      else
-        dispatch(
-          setSnackbarMessage({
-            message: 'alerts.invalidFile',
-            type: 'error',
-          }),
-        );
+      csvHeaderValidation(file, row);
     } else {
       dispatch(
         setSnackbarMessage({
@@ -90,14 +69,6 @@ export default function UploadFile() {
     },
   });
 
-  const fileSize = (size: number) => {
-    if (size === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes: string[] = Object.keys(FileSize);
-    const i = Math.floor(Math.log(size) / Math.log(k));
-    return `${parseFloat((size / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
-  };
-
   return (
     <>
       <Box
@@ -114,7 +85,11 @@ export default function UploadFile() {
           disabled={!selectedFiles.length}
           size="small"
           variant="contained"
-          onClick={() => dispatch(handleDialogOpen({ type: 'file' }))}
+          onClick={() => {
+            dispatch(setPolicyDialogType('FileWithPolicy'));
+            dispatch(setPolicyData(DEFAULT_POLICY_DATA));
+            dispatch(setPolicyDialog(true));
+          }}
         >
           {t('content.policies.configure')}
         </Button>
@@ -144,7 +119,7 @@ export default function UploadFile() {
                 uploadFiles={[
                   {
                     name: trimText(selectedFiles[0].name, 20),
-                    size: parseInt(fileSize(selectedFiles[0].size), 10),
+                    size: parseInt(fileSizeCheck(selectedFiles[0].size), 10),
                     status: UploadStatus.NEW,
                   },
                 ]}
