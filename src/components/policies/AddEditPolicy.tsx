@@ -70,10 +70,10 @@ function AddEditPolicy() {
     try {
       switch (policyDialogType) {
         case 'Add':
-          await createPolicy(payload);
+          await createPolicy({ ...payload });
           break;
         case 'Edit':
-          await updatePolicy(payload);
+          await updatePolicy({ ...payload });
           break;
         case 'FileWithPolicy':
           await dispatch(uploadFileWithPolicy(payload));
@@ -117,13 +117,12 @@ function AddEditPolicy() {
                 name="policy_name"
                 control={control}
                 rules={{
-                  required: showPolicyName && true,
+                  required: showPolicyName,
                 }}
                 render={({ field, fieldState: { error } }) => (
                   <Input
                     {...field}
                     variant="filled"
-                    inputRef={field.ref}
                     label={'Policy name'}
                     placeholder={'Enter policy name'}
                     type={'text'}
@@ -184,7 +183,6 @@ function AddEditPolicy() {
                         <Input
                           {...field}
                           variant="filled"
-                          inputRef={field.ref}
                           label={t('content.common.enterValue')}
                           placeholder={t('content.common.enterValue')}
                           type="number"
@@ -207,7 +205,6 @@ function AddEditPolicy() {
                           defaultValue={field.value}
                           items={DURATION_UNITS}
                           variant="filled"
-                          inputRef={field.ref}
                           label={t('content.policies.selectDuration')}
                           placeholder={t('content.policies.selectDuration')}
                           error={!!error}
@@ -260,7 +257,6 @@ function AddEditPolicy() {
                     items={PURPOSE_VALUES}
                     {...field}
                     variant="filled"
-                    inputRef={field.ref}
                     label={t('content.policies.purposeLabel')}
                     placeholder={t('content.policies.purposeLabel')}
                     type={'text'}
