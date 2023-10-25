@@ -45,7 +45,7 @@ import ValidateBpn from './ValidateBpn';
 function AddEditPolicy() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { policyDialog, policyDialogType, policyData } = useAppSelector(state => state.accessUsagePolicySlice);
+  const { policyDialog, policyDialogType, policyData } = useAppSelector(state => state.policySlice);
   const { rows } = useAppSelector(state => state.submodelSlice);
 
   const { control, handleSubmit, watch, resetField, getValues, setValue, reset } = useForm<PolicyModel>({
@@ -93,7 +93,7 @@ function AddEditPolicy() {
       <DialogHeader
         closeWithIcon
         onCloseWithIcon={() => dispatch(setPolicyDialog(false))}
-        title={t(policyDialogType === 'Add' ? 'content.policies.addPolicy' : 'content.policies.title')}
+        title={t(policyDialogType === 'Edit' ? 'content.policies.editPolicy' : 'content.policies.addPolicy')}
       />
       <DialogContent>
         <Typography variant="body2">
