@@ -20,6 +20,7 @@
 
 import { apiSlice } from '../../app/apiSlice';
 import { setPageLoading } from '../../app/slice';
+import { setPolicyDialog } from './slice';
 
 export const policiesApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -46,6 +47,7 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
         try {
           dispatch(setPageLoading(true));
           await queryFulfilled;
+          dispatch(setPolicyDialog(false));
         } finally {
           dispatch(setPageLoading(false));
         }
@@ -65,6 +67,7 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
         try {
           dispatch(setPageLoading(true));
           await queryFulfilled;
+          dispatch(setPolicyDialog(false));
         } finally {
           dispatch(setPageLoading(false));
         }

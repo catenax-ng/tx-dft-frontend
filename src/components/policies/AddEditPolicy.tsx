@@ -34,6 +34,7 @@ import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import { uploadFileWithPolicy, uploadTableWithPolicy } from '../../features/provider/policies/actions';
 import { useCreatePolicyMutation, useUpdatePolicyMutation } from '../../features/provider/policies/apiSlice';
 import { setPolicyDialog } from '../../features/provider/policies/slice';
 import { useAppDispatch, useAppSelector } from '../../features/store';
@@ -44,7 +45,8 @@ import ValidateBpn from './ValidateBpn';
 function AddEditPolicy() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { policyDialog, policyDialogType, policyData } = useAppSelector(state => state.accessUsagePolicySlice);
+  const { policyDialog, policyDialogType, policyData } = useAppSelector(state => state.policySlice);
+  const { rows } = useAppSelector(state => state.submodelSlice);
 
   const { control, handleSubmit, watch, resetField, getValues, setValue, reset } = useForm<PolicyModel>({
     mode: 'onSubmit',
@@ -58,32 +60,40 @@ function AddEditPolicy() {
   const purposeType = watch('usage_policies.PURPOSE.typeOfAccess');
   const durationType = watch('usage_policies.DURATION.typeOfAccess');
 
+  const showPolicyName = policyDialogType === 'Add' || policyDialogType === 'Edit';
+
   const [createPolicy] = useCreatePolicyMutation();
   const [updatePolicy] = useUpdatePolicyMutation();
 
   const onSubmit = async (data: PolicyModel) => {
     const payload = new PolicyPayload(data);
-    if (policyDialogType === 'Add') {
-      await createPolicy({ ...payload })
-        .unwrap()
-        .then(() => {
-          dispatch(setPolicyDialog(false));
-        });
-    } else if (policyDialogType === 'Edit') {
-      await updatePolicy({ ...payload })
-        .unwrap()
-        .then(() => {
-          dispatch(setPolicyDialog(false));
-        });
+    try {
+      switch (policyDialogType) {
+        case 'Add':
+          await createPolicy({ ...payload });
+          break;
+        case 'Edit':
+          await updatePolicy({ ...payload });
+          break;
+        case 'FileWithPolicy':
+          await dispatch(uploadFileWithPolicy(payload));
+          break;
+        case 'TableWithPolicy':
+          await dispatch(uploadTableWithPolicy({ ...payload, row_data: rows }));
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
-
   return (
     <Dialog open={policyDialog}>
       <DialogHeader
         closeWithIcon
         onCloseWithIcon={() => dispatch(setPolicyDialog(false))}
-        title={t(policyDialogType === 'Add' ? 'content.policies.addPolicy' : 'content.policies.title')}
+        title={t(policyDialogType === 'Edit' ? 'content.policies.editPolicy' : 'content.policies.addPolicy')}
       />
       <DialogContent>
         <Typography variant="body2">
@@ -101,26 +111,27 @@ function AddEditPolicy() {
           </li>
         </ol>
         <form>
-          <FormControl sx={{ mb: 3, width: 300 }}>
-            <Controller
-              name="policy_name"
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({ field, fieldState: { error } }) => (
-                <Input
-                  {...field}
-                  variant="filled"
-                  inputRef={field.ref}
-                  label={'Policy name'}
-                  placeholder={'Enter policy name'}
-                  type={'text'}
-                  error={!!error}
-                />
-              )}
-            />
-          </FormControl>
+          {showPolicyName && (
+            <FormControl sx={{ mb: 3, width: 300 }}>
+              <Controller
+                name="policy_name"
+                control={control}
+                rules={{
+                  required: showPolicyName,
+                }}
+                render={({ field, fieldState: { error } }) => (
+                  <Input
+                    {...field}
+                    variant="filled"
+                    label={'Policy name'}
+                    placeholder={'Enter policy name'}
+                    type={'text'}
+                    error={!!error}
+                  />
+                )}
+              />
+            </FormControl>
+          )}
           <Typography fontWeight={'bold'}>{t('content.policies.accessPolicy')}</Typography>
           <ValidateBpn
             control={control}
@@ -172,7 +183,6 @@ function AddEditPolicy() {
                         <Input
                           {...field}
                           variant="filled"
-                          inputRef={field.ref}
                           label={t('content.common.enterValue')}
                           placeholder={t('content.common.enterValue')}
                           type="number"
@@ -195,7 +205,6 @@ function AddEditPolicy() {
                           defaultValue={field.value}
                           items={DURATION_UNITS}
                           variant="filled"
-                          inputRef={field.ref}
                           label={t('content.policies.selectDuration')}
                           placeholder={t('content.policies.selectDuration')}
                           error={!!error}
@@ -248,7 +257,6 @@ function AddEditPolicy() {
                     items={PURPOSE_VALUES}
                     {...field}
                     variant="filled"
-                    inputRef={field.ref}
                     label={t('content.policies.purposeLabel')}
                     placeholder={t('content.policies.purposeLabel')}
                     type={'text'}

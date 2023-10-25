@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -17,12 +18,16 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { GridValidRowModel } from '@mui/x-data-grid';
 import saveAs from 'file-saver';
+import { isEqual } from 'lodash';
 
+import { FileSize, FileType } from '../enums';
 import { setSnackbarMessage } from '../features/notifiication/slice';
+import { setSelectedFiles } from '../features/provider/upload/slice';
 import { store } from '../features/store';
 
-function csvFileDownload(data: BlobPart, name: string) {
+const csvFileDownload = (data: BlobPart, name: string) => {
   const file = new File([data], `${name}.csv`, { type: 'text/csv;charset=utf-8' });
   saveAs(file);
   store.dispatch(
@@ -31,6 +36,36 @@ function csvFileDownload(data: BlobPart, name: string) {
       type: 'success',
     }),
   );
-}
+};
 
-export { csvFileDownload };
+const csvHeaderValidation = (file: File, row: GridValidRowModel) => {
+  if (file.type === FileType.csv) {
+    const reader = new FileReader();
+    reader.onload = async function (e) {
+      // Access to content with e.target.result
+      const fileData: any = e.target.result;
+      // seperate header from first row and columns from rest all
+      const [header] = fileData.split('\n').map((item: any) => item.trim().split(';'));
+      const validateHeaders = isEqual(header, Object.keys(row));
+      if (validateHeaders) store.dispatch(setSelectedFiles(file));
+      else store.dispatch(setSnackbarMessage({ type: 'error', message: 'alerts.incorrectColumns' }));
+    };
+    reader.readAsText(file);
+  } else
+    store.dispatch(
+      setSnackbarMessage({
+        message: 'alerts.invalidFile',
+        type: 'error',
+      }),
+    );
+};
+
+const fileSizeCheck = (size: number) => {
+  if (size === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes: string[] = Object.keys(FileSize);
+  const i = Math.floor(Math.log(size) / Math.log(k));
+  return `${parseFloat((size / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+};
+
+export { csvFileDownload, csvHeaderValidation, fileSizeCheck };

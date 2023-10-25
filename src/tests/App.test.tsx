@@ -23,7 +23,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import UploadFile from '../components/UploadFile';
-import { handleDialogOpen } from '../features/provider/policies/slice';
+import { setPolicyDialog } from '../features/provider/policies/slice';
 import { store } from '../features/store';
 import CreateData from '../pages/CreateData';
 import Help from '../pages/Help';
@@ -59,7 +59,7 @@ describe('Dashboard', () => {
       </MemoryRouter>,
       { wrapper: ReduxWrapper },
     );
-    store?.dispatch(handleDialogOpen(true));
+    store?.dispatch(setPolicyDialog(true));
     expect(screen.queryByText('Policies')).toBeInTheDocument();
   });
 });
