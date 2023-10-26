@@ -17,9 +17,9 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
+import { Button } from '@catena-x/portal-shared-components';
 import { Box } from '@mui/material';
-import { DataGrid, GridCellEditCommitParams, GridRowId } from '@mui/x-data-grid';
-import { Button } from 'cx-portal-shared-components';
+import { DataGrid, GridRowId } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';
 
 import { addRows, deleteRows, setRows, setSelectionModel } from '../features/provider/submodels/slice';
@@ -67,13 +67,13 @@ export default function DataTable() {
         columns={columns}
         hideFooter={true}
         disableColumnMenu={true}
-        disableSelectionOnClick={true}
+        disableRowSelectionOnClick={true}
         checkboxSelection
-        selectionModel={selectionModel}
-        onSelectionModelChange={(ids: GridRowId[]) => {
+        rowSelectionModel={selectionModel}
+        onRowSelectionModelChange={(ids: GridRowId[]) => {
           dispatch(setSelectionModel(ids));
         }}
-        onCellEditCommit={(params: GridCellEditCommitParams) => {
+        processRowUpdate={params => {
           dispatch(setRows(params));
         }}
         sx={{

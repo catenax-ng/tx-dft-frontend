@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -18,10 +19,10 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { CircularProgress, FormControl, Grid, TextFieldProps } from '@mui/material';
+import { Button, SelectList, Typography } from '@catena-x/portal-shared-components';
+import { CircularProgress, FormControl, Grid } from '@mui/material';
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { Button, Input, SelectList, Typography } from 'cx-portal-shared-components';
 import { capitalize, find, isEmpty } from 'lodash';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
@@ -107,10 +108,10 @@ function Schedules() {
             keyTitle={'title'}
             error={!!error}
             helperText={error ? error.message : null}
-            items={SCHEDULE_TYPE}
+            items={SCHEDULE_TYPE as []}
             disableClearable={true}
             defaultValue={type}
-            onChangeItem={val => {
+            onChangeItem={(val: any) => {
               onChange(val.value);
               setType(val);
               handleResetState();
@@ -138,10 +139,10 @@ function Schedules() {
               keyTitle={'title'}
               error={!!error}
               helperText={error ? error.message : null}
-              items={HOURS}
+              items={HOURS as []}
               disableClearable={true}
               defaultValue={hour}
-              onChangeItem={val => {
+              onChangeItem={(val: any) => {
                 onChange(val.value);
                 setHour(val);
               }}
@@ -157,7 +158,7 @@ function Schedules() {
         <Controller
           name="time"
           control={control}
-          render={({ field: { onChange, ref }, fieldState: { error } }) => (
+          render={({ field: { onChange, ref } }) => (
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <TimePicker
                 {...register('time', { required: true })}
@@ -171,9 +172,6 @@ function Schedules() {
                   onChange(timeStamp);
                   setTime(val);
                 }}
-                renderInput={(params: TextFieldProps) => (
-                  <Input {...params} error={!!error} placeholder="Select the time" variant="filled" />
-                )}
               />
             </LocalizationProvider>
           )}
@@ -197,10 +195,10 @@ function Schedules() {
               keyTitle={'title'}
               error={!!error}
               helperText={error ? error.message : null}
-              items={WEEK_DAYS}
+              items={WEEK_DAYS as []}
               disableClearable={true}
               defaultValue={day}
-              onChangeItem={val => {
+              onChangeItem={(val: any) => {
                 onChange(val.id);
                 setDay(val);
               }}

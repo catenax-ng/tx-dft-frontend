@@ -17,7 +17,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-import { SelectList } from 'cx-portal-shared-components';
+import { SelectList } from '@catena-x/portal-shared-components';
 import { filter } from 'lodash';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -54,7 +54,8 @@ const SelectSubmodel = () => {
       keyTitle="title"
       label={t('content.provider.selectSubmodel')}
       defaultValue={selectedSubmodel}
-      onChangeItem={e => handleTypeChange(e)}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onChangeItem={(e: any) => handleTypeChange(e)}
       items={submodelList}
       placeholder={t('content.provider.selectSubmodel')}
       disableClearable={true}

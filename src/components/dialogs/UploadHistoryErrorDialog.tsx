@@ -18,8 +18,6 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Box, Grid } from '@mui/material';
-import { GridColDef } from '@mui/x-data-grid';
 import {
   Button,
   Dialog,
@@ -29,7 +27,9 @@ import {
   Table,
   Tooltips,
   Typography,
-} from 'cx-portal-shared-components';
+} from '@catena-x/portal-shared-components';
+import { Box, Grid } from '@mui/material';
+import { GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -43,8 +43,10 @@ interface UploadHistoryErrorDialogProps {
 
 const UploadHistoryErrorDialog: React.FC<UploadHistoryErrorDialogProps> = ({ open = false, handleDialogClose }) => {
   const { t } = useTranslation();
-  const [page, setPage] = useState<number>(0);
-  const [pageSize, setPageSize] = useState<number>(10);
+  const [paginationModel, setPaginationModel] = useState({
+    pageSize: 10,
+    page: 0,
+  });
   const { errorsList, isLoading, currentProcessId } = useAppSelector(state => state.uploadHistorySlice);
   const handleClose = () => {
     handleDialogClose();
@@ -97,15 +99,13 @@ const UploadHistoryErrorDialog: React.FC<UploadHistoryErrorDialogProps> = ({ ope
               disableColumnMenu
               disableColumnSelector
               disableDensitySelector
-              disableSelectionOnClick
+              disableRowSelectionOnClick
               columns={columns}
               rows={errorsList}
-              pageSize={pageSize}
-              onPageSizeChange={setPageSize}
-              page={page}
+              paginationModel={paginationModel}
+              onPaginationModelChange={setPaginationModel}
+              pageSizeOptions={[10, 25, 50, 100]}
               getRowHeight={() => 'auto'}
-              onPageChange={newPage => setPage(newPage)}
-              rowsPerPageOptions={[10, 15, 20, 100]}
               sx={{
                 '& .MuiDataGrid-columnHeaderTitle, & .MuiDataGrid-cell': {
                   textOverflow: 'clip',

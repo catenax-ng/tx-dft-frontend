@@ -18,10 +18,10 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { theme, Typography } from '@catena-x/portal-shared-components';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import { Box, Link, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import { theme, Typography } from 'cx-portal-shared-components';
 import { useTranslation } from 'react-i18next';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

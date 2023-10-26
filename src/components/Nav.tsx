@@ -19,8 +19,9 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Button, LanguageSwitch, Typography, UserMenu, UserNav } from '@catena-x/portal-shared-components';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Box, Divider, Paper, useTheme } from '@mui/material';
-import { Button, LanguageSwitch, Typography, UserAvatar, UserMenu, UserNav } from 'cx-portal-shared-components';
 import i18next, { changeLanguage } from 'i18next';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -87,10 +88,7 @@ const Nav = () => {
             {t('pages.help')}
           </Button>
           <Box ref={avatar}>
-            <UserAvatar
-              onClick={openCloseMenu}
-              sx={{ bgcolor: 'white', color: theme.palette.primary.main, cursor: 'pointer' }}
-            />
+            <AccountCircleIcon onClick={openCloseMenu} />
           </Box>
           <UserMenu
             open={menuOpen}

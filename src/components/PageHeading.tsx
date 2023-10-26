@@ -18,9 +18,9 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { LoadingButton, Typography } from '@catena-x/portal-shared-components';
 import { Refresh } from '@mui/icons-material';
 import { Grid } from '@mui/material';
-import { LoadingButton, Typography } from 'cx-portal-shared-components';
 import { useTranslation } from 'react-i18next';
 interface IPageHeading {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

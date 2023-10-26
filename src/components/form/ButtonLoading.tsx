@@ -18,8 +18,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Button } from '@catena-x/portal-shared-components';
 import { CircularProgress } from '@mui/material';
-import { Button } from 'cx-portal-shared-components';
 import { useTranslation } from 'react-i18next';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -20,7 +20,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-import { GridSelectionModel, GridValidRowModel } from '@mui/x-data-grid';
+import { GridRowSelectionModel, GridValidRowModel } from '@mui/x-data-grid';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { includes, indexOf } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
@@ -76,7 +76,7 @@ export const submodelSlice = createSlice({
         state.rows[id][field] = value;
       }
     },
-    setSelectionModel: (state, action: PayloadAction<GridSelectionModel>) => {
+    setSelectionModel: (state, action: PayloadAction<GridRowSelectionModel>) => {
       state.selectionModel = action.payload;
       const selectedIDs = new Set(state.selectionModel);
       state.selectedRows = state.rows.filter(row => selectedIDs.has(row.rowId));

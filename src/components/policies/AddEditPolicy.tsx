@@ -18,7 +18,6 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Box, FormControl, FormControlLabel, FormLabel, Grid, RadioGroup } from '@mui/material';
 import {
   Button,
   Dialog,
@@ -29,7 +28,8 @@ import {
   Radio,
   SelectList,
   Typography,
-} from 'cx-portal-shared-components';
+} from '@catena-x/portal-shared-components';
+import { Box, FormControl, FormControlLabel, FormLabel, Grid, RadioGroup } from '@mui/material';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -203,7 +203,8 @@ function AddEditPolicy() {
                           {...field}
                           keyTitle="title"
                           defaultValue={field.value}
-                          items={DURATION_UNITS}
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                          items={DURATION_UNITS as any}
                           variant="filled"
                           label={t('content.policies.selectDuration')}
                           placeholder={t('content.policies.selectDuration')}
@@ -254,7 +255,8 @@ function AddEditPolicy() {
                   <SelectList
                     keyTitle="title"
                     defaultValue={field.value}
-                    items={PURPOSE_VALUES}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    items={PURPOSE_VALUES as any}
                     {...field}
                     variant="filled"
                     label={t('content.policies.purposeLabel')}

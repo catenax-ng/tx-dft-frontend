@@ -17,12 +17,12 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
+import { IconButton, LoadingButton, Table, Tooltips, Typography } from '@catena-x/portal-shared-components';
 import { Refresh } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
 import { Box, Grid, LinearProgress } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
-import { IconButton, LoadingButton, Table, Tooltips, Typography } from 'cx-portal-shared-components';
 import { capitalize } from 'lodash';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -45,8 +45,10 @@ import { MAX_CONTRACTS_AGREEMENTS, STATUS_COLOR_MAPPING } from '../utils/constan
 import { formatDate } from '../utils/utils';
 
 function UploadHistoryNew() {
-  const [page, setPage] = useState<number>(0);
-  const [pageSize, setPageSize] = useState<number>(10);
+  const [paginationModel, setPaginationModel] = useState({
+    pageSize: 10,
+    page: 0,
+  });
   const [showErrorLogsDialog, setShowErrorLogsDialog] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
@@ -240,14 +242,12 @@ function UploadHistoryNew() {
             disableColumnMenu
             disableColumnSelector
             disableDensitySelector
-            disableSelectionOnClick
+            disableRowSelectionOnClick
             columns={columns}
             rows={data.items}
-            pageSize={pageSize}
-            onPageSizeChange={setPageSize}
-            page={page}
-            onPageChange={setPage}
-            rowsPerPageOptions={[10, 15, 20, 100]}
+            paginationModel={paginationModel}
+            onPaginationModelChange={setPaginationModel}
+            pageSizeOptions={[10, 25, 50, 100]}
             components={{
               LoadingOverlay: LinearProgress,
               NoRowsOverlay: () => NoDataPlaceholder('content.common.noData'),
