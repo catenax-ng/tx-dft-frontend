@@ -63,7 +63,7 @@
       "manualInfo_2": "Um einen bestehenden Datensatz zu aktualisieren, geben Sie bitte die UUID dieses Datensatzes (Digitaler Zwilling) an."
     },
     "recurringUpload": {
-      "description": "Sie können die SDE für automatisierte CSV-Datei-Uploads nutzen. Sie müssen die SFTP-Schnittstelle verwenden, um Ihre CSV-Dateien in den Cloud-Speicher zu übertragen. Die SDE lädt dann die CSV-Dateien gemäß den hier angegebenen Parametern hoch."
+      "description": "Sie können die SDE für automatisierte CSV-Datei-Uploads nutzen. Sie müssen die SFTP/Minio-Schnittstelle verwenden, um Ihre CSV-Dateien in den Cloud-Speicher zu übertragen. Die SDE lädt dann die CSV-Dateien gemäß den hier angegebenen Parametern hoch."
     },
     "policies": {
       "title": "Policies",

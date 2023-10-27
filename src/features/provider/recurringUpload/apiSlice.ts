@@ -64,7 +64,7 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
         };
       },
       extraOptions: { showNotification: true, message: 'SFTP configurations updated!' },
-      invalidatesTags: ['SftpConfig'],
+      invalidatesTags: ['SftpConfig', 'StorageMediaConfig'],
     }),
     getMinioConfig: builder.query({
       query: () => {
@@ -83,7 +83,7 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
         };
       },
       extraOptions: { showNotification: true, message: 'Minio configurations updated!' },
-      invalidatesTags: ['MinioConfig'],
+      invalidatesTags: ['MinioConfig', 'StorageMediaConfig'],
     }),
     getEmailConfig: builder.query({
       query: () => {

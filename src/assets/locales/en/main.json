@@ -63,7 +63,7 @@
       "manualInfo_2": "For updating existing data you need to enter the respective 'UUID' of the digital twin."
     },
     "recurringUpload": {
-      "description": "You can utilize the SDE  for automated CSV file uploads. You must use the SFTP interface to transfer your CSV files to cloud storage. The SDE will then upload the CSV files according to the parameters here."
+      "description": "You can utilize the SDE  for automated CSV file uploads. You must use the SFTP/Minio interface to transfer your CSV files to cloud storage. The SDE will then upload the CSV files according to the parameters here."
     },
     "policies": {
       "title": "Policies",
