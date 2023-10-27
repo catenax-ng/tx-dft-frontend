@@ -19,66 +19,52 @@
  ********************************************************************************/
 
 import { Box } from '@mui/material';
-import { Tab, TabPanel, Tabs } from 'cx-portal-shared-components';
+import { Tab, TabPanel, Tabs, Typography } from 'cx-portal-shared-components';
 import { ReactElement, SyntheticEvent, useState } from 'react';
 
-import InfoSteps from '../../../../components/InfoSteps';
 import { useGetStorageMediaQuery } from '../../../../features/provider/recurringUpload/apiSlice';
 import MinioConfiguration from './MinioConfiguration';
 import SftpConfiguration from './SftpConfiguration';
 
 interface IStorageMediaTabs {
   label: string;
+  value: string;
   component: ReactElement;
 }
 
 const STORAGE_MEDIA_TABS: IStorageMediaTabs[] = [
-  { label: 'Minio Configuration', component: <MinioConfiguration /> },
-  { label: 'SFTP Configuration', component: <SftpConfiguration /> },
+  { label: 'Minio', value: 'minio', component: <MinioConfiguration /> },
+  { label: 'SFTP', value: 'sftp', component: <SftpConfiguration /> },
 ];
 
 function StorageMediaTab() {
-  const { data } = useGetStorageMediaQuery({});
+  const { data, isSuccess } = useGetStorageMediaQuery({});
 
   const [activeTab, setActiveTab] = useState(0);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
-
-  const activeStatus = () => {
-    if (data) {
-      return (
-        <>
-          {data.active}
-        </>
-      );
-    } else return 'NA';
-  };
-
   return (
     <>
-      <Box>
-        Currently active storage media: <b> {activeStatus()} </b>
-      </Box>
-      <InfoSteps sx={{ mt: 2 }} icon="info" steps={['Last saved storage media will be active']} />
-      <Box sx={{ flexGrow: 1, display: 'flex', height: 'auto', mt: 2 }} >
-        <Tabs orientation="vertical" variant="scrollable" value={activeTab} onChange={handleChange} aria-label="storage media tabs" sx={{ pt: 0 }}>
+      <Typography mb={3} variant="body1">
+        Current active storage media: <b> {isSuccess ? data.active : 'NA'} </b>
+      </Typography>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={activeTab} onChange={handleChange} aria-label="storage media tabs" sx={{ pt: 0 }}>
           {STORAGE_MEDIA_TABS.map(e => (
             <Tab key={e.label} label={e.label} />
           ))}
         </Tabs>
-        <Box sx={{ pl: 8 }} >
-          {STORAGE_MEDIA_TABS.map((e, i) => (
-            <TabPanel key={e.label} value={activeTab} index={i} >
-              {e.component}
-            </TabPanel>
-          ))}
-        </Box>
+      </Box>
+      <Box>
+        {STORAGE_MEDIA_TABS.map((e, i) => (
+          <TabPanel key={e.label} value={activeTab} index={i}>
+            {e.component}
+          </TabPanel>
+        ))}
       </Box>
     </>
   );
 }
 export default StorageMediaTab;
-
-

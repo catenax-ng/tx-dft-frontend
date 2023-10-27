@@ -131,7 +131,6 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
       },
       providesTags: ['StorageMediaConfig'],
     }),
-    
   }),
 });
 
