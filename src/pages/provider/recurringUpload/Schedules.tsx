@@ -82,7 +82,7 @@ function Schedules() {
   };
 
   const handleCurrentSchedule = () => {
-    if (data.type) {
+    if (data?.type) {
       return (
         <>
           {capitalize(data.type)},{!isEmpty(data?.day) ? find(WEEK_DAYS, { id: Number(data.day) })?.title : ''}{' '}

@@ -40,7 +40,7 @@ const baseQueryInterceptor: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQu
         type: 'error',
       }),
     );
-  } else if (data) {
+  } else {
     // Backend should send/handle success messages, which isnt done
     if (extraOptions?.showNotification) {
       api.dispatch(
