@@ -45,14 +45,9 @@ export default function CollapseMenuItem({ sidebarExpanded }: { sidebarExpanded:
             <Box sx={{ display: 'flex', p: 1 }}>
               {customConfig?.poweredBy?.logoUrl && <img src={customConfig?.poweredBy?.logoUrl} alt="logo" width={20} />}
               {sidebarExpanded && customConfig?.poweredBy?.name ? (
-                <Typography
-                  variant="body2"
-                  marginLeft={1}
-                  fontSize={13}
-                  dangerouslySetInnerHTML={{
-                    __html: customConfig?.poweredBy?.name,
-                  }}
-                ></Typography>
+                <Typography variant="body2" marginLeft={1} fontSize={13}>
+                  {customConfig?.poweredBy?.name}
+                </Typography>
               ) : null}
             </Box>
           </Link>

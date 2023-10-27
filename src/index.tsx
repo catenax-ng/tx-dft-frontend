@@ -21,8 +21,7 @@
 
 import './styles/index.scss';
 
-import { SharedCssBaseline } from '@catena-x/portal-shared-components';
-import { ThemeProvider } from '@mui/material';
+import { SharedCssBaseline, SharedThemeProvider } from '@catena-x/portal-shared-components';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
@@ -31,7 +30,6 @@ import App from './App';
 import { store } from './features/store';
 import I18nService from './services/i18nService';
 import UserService from './services/UserService';
-import { sdeTheme } from './theme';
 import { clearConsoles } from './utils/utils';
 
 clearConsoles();
@@ -45,9 +43,9 @@ UserService.initKeycloak(user => {
     <React.StrictMode>
       <SharedCssBaseline />
       <Provider store={store}>
-        <ThemeProvider theme={sdeTheme}>
+        <SharedThemeProvider>
           <App loggedUser={user} />
-        </ThemeProvider>
+        </SharedThemeProvider>
       </Provider>
     </React.StrictMode>,
   );

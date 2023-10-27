@@ -56,7 +56,7 @@ export const DataExchangeStepper: React.FC<IDataExchangeStepper> = ({ data }) =>
                   {step?.stepLink && (
                     <Button
                       variant="text"
-                      size="medium"
+                      size="small"
                       onClick={() => navigate(step.stepLink.routeUrl)}
                       startIcon={<StepIcon />}
                       sx={{
