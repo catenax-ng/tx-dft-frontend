@@ -138,6 +138,22 @@ const SFTP_FORM_FIELDS = [
   { name: 'failedLocation', label: 'Failed Location', placeholder: 'Enter failed location' },
 ];
 
+const MINIO_FORM_FIELDS = [
+  { name: 'endpoint', label: 'End point', placeholder: 'Enter endpoint' },
+  { name: 'bucketName', label: 'Bucket Name', placeholder: 'Enter Bucket Name' },
+  { name: 'accessKey', label: 'Access Key', placeholder: 'Enter Access Key' },
+  { name: 'secretKey', label: 'Secret Key', placeholder: 'Enter Secret Key' },
+  { name: 'toBeProcessedLocation', label: 'To Be Processed Location', placeholder: 'Enter to be processed location' },
+  { name: 'inProgressLocation', label: 'In Progress Location', placeholder: 'Enter in progress location' },
+  { name: 'successLocation', label: 'Success Location', placeholder: 'Enter success location' },
+  {
+    name: 'partialSuccessLocation',
+    label: 'Partial Success Location',
+    placeholder: 'Enter partial success location',
+  },
+  { name: 'failedLocation', label: 'Failed Location', placeholder: 'Enter failed location' },
+];
+
 const EMAIL_CONFIG_FORM_FIELDS = [
   { name: 'to_email', label: 'To email address', placeholder: 'Enter to email address', type: 'email' },
   { name: 'cc_email', label: 'CC email address', placeholder: 'Enter cc email address', type: 'email' },
@@ -192,6 +208,7 @@ export {
   EMAIL_CONFIG_FORM_FIELDS,
   HOURS,
   MAX_CONTRACTS_AGREEMENTS,
+  MINIO_FORM_FIELDS,
   ONLY_NUM_REGEX,
   PURPOSE_VALUES,
   SCHEDULE_TYPE,

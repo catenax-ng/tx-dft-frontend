@@ -96,6 +96,8 @@ export const apiSlice = createApi({
     'DeleteContract',
     'DownloadHistoryList',
     'SftpConfig',
+    'StorageMediaConfig',
+    'MinioConfig',
     'EmailConfig',
     'SettingsConfig',
     'ScheduleConfig',

@@ -42,6 +42,17 @@ export type SftpFormData = {
   partialSuccessLocation: string;
   failedLocation: string;
 };
+export type MinioFormData = {
+  endpoint: string;
+  bucketName: string;
+  accessKey: string;
+  secretKey: string;
+  toBeProcessedLocation: string;
+  inProgressLocation: string;
+  successLocation: string;
+  partialSuccessLocation: string;
+  failedLocation: string;
+};
 
 export type EmailConfigFormData = {
   cc_email: string;

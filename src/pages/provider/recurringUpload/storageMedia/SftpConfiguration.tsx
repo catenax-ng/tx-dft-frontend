@@ -18,15 +18,18 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Grid } from '@mui/material';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import ButtonLoading from '../../../components/form/ButtonLoading';
-import FormControllerInput from '../../../components/form/FormControllerInput';
-import { useGetSftpConfigQuery, usePutSftpConfigMutation } from '../../../features/provider/recurringUpload/apiSlice';
-import { SftpFormData } from '../../../models/RecurringUpload.models';
-import { SFTP_FORM_FIELDS } from '../../../utils/constants';
+import ButtonLoading from '../../../../components/form/ButtonLoading';
+import FormControllerInput from '../../../../components/form/FormControllerInput';
+import {
+  useGetSftpConfigQuery,
+  usePutSftpConfigMutation,
+} from '../../../../features/provider/recurringUpload/apiSlice';
+import { SftpFormData } from '../../../../models/RecurringUpload.models';
+import { SFTP_FORM_FIELDS } from '../../../../utils/constants';
 
 function SftpConfiguration() {
   const { data, isSuccess, isFetching } = useGetSftpConfigQuery({});
@@ -40,17 +43,21 @@ function SftpConfiguration() {
 
   if (isSuccess) {
     return (
-      <form onSubmit={handleSubmit(putSftpConfig)} style={{ width: 300 }}>
-        {SFTP_FORM_FIELDS.map(({ name, label, placeholder }) => (
-          <FormControllerInput
-            key={placeholder + label}
-            name={name}
-            control={control}
-            label={label}
-            placeholder={placeholder}
-            register={register}
-          />
-        ))}
+      <form onSubmit={handleSubmit(putSftpConfig)} style={{ width: 600 }}>
+        <Grid container spacing={3}>
+          {SFTP_FORM_FIELDS.map(({ name, label, placeholder }) => (
+            <Grid item xs={6} key={label + placeholder}>
+              <FormControllerInput
+                key={placeholder + label}
+                name={name}
+                control={control}
+                label={label}
+                placeholder={placeholder}
+                register={register}
+              />
+            </Grid>
+          ))}
+        </Grid>
         <ButtonLoading type="submit" loading={isFetching || isPuttingConfig} />
       </form>
     );
