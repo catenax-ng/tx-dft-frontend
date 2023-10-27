@@ -22,58 +22,63 @@ import { Box } from '@mui/material';
 import { Tab, TabPanel, Tabs } from 'cx-portal-shared-components';
 import { ReactElement, SyntheticEvent, useState } from 'react';
 
-import PageHeading from '../../../components/PageHeading';
-import { useTriggerUploadMutation } from '../../../features/provider/recurringUpload/apiSlice';
-import EmailConfiguration from './EmailConfiguration';
-import Schedules from './Schedules';
-import StorageMediaTab from './storageMedia';
-import UploadSettings from './UploadSettings';
+import InfoSteps from '../../../../components/InfoSteps';
+import { useGetStorageMediaQuery } from '../../../../features/provider/recurringUpload/apiSlice';
+import MinioConfiguration from './MinioConfiguration';
+import SftpConfiguration from './SftpConfiguration';
 
-interface IUploadTabs {
+interface IStorageMediaTabs {
   label: string;
   component: ReactElement;
 }
 
-const RECURRING_UPLOAD_TABS: IUploadTabs[] = [
-  { label: 'Schedules', component: <Schedules /> },
-  { label: 'Storage Media', component: <StorageMediaTab /> },
-  { label: 'Email Configuration', component: <EmailConfiguration /> },
-  { label: 'Settings', component: <UploadSettings /> },
+const STORAGE_MEDIA_TABS: IStorageMediaTabs[] = [
+  { label: 'Minio Configuration', component: <MinioConfiguration /> },
+  { label: 'SFTP Configuration', component: <SftpConfiguration /> },
 ];
 
-function RecurringUpload() {
+function StorageMediaTab() {
+  const { data } = useGetStorageMediaQuery({});
+
   const [activeTab, setActiveTab] = useState(0);
+
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
-  const [trigger, { isLoading }] = useTriggerUploadMutation();
+
+  const activeStatus = () => {
+    if (data) {
+      return (
+        <>
+          {data.active}
+        </>
+      );
+    } else return 'NA';
+  };
 
   return (
     <>
-      <PageHeading
-        title="pages.recurringUpload"
-        description="content.recurringUpload.description"
-        showButton={true}
-        buttonText="Trigger Now"
-        refetch={trigger}
-        isFetching={isLoading}
-      />
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={activeTab} onChange={handleChange} aria-label="recurring upload tabs" sx={{ pt: 0 }}>
-          {RECURRING_UPLOAD_TABS.map(e => (
+      <Box>
+        Currently active storage media: <b> {activeStatus()} </b>
+      </Box>
+      <InfoSteps sx={{ mt: 2 }} icon="info" steps={['Last saved storage media will be active']} />
+      <Box sx={{ flexGrow: 1, display: 'flex', height: 'auto', mt: 2 }} >
+        <Tabs orientation="vertical" variant="scrollable" value={activeTab} onChange={handleChange} aria-label="storage media tabs" sx={{ pt: 0 }}>
+          {STORAGE_MEDIA_TABS.map(e => (
             <Tab key={e.label} label={e.label} />
           ))}
         </Tabs>
-      </Box>
-      <Box>
-        {RECURRING_UPLOAD_TABS.map((e, i) => (
-          <TabPanel key={e.label} value={activeTab} index={i}>
-            {e.component}
-          </TabPanel>
-        ))}
+        <Box sx={{ pl: 8 }} >
+          {STORAGE_MEDIA_TABS.map((e, i) => (
+            <TabPanel key={e.label} value={activeTab} index={i} >
+              {e.component}
+            </TabPanel>
+          ))}
+        </Box>
       </Box>
     </>
   );
 }
+export default StorageMediaTab;
 
-export default RecurringUpload;
+

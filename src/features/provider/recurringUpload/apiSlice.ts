@@ -66,6 +66,25 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
       extraOptions: { showNotification: true, message: 'SFTP configurations updated!' },
       invalidatesTags: ['SftpConfig'],
     }),
+    getMinioConfig: builder.query({
+      query: () => {
+        return {
+          url: '/minio',
+        };
+      },
+      providesTags: ['MinioConfig'],
+    }),
+    putMinioConfig: builder.mutation({
+      query: body => {
+        return {
+          url: '/minio',
+          method: 'PUT',
+          body,
+        };
+      },
+      extraOptions: { showNotification: true, message: 'Minio configurations updated!' },
+      invalidatesTags: ['MinioConfig'],
+    }),
     getEmailConfig: builder.query({
       query: () => {
         return {
@@ -104,6 +123,15 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
       extraOptions: { showNotification: true, message: 'Settings updated successfully!' },
       invalidatesTags: ['SettingsConfig'],
     }),
+    getStorageMedia: builder.query({
+      query: () => {
+        return {
+          url: '/storage-media',
+        };
+      },
+      providesTags: ['StorageMediaConfig'],
+    }),
+    
   }),
 });
 
@@ -112,9 +140,12 @@ export const {
   usePutScheduleConfigMutation,
   useGetSftpConfigQuery,
   usePutSftpConfigMutation,
+  useGetMinioConfigQuery,
+  usePutMinioConfigMutation,
   useGetEmailConfigQuery,
   usePutEmailConfigMutation,
   useGetSettingsConfigQuery,
   usePutSettingsConfigMutation,
   useTriggerUploadMutation,
+  useGetStorageMediaQuery,
 } = recurringUploadApiSlice;

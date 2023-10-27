@@ -22,11 +22,14 @@ import { CircularProgress } from '@mui/material';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import ButtonLoading from '../../../components/form/ButtonLoading';
-import FormControllerInput from '../../../components/form/FormControllerInput';
-import { useGetSftpConfigQuery, usePutSftpConfigMutation } from '../../../features/provider/recurringUpload/apiSlice';
-import { SftpFormData } from '../../../models/RecurringUpload.models';
-import { SFTP_FORM_FIELDS } from '../../../utils/constants';
+import ButtonLoading from '../../../../components/form/ButtonLoading';
+import FormControllerInput from '../../../../components/form/FormControllerInput';
+import {
+  useGetSftpConfigQuery,
+  usePutSftpConfigMutation,
+} from '../../../../features/provider/recurringUpload/apiSlice';
+import { SftpFormData } from '../../../../models/RecurringUpload.models';
+import { SFTP_FORM_FIELDS } from '../../../../utils/constants';
 
 function SftpConfiguration() {
   const { data, isSuccess, isFetching } = useGetSftpConfigQuery({});
