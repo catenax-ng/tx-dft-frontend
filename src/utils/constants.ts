@@ -123,35 +123,57 @@ const WEEK_DAYS = [
 ];
 
 const SFTP_FORM_FIELDS = [
-  { name: 'host', label: 'Host Name', placeholder: 'Enter host name' },
-  { name: 'port', label: 'Port Name', placeholder: 'Enter port name' },
-  { name: 'username', label: 'User name', placeholder: 'Enter user name' },
-  { name: 'password', label: 'Password', placeholder: 'Enter password' },
-  { name: 'toBeProcessedLocation', label: 'To Be Processed Location', placeholder: 'Enter to be processed location' },
-  { name: 'inProgressLocation', label: 'In Progress Location', placeholder: 'Enter in progress location' },
-  { name: 'successLocation', label: 'Success Location', placeholder: 'Enter success location' },
+  { name: 'host', label: 'Host Name', placeholder: 'Enter host name', required: true },
+  { name: 'port', label: 'Port Name', placeholder: 'Enter port name', required: true },
+  { name: 'username', label: 'User name', placeholder: 'Enter user name', required: true },
+  { name: 'password', label: 'Password', placeholder: 'Enter password', required: true },
+  {
+    name: 'toBeProcessedLocation',
+    label: 'To Be Processed Location',
+    placeholder: 'Enter to be processed location',
+    required: false,
+  },
+  {
+    name: 'inProgressLocation',
+    label: 'In Progress Location',
+    placeholder: 'Enter in progress location',
+    required: true,
+  },
+  { name: 'successLocation', label: 'Success Location', placeholder: 'Enter success location', required: true },
   {
     name: 'partialSuccessLocation',
     label: 'Partial Success Location',
     placeholder: 'Enter partial success location',
+    required: true,
   },
-  { name: 'failedLocation', label: 'Failed Location', placeholder: 'Enter failed location' },
+  { name: 'failedLocation', label: 'Failed Location', placeholder: 'Enter failed location', required: true },
 ];
 
 const MINIO_FORM_FIELDS = [
-  { name: 'endpoint', label: 'End point', placeholder: 'Enter endpoint' },
-  { name: 'bucketName', label: 'Bucket Name', placeholder: 'Enter Bucket Name' },
-  { name: 'accessKey', label: 'Access Key', placeholder: 'Enter Access Key' },
-  { name: 'secretKey', label: 'Secret Key', placeholder: 'Enter Secret Key' },
-  { name: 'toBeProcessedLocation', label: 'To Be Processed Location', placeholder: 'Enter to be processed location' },
-  { name: 'inProgressLocation', label: 'In Progress Location', placeholder: 'Enter in progress location' },
-  { name: 'successLocation', label: 'Success Location', placeholder: 'Enter success location' },
+  { name: 'endpoint', label: 'End point', placeholder: 'Enter endpoint', required: true },
+  { name: 'bucketName', label: 'Bucket Name', placeholder: 'Enter Bucket Name', required: true },
+  { name: 'accessKey', label: 'Access Key', placeholder: 'Enter Access Key', required: true },
+  { name: 'secretKey', label: 'Secret Key', placeholder: 'Enter Secret Key', required: true },
+  {
+    name: 'toBeProcessedLocation',
+    label: 'To Be Processed Location',
+    placeholder: 'Enter to be processed location',
+    required: false,
+  },
+  {
+    name: 'inProgressLocation',
+    label: 'In Progress Location',
+    placeholder: 'Enter in progress location',
+    required: true,
+  },
+  { name: 'successLocation', label: 'Success Location', placeholder: 'Enter success location', required: true },
   {
     name: 'partialSuccessLocation',
     label: 'Partial Success Location',
     placeholder: 'Enter partial success location',
+    required: true,
   },
-  { name: 'failedLocation', label: 'Failed Location', placeholder: 'Enter failed location' },
+  { name: 'failedLocation', label: 'Failed Location', placeholder: 'Enter failed location', required: true },
 ];
 
 const EMAIL_CONFIG_FORM_FIELDS = [

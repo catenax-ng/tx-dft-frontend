@@ -45,7 +45,7 @@ function MinioConfiguration() {
     return (
       <form onSubmit={handleSubmit(putMinioConfig)} style={{ width: 600 }}>
         <Grid container spacing={3}>
-          {MINIO_FORM_FIELDS.map(({ name, label, placeholder }) => (
+          {MINIO_FORM_FIELDS.map(({ name, label, placeholder, required }) => (
             <Grid item xs={6} key={label + placeholder}>
               <FormControllerInput
                 key={placeholder + label}
@@ -54,6 +54,7 @@ function MinioConfiguration() {
                 label={label}
                 placeholder={placeholder}
                 register={register}
+                required={required}
               />
             </Grid>
           ))}

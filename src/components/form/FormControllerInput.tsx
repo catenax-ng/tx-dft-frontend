@@ -23,7 +23,7 @@ import { FormControl, TextField } from '@mui/material';
 import { Controller } from 'react-hook-form';
 
 // Reusable input component
-function FormControllerInput({ name, control, label, placeholder, register, type }: any) {
+function FormControllerInput({ name, control, label, placeholder, register, type, required }: any) {
   return (
     <FormControl fullWidth sx={{ mb: 3 }}>
       <Controller
@@ -32,7 +32,7 @@ function FormControllerInput({ name, control, label, placeholder, register, type
         render={({ field: { name: fieldName, ref, onChange, value }, fieldState: { error } }) => (
           <>
             <TextField
-              {...register(fieldName, { required: true })}
+              {...register(fieldName, { required })}
               variant="filled"
               name={fieldName}
               inputRef={ref}
