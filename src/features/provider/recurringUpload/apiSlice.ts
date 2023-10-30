@@ -27,6 +27,7 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
           method: 'POST',
         };
       },
+      extraOptions: { showNotification: true },
     }),
     getScheduleConfig: builder.query({
       query: () => {

@@ -40,16 +40,14 @@ const baseQueryInterceptor: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQu
         type: 'error',
       }),
     );
-  } else {
+  } else if (extraOptions?.showNotification) {
     // Backend should send/handle success messages, which isnt done
-    if (extraOptions?.showNotification) {
-      api.dispatch(
-        setSnackbarMessage({
-          message: data?.msg ? data.msg : extraOptions?.message,
-          type: 'success',
-        }),
-      );
-    }
+    api.dispatch(
+      setSnackbarMessage({
+        message: data?.msg ? data.msg : extraOptions?.message,
+        type: 'success',
+      }),
+    );
   }
   return { data };
 };
