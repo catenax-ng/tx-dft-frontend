@@ -22,7 +22,7 @@ name: sdebuild
 on:
   push:
     branches:
-      - 'DST_PIP10_ITR6'
+      - 'ver-2.3.1'
     tags:
       - 'v*.*.*'
       - 'v*.*.*-*'
