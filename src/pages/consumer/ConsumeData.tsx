@@ -441,7 +441,6 @@ export default function ConsumeData() {
                     inputProps={{ maxLength: 16 }}
                     error={bpnError}
                     onChange={handleBPNchange}
-                    onPaste={e => e.preventDefault()}
                     helperText={t('alerts.bpnValidation')}
                   />
                 ) : (
