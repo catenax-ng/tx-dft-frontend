@@ -20,8 +20,9 @@ This work is licensed under the [Apache-2.0](https://www.apache.org/licenses/LIC
     - [Main navigation](#left-side-menu)
 - [Features](#features)
   - [Home](#home)
+  - [About](#about)
   - [Provider](#provider)
-    - [Create Data](#create-data)
+    - [Manual Upload](#manual-upload)
       - [Upload File](#upload-file)
       - [Manual Entry](#manual-entry)
         - [Serial Part](#serial-part-typization)
@@ -32,11 +33,13 @@ This work is licensed under the [Apache-2.0](https://www.apache.org/licenses/LIC
         - [Part Site Information As Planned](#part-site-information-as-planned)
         - [Single Level Usage As Built](#single-level-usage-as-built)
         - [Product Carbon Footprint](#product-carbon-footprint)
+    - [Recurring Upload](#recurring-upload)
     - [Upload history](#upload-history)
     - [Contracts](#provider-contracts)
     - [Help](#help)
   - [Consumer](#consumer)
     - [Consume Data](#consume-data)
+    - [Downlaod History](#download-history)
     - [Contracts](#consumer-contracts)
 
 # Getting started
@@ -83,10 +86,12 @@ SDE navigation is based on a header and a left-side menu.
 On the left side menu, it is possible to navigate the Simple Data Exchanger application by choosing each the following options / features:
 
 - Home
+- About
 
 **Provider**
 
-- Create Data
+- Manual Upload
+- Recurring Upload
 - Upload History
 - Contracts
 - Help
@@ -94,6 +99,7 @@ On the left side menu, it is possible to navigate the Simple Data Exchanger appl
 **Consumer**
 
 - Consume Data
+- Download History
 - Contracts
 
 [-- end of 'navigation' section --]: #
@@ -106,11 +112,17 @@ On the left side menu, it is possible to navigate the Simple Data Exchanger appl
 
 After successful login, user will be redirected to this page by default in the Simple Data Exchanger application. This page contains the overview of the application and use cases selection.
 
-Submodels in the Create Data page will be filtered out based on the usecase selection by user.
+Submodels in the Manual Upload page will be filtered out based on the usecase selection by user.
+
+# **About**
+
+<img src="images/sde-about.png" height="60%" width="60%" />
+
+In this page you can find the source links of License, Notice, Base Repository and Git-hub Commit ID of the latest version.
 
 # **Provider**
 
-## Create Data
+## Manual Upload
 
 In this page, list of available submodels will be fetched dynamically and we can select any submodel to generate the table or json of that selected submodel based on the schema provided by backend API.
 
@@ -148,7 +160,7 @@ After successful file upload of the supported file format i.e. CSV, the button "
 
 Access policy can either be unrestricted or restricted to some Business Partner Numbers. Your own organization will always be allowed to access the data.  We can add BPN numbers by selecting Company Name or entering Business Partner Number   and clicking on Add button.
 
-There are 4 types of Usage Policies we can configure namely Duration, Purpose, Role and Custom Restriction.
+There are 2 types of Usage Policies we can configure namely Duration and Purpose.
 For every usage policy we have restricted and unrestricted options.
 If we selected Restricted option for any usage policy, then we need to enter or select any respective valid text value.
 
@@ -193,6 +205,20 @@ You can add and submit multiple data offers via Manual entry option for particul
 We also can delete multiple rows by selecting which rows we want to delete and then click on Delete Row(s) button.
 
 Then you need to configure Access and Usage policies by clicking on "Next Step - Configure Policies" button and after successful configuration, click on Submit button from policy dialog to upload bulk data offers at once.
+
+## Recurring Upload
+
+<img src="images/sde-recurring-upload.png" height="60%" width="60%" />
+
+You can utilize the SDE for automated CSV file uploads. You must use the SFTP interface to transfer your CSV files to cloud storage. The SDE will then upload the CSV files according to the parameters.
+
+- Policies
+- Schedules
+- SFTP Configuration
+- Email Configuration
+- Settings
+
+User can change the above parameters accordingly.
 
 ## Upload history
 
@@ -256,17 +282,27 @@ After clicking on the "Consume Data" link in the sidebar navigation menu, user w
 
 The table provides convinient features like Filter by, Sorting, Global search, Pagination, Export.
 
-<img src="images/offer-details-view-subscribe.png" height="40%" width="40%" />
+<img src="images/offer-details-view-subscribe-download.png" height="40%" width="40%" />
 
 Also we can view and subscribe individual data offer by clicking on the respective row to open the offer details popup.
-The offer details dialog will populate all the basic metadata of the selected offer, Access policy and Usage policy details.
-You can subscribe the data offer by clicking on "Subscribe" button and accepting the terms.
+The offer details dialog will populate all the basic metadata of the selected offer and Usage policy details.
+You can subscribe the data offer by clicking on "Subscribe and download" button and accepting the terms.
+Zip file will be downloaded with respected data offer sub-model csv file with actual data which was used to create the data offer.
 
-<img src="images/multiple-offers-subscribe.png" height="60%" width="60%" />
+<img src="images/multiple-offers-subscribe-download.png" height="60%" width="60%" />
 
-User can also subscribe to multiple data offers at a time by ticking or checking the checkbox in front of the data offers and clicking on the button "Subscribe to Selected" present at top right section of the data offers table.
+User can also subscribe to multiple data offers at a time by ticking or checking the checkbox in front of the data offers and clicking on the button "Subscribe and download" present at top right section of the data offers table.
 Please note that, user can only subscribe to multiple data offers if the offers have exact similar usage policies configured.
-After clicking on Subscribe button and agreeing to the terms and conditions, the contract agreements establishment process will start for all of the selected data offers for the subscription.
+After clicking on Subscribe and download button and agreeing to the terms and conditions, the contract agreements establishment process will start for all of the selected data offers for the subscription.
+ip file will be downloaded with respected data offers sub-models csv file with actual data which was used to create the data offers.
+
+## Download History
+
+<img src="images/sde-download-history.png" height="60%" width="90%" />
+
+This history overviews your company's downloaded data from the Catena-X ecosystem. All activities are listed here. You can download the data again from this history list. 
+User can view the status of download and view error under Status column.
+
 
 ## Consumer Contracts
 
