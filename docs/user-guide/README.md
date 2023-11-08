@@ -34,6 +34,7 @@ This work is licensed under the [Apache-2.0](https://www.apache.org/licenses/LIC
         - [Single Level Usage As Built](#single-level-usage-as-built)
         - [Product Carbon Footprint](#product-carbon-footprint)
     - [Recurring Upload](#recurring-upload)
+    - [Policies](#policies)
     - [Upload history](#upload-history)
     - [Contracts](#provider-contracts)
     - [Help](#help)
@@ -92,6 +93,7 @@ On the left side menu, it is possible to navigate the Simple Data Exchanger appl
 
 - Manual Upload
 - Recurring Upload
+- Policies
 - Upload History
 - Contracts
 - Help
@@ -210,15 +212,37 @@ Then you need to configure Access and Usage policies by clicking on "Next Step -
 
 <img src="images/sde-recurring-upload.png" height="60%" width="60%" />
 
-You can utilize the SDE for automated CSV file uploads. You must use the SFTP interface to transfer your CSV files to cloud storage. The SDE will then upload the CSV files according to the parameters.
+You can utilize the SDE for automated CSV file uploads. You must use the SFTP/Minio interface to transfer your CSV files to cloud storage. The SDE will then upload the CSV files according to the parameters.
 
-- Policies
 - Schedules
-- SFTP Configuration
+
+<img src="images/schedules.png" height="60%" width="60%" />
+
+- Storage Media
+
+<img src="images/storage.png" height="60%" width="60%" />
+
 - Email Configuration
+
+<img src="images/email-configuration.png" height="60%" width="60%" />
+
 - Settings
 
+<img src="images/settings.png" height="60%" width="60%" />
+
 User can change the above parameters accordingly.
+
+## Policies
+
+<img src="images/policies.png" height="60%" width="60%" />
+
+On this page, you need to define the policy to be used for your 'Recurring Upload' process. The policy name should be included in your upload file, and it must be unique.
+
+After clicking on the add policy button, Add Policy  dialog will be shown where we need to configure Policy Name, Access and Usage policies.
+
+<img src="images/add-policy.png" height="60%" width="60%" />
+
+Once configuring both the policies, we need to click on "SUBMIT" button to finish and create policy. This is the process of creating new policy through SDE application. User can use this policy while uploading the file in SFTP/Minio storage.
 
 ## Upload history
 
@@ -234,8 +258,8 @@ The table has the following columns:
 - Updated(number of Successfully Updated items)
 - Deleted(number of Successfully Deleted items)
 - Failed(number of failed items)
-- Status
 - Start Date
+- Status
 
 User can delete and download any uploaded data offer by clicking on the respective action icon present at the end of each row.
 The delete icon will only be visible if the Number of Deleted Items count is 0.
@@ -265,7 +289,7 @@ The table includes below columns:
 
 <img src="images/sde-help-page.png" height="60%" width="60%" />
 
-This dynamic help page provides the submodel informations of selected use case in the home page. If no use case selected, it will show all available submodels. User can see the the order of the fields and details of each field by hovering the info icon in each row. User can download the sample csv and csv template for any submodels as well from this page.
+This dynamic help page provides the submodel informations of selected use case in the home page. If no use case selected, it will show all available submodels. User can see the the order of the fields and details of each field by hovering the info icon in each row. User can download the sample csv and csv template for any submodels as well from this page. User can use quick link to navigate on any sub model. 
 
 # **Consumer**
 
@@ -294,7 +318,7 @@ Zip file will be downloaded with respected data offer sub-model csv file with ac
 User can also subscribe to multiple data offers at a time by ticking or checking the checkbox in front of the data offers and clicking on the button "Subscribe and download" present at top right section of the data offers table.
 Please note that, user can only subscribe to multiple data offers if the offers have exact similar usage policies configured.
 After clicking on Subscribe and download button and agreeing to the terms and conditions, the contract agreements establishment process will start for all of the selected data offers for the subscription.
-ip file will be downloaded with respected data offers sub-models csv file with actual data which was used to create the data offers.
+Zip file will be downloaded with respected data offers sub-models csv file with actual data which was used to create the data offers.
 
 ## Download History
 
