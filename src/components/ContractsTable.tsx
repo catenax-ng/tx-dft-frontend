@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -22,7 +23,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { Box, Grid, LinearProgress } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams, GridToolbar, GridValidRowModel } from '@mui/x-data-grid';
 import { IconButton, LoadingButton, Tooltips, Typography } from 'cx-portal-shared-components';
-import { capitalize, find } from 'lodash';
+import { capitalize, isEmpty } from 'lodash';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -31,7 +32,6 @@ import { setPageLoading } from '../features/app/slice';
 import { useDeleteContractMutation, useGetContractsQuery } from '../features/provider/contracts/apiSlice';
 import { useAppDispatch } from '../features/store';
 import { handleBlankCellValues } from '../helpers/ConsumerOfferHelper';
-import { IDefaultObject } from '../models/Common';
 import {
   CONTRACT_STATES,
   DURATION_UNIT_MAPPING,
@@ -69,9 +69,9 @@ function ContractsTable({ type, title, subtitle }: IContractsTable) {
 
   const [deleteContract, { isLoading: isDeleting }] = useDeleteContractMutation({});
 
-  function calculateEndDate(policies: IDefaultObject[], signingDate: number) {
-    if (policies?.length) {
-      const { durationUnit, value } = find(policies, e => e.type === 'DURATION');
+  function calculateEndDate(policies: any, signingDate: number) {
+    if (!isEmpty(policies)) {
+      const { durationUnit, value } = policies?.DURATION;
       const startDate = epochToDate(signingDate);
       if (durationUnit) {
         return moment(startDate).add(value, Object(DURATION_UNIT_MAPPING)[durationUnit]).format('DD/MM/YYYY HH:mm:ss');
