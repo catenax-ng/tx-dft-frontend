@@ -47,7 +47,7 @@ export default function Sidebar() {
           height: 'calc(100vh - 64px)',
         }}
       >
-        <Box overflow={'scroll'}>
+        <Box sx={{ overflowY: 'scroll' }}>
           {MenuItems.map(menuItem => (
             <Box key={menuItem.text}>
               {/* Menu heading */}
