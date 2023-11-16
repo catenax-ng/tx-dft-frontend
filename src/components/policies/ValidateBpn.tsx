@@ -64,7 +64,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
   const addBpn = () => {
     if (inputBpn) {
       setValue('bpn_numbers', uniq([...getValues('bpn_numbers'), inputBpn]));
-      resetField('inputBpn');
+      resetField('inputBpn', { defaultValue: '' });
     }
   };
   const deleteBpn = (bpn: string) => {
@@ -126,7 +126,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
             size="small"
             onChangeItem={e => {
               setSelectType(e);
-              resetField('inputBpn');
+              resetField('inputBpn', { defaultValue: '' });
             }}
             items={BPN_TYPE_FIELDS}
             defaultValue={selectType}

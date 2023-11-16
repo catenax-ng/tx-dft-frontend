@@ -158,7 +158,7 @@ function AddEditPolicy() {
                     row
                     onChange={e => {
                       field.onChange(e);
-                      resetField('usage_policies.DURATION.value');
+                      resetField('usage_policies.DURATION.value', { defaultValue: '' });
                     }}
                   >
                     <FormControlLabel value="UNRESTRICTED" control={<Radio />} label="Unrestricted" />
@@ -232,7 +232,7 @@ function AddEditPolicy() {
                   row
                   onChange={e => {
                     field.onChange(e);
-                    resetField('usage_policies.PURPOSE.value');
+                    resetField('usage_policies.PURPOSE.value', { defaultValue: '' });
                   }}
                 >
                   <FormControlLabel value="UNRESTRICTED" control={<Radio />} label="Unrestricted" />
