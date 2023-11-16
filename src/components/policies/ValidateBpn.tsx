@@ -131,6 +131,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
             items={BPN_TYPE_FIELDS}
             defaultValue={selectType}
             placeholder={t('content.consumeData.selectType')}
+            disableClearable
           />
         </Grid>
         <Grid item xs={4}>
