@@ -35,7 +35,7 @@ export default function Main({ loggedUser }: { loggedUser: IUser }) {
           <Outlet />
         </AppLayout>
       ) : (
-        <ErrorPage header="This webpage is not available." title="Sorry for this inconvenience." />
+        <ErrorPage header="This webpage is not available." title="Sorry for the inconvenience." />
       )}
     </>
   );
