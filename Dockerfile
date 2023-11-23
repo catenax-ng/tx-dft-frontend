@@ -42,6 +42,7 @@ COPY ./conf /etc/nginx
 # Static build
 WORKDIR /usr/share/nginx/html
 COPY --from=builder /app/build .
+COPY LICENCE NOTICE.md DEPENDECIES SECURITY.md  ./
 COPY ./env.sh .
 RUN chown 101:101 /usr/share/nginx/html/
 RUN chmod ug+rwx /usr/share/nginx/html/
