@@ -19,8 +19,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Button, LanguageSwitch, Typography, UserAvatar, UserMenu, UserNav } from '@catena-x/portal-shared-components';
 import { Box, Divider, Paper, useTheme } from '@mui/material';
-import { Button, LanguageSwitch, Typography, UserAvatar, UserMenu, UserNav } from 'cx-portal-shared-components';
 import i18next, { changeLanguage } from 'i18next';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';

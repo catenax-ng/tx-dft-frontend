@@ -18,26 +18,25 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-import { Autocomplete, Box, Grid, LinearProgress } from '@mui/material';
-import {
-  DataGrid,
-  GridColDef,
-  GridSelectionModel,
-  GridToolbar,
-  GridValidRowModel,
-  GridValueGetterParams,
-} from '@mui/x-data-grid';
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogHeader,
-  Input,
   LoadingButton,
   SelectList,
   Typography,
-} from 'cx-portal-shared-components';
+} from '@catena-x/portal-shared-components';
+import { Autocomplete, Box, Grid, Input, LinearProgress, TextField } from '@mui/material';
+import {
+  DataGrid,
+  GridColDef,
+  GridRowSelectionModel,
+  GridToolbar,
+  GridValidRowModel,
+  GridValueGetterParams,
+} from '@mui/x-data-grid';
 import saveAs from 'file-saver';
 import { debounce, isEmpty, isEqual } from 'lodash';
 import React, { ChangeEvent, useEffect, useState } from 'react';
@@ -111,8 +110,11 @@ export default function ConsumeData() {
   } = useAppSelector(state => state.consumerSlice);
   const [isOpenOfferDialog, setIsOpenOfferDialog] = useState<boolean>(false);
   const [isOpenOfferConfirmDialog, setIsOpenOfferConfirmDialog] = useState<boolean>(false);
-  const [pageSize, setPageSize] = useState<number>(10);
-  const [selectionModel, setSelectionModel] = React.useState<GridSelectionModel>([]);
+  const [paginationModel, setPaginationModel] = useState({
+    pageSize: 10,
+    page: 0,
+  });
+  const [selectionModel, setSelectionModel] = React.useState<GridRowSelectionModel>([]);
   const [searchOpen, setSearchOpen] = useState(false);
   const [conKey, setConKey] = useState(uuid());
   const [bpnError, setbpnError] = useState(false);
@@ -353,7 +355,7 @@ export default function ConsumeData() {
     }
   };
 
-  const handleSelectionModel = (newSelectionModel: GridSelectionModel) => {
+  const handleSelectionModel = (newSelectionModel: GridRowSelectionModel) => {
     const selectedIDs = new Set(newSelectionModel);
     const selectedRowData = contractOffers.filter((row: GridValidRowModel) => selectedIDs.has(row.id));
     dispatch(setSelectedOffersList(selectedRowData));
@@ -410,8 +412,8 @@ export default function ConsumeData() {
             label={t('content.consumeData.selectType')}
             placeholder={t('content.consumeData.selectType')}
             defaultValue={searchFilterByType}
-            items={ITEMS}
-            onChangeItem={e => handleSearchTypeChange(e)}
+            items={ITEMS as []}
+            onChangeItem={(e: any) => handleSearchTypeChange(e)}
             disableClearable={true}
           />
         </Grid>
@@ -424,23 +426,25 @@ export default function ConsumeData() {
               onKeyDown={handleKeypress}
               fullWidth
               size="small"
-              label={t('content.consumeData.enterURL')}
+              name={t('content.consumeData.enterURL')}
               placeholder={t('content.consumeData.enterURL')}
             />
           ) : (
             <Grid container spacing={1} alignItems="flex-end">
               <Grid item xs={7}>
                 {searchFilterByType.value === 'bpn' ? (
-                  <Input
+                  <TextField
+                    variant="filled"
                     value={filterSelectedBPN}
                     type="text"
                     fullWidth
                     size="small"
-                    label={t('content.consumeData.enterBPN')}
+                    name={t('content.consumeData.enterBPN')}
                     placeholder={t('content.consumeData.enterBPN')}
                     inputProps={{ maxLength: 16 }}
                     error={bpnError}
                     onChange={handleBPNchange}
+                    onPaste={e => e.preventDefault()}
                     helperText={t('alerts.bpnValidation')}
                   />
                 ) : (
@@ -467,7 +471,7 @@ export default function ConsumeData() {
                     renderInput={params => (
                       <Input
                         {...params}
-                        label={t('content.consumeData.searchCompany')}
+                        name={t('content.consumeData.searchCompany')}
                         placeholder={t('content.consumeData.searchPlaceholder')}
                         fullWidth
                       />
@@ -506,8 +510,8 @@ export default function ConsumeData() {
                   placeholder={t('content.consumeData.selectConnectors')}
                   noOptionsText={t('content.consumeData.noConnectors')}
                   defaultValue={filterSelectedConnector}
-                  onChangeItem={e => dispatch(setFilterSelectedConnector(e))}
-                  items={filterConnectors}
+                  onChangeItem={(e: any) => dispatch(setFilterSelectedConnector(e))}
+                  items={filterConnectors as []}
                 />
               </Grid>
             </Grid>
@@ -551,11 +555,11 @@ export default function ConsumeData() {
             loading={offersLoading}
             checkboxSelection
             pagination
-            pageSize={pageSize}
-            onPageSizeChange={setPageSize}
-            rowsPerPageOptions={[10, 25, 50, 100]}
-            onSelectionModelChange={newSelectionModel => handleSelectionModel(newSelectionModel)}
-            selectionModel={selectionModel}
+            paginationModel={paginationModel}
+            onPaginationModelChange={setPaginationModel}
+            pageSizeOptions={[10, 25, 50, 100]}
+            onRowSelectionModelChange={(newSelectionModel: any) => handleSelectionModel(newSelectionModel)}
+            rowSelectionModel={selectionModel}
             components={{
               Toolbar: GridToolbar,
               LoadingOverlay: LinearProgress,
@@ -573,7 +577,7 @@ export default function ConsumeData() {
             disableColumnMenu
             disableColumnSelector
             disableDensitySelector
-            disableSelectionOnClick
+            disableRowSelectionOnClick
             sx={{
               '& .MuiDataGrid-columnHeaderTitle': {
                 textOverflow: 'clip',

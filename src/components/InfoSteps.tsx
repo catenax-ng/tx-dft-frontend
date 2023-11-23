@@ -17,10 +17,10 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
+import { Typography } from '@catena-x/portal-shared-components';
 import InfoIcon from '@mui/icons-material/Info';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import { Box, SxProps } from '@mui/material';
-import { Typography } from 'cx-portal-shared-components';
 import { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 

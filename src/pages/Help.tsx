@@ -18,11 +18,11 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Button, IconButton, Table, Tooltips, Typography } from '@catena-x/portal-shared-components';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InfoIcon from '@mui/icons-material/Info';
 import { Box, Card, CardContent, Grid } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
-import { Button, IconButton, Table, Tooltips, Typography } from 'cx-portal-shared-components';
 import { filter } from 'lodash';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';

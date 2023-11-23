@@ -17,9 +17,9 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
+import { LoadingButton } from '@catena-x/portal-shared-components';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { Stack } from '@mui/material';
-import { LoadingButton } from 'cx-portal-shared-components';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

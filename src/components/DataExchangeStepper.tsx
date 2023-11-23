@@ -18,8 +18,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Button, Typography } from '@catena-x/portal-shared-components';
 import { Box, Divider, Grid } from '@mui/material';
-import { Button, Typography } from 'cx-portal-shared-components';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -56,7 +56,7 @@ export const DataExchangeStepper: React.FC<IDataExchangeStepper> = ({ data }) =>
                   {step?.stepLink && (
                     <Button
                       variant="text"
-                      size="medium"
+                      size="small"
                       onClick={() => navigate(step.stepLink.routeUrl)}
                       startIcon={<StepIcon />}
                       sx={{

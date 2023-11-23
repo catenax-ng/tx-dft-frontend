@@ -18,11 +18,11 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Button, IconButton, Table, Tooltips, Typography } from '@catena-x/portal-shared-components';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, Grid, LinearProgress } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
-import { Button, IconButton, Table, Tooltips, Typography } from 'cx-portal-shared-components';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -34,15 +34,17 @@ import { useAppDispatch } from '../features/store';
 import { DEFAULT_POLICY_DATA } from '../utils/constants';
 
 function Policies() {
-  const [page, setPage] = useState<number>(0);
-  const [pageSize, setPageSize] = useState<number>(10);
+  const [paginationModel, setPaginationModel] = useState({
+    pageSize: 10,
+    page: 0,
+  });
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
   // Get
   const { data, isSuccess, isFetching } = useGetPoliciesQuery({
-    pageSize: pageSize,
-    page: page,
+    pageSize: paginationModel.pageSize,
+    page: paginationModel.page,
   });
 
   // Delete
@@ -164,15 +166,13 @@ function Policies() {
             disableColumnMenu
             disableColumnSelector
             disableDensitySelector
-            disableSelectionOnClick
+            disableRowSelectionOnClick
             columns={columns}
             paginationMode="server"
             rows={data.items}
-            pageSize={pageSize}
-            onPageSizeChange={setPageSize}
-            page={page}
-            onPageChange={setPage}
-            rowsPerPageOptions={[10, 15, 20, 100]}
+            paginationModel={paginationModel}
+            onPaginationModelChange={setPaginationModel}
+            pageSizeOptions={[10, 25, 50, 100]}
             sx={{
               '& .MuiDataGrid-columnHeaderTitle': {
                 textOverflow: 'clip',

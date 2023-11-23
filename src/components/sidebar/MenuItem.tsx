@@ -52,6 +52,8 @@ export default function MenuItem({ item }: { item: IntMenuItem }) {
           <ListItemText
             primaryTypographyProps={{
               sx: {
+                fontFamily:
+                  '"LibreFranklin", "Libre Franklin", "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif !important',
                 fontSize: '14px',
                 color: `${location.pathname === to ? theme.palette.primary.main : theme.palette.common.black}`,
               },

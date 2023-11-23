@@ -19,7 +19,6 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Autocomplete, Box, Divider, FormControl, Grid, Stack } from '@mui/material';
 import {
   Button,
   Chip,
@@ -31,7 +30,8 @@ import {
   LoadingButton,
   SelectList,
   Typography,
-} from 'cx-portal-shared-components';
+} from '@catena-x/portal-shared-components';
+import { Autocomplete, Box, Divider, FormControl, Grid, Stack } from '@mui/material';
 import { debounce, inRange, isEmpty, uniq } from 'lodash';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray } from 'react-hook-form';
@@ -124,11 +124,11 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
             label={t('content.consumeData.selectType')}
             fullWidth
             size="small"
-            onChangeItem={e => {
+            onChangeItem={(e: any) => {
               setSelectType(e);
               resetField('inputBpn', { defaultValue: '' });
             }}
-            items={BPN_TYPE_FIELDS}
+            items={BPN_TYPE_FIELDS as []}
             defaultValue={selectType}
             placeholder={t('content.consumeData.selectType')}
             disableClearable
@@ -190,7 +190,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
                       return typeof option === 'string' ? option : `${option.value}`;
                     }}
                     noOptionsText={t('content.consumeData.noCompany')}
-                    renderInput={params => (
+                    renderInput={(params: any) => (
                       <Input
                         {...params}
                         label={t('content.consumeData.searchCompany')}
@@ -239,7 +239,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
         <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
           {getValues('bpn_numbers').map((bpnNum: string) => (
             <Chip
-              color="secondary"
+              color="primary"
               label={bpnNum}
               key={bpnNum + 1}
               onClick={() => deleteBpn(bpnNum)}
