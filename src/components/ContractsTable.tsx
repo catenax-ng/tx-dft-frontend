@@ -23,7 +23,7 @@ import { Refresh } from '@mui/icons-material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Box, Grid, LinearProgress } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams, GridToolbar, GridValidRowModel } from '@mui/x-data-grid';
-import { capitalize, find } from 'lodash';
+import { capitalize, isEmpty } from 'lodash';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

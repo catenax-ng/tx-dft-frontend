@@ -24,11 +24,12 @@ import {
   DialogActions,
   DialogContent,
   DialogHeader,
+  Input,
   LoadingButton,
   SelectList,
   Typography,
 } from '@catena-x/portal-shared-components';
-import { Autocomplete, Box, Grid, Input, LinearProgress, TextField } from '@mui/material';
+import { Autocomplete, Box, Grid, LinearProgress, TextField } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
@@ -412,7 +413,7 @@ export default function ConsumeData() {
             label={t('content.consumeData.selectType')}
             placeholder={t('content.consumeData.selectType')}
             defaultValue={searchFilterByType}
-            items={ITEMS as []}
+            items={ITEMS as any}
             onChangeItem={(e: any) => handleSearchTypeChange(e)}
             disableClearable={true}
           />
@@ -444,7 +445,6 @@ export default function ConsumeData() {
                     inputProps={{ maxLength: 16 }}
                     error={bpnError}
                     onChange={handleBPNchange}
-                    onPaste={e => e.preventDefault()}
                     helperText={t('alerts.bpnValidation')}
                   />
                 ) : (
@@ -468,10 +468,10 @@ export default function ConsumeData() {
                       return typeof option === 'string' ? option : `${option.value}`;
                     }}
                     noOptionsText={t('content.consumeData.noCompany')}
-                    renderInput={params => (
+                    renderInput={(params: any) => (
                       <Input
                         {...params}
-                        name={t('content.consumeData.searchCompany')}
+                        label={t('content.consumeData.searchCompany')}
                         placeholder={t('content.consumeData.searchPlaceholder')}
                         fullWidth
                       />

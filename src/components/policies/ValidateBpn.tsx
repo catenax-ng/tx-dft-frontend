@@ -120,6 +120,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
       <Grid container spacing={2} alignItems="flex-end">
         <Grid item xs={4}>
           <SelectList
+            {...{ defaultValue: { selectType } }}
             keyTitle="title"
             label={t('content.consumeData.selectType')}
             fullWidth
@@ -128,8 +129,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
               setSelectType(e);
               resetField('inputBpn', { defaultValue: '' });
             }}
-            items={BPN_TYPE_FIELDS as []}
-            defaultValue={selectType}
+            items={BPN_TYPE_FIELDS as any}
             placeholder={t('content.consumeData.selectType')}
             disableClearable
           />
@@ -178,11 +178,11 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
                     options={filterCompanyOptions}
                     includeInputInList
                     loading={filterCompanyOptionsLoading}
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    onChange={(e, value: any) => onChange(value.bpn)}
+                    onChange={(e, value) => onChange(value.bpn)}
                     onInputChange={debounce(async (event, newInputValue) => {
                       await onChangeSearchInputValue(newInputValue);
                     }, 1000)}
+                    onSelect={() => setsearchPopup(false)}
                     onClose={() => setsearchPopup(false)}
                     onBlur={() => setsearchPopup(false)}
                     isOptionEqualToValue={(option, value) => option.value === value.value}
