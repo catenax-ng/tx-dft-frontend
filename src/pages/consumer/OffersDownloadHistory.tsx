@@ -18,10 +18,10 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { IconButton, Table, Tooltips, Typography } from '@catena-x/portal-shared-components';
 import DownloadIcon from '@mui/icons-material/Download';
 import { LinearProgress } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
-import { IconButton, Table, Tooltips, Typography } from 'cx-portal-shared-components';
 import saveAs from 'file-saver';
 import { capitalize } from 'lodash';
 import moment from 'moment';
@@ -41,8 +41,10 @@ import ConsumerService from '../../services/ConsumerService';
 import { DATE_TIME_FORMAT, MAX_CONTRACTS_AGREEMENTS, STATUS_COLOR_MAPPING } from '../../utils/constants';
 
 function OffersDownloadHistory() {
-  const [page, setPage] = useState<number>(0);
-  const [pageSize, setPageSize] = useState<number>(10);
+  const [paginationModel, setPaginationModel] = useState({
+    pageSize: 10,
+    page: 0,
+  });
   const [showErrorDialog, setShowErrorDialog] = useState<boolean>(false);
   const [errorTableData, setErrorTableData] = useState<IDefaultObject[]>([]);
 
@@ -228,14 +230,12 @@ function OffersDownloadHistory() {
           disableColumnMenu
           disableColumnSelector
           disableDensitySelector
-          disableSelectionOnClick
+          disableRowSelectionOnClick
           columns={columns}
           rows={data.items}
-          pageSize={pageSize}
-          onPageSizeChange={setPageSize}
-          page={page}
-          onPageChange={setPage}
-          rowsPerPageOptions={[10, 15, 20, 100]}
+          paginationModel={paginationModel}
+          onPaginationModelChange={setPaginationModel}
+          pageSizeOptions={[10, 25, 50, 100]}
           sx={{
             '& .MuiDataGrid-columnHeaderTitle': {
               textOverflow: 'clip',

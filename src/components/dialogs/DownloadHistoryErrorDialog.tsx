@@ -18,11 +18,11 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Button, Dialog, DialogActions, DialogContent, DialogHeader, Table } from '@catena-x/portal-shared-components';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Box, List, ListItem } from '@mui/material';
-import { GridColDef } from '@mui/x-data-grid';
-import { Button, Dialog, DialogActions, DialogContent, DialogHeader, Table } from 'cx-portal-shared-components';
+import type { GridColDef } from '@mui/x-data-grid';
 import { isEmpty } from 'lodash';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -41,8 +41,10 @@ const DownloadHistoryErrorDialog: React.FC<IDownloadHistoryErrorDialog> = ({
   errorTableData,
 }) => {
   const { t } = useTranslation();
-  const [page, setPage] = useState<number>(0);
-  const [pageSize] = useState<number>(10);
+  const [paginationModel, setPaginationModel] = useState({
+    pageSize: 10,
+    page: 0,
+  });
 
   const handleStatusIcon = (val: string | boolean) => {
     return val ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />;
@@ -102,14 +104,13 @@ const DownloadHistoryErrorDialog: React.FC<IDownloadHistoryErrorDialog> = ({
             disableColumnMenu
             disableColumnSelector
             disableDensitySelector
-            disableSelectionOnClick
+            disableRowSelectionOnClick
             columns={columns}
             rows={errorTableData}
-            pageSize={pageSize}
-            page={page}
+            paginationModel={paginationModel}
+            onPaginationModelChange={setPaginationModel}
+            pageSizeOptions={[10, 25, 50, 100]}
             getRowHeight={() => 'auto'}
-            onPageChange={newPage => setPage(newPage)}
-            rowsPerPageOptions={[10, 15, 20, 100]}
             sx={{
               '& .MuiDataGrid-columnHeaderTitle, & .MuiDataGrid-cell': {
                 textOverflow: 'clip',

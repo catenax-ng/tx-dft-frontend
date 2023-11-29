@@ -18,11 +18,11 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
+import { IconButton, LoadingButton, Tooltips, Typography } from '@catena-x/portal-shared-components';
 import { Refresh } from '@mui/icons-material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Box, Grid, LinearProgress } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams, GridToolbar, GridValidRowModel } from '@mui/x-data-grid';
-import { IconButton, LoadingButton, Tooltips, Typography } from 'cx-portal-shared-components';
 import { capitalize, isEmpty } from 'lodash';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
@@ -48,7 +48,10 @@ interface IContractsTable {
   subtitle: string;
 }
 function ContractsTable({ type, title, subtitle }: IContractsTable) {
-  const [pageSize, setPageSize] = useState<number>(10);
+  const [paginationModel, setPaginationModel] = useState({
+    pageSize: 10,
+    page: 0,
+  });
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const pageType = `pages.${USER_TYPE_SWITCH[type]}`; // to avoid nested template literals
@@ -123,9 +126,9 @@ function ContractsTable({ type, title, subtitle }: IContractsTable) {
         row.contractAgreementInfo?.contractSigningDate ? (
           <Tooltips
             tooltipPlacement="top"
-            tooltipText={convertEpochToDate(row.contractAgreementInfo?.contractSigningDate)}
+            tooltipText={convertEpochToDate(row?.contractAgreementInfo?.contractSigningDate)}
           >
-            <span>{convertEpochToDate(row.contractAgreementInfo?.contractSigningDate)}</span>
+            <span>{convertEpochToDate(row?.contractAgreementInfo?.contractSigningDate)}</span>
           </Tooltips>
         ) : (
           '-'
@@ -225,9 +228,9 @@ function ContractsTable({ type, title, subtitle }: IContractsTable) {
                 columns={type === 'provider' ? [...columns, ...actionCol] : columns}
                 loading={isFetching}
                 pagination
-                pageSize={pageSize}
-                onPageSizeChange={setPageSize}
-                rowsPerPageOptions={[10, 25, 50, 100]}
+                paginationModel={paginationModel}
+                onPaginationModelChange={setPaginationModel}
+                pageSizeOptions={[10, 25, 50, 100]}
                 components={{
                   Toolbar: GridToolbar,
                   LoadingOverlay: LinearProgress,
@@ -244,7 +247,7 @@ function ContractsTable({ type, title, subtitle }: IContractsTable) {
                 disableColumnMenu
                 disableColumnSelector
                 disableDensitySelector
-                disableSelectionOnClick
+                disableRowSelectionOnClick
                 sx={{
                   '& .MuiDataGrid-columnHeaderTitle': {
                     textOverflow: 'clip',

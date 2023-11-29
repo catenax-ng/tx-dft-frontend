@@ -21,10 +21,10 @@
 
 import './styles/index.scss';
 
+import { SharedCssBaseline, SharedThemeProvider } from '@catena-x/portal-shared-components';
 import { ThemeProvider } from '@mui/material';
-import { SharedCssBaseline } from 'cx-portal-shared-components';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 
 import App from './App';
@@ -37,16 +37,20 @@ import { clearConsoles } from './utils/utils';
 clearConsoles();
 I18nService.init();
 
+const container = document.getElementById('root');
+const root = createRoot(container);
+
 UserService.initKeycloak(user => {
-  ReactDOM.render(
+  root.render(
     <React.StrictMode>
       <SharedCssBaseline />
       <Provider store={store}>
-        <ThemeProvider theme={sdeTheme}>
-          <App loggedUser={user} />
-        </ThemeProvider>
+        <SharedThemeProvider>
+          <ThemeProvider theme={sdeTheme}>
+            <App loggedUser={user} />
+          </ThemeProvider>
+        </SharedThemeProvider>
       </Provider>
     </React.StrictMode>,
-    document.getElementById('root'),
   );
 });

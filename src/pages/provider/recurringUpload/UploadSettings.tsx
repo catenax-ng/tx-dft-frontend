@@ -19,8 +19,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Checkbox } from '@catena-x/portal-shared-components';
 import { CircularProgress, FormControl, FormControlLabel } from '@mui/material';
-import { Checkbox } from 'cx-portal-shared-components';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 

@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { ErrorPage } from 'cx-portal-shared-components';
+import { ErrorPage } from '@catena-x/portal-shared-components';
 import { ReactElement } from 'react';
 
 import { useAppSelector } from '../features/store';
