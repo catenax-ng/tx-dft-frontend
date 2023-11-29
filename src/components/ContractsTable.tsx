@@ -120,7 +120,7 @@ function ContractsTable({ type, title, subtitle }: IContractsTable) {
       headerName: t('content.contractHistory.columns.contractSigningDate'),
       sortingOrder: ['asc', 'desc'],
       sortComparator: (v1, v2, param1: GridValidRowModel, param2: GridValidRowModel) => param2.id - param1.id,
-      valueGetter: ({ row }) => convertEpochToDate(row?.contractAgreementInfo?.contractSigningDate),
+      valueGetter: ({ row }) => convertEpochToDate(row.contractAgreementInfo?.contractSigningDate),
       valueFormatter: ({ value }) => convertEpochToDate(value?.contractSigningDate),
       renderCell: ({ row }) =>
         row.contractAgreementInfo?.contractSigningDate ? (
