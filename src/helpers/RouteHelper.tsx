@@ -16,26 +16,21 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-import { lazy, ReactElement } from 'react';
+import { Logout } from '@mui/icons-material';
+import { ReactElement } from 'react';
 
-// General Pages
-const Help = lazy(() => import('../pages/Help'));
-const Home = lazy(() => import('../pages/Home'));
-const Logout = lazy(() => import('../pages/Logout'));
-const PageNotFound = lazy(() => import('../pages/PageNotFound'));
-const About = lazy(() => import('../pages/About'));
-
-// Provider Pages
-const ConsumeData = lazy(() => import('../pages/consumer/ConsumeData'));
-const RecurringUpload = lazy(() => import('../pages/provider/recurringUpload'));
-const ProviderContracts = lazy(() => import('../pages/ProviderContracts'));
-const UploadHistoryNew = lazy(() => import('../pages/UploadHistoryNew'));
-const Policies = lazy(() => import('../pages/Policies'));
-
-// Consumer Pages
-const ConsumerContracts = lazy(() => import('../pages/consumer/ConsumerContracts'));
-const CreateData = lazy(() => import('../pages/CreateData'));
-const OffersDownloadHistory = lazy(() => import('../pages/consumer/OffersDownloadHistory'));
+import About from '../pages/About';
+import ConsumeData from '../pages/consumer/ConsumeData';
+import ConsumerContracts from '../pages/consumer/ConsumerContracts';
+import OffersDownloadHistory from '../pages/consumer/OffersDownloadHistory';
+import CreateData from '../pages/CreateData';
+import Help from '../pages/Help';
+import Home from '../pages/Home';
+import PageNotFound from '../pages/PageNotFound';
+import Policies from '../pages/Policies';
+import RecurringUpload from '../pages/provider/recurringUpload';
+import ProviderContracts from '../pages/ProviderContracts';
+import UploadHistoryNew from '../pages/UploadHistoryNew';
 
 export interface IRoutes {
   key?: string;
