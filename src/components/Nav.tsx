@@ -26,10 +26,10 @@ import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import legalNoticeContent from '../assets/about/legal-notice.json';
 import customConfig from '../assets/customConfig/custom-config.json';
 import { useAppSelector } from '../features/store';
 import I18nService from '../services/i18nService';
-import { USER_GUIDE_URL } from '../utils/constants';
 import { openInNewTab } from '../utils/utils';
 
 const Nav = () => {
@@ -80,7 +80,7 @@ const Nav = () => {
           <Button
             color="secondary"
             variant="contained"
-            onClick={() => openInNewTab(USER_GUIDE_URL)}
+            onClick={() => openInNewTab(legalNoticeContent.readmePath)}
             size="small"
             sx={{ mr: 3 }}
           >
