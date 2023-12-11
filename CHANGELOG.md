@@ -2,14 +2,16 @@
 
 New features, fixed bugs, known defects and other noteworthy changes to each release of the Simple Data Exchanger Frontend.
 
-## [2.1.0] - 2023-08-30
+## [unreleased]
 ### Fixed
-- docker base image changed .
+- Page reloading when route change
+- In-app help page link added
 
 ## [2.1.0] - 2023-08-30
 ### Added
 - warning text in access policy section.
 ### Fixed
+- docker base image changed
 - warning text updates.
 - removed catena -x from browser title.
 - jar file added for dependencies check workflow.
