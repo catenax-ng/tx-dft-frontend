@@ -101,8 +101,8 @@ const BPN_TYPE_FIELDS = [
 const PURPOSE_VALUES = [
   {
     id: 0,
-    title: 'ID 3.0 Trace',
-    value: 'ID 3.0 Trace',
+    title: 'ID 3.1 Trace',
+    value: 'ID 3.1 Trace',
   },
 ];
 
