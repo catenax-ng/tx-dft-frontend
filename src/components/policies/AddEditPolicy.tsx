@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Box, FormControl, FormControlLabel, FormLabel, Grid, RadioGroup } from '@mui/material';
+import { FormControl, FormControlLabel, FormLabel, RadioGroup } from '@mui/material';
 import {
   Button,
   Dialog,
@@ -39,7 +39,7 @@ import { useCreatePolicyMutation, useUpdatePolicyMutation } from '../../features
 import { setPolicyDialog } from '../../features/provider/policies/slice';
 import { useAppDispatch, useAppSelector } from '../../features/store';
 import { PolicyModel, PolicyPayload } from '../../models/RecurringUpload.models';
-import { DURATION_UNITS, ONLY_NUM_REGEX, PURPOSE_VALUES } from '../../utils/constants';
+import { PURPOSE_VALUES } from '../../utils/constants';
 import ValidateBpn from './ValidateBpn';
 
 function AddEditPolicy() {
@@ -58,7 +58,6 @@ function AddEditPolicy() {
 
   const inputBpn = watch('inputBpn');
   const purposeType = watch('usage_policies.PURPOSE.typeOfAccess');
-  const durationType = watch('usage_policies.DURATION.typeOfAccess');
 
   const showPolicyName = policyDialogType === 'Add' || policyDialogType === 'Edit';
 
@@ -144,81 +143,6 @@ function AddEditPolicy() {
           <Typography fontWeight={'bold'} mb={3}>
             {t('content.policies.usagePolicy')}
           </Typography>
-          {/* duraion fields */}
-          <Box mb={2}>
-            <FormControl fullWidth>
-              <FormLabel sx={{ mb: 1 }}>{t('content.policies.duration')}</FormLabel>
-              <Controller
-                rules={{ required: true }}
-                control={control}
-                name="usage_policies.DURATION.typeOfAccess"
-                render={({ field }) => (
-                  <RadioGroup
-                    {...field}
-                    row
-                    onChange={e => {
-                      field.onChange(e);
-                      resetField('usage_policies.DURATION.value', { defaultValue: '' });
-                    }}
-                  >
-                    <FormControlLabel value="UNRESTRICTED" control={<Radio />} label="Unrestricted" />
-                    <FormControlLabel value="RESTRICTED" control={<Radio />} label="Restricted" />
-                  </RadioGroup>
-                )}
-              />
-            </FormControl>
-            {durationType === 'RESTRICTED' && (
-              <FormControl fullWidth>
-                <Typography variant="body1">{t('content.policies.durationNote')}</Typography>
-                <Grid container spacing={3}>
-                  <Grid item xs={3}>
-                    <Controller
-                      name="usage_policies.DURATION.value"
-                      control={control}
-                      rules={{
-                        required: durationType === 'RESTRICTED',
-                        pattern: ONLY_NUM_REGEX,
-                      }}
-                      render={({ field, fieldState: { error } }) => (
-                        <Input
-                          {...field}
-                          variant="filled"
-                          label={t('content.common.enterValue')}
-                          placeholder={t('content.common.enterValue')}
-                          type="number"
-                          error={!!error}
-                        />
-                      )}
-                    />
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Controller
-                      name="usage_policies.DURATION.durationUnit"
-                      control={control}
-                      rules={{
-                        required: durationType === 'RESTRICTED',
-                      }}
-                      render={({ field, fieldState: { error } }) => (
-                        <SelectList
-                          {...field}
-                          keyTitle="title"
-                          defaultValue={field.value}
-                          items={DURATION_UNITS}
-                          variant="filled"
-                          label={t('content.policies.selectDuration')}
-                          placeholder={t('content.policies.selectDuration')}
-                          error={!!error}
-                          disableClearable={true}
-                          onChangeItem={field.onChange}
-                        />
-                      )}
-                    />
-                  </Grid>
-                </Grid>
-              </FormControl>
-            )}
-          </Box>
-
           {/* purpose field */}
           <FormControl fullWidth>
             <FormLabel sx={{ mb: 1 }}>{t('content.policies.purpose')}</FormLabel>

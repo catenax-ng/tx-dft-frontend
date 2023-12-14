@@ -21,7 +21,7 @@
 
 import { find } from 'lodash';
 
-import { DURATION_UNITS, PURPOSE_VALUES } from '../utils/constants';
+import { PURPOSE_VALUES } from '../utils/constants';
 
 export type SchedulesFormData = {
   type: string;
@@ -95,13 +95,6 @@ export class PolicyModel {
     this.type_of_access = policyData.type_of_access;
     this.bpn_numbers = policyData.bpn_numbers;
     this.usage_policies = {
-      DURATION: {
-        typeOfAccess: policyData?.usage_policies?.DURATION?.typeOfAccess,
-        value: policyData.usage_policies.DURATION.value,
-        durationUnit:
-          find(DURATION_UNITS, e => e.value === policyData?.usage_policies?.DURATION?.durationUnit) ||
-          DURATION_UNITS[0],
-      },
       PURPOSE: {
         typeOfAccess: policyData?.usage_policies?.PURPOSE?.typeOfAccess,
         value: find(PURPOSE_VALUES, e => e.value === policyData?.usage_policies?.PURPOSE?.value) || '',
@@ -138,11 +131,6 @@ export class PolicyPayload {
     this.type_of_access = policyData.type_of_access;
     this.bpn_numbers = policyData.bpn_numbers;
     this.usage_policies = {
-      DURATION: {
-        typeOfAccess: policyData.usage_policies.DURATION.typeOfAccess,
-        value: policyData.usage_policies.DURATION.value,
-        durationUnit: policyData.usage_policies.DURATION.durationUnit.value,
-      },
       PURPOSE: {
         typeOfAccess: policyData.usage_policies.PURPOSE.typeOfAccess,
         value: policyData.usage_policies.PURPOSE.value.value,

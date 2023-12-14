@@ -69,18 +69,6 @@ function Policies() {
       },
     },
     {
-      field: 'durationUnit',
-      headerName: 'Usage duration',
-      align: 'center',
-      headerAlign: 'center',
-      sortable: false,
-      flex: 1,
-      renderCell: ({ row }) => {
-        const duration = row?.usage_policies?.DURATION;
-        return duration?.value ? `${duration?.value} ${duration?.durationUnit}` : 'NA';
-      },
-    },
-    {
       field: 'purpose',
       headerName: 'Usage purpose',
       align: 'center',
