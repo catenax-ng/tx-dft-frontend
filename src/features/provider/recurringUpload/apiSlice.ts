@@ -70,7 +70,7 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
     getMinioConfig: builder.query({
       query: () => {
         return {
-          url: '/minio',
+          url: '/objectstorage',
         };
       },
       providesTags: ['MinioConfig'],
@@ -78,7 +78,7 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
     putMinioConfig: builder.mutation({
       query: body => {
         return {
-          url: '/minio',
+          url: '/objectstorage',
           method: 'PUT',
           body,
         };

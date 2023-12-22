@@ -33,7 +33,7 @@ interface IStorageMediaTabs {
 }
 
 const STORAGE_MEDIA_TABS: IStorageMediaTabs[] = [
-  { label: 'Minio', value: 'minio', component: <MinioConfiguration /> },
+  { label: 'ObJect Storage', value: 'objectstorage', component: <MinioConfiguration /> },
   { label: 'SFTP', value: 'sftp', component: <SftpConfiguration /> },
 ];
 
