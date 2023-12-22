@@ -83,7 +83,7 @@ export const recurringUploadApiSlice = apiSlice.injectEndpoints({
           body,
         };
       },
-      extraOptions: { showNotification: true, message: 'Minio configurations updated!' },
+      extraOptions: { showNotification: true, message: 'ObjectStorage configurations updated!' },
       invalidatesTags: ['MinioConfig', 'StorageMediaConfig'],
     }),
     getEmailConfig: builder.query({
