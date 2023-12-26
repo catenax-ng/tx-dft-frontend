@@ -48,6 +48,7 @@ export interface IConsumerDataOffers {
   usagePolicies: IUsageControl[];
   fileName?: string;
   fileContentType?: string;
+  type?: string;
 }
 export interface ILegalEntityName {
   value?: string;
@@ -125,4 +126,6 @@ export interface IConsumerSlice {
   filterSelectedConnector: Partial<IntConnectorItem>;
   contractAgreements: IContractAgreements[];
   isContractAgreementsLoading: boolean;
+  manufacturerPartId: string;
+  bpnNumber: string;
 }
