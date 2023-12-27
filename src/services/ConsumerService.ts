@@ -80,6 +80,26 @@ class ConsumerService extends HttpService {
     });
     return res.data;
   }
+
+  // Get offer based on manufacturing part id
+  public async searchPCFDataOffers(params: unknown) {
+    const res = await this.instance({
+      method: 'GET',
+      url: '/pcf/search',
+      params,
+    });
+    return res.data;
+  }
+
+  public async requestForPCFValue(productId: string, offers: unknown) {
+    const res = await this.instance({
+      method: 'POST',
+      url: `/pcf/request/${productId}`,
+      data: offers,
+      responseType: 'blob',
+    });
+    return res;
+  }
 }
 
 export default ConsumerService;

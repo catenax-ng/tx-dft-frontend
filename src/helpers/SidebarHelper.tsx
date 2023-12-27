@@ -25,6 +25,7 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import HistoryIcon from '@mui/icons-material/History';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import RepartitionIcon from '@mui/icons-material/Repartition';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import UploadIcon from '@mui/icons-material/Upload';
 
@@ -38,6 +39,7 @@ export const icons = {
   FormatListBulletedIcon,
   BusinessIcon,
   TextSnippetIcon,
+  RepartitionIcon,
 };
 
 export interface IntMenuItem {
@@ -88,6 +90,12 @@ export const MenuItems: IntMenu[] = [
         permissions: ['auto_config_management'],
       },
       {
+        text: 'pages.pcfExchange',
+        menuIcon: 'RepartitionIcon',
+        to: '/provider/pcf-exchange',
+        dataId: 'pcfExchange',
+      },
+      {
         text: 'content.policies.title',
         menuIcon: 'TextSnippetIcon',
         to: '/provider/policies',
@@ -130,6 +138,12 @@ export const MenuItems: IntMenu[] = [
           'consumer_view_contract_offers',
           'consumer_establish_contract_agreement',
         ],
+      },
+      {
+        text: 'pages.pcfExchange',
+        menuIcon: 'RepartitionIcon',
+        to: '/consumer/pcf-exchange',
+        dataId: 'pcfExchange',
       },
       {
         text: 'pages.offerDownloadHistory',

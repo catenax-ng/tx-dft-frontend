@@ -41,6 +41,8 @@ const initialState: IConsumerSlice = {
   filterSelectedConnector: {},
   contractAgreements: [],
   isContractAgreementsLoading: false,
+  manufacturerPartId: '',
+  bpnNumber: '',
 };
 
 export const consumerSlice = createSlice({
@@ -109,6 +111,12 @@ export const consumerSlice = createSlice({
     setIsContractAgreementsLoading: (state, action: PayloadAction<boolean>) => {
       state.isContractAgreementsLoading = action.payload;
     },
+    setManufacturerPartIdValue: (state, action: PayloadAction<string>) => {
+      state.manufacturerPartId = action.payload;
+    },
+    setBpnNumberValue: (state, action: PayloadAction<string>) => {
+      state.bpnNumber = action.payload;
+    },
   },
 });
 
@@ -128,5 +136,7 @@ export const {
   setFilterSelectedBPN,
   setContractAgreements,
   setIsContractAgreementsLoading,
+  setManufacturerPartIdValue,
+  setBpnNumberValue,
 } = consumerSlice.actions;
 export default consumerSlice.reducer;

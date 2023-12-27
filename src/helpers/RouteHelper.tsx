@@ -23,11 +23,13 @@ import About from '../pages/About';
 import ConsumeData from '../pages/consumer/ConsumeData';
 import ConsumerContracts from '../pages/consumer/ConsumerContracts';
 import OffersDownloadHistory from '../pages/consumer/OffersDownloadHistory';
+import ConsumerPCFExchange from '../pages/consumer/pcfExchange';
 import CreateData from '../pages/CreateData';
 import Help from '../pages/Help';
 import Home from '../pages/Home';
 import PageNotFound from '../pages/PageNotFound';
 import Policies from '../pages/Policies';
+import ProviderPCFExchange from '../pages/provider/ProviderPCFExchange';
 import RecurringUpload from '../pages/provider/recurringUpload';
 import ProviderContracts from '../pages/ProviderContracts';
 import UploadHistoryNew from '../pages/UploadHistoryNew';
@@ -86,6 +88,10 @@ export const ROUTES: IRoutes[] = [
     path: '/provider/help',
     element: <Help />,
   },
+  {
+    path: '/provider/pcf-exchange',
+    element: <ProviderPCFExchange />,
+  },
   // Consumer routes
   {
     path: '/consumer/consume-data',
@@ -105,5 +111,9 @@ export const ROUTES: IRoutes[] = [
     path: '/consumer/offers-download-history',
     element: <OffersDownloadHistory />,
     permissions: ['consumer_view_download_history'],
+  },
+  {
+    path: '/consumer/pcf-exchange',
+    element: <ConsumerPCFExchange />,
   },
 ];
