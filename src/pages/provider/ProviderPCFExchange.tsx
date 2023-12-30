@@ -27,11 +27,8 @@ const ProviderPCFExchange = () => {
   const { t } = useTranslation();
   return (
     <>
-    <PageHeading title="pages.pcfExchange" description="" />
-    <PCFExchangeTable
-      type="provider"
-      title={t('content.pcfExchangeTable.providerTitle')}
-    />
+      <PageHeading title="pages.pcfExchange" description="" />
+      <PCFExchangeTable type="provider" title={t('content.pcfExchangeTable.providerTitle')} />
     </>
   );
 };

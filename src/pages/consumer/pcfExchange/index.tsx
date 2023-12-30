@@ -47,7 +47,7 @@ function ConsumerPCFExchange() {
       <PageHeading title="pages.pcfExchange" description="content.pcfExchange.description" />
 
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={activeTab} onChange={handleChange} aria-label="recurring upload tabs" sx={{ pt: 0 }}>
+        <Tabs value={activeTab} onChange={handleChange} aria-label="PCF exchange tabs" sx={{ pt: 0 }}>
           {RECURRING_UPLOAD_TABS.map(e => (
             <Tab key={e.label} label={e.label} />
           ))}

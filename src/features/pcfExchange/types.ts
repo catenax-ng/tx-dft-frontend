@@ -18,7 +18,6 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-
 export interface IPCFRequestHistory {
   requests: string;
   productId: string;
@@ -27,5 +26,19 @@ export interface IPCFRequestHistory {
   message: string;
   requestedTime?: string;
   lastUpdatedTime?: string;
+}
+
+export interface IPCFResponsePojo {
+  requestId: string;
+  responseId: string;
+  pcfData: object;
+  lastUpdatedTime?: number;
+}
+
+export interface IPCFValueState {
+  openDialog: boolean;
+  pcfValueData: IPCFResponsePojo,
+  pcfValueDialog: boolean;
+
 }
 

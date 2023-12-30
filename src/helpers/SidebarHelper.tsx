@@ -93,7 +93,8 @@ export const MenuItems: IntMenu[] = [
         text: 'pages.pcfExchange',
         menuIcon: 'RepartitionIcon',
         to: '/provider/pcf-exchange',
-        dataId: 'pcfExchange',
+        dataId: 'providerPcfExchange',
+        permissions: ['view_pcf_history'],
       },
       {
         text: 'content.policies.title',
@@ -143,7 +144,8 @@ export const MenuItems: IntMenu[] = [
         text: 'pages.pcfExchange',
         menuIcon: 'RepartitionIcon',
         to: '/consumer/pcf-exchange',
-        dataId: 'pcfExchange',
+        dataId: 'consumerPcfExchange',
+        permissions: ['view_pcf_history'],
       },
       {
         text: 'pages.offerDownloadHistory',

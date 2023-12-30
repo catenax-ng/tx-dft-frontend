@@ -43,7 +43,16 @@ import { useTranslation } from 'react-i18next';
 import ConfirmTermsDialog from '../../../components/dialogs/ConfirmTermsDialog';
 import OfferDetailsDialog from '../../../components/dialogs/OfferDetailsDialog';
 import NoDataPlaceholder from '../../../components/NoDataPlaceholder';
-import { setBpnNumberValue, setContractOffers, setIsMultipleContractSubscription, setManufacturerPartIdValue, setOffersLoading, setSelectedOffer, setSelectedOffersList } from '../../../features/consumer/slice';
+import Permissions from '../../../components/Permissions';
+import {
+  setBpnNumberValue,
+  setContractOffers,
+  setIsMultipleContractSubscription,
+  setManufacturerPartIdValue,
+  setOffersLoading,
+  setSelectedOffer,
+  setSelectedOffersList,
+} from '../../../features/consumer/slice';
 import { IConsumerDataOffers } from '../../../features/consumer/types';
 import { useAppDispatch, useAppSelector } from '../../../features/store';
 import { handleBlankCellValues } from '../../../helpers/ConsumerOfferHelper';
@@ -58,7 +67,6 @@ export default function SearchRequestPCFValue() {
     isMultipleContractSubscription,
     bpnNumber,
     manufacturerPartId,
-
   } = useAppSelector(state => state.consumerSlice);
   const [isOpenOfferDialog, setIsOpenOfferDialog] = useState<boolean>(false);
   const [isOpenOfferConfirmDialog, setIsOpenOfferConfirmDialog] = useState<boolean>(false);
@@ -218,7 +226,6 @@ export default function SearchRequestPCFValue() {
     }
   };
 
-
   const handleSelectionModel = (newSelectionModel: GridSelectionModel) => {
     const selectedIDs = new Set(newSelectionModel);
     const selectedRowData = contractOffers.filter((row: GridValidRowModel) => selectedIDs.has(row.id));
@@ -239,7 +246,6 @@ export default function SearchRequestPCFValue() {
     init();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   return (
     <>
@@ -269,29 +275,26 @@ export default function SearchRequestPCFValue() {
           />
         </Grid>
         <Grid item>
-
-          <LoadingButton
-            color="primary"
-            variant="contained"
-            disabled={isEmpty(manufacturerPartId)}
-            label={t('button.search')}
-            loadIndicator={t('content.common.loading')}
-            onButtonClick={searchPCFDataOffers}
-            loading={offersLoading}
-            sx={{ ml: 3 }}
-          />
-
+          <Permissions values={['search_pcf']}>
+            <LoadingButton
+              color="primary"
+              variant="contained"
+              disabled={isEmpty(manufacturerPartId)}
+              label={t('button.search')}
+              loadIndicator={t('content.common.loading')}
+              onButtonClick={searchPCFDataOffers}
+              loading={offersLoading}
+              sx={{ ml: 3 }}
+            />
+          </Permissions>
         </Grid>
       </Grid>
       <Box display="flex" justifyContent="flex-end" my={3}>
-        <Button
-          variant="contained"
-          size="small"
-          onClick={requestPCFValue}
-          disabled={!selectedOffersList.length}
-        >
-          {t('button.requestPCF')}
-        </Button>
+        <Permissions values={['request_for_pcf_value']}>
+          <Button variant="contained" size="small" onClick={requestPCFValue} disabled={!selectedOffersList.length}>
+            {t('button.requestPCF')}
+          </Button>
+        </Permissions>
       </Box>
       <Box sx={{ height: 'auto', overflow: 'auto', width: '100%' }}>
         <DataGrid
@@ -395,5 +398,3 @@ export default function SearchRequestPCFValue() {
     </>
   );
 }
-
-

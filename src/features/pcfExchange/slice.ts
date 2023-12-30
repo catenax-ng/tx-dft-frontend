@@ -18,13 +18,30 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { useTranslation } from 'react-i18next';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import PCFExchangeTable from '../../../components/PCFExchangeTable';
+import { IPCFResponsePojo, IPCFValueState } from './types';
 
-const ConsumerPCFExchangeHistory = () => {
-  const { t } = useTranslation();
-  return <PCFExchangeTable type="consumer" title={t('content.pcfExchangeTable.consumerTitle')} />;
+const initialState: IPCFValueState = {
+  openDialog: false,
+  pcfValueData: {} as IPCFResponsePojo,
+  pcfValueDialog: false,
 };
 
-export default ConsumerPCFExchangeHistory;
+export const viewPcfValueSlice = createSlice({
+  name: 'viewPcfValueSlice',
+  initialState,
+  reducers: {
+    setPcfValueData: (state, action: PayloadAction<IPCFResponsePojo>) => {
+      state.pcfValueData = action.payload;
+    },
+    setPcfValueDialog: (state, action: PayloadAction<boolean>) => {
+      state.pcfValueDialog = action.payload;
+    },
+    handleDialogClose: state => Object.assign(state, initialState),
+  },
+});
+
+export const { setPcfValueData, setPcfValueDialog, handleDialogClose } = viewPcfValueSlice.actions;
+
+export default viewPcfValueSlice.reducer;

@@ -19,6 +19,7 @@
 
 import { apiSlice } from '../app/apiSlice';
 import { setPageLoading } from '../app/slice';
+import { setPcfValueData, setPcfValueDialog } from './slice';
 import { IPCFRequestHistory } from './types';
 
 export const pcfExchangeSlice = apiSlice.injectEndpoints({
@@ -32,13 +33,34 @@ export const pcfExchangeSlice = apiSlice.injectEndpoints({
       },
       providesTags: ['PCFExchangeRequest'],
       transformResponse: async ({ items }) => {
-        const modifieldData = items
-          .map((item: IPCFRequestHistory, index: number) => {
-            return { ...{ id: index, ...item } };
-          });
-        return { contracts: modifieldData };
+        const modifieldData = items.map((item: IPCFRequestHistory, index: number) => {
+          return { ...{ id: index, ...item } };
+        });
+        return { pcfdatahistory: modifieldData };
       },
     }),
+
+    viewPCFData: builder.mutation({
+      query: ({ requestId }) => {
+        return {
+          url: `/pcf/request/${requestId}`,
+          method: 'GET',
+        };
+      },
+      invalidatesTags: ['PCFExchangeRequest'],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          dispatch(setPageLoading(true));
+          const { data } = await queryFulfilled;
+          dispatch(setPcfValueData(data));
+          dispatch(setPcfValueDialog(true)); 
+        } finally {
+          dispatch(setPageLoading(false));
+        }
+      },
+    }),
+
+
     actionOnPCFRequest: builder.mutation({
       query: body => {
         return {
@@ -48,7 +70,10 @@ export const pcfExchangeSlice = apiSlice.injectEndpoints({
         };
       },
       invalidatesTags: ['PCFExchangeRequest'],
-      extraOptions: { showNotification: true, message: 'Action on PCF request completed and sending notification to consumer' },
+      extraOptions: {
+        showNotification: true,
+        message: 'Action on PCF request completed and sending notification to consumer',
+      },
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           dispatch(setPageLoading(true));
@@ -58,8 +83,7 @@ export const pcfExchangeSlice = apiSlice.injectEndpoints({
         }
       },
     }),
-    
   }),
 });
 
-export const { useGetPcfExchangeQuery, useActionOnPCFRequestMutation } = pcfExchangeSlice;
+export const { useGetPcfExchangeQuery, useActionOnPCFRequestMutation, useViewPCFDataMutation } = pcfExchangeSlice;
