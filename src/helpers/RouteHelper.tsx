@@ -91,6 +91,7 @@ export const ROUTES: IRoutes[] = [
   {
     path: '/provider/pcf-exchange',
     element: <ProviderPCFExchange />,
+    permissions: ['view_pcf_history'],
   },
   // Consumer routes
   {
@@ -115,5 +116,6 @@ export const ROUTES: IRoutes[] = [
   {
     path: '/consumer/pcf-exchange',
     element: <ConsumerPCFExchange />,
+    permissions: ['view_pcf_history', 'search_pcf', 'request_for_pcf_value'],
   },
 ];

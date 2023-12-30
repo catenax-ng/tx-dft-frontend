@@ -100,6 +100,15 @@ class ConsumerService extends HttpService {
     });
     return res;
   }
+
+  public async viewPCFValue(requestId: string) {
+    const res = await this.instance({
+      method: 'GET',
+      url: `/pcf/request/${requestId}`,
+    });
+    return res;
+  }
+
 }
 
 export default ConsumerService;

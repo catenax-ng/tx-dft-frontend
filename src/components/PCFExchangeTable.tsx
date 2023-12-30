@@ -21,6 +21,7 @@
 import { Refresh } from '@mui/icons-material';
 import ApprovalIcon from '@mui/icons-material/Approval';
 import CancelIcon from '@mui/icons-material/Cancel';
+import ReplayIcon from '@mui/icons-material/Replay';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import { Box, Grid, LinearProgress } from '@mui/material';
 import { DataGrid, GridColDef, GridToolbar, GridValidRowModel } from '@mui/x-data-grid';
@@ -28,12 +29,20 @@ import { IconButton, LoadingButton, Tooltips, Typography } from 'cx-portal-share
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import Permissions from '../components/Permissions';
 import { setPageLoading } from '../features/app/slice';
-import { useActionOnPCFRequestMutation, useGetPcfExchangeQuery } from '../features/pcfExchange/apiSlice';
+import { useActionOnPCFRequestMutation, useGetPcfExchangeQuery, useViewPCFDataMutation } from '../features/pcfExchange/apiSlice';
 import { useAppDispatch } from '../features/store';
 import { handleBlankCellValues } from '../helpers/ConsumerOfferHelper';
-import { MAX_CONTRACTS_AGREEMENTS, PCF_CONSUMER_STATES, PCF_STATES, USER_TYPE_SWITCH } from '../utils/constants';
+import {
+  MAX_CONTRACTS_AGREEMENTS,
+  PCF_CONSUMER_STATES,
+  PCF_PUSH_FAILED_STATES,
+  PCF_STATES,
+  USER_TYPE_SWITCH,
+} from '../utils/constants';
 import { convertEpochToDate } from '../utils/utils';
+import ViewPCFData from './dialogs/ViewPCFData';
 import NoDataPlaceholder from './NoDataPlaceholder';
 
 interface IPCFExchangeTable {
@@ -58,12 +67,13 @@ function PCFExchangeTable({ type, title }: IPCFExchangeTable) {
 
   const [rejectPCFRequest, { isLoading: isRejecting }] = useActionOnPCFRequestMutation({});
 
-  const [viewPCFData ] = useActionOnPCFRequestMutation({});
+  const [retryPCFRequest, { isLoading: isSendingNotification }] = useActionOnPCFRequestMutation({});
 
-
+  const [viewPCFData, { isLoading: isViewData }] = useViewPCFDataMutation({});
+  
   useEffect(() => {
     dispatch(setPageLoading(isLoading));
-  }, [dispatch, isLoading, isApproval, isRejecting ]);
+  }, [dispatch, isLoading, isApproval, isRejecting, isSendingNotification, isViewData]);
 
   const columns: GridColDef[] = [
     {
@@ -95,11 +105,7 @@ function PCFExchangeTable({ type, title }: IPCFExchangeTable) {
       flex: 1,
       headerName: `${t(pageType)} ${t('content.pcfExchangeTable.columns.counterParty')}`,
       renderCell: ({ row }) => (
-        <Tooltips
-          tooltipPlacement="top-start"
-          tooltipArrow={false}
-          tooltipText={handleBlankCellValues(row.bpnNumber)}
-        >
+        <Tooltips tooltipPlacement="top-start" tooltipArrow={false} tooltipText={handleBlankCellValues(row.bpnNumber)}>
           <span>{handleBlankCellValues(row.bpnNumber)}</span>
         </Tooltips>
       ),
@@ -115,10 +121,7 @@ function PCFExchangeTable({ type, title }: IPCFExchangeTable) {
       valueFormatter: ({ value }) => convertEpochToDate(value?.requestedTime),
       renderCell: ({ row }) =>
         row?.requestedTime ? (
-          <Tooltips
-            tooltipPlacement="top"
-            tooltipText={convertEpochToDate(row?.requestedTime)}
-          >
+          <Tooltips tooltipPlacement="top" tooltipText={convertEpochToDate(row?.requestedTime)}>
             <span>{convertEpochToDate(row?.requestedTime)}</span>
           </Tooltips>
         ) : (
@@ -130,7 +133,11 @@ function PCFExchangeTable({ type, title }: IPCFExchangeTable) {
       maxWidth: 200,
       flex: 1,
       headerName: t('content.pcfExchangeTable.columns.status'),
-      renderCell: ({ row }) => ( row?.status ),
+      renderCell: ({ row }) => (
+        <Tooltips tooltipPlacement="top-start" tooltipArrow={false} tooltipText={handleBlankCellValues(row.status)}>
+          <span>{handleBlankCellValues(row.status)}</span>
+        </Tooltips>
+      ),
     },
     {
       field: 'lastUpdatedTime',
@@ -143,10 +150,7 @@ function PCFExchangeTable({ type, title }: IPCFExchangeTable) {
       valueFormatter: ({ value }) => convertEpochToDate(value?.lastUpdatedTime),
       renderCell: ({ row }) =>
         row?.lastUpdatedTime ? (
-          <Tooltips
-            tooltipPlacement="top"
-            tooltipText={convertEpochToDate(row?.lastUpdatedTime)}
-          >
+          <Tooltips tooltipPlacement="top" tooltipText={convertEpochToDate(row?.lastUpdatedTime)}>
             <span>{convertEpochToDate(row?.lastUpdatedTime)}</span>
           </Tooltips>
         ) : (
@@ -165,35 +169,75 @@ function PCFExchangeTable({ type, title }: IPCFExchangeTable) {
       disableExport: true,
       renderCell: ({ row }) => {
         const checkState = PCF_STATES.some(e => e === row.status);
+        const checkFailedState = PCF_PUSH_FAILED_STATES.some(e => e === row.status);
         if (checkState) {
           return (
             <>
-            <Tooltips tooltipPlacement="bottom" tooltipText={t('button.approvePCFRequest')}>
-              <span>
-                <IconButton
-                  aria-label="approval"
-                  size="small"
-                  onClick={() => approvePCFRequest({ productId: row.productId, requestId: row.requestId, bpnNumber: row.bpnNumber, status: 'APPROVED' })}
-                  sx={{ mr: 2 }}
-                >
-                  <ApprovalIcon color="action" fontSize="small" />
-                </IconButton>
-              </span>
-            </Tooltips>
+              <Tooltips tooltipPlacement="bottom" tooltipText={t('button.approvePCFRequest')}>
+                <span>
+                  <IconButton
+                    aria-label="approval"
+                    size="small"
+                    onClick={() =>
+                      approvePCFRequest({
+                        productId: row.productId,
+                        requestId: row.requestId,
+                        bpnNumber: row.bpnNumber,
+                        status: 'APPROVED',
+                      })
+                    }
+                    sx={{ mr: 2 }}
+                  >
+                    <ApprovalIcon color="action" fontSize="small" />
+                  </IconButton>
+                </span>
+              </Tooltips>
 
-            <Tooltips tooltipPlacement="bottom" tooltipText={t('button.rejectPCFRequest')}>
-            <span>
-              <IconButton
-                aria-label="reject"
-                size="small"
-                onClick={() => rejectPCFRequest({ productId: row.productId, requestId: row.requestId, bpnNumber: row.bpnNumber, status: 'REJECTED' })}
-                sx={{ mr: 2 }}
-              >
-                <CancelIcon color="action" fontSize="small" />
-              </IconButton>
-            </span>
-          </Tooltips>
-          </>
+              <Tooltips tooltipPlacement="bottom" tooltipText={t('button.rejectPCFRequest')}>
+                <span>
+                  <IconButton
+                    aria-label="reject"
+                    size="small"
+                    onClick={() =>
+                      rejectPCFRequest({
+                        productId: row.productId,
+                        requestId: row.requestId,
+                        bpnNumber: row.bpnNumber,
+                        status: 'REJECTED',
+                      })
+                    }
+                    sx={{ mr: 2 }}
+                  >
+                    <CancelIcon color="action" fontSize="small" />
+                  </IconButton>
+                </span>
+              </Tooltips>
+            </>
+          );
+        }
+        if (checkFailedState) {
+          return (
+            <>
+              <Tooltips tooltipPlacement="bottom" tooltipText={t('button.retryPCFRequest')}>
+                <span>
+                  <IconButton
+                    aria-label="retry"
+                    size="small"
+                    onClick={() =>
+                      retryPCFRequest({
+                        productId: row.productId,
+                        requestId: row.requestId,
+                        bpnNumber: row.bpnNumber,
+                        status: row.status,
+                      })
+                    }
+                    sx={{ mr: 2 }}
+                  >
+                    <ReplayIcon color="action" fontSize="small" />
+                  </IconButton>
+                </span>
+              </Tooltips>
+            </>
           );
         }
       },
@@ -213,19 +257,23 @@ function PCFExchangeTable({ type, title }: IPCFExchangeTable) {
         if (checkState) {
           return (
             <>
-            <Tooltips tooltipPlacement="bottom" tooltipText={t('button.viewPCFData')}>
-              <span>
-                <IconButton
-                  aria-label="view"
-                  size="small"
-                  onClick={() => viewPCFData({ productId: row.productId, requestId: row.requestId, bpnNumber: row.bpnNumber, status: 'APPROVED' })}
-                  sx={{ mr: 2 }}
-                >
-                  <ViewInArIcon color="action" fontSize="small" />
-                </IconButton>
-              </span>
-            </Tooltips>
-          </>
+              <Tooltips tooltipPlacement="bottom" tooltipText={t('button.viewPCFData')}>
+                <span>
+                  <IconButton
+                    aria-label="view"
+                    size="small"
+                    onClick={() =>
+                      viewPCFData({
+                        requestId: row.requestId,
+                      })
+                    }
+                    sx={{ mr: 2 }}
+                  >
+                   <ViewInArIcon color="action" fontSize="small" />
+                  </IconButton>
+                </span>
+              </Tooltips>
+            </>
           );
         }
       },
@@ -242,22 +290,24 @@ function PCFExchangeTable({ type, title }: IPCFExchangeTable) {
             </Typography>
           </Grid>
           <Grid item xs={3} display={'flex'} justifyContent={'flex-end'}>
-            <LoadingButton
-              size="small"
-              variant="contained"
-              label={t('button.refresh')}
-              onButtonClick={refetch}
-              startIcon={<Refresh />}
-              loadIndicator={t('content.common.loading')}
-              loading={isFetching}
-            />
+            <Permissions values={['view_pcf_history']}>
+              <LoadingButton
+                size="small"
+                variant="contained"
+                label={t('button.refresh')}
+                onButtonClick={refetch}
+                startIcon={<Refresh />}
+                loadIndicator={t('content.common.loading')}
+                loading={isFetching}
+              />
+            </Permissions>
           </Grid>
           <Grid item xs={12}>
             <Box sx={{ height: 'auto', overflow: 'auto', width: '100%' }}>
               <DataGrid
                 autoHeight={true}
                 getRowId={row => row.id}
-                rows={data.contracts}
+                rows={data.pcfdatahistory}
                 columns={type === 'provider' ? [...columns, ...actionCol] : [...columns, ...viewActionCol]}
                 loading={isFetching}
                 pagination
@@ -293,10 +343,12 @@ function PCFExchangeTable({ type, title }: IPCFExchangeTable) {
             </Box>
           </Grid>
         </Grid>
+        <Box>
+          <ViewPCFData />
+        </Box>
       </>
     );
   } else return null;
 }
 
 export default PCFExchangeTable;
-

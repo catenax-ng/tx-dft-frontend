@@ -201,6 +201,8 @@
       "providerDescription": "All consumer request for PCF value",
       "manufacturerPartId": "Enter Manufacturer Part Id",
       "bpnNumber": "Enter BPN Number",
+      "viewPCFModelTitle":"Recieved PCF value",
+      "viewPCFModelTitleDescription": "Here you have recieved PCF value from data provider",
       "columns": {
         "title": "Title",
         "assetId": "Asset ID",
@@ -264,7 +266,8 @@
     "requestPCF": "Request to PCF Value",
     "approvePCFRequest": "Approve PCF Request",
     "rejectPCFRequest": "Reject PCF Request",
-    "viewPCFData": "View PCF RECEIVED Value"
+    "viewPCFData": "View PCF RECEIVED Value",
+    "retryPCFRequest" : "Retry PCF notification push"
   },
   "alerts": {
     "invalidFile": "Invalid file format!",

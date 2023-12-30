@@ -194,7 +194,35 @@
       "collapseSidebar": "Seitenleiste einklappen",
       "introduction": "Einleitung",
       "moreSubmodelInfo": "Weitere Informationen zu Untermodellen"
-    }
+    },
+    "pcfExchange": {
+      "description": "Discover the PCF data offer catalog of other Catena-X member companies. You can select an interesting offer and subscribe to it. \n Also find PCF request history with actual data",
+      "providerDescription": "All consumer request for PCF value",
+      "manufacturerPartId": "Enter Manufacturer Part Id",
+      "bpnNumber": "Enter BPN Number",
+      "viewPCFModelTitle":"Recieved PCF value",
+      "viewPCFModelTitleDescription": "Here you have recieved PCF value from data provider",
+      "columns": {
+        "title": "Title",
+        "assetId": "Asset ID",
+        "created": "Created On",
+        "description": "Description",
+        "publisher": "Publisher"
+      }
+    },
+    "pcfExchangeTable": {
+      "providerTitle" : "PCF exchange request for approval", 
+      "consumerTitle" : "PCF exchange request history",
+      "columns": {
+        "productId" : "Product Id",
+        "requestedId": "Requested Id",
+        "counterParty": "Counter Party",
+        "message": "Title",
+        "requestedDate": "Requested Date",
+        "lastUpdatedTime" : "Last Updated Time",
+        "status": "Status"
+      }
+     }
   },
   "dialog": {
     "samePolicies": {
@@ -233,7 +261,12 @@
     "okay": "Okay",
     "subscribeSelected": "Abonnieren und herunterladen",
     "subscribe": "Abonnieren",
-    "declineContract": "Vertrag ablehnen"
+    "declineContract": "Vertrag ablehnen",
+    "requestPCF": "Request to PCF Value",
+    "approvePCFRequest": "Approve PCF Request",
+    "rejectPCFRequest": "Reject PCF Request",
+    "viewPCFData": "View PCF RECEIVED Value",
+    "retryPCFRequest" : "Retry PCF notification push"
   },
   "alerts": {
     "invalidFile": "Ungültiges Dateiformat!",
