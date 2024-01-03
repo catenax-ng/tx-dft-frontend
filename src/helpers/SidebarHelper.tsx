@@ -56,6 +56,18 @@ export interface IntMenu extends IntMenuItem {
 }
 
 // menu items
+const pcfExchangeMenuItem: IntMenuItem = {
+  text: 'pages.pcfExchange',
+  menuIcon: 'RepartitionIcon',
+  permissions: ['view_pcf_history'],
+};
+
+const contractsMenuItem: IntMenuItem = {
+  text: 'pages.contracts',
+  menuIcon: 'FormatListBulletedIcon',
+  permissions: ['provider_view_contract_agreement'],
+};
+
 export const MenuItems: IntMenu[] = [
   {
     text: 'pages.home',
@@ -90,11 +102,9 @@ export const MenuItems: IntMenu[] = [
         permissions: ['auto_config_management'],
       },
       {
-        text: 'pages.pcfExchange',
-        menuIcon: 'RepartitionIcon',
+        ...pcfExchangeMenuItem,
         to: '/provider/pcf-exchange',
         dataId: 'providerPcfExchange',
-        permissions: ['view_pcf_history'],
       },
       {
         text: 'content.policies.title',
@@ -111,11 +121,9 @@ export const MenuItems: IntMenu[] = [
         permissions: ['provider_view_history'],
       },
       {
-        text: 'pages.contracts',
-        menuIcon: 'FormatListBulletedIcon',
+        ...contractsMenuItem,
         to: '/provider/contracts',
         dataId: 'pContracts',
-        permissions: ['provider_view_contract_agreement'],
       },
       {
         text: 'pages.help',
@@ -141,11 +149,9 @@ export const MenuItems: IntMenu[] = [
         ],
       },
       {
-        text: 'pages.pcfExchange',
-        menuIcon: 'RepartitionIcon',
+        ...pcfExchangeMenuItem,
         to: '/consumer/pcf-exchange',
         dataId: 'consumerPcfExchange',
-        permissions: ['view_pcf_history'],
       },
       {
         text: 'pages.offerDownloadHistory',
@@ -155,11 +161,9 @@ export const MenuItems: IntMenu[] = [
         permissions: ['consumer_view_download_history'],
       },
       {
-        text: 'pages.contracts',
-        menuIcon: 'FormatListBulletedIcon',
+        ...contractsMenuItem,
         to: '/consumer/contracts',
         dataId: 'uploadHistoryMenu',
-        permissions: ['consumer_view_contract_agreement'],
       },
     ],
   },
