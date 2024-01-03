@@ -20,16 +20,16 @@
 
 import { useTranslation } from 'react-i18next';
 
-import PageHeading from '../../components/PageHeading';
 import PCFExchangeTable from '../../components/PCFExchangeTable';
 
 const ProviderPCFExchange = () => {
   const { t } = useTranslation();
   return (
-    <>
-      <PageHeading title="pages.pcfExchange" description="" />
-      <PCFExchangeTable type="provider" title={t('content.pcfExchangeTable.providerTitle')} />
-    </>
+    <PCFExchangeTable
+      type="provider"
+      title={t('pages.pcfExchange')}
+      subtitle={t('content.pcfExchangeTable.providerTitle')}
+    />
   );
 };
 

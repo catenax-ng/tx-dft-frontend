@@ -54,9 +54,11 @@ import {
   setSelectedOffersList,
 } from '../../../features/consumer/slice';
 import { IConsumerDataOffers } from '../../../features/consumer/types';
+import { setSnackbarMessage } from '../../../features/notifiication/slice';
 import { useAppDispatch, useAppSelector } from '../../../features/store';
 import { handleBlankCellValues } from '../../../helpers/ConsumerOfferHelper';
 import ConsumerService from '../../../services/ConsumerService';
+import { ALPHA_NUM_REGEX } from '../../../utils/constants';
 
 export default function SearchRequestPCFValue() {
   const {
@@ -73,7 +75,7 @@ export default function SearchRequestPCFValue() {
   const [pageSize, setPageSize] = useState<number>(10);
   const [selectionModel, setSelectionModel] = React.useState<GridSelectionModel>([]);
 
-  const [offerSubLoading, setIsOfferSubLoading] = useState(false);
+  const [offerSubLoading, setOfferSubLoading] = useState(false);
 
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
@@ -153,7 +155,7 @@ export default function SearchRequestPCFValue() {
   };
 
   const handleConfirmTermDialog = async () => {
-    setIsOfferSubLoading(true);
+    setOfferSubLoading(true);
     await ConsumerService.getInstance()
       .requestForPCFValue(manufacturerPartId, preparePayload())
       .then(response => {
@@ -164,10 +166,16 @@ export default function SearchRequestPCFValue() {
           dispatch(setSelectedOffer(null));
           dispatch(setSelectedOffersList([]));
           setSelectionModel([]);
+          dispatch(
+            setSnackbarMessage({
+              message: response.data.msg,
+              type: 'error',
+            }),
+          );
         }
       })
       .catch(error => console.log('err', error))
-      .finally(() => setIsOfferSubLoading(false));
+      .finally(() => setOfferSubLoading(false));
   };
 
   const onRowClick = (params: any) => {
@@ -178,10 +186,20 @@ export default function SearchRequestPCFValue() {
   const searchPCFDataOffers = async () => {
     try {
       dispatch(setOffersLoading(true));
-      const response = await ConsumerService.getInstance().searchPCFDataOffers({
-        manufacturerPartId: manufacturerPartId,
-        bpnNumber: bpnNumber,
-      });
+      const response = await ConsumerService.getInstance()
+        .searchPCFDataOffers({
+          manufacturerPartId: manufacturerPartId,
+          bpnNumber: bpnNumber,
+        })
+        .then(res => {
+          dispatch(
+            setSnackbarMessage({
+              message: res.msg,
+              type: 'success',
+            }),
+          );
+          return res;
+        });
       dispatch(setContractOffers(response));
       dispatch(setOffersLoading(false));
     } catch (error) {
@@ -252,9 +270,9 @@ export default function SearchRequestPCFValue() {
       <Grid container spacing={2} alignItems="end">
         <Grid item xs={4}>
           <Input
-            value={manufacturerPartId}
+            value={manufacturerPartId || ''}
             type="text"
-            onChange={e => dispatch(setManufacturerPartIdValue(e.target.value))}
+            onChange={(e: { target: { value: string } }) => dispatch(setManufacturerPartIdValue(e.target.value))}
             onKeyDown={handleKeypress}
             fullWidth
             size="small"
@@ -264,9 +282,15 @@ export default function SearchRequestPCFValue() {
         </Grid>
         <Grid item xs={4}>
           <Input
-            value={bpnNumber}
+            value={bpnNumber || ''}
             type="text"
-            onChange={e => dispatch(setBpnNumberValue(e.target.value))}
+            inputProps={{ maxLength: 16 }}
+            onChange={e => {
+              const value = e.target.value;
+              if (value === '' || ALPHA_NUM_REGEX.test(value)) {
+                dispatch(setBpnNumberValue(e.target.value));
+              }
+            }}
             onKeyDown={handleKeypress}
             fullWidth
             size="small"
@@ -317,14 +341,7 @@ export default function SearchRequestPCFValue() {
             NoRowsOverlay: () => NoDataPlaceholder('content.common.noData'),
             NoResultsOverlay: () => NoDataPlaceholder('content.common.noResults'),
           }}
-          componentsProps={{
-            toolbar: {
-              showQuickFilter: true,
-              quickFilterProps: { debounceMs: 500 },
-              printOptions: { disableToolbarButton: true },
-              csvOptions: { disableToolbarButton: true },
-            },
-          }}
+          disableColumnFilter
           disableColumnMenu
           disableColumnSelector
           disableDensitySelector

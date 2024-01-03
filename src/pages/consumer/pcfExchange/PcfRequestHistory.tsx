@@ -24,7 +24,7 @@ import PCFExchangeTable from '../../../components/PCFExchangeTable';
 
 const ConsumerPCFExchangeHistory = () => {
   const { t } = useTranslation();
-  return <PCFExchangeTable type="consumer" title={t('content.pcfExchangeTable.consumerTitle')} />;
+  return <PCFExchangeTable type="consumer" title={''} subtitle={t('content.pcfExchangeTable.consumerTitle')} />;
 };
 
 export default ConsumerPCFExchangeHistory;

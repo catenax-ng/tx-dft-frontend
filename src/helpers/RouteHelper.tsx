@@ -16,7 +16,6 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-import { Logout } from '@mui/icons-material';
 import { ReactElement } from 'react';
 
 import About from '../pages/About';
@@ -27,6 +26,7 @@ import ConsumerPCFExchange from '../pages/consumer/pcfExchange';
 import CreateData from '../pages/CreateData';
 import Help from '../pages/Help';
 import Home from '../pages/Home';
+import Logout from '../pages/Logout';
 import PageNotFound from '../pages/PageNotFound';
 import Policies from '../pages/Policies';
 import ProviderPCFExchange from '../pages/provider/ProviderPCFExchange';

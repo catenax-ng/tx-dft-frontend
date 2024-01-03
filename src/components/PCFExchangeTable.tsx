@@ -23,15 +23,19 @@ import ApprovalIcon from '@mui/icons-material/Approval';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ReplayIcon from '@mui/icons-material/Replay';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
-import { Box, Grid, LinearProgress } from '@mui/material';
-import { DataGrid, GridColDef, GridToolbar, GridValidRowModel } from '@mui/x-data-grid';
+import { Box, Grid } from '@mui/material';
+import { GridColDef, GridValidRowModel } from '@mui/x-data-grid';
 import { IconButton, LoadingButton, Tooltips, Typography } from 'cx-portal-shared-components';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Permissions from '../components/Permissions';
 import { setPageLoading } from '../features/app/slice';
-import { useActionOnPCFRequestMutation, useGetPcfExchangeQuery, useViewPCFDataMutation } from '../features/pcfExchange/apiSlice';
+import {
+  useActionOnPCFRequestMutation,
+  useGetPcfExchangeQuery,
+  useViewPCFDataMutation,
+} from '../features/pcfExchange/apiSlice';
 import { useAppDispatch } from '../features/store';
 import { handleBlankCellValues } from '../helpers/ConsumerOfferHelper';
 import {
@@ -43,14 +47,14 @@ import {
 } from '../utils/constants';
 import { convertEpochToDate } from '../utils/utils';
 import ViewPCFData from './dialogs/ViewPCFData';
-import NoDataPlaceholder from './NoDataPlaceholder';
+import DataTable from './table/DataTable';
 
 interface IPCFExchangeTable {
   type: string;
   title: string;
+  subtitle: string;
 }
-function PCFExchangeTable({ type, title }: IPCFExchangeTable) {
-  const [pageSize, setPageSize] = useState<number>(10);
+function PCFExchangeTable({ type, title, subtitle }: IPCFExchangeTable) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const pageType = `pages.${USER_TYPE_SWITCH[type]}`; // to avoid nested template literals
@@ -70,7 +74,7 @@ function PCFExchangeTable({ type, title }: IPCFExchangeTable) {
   const [retryPCFRequest, { isLoading: isSendingNotification }] = useActionOnPCFRequestMutation({});
 
   const [viewPCFData, { isLoading: isViewData }] = useViewPCFDataMutation({});
-  
+
   useEffect(() => {
     dispatch(setPageLoading(isLoading));
   }, [dispatch, isLoading, isApproval, isRejecting, isSendingNotification, isViewData]);
@@ -214,30 +218,27 @@ function PCFExchangeTable({ type, title }: IPCFExchangeTable) {
               </Tooltips>
             </>
           );
-        }
-        if (checkFailedState) {
+        } else if (checkFailedState) {
           return (
-            <>
-              <Tooltips tooltipPlacement="bottom" tooltipText={t('button.retryPCFRequest')}>
-                <span>
-                  <IconButton
-                    aria-label="retry"
-                    size="small"
-                    onClick={() =>
-                      retryPCFRequest({
-                        productId: row.productId,
-                        requestId: row.requestId,
-                        bpnNumber: row.bpnNumber,
-                        status: row.status,
-                      })
-                    }
-                    sx={{ mr: 2 }}
-                  >
-                    <ReplayIcon color="action" fontSize="small" />
-                  </IconButton>
-                </span>
-              </Tooltips>
-            </>
+            <Tooltips tooltipPlacement="bottom" tooltipText={t('button.retryPCFRequest')}>
+              <span>
+                <IconButton
+                  aria-label="retry"
+                  size="small"
+                  onClick={() =>
+                    retryPCFRequest({
+                      productId: row.productId,
+                      requestId: row.requestId,
+                      bpnNumber: row.bpnNumber,
+                      status: row.status,
+                    })
+                  }
+                  sx={{ mr: 2 }}
+                >
+                  <ReplayIcon color="primary" fontSize="small" />
+                </IconButton>
+              </span>
+            </Tooltips>
           );
         }
       },
@@ -269,7 +270,7 @@ function PCFExchangeTable({ type, title }: IPCFExchangeTable) {
                     }
                     sx={{ mr: 2 }}
                   >
-                   <ViewInArIcon color="action" fontSize="small" />
+                    <ViewInArIcon color="action" fontSize="small" />
                   </IconButton>
                 </span>
               </Tooltips>
@@ -285,8 +286,9 @@ function PCFExchangeTable({ type, title }: IPCFExchangeTable) {
       <>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={9}>
+            <Typography variant="h3">{title}</Typography>
             <Typography variant="body1" mt={1}>
-              {title}
+              {subtitle}
             </Typography>
           </Grid>
           <Grid item xs={3} display={'flex'} justifyContent={'flex-end'}>
@@ -304,41 +306,10 @@ function PCFExchangeTable({ type, title }: IPCFExchangeTable) {
           </Grid>
           <Grid item xs={12}>
             <Box sx={{ height: 'auto', overflow: 'auto', width: '100%' }}>
-              <DataGrid
-                autoHeight={true}
-                getRowId={row => row.id}
-                rows={data.pcfdatahistory}
+              <DataTable
+                data={data?.pcfdatahistory}
                 columns={type === 'provider' ? [...columns, ...actionCol] : [...columns, ...viewActionCol]}
-                loading={isFetching}
-                pagination
-                pageSize={pageSize}
-                onPageSizeChange={setPageSize}
-                rowsPerPageOptions={[10, 25, 50, 100]}
-                components={{
-                  Toolbar: GridToolbar,
-                  LoadingOverlay: LinearProgress,
-                  NoRowsOverlay: () => NoDataPlaceholder('content.common.noData'),
-                  NoResultsOverlay: () => NoDataPlaceholder('content.common.noResults'),
-                }}
-                componentsProps={{
-                  toolbar: {
-                    showQuickFilter: true,
-                    quickFilterProps: { debounceMs: 500 },
-                    printOptions: { disableToolbarButton: true },
-                  },
-                }}
-                disableColumnMenu
-                disableColumnSelector
-                disableDensitySelector
-                disableSelectionOnClick
-                sx={{
-                  '& .MuiDataGrid-columnHeaderTitle': {
-                    textOverflow: 'clip',
-                    whiteSpace: 'break-spaces !important',
-                    maxHeight: 'none !important',
-                    lineHeight: 1.4,
-                  },
-                }}
+                isFetching={isFetching}
               />
             </Box>
           </Grid>
