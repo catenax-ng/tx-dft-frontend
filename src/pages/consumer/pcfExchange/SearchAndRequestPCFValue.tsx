@@ -18,15 +18,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-import { Box, Grid, LinearProgress } from '@mui/material';
-import {
-  DataGrid,
-  GridColDef,
-  GridSelectionModel,
-  GridToolbar,
-  GridValidRowModel,
-  GridValueGetterParams,
-} from '@mui/x-data-grid';
+import { Box, Grid } from '@mui/material';
+import { GridColDef, GridSelectionModel, GridValidRowModel, GridValueGetterParams } from '@mui/x-data-grid';
 import {
   Button,
   Dialog,
@@ -42,8 +35,8 @@ import { useTranslation } from 'react-i18next';
 
 import ConfirmTermsDialog from '../../../components/dialogs/ConfirmTermsDialog';
 import OfferDetailsDialog from '../../../components/dialogs/OfferDetailsDialog';
-import NoDataPlaceholder from '../../../components/NoDataPlaceholder';
 import Permissions from '../../../components/Permissions';
+import DataTable from '../../../components/table/DataTable';
 import {
   setBpnNumberValue,
   setContractOffers,
@@ -52,6 +45,7 @@ import {
   setOffersLoading,
   setSelectedOffer,
   setSelectedOffersList,
+  setSelectionModel,
 } from '../../../features/consumer/slice';
 import { IConsumerDataOffers } from '../../../features/consumer/types';
 import { setSnackbarMessage } from '../../../features/notifiication/slice';
@@ -69,11 +63,10 @@ export default function SearchRequestPCFValue() {
     isMultipleContractSubscription,
     bpnNumber,
     manufacturerPartId,
+    selectionModel,
   } = useAppSelector(state => state.consumerSlice);
   const [isOpenOfferDialog, setIsOpenOfferDialog] = useState<boolean>(false);
   const [isOpenOfferConfirmDialog, setIsOpenOfferConfirmDialog] = useState<boolean>(false);
-  const [pageSize, setPageSize] = useState<number>(10);
-  const [selectionModel, setSelectionModel] = React.useState<GridSelectionModel>([]);
 
   const [offerSubLoading, setOfferSubLoading] = useState(false);
 
@@ -165,7 +158,7 @@ export default function SearchRequestPCFValue() {
           dispatch(setIsMultipleContractSubscription(false));
           dispatch(setSelectedOffer(null));
           dispatch(setSelectedOffersList([]));
-          setSelectionModel([]);
+          dispatch(setSelectionModel([]));
           dispatch(
             setSnackbarMessage({
               message: response.data.msg,
@@ -248,7 +241,7 @@ export default function SearchRequestPCFValue() {
     const selectedIDs = new Set(newSelectionModel);
     const selectedRowData = contractOffers.filter((row: GridValidRowModel) => selectedIDs.has(row.id));
     dispatch(setSelectedOffersList(selectedRowData));
-    setSelectionModel(newSelectionModel);
+    dispatch(setSelectionModel(newSelectionModel));
   };
 
   const init = () => {
@@ -257,7 +250,7 @@ export default function SearchRequestPCFValue() {
     dispatch(setManufacturerPartIdValue(null));
     dispatch(setBpnNumberValue(null));
     dispatch(setSelectedOffersList([]));
-    setSelectionModel([]);
+    dispatch(setSelectionModel([]));
   };
 
   useEffect(() => {
@@ -321,42 +314,14 @@ export default function SearchRequestPCFValue() {
         </Permissions>
       </Box>
       <Box sx={{ height: 'auto', overflow: 'auto', width: '100%' }}>
-        <DataGrid
-          autoHeight={true}
-          getRowId={row => row.id}
-          rows={contractOffers}
-          onRowClick={onRowClick}
+        <DataTable
+          data={contractOffers}
           columns={columns}
-          loading={offersLoading}
-          checkboxSelection
-          pagination
-          pageSize={pageSize}
-          onPageSizeChange={setPageSize}
-          rowsPerPageOptions={[10, 25, 50, 100]}
-          onSelectionModelChange={newSelectionModel => handleSelectionModel(newSelectionModel)}
+          isFetching={offersLoading}
+          checkboxSelection={true}
+          onRowClick={() => onRowClick}
           selectionModel={selectionModel}
-          components={{
-            Toolbar: GridToolbar,
-            LoadingOverlay: LinearProgress,
-            NoRowsOverlay: () => NoDataPlaceholder('content.common.noData'),
-            NoResultsOverlay: () => NoDataPlaceholder('content.common.noResults'),
-          }}
-          disableColumnFilter
-          disableColumnMenu
-          disableColumnSelector
-          disableDensitySelector
-          disableSelectionOnClick
-          sx={{
-            '& .MuiDataGrid-columnHeaderTitle': {
-              textOverflow: 'clip',
-              whiteSpace: 'break-spaces',
-              lineHeight: 1.5,
-              textAlign: 'center',
-            },
-            '& .MuiDataGrid-columnHeaderCheckbox': {
-              height: 'auto !important',
-            },
-          }}
+          handleSelectionModel={() => handleSelectionModel}
         />
       </Box>
 

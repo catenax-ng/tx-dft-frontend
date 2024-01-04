@@ -42,8 +42,6 @@ function ViewPCFData() {
         </Typography>
 
         <pre>{JSON.stringify(pcfValueData.pcfData, null, 2)}</pre>
-       
-
       </DialogContent>
       <DialogActions>
         <Button variant="contained" sx={{ mr: 2 }} onClick={() => dispatch(setPcfValueDialog(false))}>

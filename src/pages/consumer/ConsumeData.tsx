@@ -62,6 +62,7 @@ import {
   setSelectedFilterCompanyOption,
   setSelectedOffer,
   setSelectedOffersList,
+  setSelectionModel,
 } from '../../features/consumer/slice';
 import {
   IConnectorResponse,
@@ -108,11 +109,11 @@ export default function ConsumeData() {
     filterConnectors,
     filterSelectedConnector,
     filterSelectedBPN,
+    selectionModel,
   } = useAppSelector(state => state.consumerSlice);
   const [isOpenOfferDialog, setIsOpenOfferDialog] = useState<boolean>(false);
   const [isOpenOfferConfirmDialog, setIsOpenOfferConfirmDialog] = useState<boolean>(false);
   const [pageSize, setPageSize] = useState<number>(10);
-  const [selectionModel, setSelectionModel] = React.useState<GridSelectionModel>([]);
   const [searchOpen, setSearchOpen] = useState(false);
   const [conKey, setConKey] = useState(uuid());
   const [bpnError, setbpnError] = useState(false);
@@ -208,7 +209,7 @@ export default function ConsumeData() {
           dispatch(setIsMultipleContractSubscription(false));
           dispatch(setSelectedOffer(null));
           dispatch(setSelectedOffersList([]));
-          setSelectionModel([]);
+          dispatch(setSelectionModel([]));
         }
       })
       .catch(error => console.log('err', error))
@@ -357,14 +358,14 @@ export default function ConsumeData() {
     const selectedIDs = new Set(newSelectionModel);
     const selectedRowData = contractOffers.filter((row: GridValidRowModel) => selectedIDs.has(row.id));
     dispatch(setSelectedOffersList(selectedRowData));
-    setSelectionModel(newSelectionModel);
+    dispatch(setSelectionModel(newSelectionModel));
   };
 
   const init = () => {
     dispatch(setContractOffers([]));
     dispatch(setSelectedOffer(null));
     dispatch(setSelectedOffersList([]));
-    setSelectionModel([]);
+    dispatch(setSelectionModel([]));
     dispatch(setSearchFilterByType(ITEMS[0]));
     dispatch(setSelectedFilterCompanyOption(null));
     dispatch(setFilterCompanyOptions([]));

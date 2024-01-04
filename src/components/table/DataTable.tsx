@@ -19,7 +19,7 @@
  ********************************************************************************/
 
 import { LinearProgress } from '@mui/material';
-import { DataGrid, GridColDef, GridToolbar, GridValidRowModel } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridSelectionModel, GridToolbar, GridValidRowModel } from '@mui/x-data-grid';
 import { useState } from 'react';
 
 import NoDataPlaceholder from '../NoDataPlaceholder';
@@ -28,15 +28,29 @@ interface IDataTable {
   data: GridValidRowModel[];
   columns: GridColDef[];
   isFetching?: boolean;
+  checkboxSelection?: boolean;
+  onRowClick?: () => void;
+  handleSelectionModel?: (selectionModel: GridSelectionModel) => void;
+  selectionModel?: GridSelectionModel;
 }
 
-function DataTable({ data, columns, isFetching = false }: IDataTable) {
+function DataTable({
+  data,
+  columns,
+  isFetching = false,
+  checkboxSelection = false,
+  handleSelectionModel,
+  onRowClick,
+  selectionModel,
+}: Readonly<IDataTable>) {
   const [pageSize, setPageSize] = useState<number>(10);
   return (
     <DataGrid
       autoHeight={true}
       getRowId={row => row.id}
       rows={data}
+      onRowClick={onRowClick}
+      checkboxSelection={checkboxSelection}
       columns={columns}
       loading={isFetching}
       pagination
@@ -49,6 +63,8 @@ function DataTable({ data, columns, isFetching = false }: IDataTable) {
         NoRowsOverlay: () => NoDataPlaceholder('content.common.noData'),
         NoResultsOverlay: () => NoDataPlaceholder('content.common.noResults'),
       }}
+      selectionModel={selectionModel}
+      onSelectionModelChange={newSelectionModel => handleSelectionModel(newSelectionModel)}
       disableColumnMenu
       disableColumnSelector
       disableDensitySelector
@@ -60,6 +76,9 @@ function DataTable({ data, columns, isFetching = false }: IDataTable) {
           whiteSpace: 'break-spaces !important',
           maxHeight: 'none !important',
           lineHeight: 1.4,
+        },
+        '& .MuiDataGrid-columnHeaderCheckbox': {
+          height: 'auto !important',
         },
       }}
     />

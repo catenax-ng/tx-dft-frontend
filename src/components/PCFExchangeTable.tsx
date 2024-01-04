@@ -54,7 +54,7 @@ interface IPCFExchangeTable {
   title: string;
   subtitle: string;
 }
-function PCFExchangeTable({ type, title, subtitle }: IPCFExchangeTable) {
+function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const pageType = `pages.${USER_TYPE_SWITCH[type]}`; // to avoid nested template literals
@@ -257,24 +257,22 @@ function PCFExchangeTable({ type, title, subtitle }: IPCFExchangeTable) {
         const checkState = PCF_CONSUMER_STATES.some(e => e === row.status);
         if (checkState) {
           return (
-            <>
-              <Tooltips tooltipPlacement="bottom" tooltipText={t('button.viewPCFData')}>
-                <span>
-                  <IconButton
-                    aria-label="view"
-                    size="small"
-                    onClick={() =>
-                      viewPCFData({
-                        requestId: row.requestId,
-                      })
-                    }
-                    sx={{ mr: 2 }}
-                  >
-                    <ViewInArIcon color="action" fontSize="small" />
-                  </IconButton>
-                </span>
-              </Tooltips>
-            </>
+            <Tooltips tooltipPlacement="bottom" tooltipText={t('button.viewPCFData')}>
+              <span>
+                <IconButton
+                  aria-label="view"
+                  size="small"
+                  onClick={() =>
+                    viewPCFData({
+                      requestId: row.requestId,
+                    })
+                  }
+                  sx={{ mr: 2 }}
+                >
+                  <ViewInArIcon color="action" fontSize="small" />
+                </IconButton>
+              </span>
+            </Tooltips>
           );
         }
       },

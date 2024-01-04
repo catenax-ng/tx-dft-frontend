@@ -53,13 +53,12 @@ export const pcfExchangeSlice = apiSlice.injectEndpoints({
           dispatch(setPageLoading(true));
           const { data } = await queryFulfilled;
           dispatch(setPcfValueData(data));
-          dispatch(setPcfValueDialog(true)); 
+          dispatch(setPcfValueDialog(true));
         } finally {
           dispatch(setPageLoading(false));
         }
       },
     }),
-
 
     actionOnPCFRequest: builder.mutation({
       query: body => {

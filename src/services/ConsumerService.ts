@@ -108,7 +108,6 @@ class ConsumerService extends HttpService {
     });
     return res;
   }
-
 }
 
 export default ConsumerService;

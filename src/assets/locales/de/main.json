@@ -200,7 +200,7 @@
       "providerDescription": "All consumer request for PCF value",
       "manufacturerPartId": "Enter Manufacturer Part Id",
       "bpnNumber": "Enter BPN Number",
-      "viewPCFModelTitle":"Recieved PCF value",
+      "viewPCFModelTitle": "Recieved PCF value",
       "viewPCFModelTitleDescription": "Here you have recieved PCF value from data provider",
       "columns": {
         "title": "Title",
@@ -211,18 +211,18 @@
       }
     },
     "pcfExchangeTable": {
-      "providerTitle" : "PCF exchange request for approval", 
-      "consumerTitle" : "PCF exchange request history",
+      "providerTitle": "PCF exchange request for approval",
+      "consumerTitle": "PCF exchange request history",
       "columns": {
-        "productId" : "Product Id",
+        "productId": "Product Id",
         "requestedId": "Requested Id",
         "counterParty": "Counter Party",
         "message": "Title",
         "requestedDate": "Requested Date",
-        "lastUpdatedTime" : "Last Updated Time",
+        "lastUpdatedTime": "Last Updated Time",
         "status": "Status"
       }
-     }
+    }
   },
   "dialog": {
     "samePolicies": {
@@ -266,7 +266,7 @@
     "approvePCFRequest": "Approve PCF Request",
     "rejectPCFRequest": "Reject PCF Request",
     "viewPCFData": "View PCF RECEIVED Value",
-    "retryPCFRequest" : "Retry PCF notification push"
+    "retryPCFRequest": "Retry PCF notification push"
   },
   "alerts": {
     "invalidFile": "Ungültiges Dateiformat!",

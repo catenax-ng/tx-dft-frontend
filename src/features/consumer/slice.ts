@@ -18,6 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { GridSelectionModel } from '@mui/x-data-grid';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import moment from 'moment';
 
@@ -43,6 +44,7 @@ const initialState: IConsumerSlice = {
   isContractAgreementsLoading: false,
   manufacturerPartId: '',
   bpnNumber: '',
+  selectionModel: [],
 };
 
 export const consumerSlice = createSlice({
@@ -117,6 +119,9 @@ export const consumerSlice = createSlice({
     setBpnNumberValue: (state, action: PayloadAction<string>) => {
       state.bpnNumber = action.payload;
     },
+    setSelectionModel: (state, action: PayloadAction<GridSelectionModel>) => {
+      state.selectionModel = action.payload;
+    },
   },
 });
 
@@ -138,5 +143,6 @@ export const {
   setIsContractAgreementsLoading,
   setManufacturerPartIdValue,
   setBpnNumberValue,
+  setSelectionModel,
 } = consumerSlice.actions;
 export default consumerSlice.reducer;
