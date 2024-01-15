@@ -88,13 +88,19 @@ export class PolicyModel {
 
   bpn_numbers: string[];
 
+  membership: boolean;
+
   constructor(policyData: any) {
     this.uuid = policyData.uuid;
     this.policy_name = policyData.policy_name;
     this.inputBpn = policyData.inputBpn;
     this.type_of_access = policyData.type_of_access;
     this.bpn_numbers = policyData.bpn_numbers;
+    this.membership = policyData.membership;
     this.usage_policies = {
+      MEMBERSHIP: {
+        value: false,
+      },
       PURPOSE: {
         typeOfAccess: policyData?.usage_policies?.PURPOSE?.typeOfAccess,
         value: find(PURPOSE_VALUES, e => e.value === policyData?.usage_policies?.PURPOSE?.value) || '',
@@ -124,13 +130,19 @@ export class PolicyPayload {
 
   bpn_numbers: string[];
 
+  membership: boolean;
+
   constructor(policyData: any) {
     this.uuid = policyData.uuid;
     this.policy_name = policyData.policy_name;
     this.inputBpn = policyData.inputBpn;
     this.type_of_access = policyData.type_of_access;
     this.bpn_numbers = policyData.bpn_numbers;
+    this.membership = policyData.membership;
     this.usage_policies = {
+      MEMBERSHIP: {
+        value: policyData.usage_policies.MEMBERSHIP.value,
+      },
       PURPOSE: {
         typeOfAccess: policyData.usage_policies.PURPOSE.typeOfAccess,
         value: policyData.usage_policies.PURPOSE.value.value,

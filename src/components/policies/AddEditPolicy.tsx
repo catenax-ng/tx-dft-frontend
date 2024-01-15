@@ -21,6 +21,7 @@
 import { FormControl, FormControlLabel, FormLabel, RadioGroup } from '@mui/material';
 import {
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
@@ -131,7 +132,17 @@ function AddEditPolicy() {
               />
             </FormControl>
           )}
-          <Typography fontWeight={'bold'}>{t('content.policies.accessPolicy')}</Typography>
+          <Typography fontWeight={'bold'} mb={3}>
+            {t('content.policies.accessPolicy')}
+          </Typography>
+          {/* Membership field */}
+          <FormControl fullWidth>
+            <Controller
+              name="membership"
+              control={control}
+              render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label="Membership" />}
+            />
+          </FormControl>
           <ValidateBpn
             control={control}
             watch={watch}
@@ -143,6 +154,14 @@ function AddEditPolicy() {
           <Typography fontWeight={'bold'} mb={3}>
             {t('content.policies.usagePolicy')}
           </Typography>
+          {/* Membership field */}
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <Controller
+              name="usage_policies.MEMBERSHIP.typeOfAccess"
+              control={control}
+              render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label="Membership" />}
+            />
+          </FormControl>
           {/* purpose field */}
           <FormControl fullWidth>
             <FormLabel sx={{ mb: 1 }}>{t('content.policies.purpose')}</FormLabel>

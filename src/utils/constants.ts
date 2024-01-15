@@ -198,6 +198,7 @@ const DEFAULT_POLICY_DATA: PolicyModel = {
   inputBpn: '',
   type_of_access: 'restricted',
   bpn_numbers: [Config.REACT_APP_DEFAULT_COMPANY_BPN],
+  membership: false,
   usage_policies: {
     DURATION: {
       typeOfAccess: 'UNRESTRICTED',
