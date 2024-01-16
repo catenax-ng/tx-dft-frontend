@@ -22,8 +22,8 @@
 import InfoIcon from '@mui/icons-material/Info';
 import { Box, Grid } from '@mui/material';
 import { CustomAccordion, Tab, TabPanel, Tabs, Tooltips, Typography } from 'cx-portal-shared-components';
-import { isEmpty } from 'lodash';
-import { SyntheticEvent, useState } from 'react';
+import { filter, isEmpty } from 'lodash';
+import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -34,16 +34,37 @@ import SelectSubmodel from '../components/SelectSubmodel';
 import SubmodelDataTable from '../components/SubmodelDataTable';
 import SubmodelInfo from '../components/SubmodelInfo';
 import UploadFile from '../components/UploadFile';
-import { useAppSelector } from '../features/store';
+import { fetchSubmodelDetails, fetchSubmodelList } from '../features/provider/submodels/actions';
+import { clearRows, setSelectedSubmodel } from '../features/provider/submodels/slice';
+import { ISubmodelList } from '../features/provider/submodels/types';
+import { removeSelectedFiles } from '../features/provider/upload/slice';
+import { useAppDispatch, useAppSelector } from '../features/store';
 
 export default function CreateData() {
   const [activeTab, setActiveTab] = useState(0);
   const { selectedSubmodel } = useAppSelector(state => state.submodelSlice);
+  const { useCases } = useAppSelector(state => state.appSlice);
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
+
+  const handleTypeChange = useCallback(
+    async (item: ISubmodelList) => {
+      dispatch(setSelectedSubmodel(item));
+      dispatch(fetchSubmodelDetails(item.value));
+      // clearing the selected files and rows
+      dispatch(clearRows());
+      dispatch(removeSelectedFiles());
+    },
+    [dispatch],
+  );
+
+  useEffect(() => {
+    dispatch(fetchSubmodelList(filter(useCases, 'checked').map(e => e.id)));
+  }, [dispatch, useCases]);
 
   return (
     <>
@@ -63,7 +84,7 @@ export default function CreateData() {
       </ul>
       <Grid container spacing={2} mb={3} display={'flex'} alignItems={'flex-end'}>
         <Grid item xs={3}>
-          <SelectSubmodel />
+          <SelectSubmodel defaultValue={selectedSubmodel} onChange={handleTypeChange} />
         </Grid>
         <Grid item justifyContent={'center'}>
           <Tooltips tooltipPlacement="top" tooltipText={t('content.common.moreSubmodelInfo')}>
