@@ -22,8 +22,8 @@
 import InfoIcon from '@mui/icons-material/Info';
 import { Box, Grid } from '@mui/material';
 import { CustomAccordion, Tab, TabPanel, Tabs, Tooltips, Typography } from 'cx-portal-shared-components';
-import { filter, isEmpty } from 'lodash';
-import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
+import { isEmpty } from 'lodash';
+import { SyntheticEvent, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -34,7 +34,7 @@ import SelectSubmodel from '../components/SelectSubmodel';
 import SubmodelDataTable from '../components/SubmodelDataTable';
 import SubmodelInfo from '../components/SubmodelInfo';
 import UploadFile from '../components/UploadFile';
-import { fetchSubmodelDetails, fetchSubmodelList } from '../features/provider/submodels/actions';
+import { fetchSubmodelDetails } from '../features/provider/submodels/actions';
 import { clearRows, setSelectedSubmodel } from '../features/provider/submodels/slice';
 import { ISubmodelList } from '../features/provider/submodels/types';
 import { removeSelectedFiles } from '../features/provider/upload/slice';
@@ -43,7 +43,6 @@ import { useAppDispatch, useAppSelector } from '../features/store';
 export default function CreateData() {
   const [activeTab, setActiveTab] = useState(0);
   const { selectedSubmodel } = useAppSelector(state => state.submodelSlice);
-  const { useCases } = useAppSelector(state => state.appSlice);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
@@ -61,10 +60,6 @@ export default function CreateData() {
     },
     [dispatch],
   );
-
-  useEffect(() => {
-    dispatch(fetchSubmodelList(filter(useCases, 'checked').map(e => e.id)));
-  }, [dispatch, useCases]);
 
   return (
     <>
