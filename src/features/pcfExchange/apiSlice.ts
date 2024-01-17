@@ -38,6 +38,14 @@ export const pcfExchangeSlice = apiSlice.injectEndpoints({
         });
         return { pcfdatahistory: modifieldData };
       },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          dispatch(setPageLoading(true));
+          await queryFulfilled;
+        } finally {
+          dispatch(setPageLoading(false));
+        }
+      },
     }),
 
     viewPCFData: builder.mutation({
@@ -47,7 +55,6 @@ export const pcfExchangeSlice = apiSlice.injectEndpoints({
           method: 'GET',
         };
       },
-      invalidatesTags: ['PCFExchangeRequest'],
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           dispatch(setPageLoading(true));

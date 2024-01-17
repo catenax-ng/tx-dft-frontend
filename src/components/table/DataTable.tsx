@@ -19,7 +19,7 @@
  ********************************************************************************/
 
 import { LinearProgress } from '@mui/material';
-import { DataGrid, GridColDef, GridSelectionModel, GridToolbar, GridValidRowModel } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridSelectionModel, GridValidRowModel } from '@mui/x-data-grid';
 import { useState } from 'react';
 
 import NoDataPlaceholder from '../NoDataPlaceholder';
@@ -58,7 +58,6 @@ function DataTable({
       onPageSizeChange={setPageSize}
       rowsPerPageOptions={[10, 25, 50, 100]}
       components={{
-        Toolbar: GridToolbar,
         LoadingOverlay: LinearProgress,
         NoRowsOverlay: () => NoDataPlaceholder('content.common.noData'),
         NoResultsOverlay: () => NoDataPlaceholder('content.common.noResults'),
