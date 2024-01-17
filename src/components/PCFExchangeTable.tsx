@@ -26,17 +26,14 @@ import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import { Box, Grid } from '@mui/material';
 import { GridColDef, GridValidRowModel } from '@mui/x-data-grid';
 import { IconButton, LoadingButton, Tooltips, Typography } from 'cx-portal-shared-components';
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Permissions from '../components/Permissions';
-import { setPageLoading } from '../features/app/slice';
 import {
   useActionOnPCFRequestMutation,
   useGetPcfExchangeQuery,
   useViewPCFDataMutation,
 } from '../features/pcfExchange/apiSlice';
-import { useAppDispatch } from '../features/store';
 import { handleBlankCellValues } from '../helpers/ConsumerOfferHelper';
 import {
   MAX_CONTRACTS_AGREEMENTS,
@@ -56,10 +53,9 @@ interface IPCFExchangeTable {
 }
 function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>) {
   const { t } = useTranslation();
-  const dispatch = useAppDispatch();
   const pageType = `pages.${USER_TYPE_SWITCH[type]}`; // to avoid nested template literals
 
-  const { isLoading, data, isFetching, isSuccess, refetch } = useGetPcfExchangeQuery({
+  const { data, isFetching, isSuccess, refetch } = useGetPcfExchangeQuery({
     type: type,
     params: {
       offset: 0,
@@ -67,17 +63,9 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
     },
   });
 
-  const [approvePCFRequest, { isLoading: isApproval }] = useActionOnPCFRequestMutation({});
+  const [pcfRequestAction] = useActionOnPCFRequestMutation({});
 
-  const [rejectPCFRequest, { isLoading: isRejecting }] = useActionOnPCFRequestMutation({});
-
-  const [retryPCFRequest, { isLoading: isSendingNotification }] = useActionOnPCFRequestMutation({});
-
-  const [viewPCFData, { isLoading: isViewData }] = useViewPCFDataMutation({});
-
-  useEffect(() => {
-    dispatch(setPageLoading(isLoading));
-  }, [dispatch, isLoading, isApproval, isRejecting, isSendingNotification, isViewData]);
+  const [viewPCFData] = useViewPCFDataMutation({});
 
   const columns: GridColDef[] = [
     {
@@ -183,7 +171,7 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
                     aria-label="approval"
                     size="small"
                     onClick={() =>
-                      approvePCFRequest({
+                      pcfRequestAction({
                         productId: row.productId,
                         requestId: row.requestId,
                         bpnNumber: row.bpnNumber,
@@ -203,7 +191,7 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
                     aria-label="reject"
                     size="small"
                     onClick={() =>
-                      rejectPCFRequest({
+                      pcfRequestAction({
                         productId: row.productId,
                         requestId: row.requestId,
                         bpnNumber: row.bpnNumber,
@@ -226,7 +214,7 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
                   aria-label="retry"
                   size="small"
                   onClick={() =>
-                    retryPCFRequest({
+                    pcfRequestAction({
                       productId: row.productId,
                       requestId: row.requestId,
                       bpnNumber: row.bpnNumber,
