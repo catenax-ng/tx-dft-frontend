@@ -132,17 +132,10 @@ function AddEditPolicy() {
               />
             </FormControl>
           )}
+          {/* access policy starts */}
           <Typography fontWeight={'bold'} mb={3}>
             {t('content.policies.accessPolicy')}
           </Typography>
-          {/* Membership field */}
-          <FormControl fullWidth>
-            <Controller
-              name="membership"
-              control={control}
-              render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label="Membership" />}
-            />
-          </FormControl>
           <ValidateBpn
             control={control}
             watch={watch}
@@ -151,31 +144,52 @@ function AddEditPolicy() {
             inputBpn={inputBpn}
             setValue={setValue}
           />
-          <Typography fontWeight={'bold'} mb={3}>
-            {t('content.policies.usagePolicy')}
-          </Typography>
-          {/* Membership field */}
-          <FormControl fullWidth sx={{ mb: 2 }}>
+          <FormControl fullWidth>
             <Controller
-              name="usage_policies.MEMBERSHIP.typeOfAccess"
+              name="access_policy.membership.value"
               control={control}
               render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label="Membership" />}
             />
           </FormControl>
-          {/* purpose field */}
+          <FormControl fullWidth>
+            <Controller
+              name="access_policy.dismantler.value"
+              control={control}
+              render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label="Dismantler" />}
+            />
+          </FormControl>
+          {/* access policy ends */}
+          {/* usage policy starts */}
+          <Typography fontWeight={'bold'} mb={3}>
+            {t('content.policies.usagePolicy')}
+          </Typography>
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <Controller
+              name="usage_policies.membership.value"
+              control={control}
+              render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label="Membership" />}
+            />
+          </FormControl>
+          <FormControl fullWidth>
+            <Controller
+              name="usage_policies.dismantler.value"
+              control={control}
+              render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label="Dismantler" />}
+            />
+          </FormControl>
           <FormControl fullWidth>
             <FormLabel sx={{ mb: 1 }}>{t('content.policies.purpose')}</FormLabel>
             <Controller
               rules={{ required: true }}
               control={control}
-              name="usage_policies.PURPOSE.typeOfAccess"
+              name="usage_policies.purpose.typeOfAccess"
               render={({ field }) => (
                 <RadioGroup
                   {...field}
                   row
                   onChange={e => {
                     field.onChange(e);
-                    resetField('usage_policies.PURPOSE.value', { defaultValue: '' });
+                    resetField('usage_policies.purpose.value', { defaultValue: '' });
                   }}
                 >
                   <FormControlLabel value="UNRESTRICTED" control={<Radio />} label="Unrestricted" />
@@ -188,7 +202,7 @@ function AddEditPolicy() {
             <FormControl sx={{ mb: 3, width: 300 }}>
               <Typography variant="body1">{t('content.policies.purposeNote')}</Typography>
               <Controller
-                name="usage_policies.PURPOSE.value"
+                name="usage_policies.purpose.value"
                 control={control}
                 rules={{
                   required: purposeType === 'RESTRICTED',
@@ -213,6 +227,7 @@ function AddEditPolicy() {
               />
             </FormControl>
           )}
+          {/* usage policy ends */}
         </form>
       </DialogContent>
       <DialogActions>

@@ -197,23 +197,25 @@ const DEFAULT_POLICY_DATA: PolicyModel = {
   policy_name: '',
   inputBpn: '',
   type_of_access: 'restricted',
-  bpn_numbers: [Config.REACT_APP_DEFAULT_COMPANY_BPN],
-  membership: false,
+  access_policy: {
+    bpn_numbers: {
+      value: [Config.REACT_APP_DEFAULT_COMPANY_BPN],
+    },
+    membership: {
+      value: false,
+    },
+    dismantler: {
+      value: false,
+    },
+  },
   usage_policies: {
-    DURATION: {
-      typeOfAccess: 'UNRESTRICTED',
-      value: '',
-      durationUnit: DURATION_UNITS[0].value,
+    membership: {
+      value: false,
     },
-    PURPOSE: {
-      typeOfAccess: 'UNRESTRICTED',
-      value: '',
+    dismantler: {
+      value: false,
     },
-    ROLE: {
-      typeOfAccess: 'UNRESTRICTED',
-      value: '',
-    },
-    CUSTOM: {
+    purpose: {
       typeOfAccess: 'UNRESTRICTED',
       value: '',
     },

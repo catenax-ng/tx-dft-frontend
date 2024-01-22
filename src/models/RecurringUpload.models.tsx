@@ -84,34 +84,36 @@ export class PolicyModel {
 
   type_of_access: string;
 
+  access_policy: any;
+
   usage_policies: any;
-
-  bpn_numbers: string[];
-
-  membership: boolean;
 
   constructor(policyData: any) {
     this.uuid = policyData.uuid;
     this.policy_name = policyData.policy_name;
     this.inputBpn = policyData.inputBpn;
     this.type_of_access = policyData.type_of_access;
-    this.bpn_numbers = policyData.bpn_numbers;
-    this.membership = policyData.membership;
-    this.usage_policies = {
-      MEMBERSHIP: {
+    this.access_policy = {
+      bpn_numbers: {
+        value: policyData.bpn_numbers,
+      },
+      membership: {
         value: false,
       },
-      PURPOSE: {
-        typeOfAccess: policyData?.usage_policies?.PURPOSE?.typeOfAccess,
+      dismantler: {
+        value: false,
+      },
+    };
+    this.usage_policies = {
+      membership: {
+        value: false,
+      },
+      dismantler: {
+        value: false,
+      },
+      purpose: {
+        typeOfAccess: policyData?.usage_policies?.purpose?.typeOfAccess,
         value: find(PURPOSE_VALUES, e => e.value === policyData?.usage_policies?.PURPOSE?.value) || '',
-      },
-      ROLE: {
-        typeOfAccess: 'UNRESTRICTED',
-        value: '',
-      },
-      CUSTOM: {
-        typeOfAccess: 'UNRESTRICTED',
-        value: '',
       },
     };
   }
@@ -126,35 +128,44 @@ export class PolicyPayload {
 
   type_of_access: string;
 
+  access_policy: any;
+
   usage_policies: any;
-
-  bpn_numbers: string[];
-
-  membership: boolean;
 
   constructor(policyData: any) {
     this.uuid = policyData.uuid;
     this.policy_name = policyData.policy_name;
-    this.inputBpn = policyData.inputBpn;
-    this.type_of_access = policyData.type_of_access;
-    this.bpn_numbers = policyData.bpn_numbers;
-    this.membership = policyData.membership;
-    this.usage_policies = {
-      MEMBERSHIP: {
-        value: policyData.usage_policies.MEMBERSHIP.value,
+    this.access_policy = [
+      {
+        technicalKey: 'BusinessPartnerNumber',
+        value: policyData.access_policy.bpn_numbers.value,
       },
-      PURPOSE: {
-        typeOfAccess: policyData.usage_policies.PURPOSE.typeOfAccess,
-        value: policyData.usage_policies.PURPOSE.value.value,
+      {
+        technicalKey: 'Membership',
+        value: policyData.access_policy.membership.value,
       },
-      ROLE: {
-        typeOfAccess: 'UNRESTRICTED',
+      {
+        technicalKey: 'Dismantler',
+        value: policyData.access_policy.dismantler.value,
+      },
+    ];
+    this.usage_policies = [
+      {
+        technicalKey: 'Membership',
+        value: policyData.usage_policies.membership.value,
+      },
+      {
+        technicalKey: 'Dismantler',
+        value: policyData.usage_policies.dismantler.value,
+      },
+      {
+        technicalKey: 'PURPOSE',
+        value: policyData.usage_policies.purpose.value,
+      },
+      {
+        technicalKey: 'CUSTOM',
         value: '',
       },
-      CUSTOM: {
-        typeOfAccess: 'UNRESTRICTED',
-        value: '',
-      },
-    };
+    ];
   }
 }
