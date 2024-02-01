@@ -193,11 +193,7 @@ function AddEditPolicy() {
                       placeholder="Select a version"
                       type={'text'}
                       error={!!error}
-                      disableClearable={true}
-                      onChangeItem={e => {
-                        field.onChange(e);
-                        console.log(e);
-                      }}
+                      onChangeItem={e => field.onChange(e)}
                     />
                   )}
                 />
