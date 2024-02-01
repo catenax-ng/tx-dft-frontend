@@ -220,12 +220,17 @@ const PURPOSE_VALUES = [
   },
 ];
 
-const FRAMEWORKS = [
-  { name: 'traceability', title: 'Framework Traceability', values: TRACABILITY_FRAMEWORK },
-  { name: 'quality', title: 'Framework Quality', values: QUALTIY_FRAMEWORK },
-  { name: 'pcf', title: 'Framework PCF', values: PCF_FRAMEWORK },
-  { name: 'purpose', title: 'Select Purpose', values: PURPOSE_VALUES },
+const CHECKBOXES = [
+  { name: 'membership', title: 'Membership', type: 'checkbox', values: '' },
+  { name: 'dismantler', title: 'Dismantler', type: 'checkbox', values: '' },
 ];
+const FRAMEWORKS = [
+  { name: 'traceability', title: 'Framework Traceability', type: 'select', values: TRACABILITY_FRAMEWORK },
+  { name: 'quality', title: 'Framework Quality', type: 'select', values: QUALTIY_FRAMEWORK },
+  { name: 'pcf', title: 'Framework PCF', type: 'select', values: PCF_FRAMEWORK },
+  { name: 'purpose', title: 'Select Purpose', type: 'select', values: PURPOSE_VALUES },
+];
+
 const DEFAULT_POLICY_DATA: PolicyModel = {
   uuid: '',
   policy_name: '',
@@ -271,6 +276,7 @@ const DEFAULT_POLICY_DATA: PolicyModel = {
 export {
   ALPHA_NUM_REGEX,
   BPN_TYPE_FIELDS,
+  CHECKBOXES,
   CONTRACT_STATES,
   DATE_TIME_FORMAT,
   DEFAULT_POLICY_DATA,

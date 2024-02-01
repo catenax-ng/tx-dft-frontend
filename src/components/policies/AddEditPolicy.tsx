@@ -19,7 +19,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Box, FormControl, FormControlLabel } from '@mui/material';
+import { Box, Divider, FormControl, FormControlLabel } from '@mui/material';
 import {
   Button,
   Checkbox,
@@ -40,7 +40,7 @@ import { useCreatePolicyMutation, useUpdatePolicyMutation } from '../../features
 import { setPolicyDialog } from '../../features/provider/policies/slice';
 import { useAppDispatch, useAppSelector } from '../../features/store';
 import { PolicyModel, PolicyPayload } from '../../models/RecurringUpload.models';
-import { FRAMEWORKS } from '../../utils/constants';
+import { CHECKBOXES, FRAMEWORKS } from '../../utils/constants';
 import ValidateBpn from './ValidateBpn';
 
 function AddEditPolicy() {
@@ -132,9 +132,8 @@ function AddEditPolicy() {
             </FormControl>
           )}
           {/* access policy starts */}
-          <Typography fontWeight={'bold'} mb={3}>
-            {t('content.policies.accessPolicy')}
-          </Typography>
+          <Typography fontWeight={'bold'}>{t('content.policies.accessPolicy')}</Typography>
+          <Divider sx={{ mt: 2 }} />
           <ValidateBpn
             control={control}
             watch={watch}
@@ -143,42 +142,33 @@ function AddEditPolicy() {
             inputBpn={inputBpn}
             setValue={setValue}
           />
-          <FormControl fullWidth>
-            <Controller
-              name="access_policies.membership.value"
-              control={control}
-              render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label="Membership" />}
-            />
-          </FormControl>
-          <FormControl fullWidth>
-            <Controller
-              name="access_policies.dismantler.value"
-              control={control}
-              render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label="Dismantler" />}
-            />
-          </FormControl>
+          {CHECKBOXES.map((item: any) => (
+            <FormControl fullWidth key={item.name}>
+              <Controller
+                name={`access_policies.${item.name}.value`}
+                control={control}
+                render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label={item.title} />}
+              />
+            </FormControl>
+          ))}
           {/* access policy ends */}
           {/* usage policy starts */}
-          <Typography fontWeight={'bold'} my={3}>
+          <Typography fontWeight={'bold'} mt={3}>
             {t('content.policies.usagePolicy')}
           </Typography>
-          <FormControl fullWidth sx={{ mb: 2 }}>
-            <Controller
-              name="usage_policies.membership.value"
-              control={control}
-              render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label="Membership" />}
-            />
-          </FormControl>
-          <FormControl fullWidth>
-            <Controller
-              name="usage_policies.dismantler.value"
-              control={control}
-              render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label="Dismantler" />}
-            />
-          </FormControl>
+          <Divider sx={{ my: 2 }} />
+          {CHECKBOXES.map((item: any) => (
+            <FormControl fullWidth key={item.name}>
+              <Controller
+                name={`usage_policies.${item.name}.value`}
+                control={control}
+                render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label={item.title} />}
+              />
+            </FormControl>
+          ))}
           {FRAMEWORKS.map((item: any) => (
             <Box key={item.name}>
-              <FormControl sx={{ mb: 3, width: 300 }}>
+              <FormControl sx={{ width: 300 }}>
                 <Controller
                   name={`usage_policies.${item.name}.value`}
                   control={control}

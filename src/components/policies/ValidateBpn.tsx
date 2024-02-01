@@ -19,7 +19,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Autocomplete, Box, Divider, FormControl, Grid, Stack } from '@mui/material';
+import { Autocomplete, Box, FormControl, Grid, Stack } from '@mui/material';
 import {
   Button,
   Chip,
@@ -63,7 +63,10 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
 
   const addBpn = () => {
     if (inputBpn) {
-      setValue('access_policies.bpn_numbers.value', uniq([...getValues('access_policies.bpn_numbers.value'), inputBpn]));
+      setValue(
+        'access_policies.bpn_numbers.value',
+        uniq([...getValues('access_policies.bpn_numbers.value'), inputBpn]),
+      );
       resetField('inputBpn', { defaultValue: '' });
     }
   };
@@ -84,7 +87,10 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
   useEffect(() => {
     if (data?.bpnStatus === 'FULL_PARTNER') {
       dispatch(setSnackbarMessage({ message: data?.msg, type: 'success' }));
-      setValue('access_policies.bpn_numbers.value', uniq([...getValues('access_policies.bpn_numbers.value'), inputBpn]));
+      setValue(
+        'access_policies.bpn_numbers.value',
+        uniq([...getValues('access_policies.bpn_numbers.value'), inputBpn]),
+      );
     } else if (data?.bpnStatus === 'PARTNER') setAddBpnPrompt(true);
     else if (data?.bpnStatus === 'NOT_PARTNER') dispatch(setSnackbarMessage({ message: data?.msg, type: 'error' }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -232,7 +238,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
           />
         </Grid>
       </Grid>
-      <Box sx={{ mt: 2 }}>
+      <Box sx={{ my: 2 }}>
         <Typography variant="body2" mb={2}>
           <i> {t('content.policies.note')}</i>
         </Typography>
@@ -248,7 +254,6 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
           ))}
         </Stack>
       </Box>
-      <Divider sx={{ my: 3 }} />
       {addBpnPrompt ? (
         <Dialog open={addBpnPrompt}>
           <DialogHeader title={t('content.consumeData.noConnectors')} />
