@@ -177,8 +177,8 @@ function AddEditPolicy() {
             />
           </FormControl>
           {FRAMEWORKS.map((item: any) => (
-            <Box>
-              <FormControl sx={{ mb: 3, width: 300 }} key={item.name}>
+            <Box key={item.name}>
+              <FormControl sx={{ mb: 3, width: 300 }}>
                 <Controller
                   name={`usage_policies.${item.name}.value`}
                   control={control}
