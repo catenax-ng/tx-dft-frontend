@@ -21,7 +21,7 @@
 
 import { find } from 'lodash';
 
-import { PURPOSE_VALUES } from '../utils/constants';
+import { PCF_FRAMEWORK, PURPOSE_VALUES, QUALTIY_FRAMEWORK, TRACABILITY_FRAMEWORK } from '../utils/constants';
 
 export type SchedulesFormData = {
   type: string;
@@ -84,7 +84,7 @@ export class PolicyModel {
 
   type_of_access: string;
 
-  access_policy: any;
+  access_policies: any;
 
   usage_policies: any;
 
@@ -93,9 +93,9 @@ export class PolicyModel {
     this.policy_name = policyData.policy_name;
     this.inputBpn = policyData.inputBpn;
     this.type_of_access = policyData.type_of_access;
-    this.access_policy = {
+    this.access_policies = {
       bpn_numbers: {
-        value: policyData.bpn_numbers,
+        value: policyData.access_policies.bpn_numbers.value,
       },
       membership: {
         value: false,
@@ -111,9 +111,21 @@ export class PolicyModel {
       dismantler: {
         value: false,
       },
+      traceability: {
+        technicalKey: 'FrameworkAgreement.traceability',
+        value: find(TRACABILITY_FRAMEWORK, e => e.value === policyData?.usage_policies?.traceability?.value) || '',
+      },
+      quality: {
+        technicalKey: 'FrameworkAgreement.quality',
+        value: find(QUALTIY_FRAMEWORK, e => e.value === policyData?.usage_policies?.quality?.value) || '',
+      },
+      pcf: {
+        technicalKey: 'FrameworkAgreement.pcf',
+        value: find(PCF_FRAMEWORK, e => e.value === policyData?.usage_policies?.pcf?.value) || '',
+      },
       purpose: {
-        typeOfAccess: policyData?.usage_policies?.purpose?.typeOfAccess,
-        value: find(PURPOSE_VALUES, e => e.value === policyData?.usage_policies?.PURPOSE?.value) || '',
+        technicalKey: 'PURPOSE',
+        value: find(PURPOSE_VALUES, e => e.value === policyData?.usage_policies?.purpose?.value) || '',
       },
     };
   }
@@ -128,25 +140,25 @@ export class PolicyPayload {
 
   type_of_access: string;
 
-  access_policy: any;
+  access_policies: any;
 
   usage_policies: any;
 
   constructor(policyData: any) {
     this.uuid = policyData.uuid;
     this.policy_name = policyData.policy_name;
-    this.access_policy = [
+    this.access_policies = [
       {
         technicalKey: 'BusinessPartnerNumber',
-        value: policyData.access_policy.bpn_numbers.value,
+        value: policyData.access_policies.bpn_numbers.value,
       },
       {
         technicalKey: 'Membership',
-        value: policyData.access_policy.membership.value,
+        value: policyData.access_policies.membership.value,
       },
       {
         technicalKey: 'Dismantler',
-        value: policyData.access_policy.dismantler.value,
+        value: policyData.access_policies.dismantler.value,
       },
     ];
     this.usage_policies = [
@@ -159,12 +171,20 @@ export class PolicyPayload {
         value: policyData.usage_policies.dismantler.value,
       },
       {
-        technicalKey: 'PURPOSE',
-        value: policyData.usage_policies.purpose.value,
+        technicalKey: 'FrameworkAgreement.traceability',
+        value: policyData.usage_policies.traceability.value,
       },
       {
-        technicalKey: 'CUSTOM',
-        value: '',
+        technicalKey: 'FrameworkAgreement.quality',
+        value: policyData.usage_policies.quality.value,
+      },
+      {
+        technicalKey: 'FrameworkAgreement.pcf',
+        value: policyData.usage_policies.pcf.value,
+      },
+      {
+        technicalKey: 'PURPOSE',
+        value: policyData.usage_policies.purpose.value,
       },
     ];
   }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -18,7 +19,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { FormControl, FormControlLabel, FormLabel, RadioGroup } from '@mui/material';
+import { Box, FormControl, FormControlLabel } from '@mui/material';
 import {
   Button,
   Checkbox,
@@ -27,7 +28,6 @@ import {
   DialogContent,
   DialogHeader,
   Input,
-  Radio,
   SelectList,
   Typography,
 } from 'cx-portal-shared-components';
@@ -40,7 +40,7 @@ import { useCreatePolicyMutation, useUpdatePolicyMutation } from '../../features
 import { setPolicyDialog } from '../../features/provider/policies/slice';
 import { useAppDispatch, useAppSelector } from '../../features/store';
 import { PolicyModel, PolicyPayload } from '../../models/RecurringUpload.models';
-import { PURPOSE_VALUES } from '../../utils/constants';
+import { FRAMEWORKS } from '../../utils/constants';
 import ValidateBpn from './ValidateBpn';
 
 function AddEditPolicy() {
@@ -58,7 +58,6 @@ function AddEditPolicy() {
   }, [policyData, reset]);
 
   const inputBpn = watch('inputBpn');
-  const purposeType = watch('usage_policies.PURPOSE.typeOfAccess');
 
   const showPolicyName = policyDialogType === 'Add' || policyDialogType === 'Edit';
 
@@ -146,21 +145,21 @@ function AddEditPolicy() {
           />
           <FormControl fullWidth>
             <Controller
-              name="access_policy.membership.value"
+              name="access_policies.membership.value"
               control={control}
               render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label="Membership" />}
             />
           </FormControl>
           <FormControl fullWidth>
             <Controller
-              name="access_policy.dismantler.value"
+              name="access_policies.dismantler.value"
               control={control}
               render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label="Dismantler" />}
             />
           </FormControl>
           {/* access policy ends */}
           {/* usage policy starts */}
-          <Typography fontWeight={'bold'} mb={3}>
+          <Typography fontWeight={'bold'} my={3}>
             {t('content.policies.usagePolicy')}
           </Typography>
           <FormControl fullWidth sx={{ mb: 2 }}>
@@ -177,56 +176,34 @@ function AddEditPolicy() {
               render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label="Dismantler" />}
             />
           </FormControl>
-          <FormControl fullWidth>
-            <FormLabel sx={{ mb: 1 }}>{t('content.policies.purpose')}</FormLabel>
-            <Controller
-              rules={{ required: true }}
-              control={control}
-              name="usage_policies.purpose.typeOfAccess"
-              render={({ field }) => (
-                <RadioGroup
-                  {...field}
-                  row
-                  onChange={e => {
-                    field.onChange(e);
-                    resetField('usage_policies.purpose.value', { defaultValue: '' });
-                  }}
-                >
-                  <FormControlLabel value="UNRESTRICTED" control={<Radio />} label="Unrestricted" />
-                  <FormControlLabel value="RESTRICTED" control={<Radio />} label="Restricted" />
-                </RadioGroup>
-              )}
-            />
-          </FormControl>
-          {purposeType === 'RESTRICTED' && (
-            <FormControl sx={{ mb: 3, width: 300 }}>
-              <Typography variant="body1">{t('content.policies.purposeNote')}</Typography>
-              <Controller
-                name="usage_policies.purpose.value"
-                control={control}
-                rules={{
-                  required: purposeType === 'RESTRICTED',
-                }}
-                render={({ field, fieldState: { error } }) => (
-                  <SelectList
-                    keyTitle="title"
-                    defaultValue={field.value}
-                    items={PURPOSE_VALUES}
-                    {...field}
-                    variant="filled"
-                    label={t('content.policies.purposeLabel')}
-                    placeholder={t('content.policies.purposeLabel')}
-                    type={'text'}
-                    error={!!error}
-                    disableClearable={true}
-                    onChangeItem={e => {
-                      field.onChange(e);
-                    }}
-                  />
-                )}
-              />
-            </FormControl>
-          )}
+          {FRAMEWORKS.map((item: any) => (
+            <Box>
+              <FormControl sx={{ mb: 3, width: 300 }} key={item.name}>
+                <Controller
+                  name={`usage_policies.${item.name}.value`}
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <SelectList
+                      keyTitle="value"
+                      defaultValue={field.value}
+                      items={item.values}
+                      {...field}
+                      variant="filled"
+                      label={item.title}
+                      placeholder="Select a version"
+                      type={'text'}
+                      error={!!error}
+                      disableClearable={true}
+                      onChangeItem={e => {
+                        field.onChange(e);
+                        console.log(e);
+                      }}
+                    />
+                  )}
+                />
+              </FormControl>
+            </Box>
+          ))}
           {/* usage policy ends */}
         </form>
       </DialogContent>

@@ -98,14 +98,6 @@ const BPN_TYPE_FIELDS = [
   },
 ];
 
-const PURPOSE_VALUES = [
-  {
-    id: 0,
-    title: 'ID 3.1 Trace',
-    value: 'ID 3.1 Trace',
-  },
-];
-
 const SCHEDULE_TYPE = [
   { id: 0, value: 'HOURLY', title: 'Hourly' },
   { id: 1, value: 'DAILY', title: 'Daily' },
@@ -192,12 +184,54 @@ const HOURS = [...Array(24)].map((_e, i) => ({
   title: `Every ${i + 1} hour`,
 }));
 
+const TRACABILITY_FRAMEWORK = [
+  {
+    key: 'Version',
+    value: '1.0',
+  },
+  {
+    key: 'Version',
+    value: '1.1',
+  },
+  {
+    key: 'Version',
+    value: '1.2',
+  },
+];
+
+const QUALTIY_FRAMEWORK = [
+  {
+    key: 'Version',
+    value: '1.0',
+  },
+];
+
+const PCF_FRAMEWORK = [
+  {
+    key: 'Version',
+    value: '1.0',
+  },
+];
+
+const PURPOSE_VALUES = [
+  {
+    key: 'ID 3.1 Trace',
+    value: 'ID 3.1 Trace',
+  },
+];
+
+const FRAMEWORKS = [
+  { name: 'traceability', title: 'Framework Traceability', values: TRACABILITY_FRAMEWORK },
+  { name: 'quality', title: 'Framework Quality', values: QUALTIY_FRAMEWORK },
+  { name: 'pcf', title: 'Framework PCF', values: PCF_FRAMEWORK },
+  { name: 'purpose', title: 'Select Purpose', values: PURPOSE_VALUES },
+];
 const DEFAULT_POLICY_DATA: PolicyModel = {
   uuid: '',
   policy_name: '',
   inputBpn: '',
   type_of_access: 'restricted',
-  access_policy: {
+  access_policies: {
     bpn_numbers: {
       value: [Config.REACT_APP_DEFAULT_COMPANY_BPN],
     },
@@ -215,8 +249,20 @@ const DEFAULT_POLICY_DATA: PolicyModel = {
     dismantler: {
       value: false,
     },
+    traceability: {
+      technicalKey: 'FrameworkAgreement.traceability',
+      value: '',
+    },
+    quality: {
+      technicalKey: 'FrameworkAgreement.quality',
+      value: '',
+    },
+    pcf: {
+      technicalKey: 'FrameworkAgreement.pcf',
+      value: '',
+    },
     purpose: {
-      typeOfAccess: 'UNRESTRICTED',
+      technicalKey: 'PURPOSE',
       value: '',
     },
   },
@@ -231,15 +277,19 @@ export {
   DURATION_UNIT_MAPPING,
   DURATION_UNITS,
   EMAIL_CONFIG_FORM_FIELDS,
+  FRAMEWORKS,
   HOURS,
   MAX_CONTRACTS_AGREEMENTS,
   MINIO_FORM_FIELDS,
   ONLY_NUM_REGEX,
+  PCF_FRAMEWORK,
   PURPOSE_VALUES,
+  QUALTIY_FRAMEWORK,
   SCHEDULE_TYPE,
   SFTP_FORM_FIELDS,
   SPACE_CHECK_REGEX,
   STATUS_COLOR_MAPPING,
+  TRACABILITY_FRAMEWORK,
   UPLOAD_CONFIG_FORM_FIELDS,
   USER_GUIDE_URL,
   USER_TYPE_SWITCH,
