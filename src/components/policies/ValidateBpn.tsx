@@ -53,7 +53,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
   const [conKey, setConKey] = useState(uuid());
 
   const [addBpnPrompt, setAddBpnPrompt] = useState(false);
-  const { replace } = useFieldArray({ name: 'bpn_numbers', control });
+  const { replace } = useFieldArray({ name: 'access_policies.bpn_numbers.value', control });
 
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -63,13 +63,13 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
 
   const addBpn = () => {
     if (inputBpn) {
-      setValue('bpn_numbers', uniq([...getValues('bpn_numbers'), inputBpn]));
+      setValue('access_policies.bpn_numbers.value', uniq([...getValues('access_policies.bpn_numbers.value'), inputBpn]));
       resetField('inputBpn', { defaultValue: '' });
     }
   };
   const deleteBpn = (bpn: string) => {
     if (bpn !== Config.REACT_APP_DEFAULT_COMPANY_BPN) {
-      const newList = getValues('bpn_numbers').filter((item: string) => item !== bpn);
+      const newList = getValues('access_policies.bpn_numbers.value').filter((item: string) => item !== bpn);
       replace(newList);
     }
   };
@@ -84,7 +84,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
   useEffect(() => {
     if (data?.bpnStatus === 'FULL_PARTNER') {
       dispatch(setSnackbarMessage({ message: data?.msg, type: 'success' }));
-      setValue('bpn_numbers', uniq([...getValues('bpn_numbers'), inputBpn]));
+      setValue('access_policies.bpn_numbers.value', uniq([...getValues('access_policies.bpn_numbers.value'), inputBpn]));
     } else if (data?.bpnStatus === 'PARTNER') setAddBpnPrompt(true);
     else if (data?.bpnStatus === 'NOT_PARTNER') dispatch(setSnackbarMessage({ message: data?.msg, type: 'error' }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -237,7 +237,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
           <i> {t('content.policies.note')}</i>
         </Typography>
         <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
-          {getValues('bpn_numbers').map((bpnNum: string) => (
+          {getValues('access_policies.bpn_numbers.value')?.map((bpnNum: string) => (
             <Chip
               color="secondary"
               label={bpnNum}
