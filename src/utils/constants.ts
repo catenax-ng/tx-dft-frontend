@@ -187,29 +187,29 @@ const HOURS = [...Array(24)].map((_e, i) => ({
 const TRACABILITY_FRAMEWORK = [
   {
     key: 'Version',
-    value: '1.0',
+    value: 'active:1.0',
   },
   {
     key: 'Version',
-    value: '1.1',
+    value: 'active:1.1',
   },
   {
     key: 'Version',
-    value: '1.2',
+    value: 'active:1.2',
   },
 ];
 
 const QUALTIY_FRAMEWORK = [
   {
     key: 'Version',
-    value: '1.0',
+    value: 'active:1.0',
   },
 ];
 
 const PCF_FRAMEWORK = [
   {
     key: 'Version',
-    value: '1.0',
+    value: 'active:1.0',
   },
 ];
 
@@ -235,42 +235,46 @@ const DEFAULT_POLICY_DATA: PolicyModel = {
   uuid: '',
   policy_name: '',
   inputBpn: '',
-  type_of_access: 'restricted',
-  access_policies: {
-    bpn_numbers: {
+  access_policies: [
+    {
+      technicalKey: 'BusinessPartnerNumber',
       value: [Config.REACT_APP_DEFAULT_COMPANY_BPN],
     },
-    membership: {
+    {
+      technicalKey: 'Membership',
       value: false,
     },
-    dismantler: {
+    {
+      technicalKey: 'Dismantler',
       value: false,
     },
-  },
-  usage_policies: {
-    membership: {
+  ],
+  usage_policies: [
+    {
+      technicalKey: 'Membership',
       value: false,
     },
-    dismantler: {
+    {
+      technicalKey: 'Dismantler',
       value: false,
     },
-    traceability: {
+    {
       technicalKey: 'FrameworkAgreement.traceability',
       value: '',
     },
-    quality: {
+    {
       technicalKey: 'FrameworkAgreement.quality',
       value: '',
     },
-    pcf: {
+    {
       technicalKey: 'FrameworkAgreement.pcf',
       value: '',
     },
-    purpose: {
+    {
       technicalKey: 'PURPOSE',
       value: '',
     },
-  },
+  ],
 };
 
 export {

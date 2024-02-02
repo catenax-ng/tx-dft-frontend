@@ -23,6 +23,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Box, Grid, LinearProgress } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { Button, IconButton, Table, Tooltips, Typography } from 'cx-portal-shared-components';
+import { find } from 'lodash';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -62,21 +63,13 @@ function Policies() {
       sortable: false,
       renderCell: ({ row }) => {
         return (
-          <Tooltips tooltipPlacement="bottom" tooltipText={row.bpn_numbers.join(', ')}>
-            <span>{row.bpn_numbers.join(', ')}</span>
+          <Tooltips
+            tooltipPlacement="bottom"
+            tooltipText={find(row.access_policies, { technicalKey: 'BusinessPartnerNumber' })?.value.join(', ')}
+          >
+            <span>{find(row.access_policies, { technicalKey: 'BusinessPartnerNumber' })?.value.join(', ')}</span>
           </Tooltips>
         );
-      },
-    },
-    {
-      field: 'purpose',
-      headerName: 'Usage purpose',
-      align: 'center',
-      headerAlign: 'center',
-      sortable: false,
-      flex: 1,
-      renderCell: ({ row }) => {
-        return row?.usage_policies?.PURPOSE?.value || 'NA';
       },
     },
     {

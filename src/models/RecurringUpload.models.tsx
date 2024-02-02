@@ -19,7 +19,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { find } from 'lodash';
+import { find, includes } from 'lodash';
 
 import { PCF_FRAMEWORK, PURPOSE_VALUES, QUALTIY_FRAMEWORK, TRACABILITY_FRAMEWORK } from '../utils/constants';
 
@@ -82,50 +82,55 @@ export class PolicyModel {
 
   inputBpn: string;
 
-  type_of_access: string;
-
   access_policies: any;
 
   usage_policies: any;
+
+  private static findValueInFramework(framework: any[], policyData: any, technicalKey: string): string {
+    const policyValue = find(policyData.usage_policies, { technicalKey })?.value[0] || '';
+    return find(framework, { value: policyValue }) || '';
+  }
 
   constructor(policyData: any) {
     this.uuid = policyData.uuid;
     this.policy_name = policyData.policy_name;
     this.inputBpn = policyData.inputBpn;
-    this.type_of_access = policyData.type_of_access;
+
+    const isActive = (technicalKey: string, data: any) => includes(find(data, { technicalKey })?.value, 'active');
+
     this.access_policies = {
       bpn_numbers: {
-        value: policyData.access_policies.bpn_numbers.value,
+        value: find(policyData.access_policies, { technicalKey: 'BusinessPartnerNumber' })?.value || [],
       },
       membership: {
-        value: false,
+        value: isActive('Membership', policyData.access_policies),
       },
       dismantler: {
-        value: false,
+        value: isActive('Dismantler', policyData.access_policies),
       },
     };
     this.usage_policies = {
       membership: {
-        value: false,
+        value: isActive('Membership', policyData.usage_policies),
       },
       dismantler: {
-        value: false,
+        value: isActive('Dismantler', policyData.usage_policies),
       },
       traceability: {
         technicalKey: 'FrameworkAgreement.traceability',
-        value: find(TRACABILITY_FRAMEWORK, e => e.value === policyData?.usage_policies?.traceability?.value) || '',
+        value: PolicyModel.findValueInFramework(TRACABILITY_FRAMEWORK, policyData, 'FrameworkAgreement.traceability'),
       },
       quality: {
         technicalKey: 'FrameworkAgreement.quality',
-        value: find(QUALTIY_FRAMEWORK, e => e.value === policyData?.usage_policies?.quality?.value) || '',
+        value: PolicyModel.findValueInFramework(QUALTIY_FRAMEWORK, policyData, 'FrameworkAgreement.quality'),
       },
       pcf: {
         technicalKey: 'FrameworkAgreement.pcf',
-        value: find(PCF_FRAMEWORK, e => e.value === policyData?.usage_policies?.pcf?.value) || '',
+        value: PolicyModel.findValueInFramework(PCF_FRAMEWORK, policyData, 'FrameworkAgreement.pcf'),
       },
       purpose: {
         technicalKey: 'PURPOSE',
-        value: find(PURPOSE_VALUES, e => e.value === policyData?.usage_policies?.purpose?.value) || '',
+        value: PolicyModel.findValueInFramework(PURPOSE_VALUES, policyData, 'PURPOSE'),
       },
     };
   }
@@ -137,8 +142,6 @@ export class PolicyPayload {
   policy_name: string;
 
   inputBpn: string;
-
-  type_of_access: string;
 
   access_policies: any;
 
@@ -154,37 +157,37 @@ export class PolicyPayload {
       },
       {
         technicalKey: 'Membership',
-        value: policyData.access_policies.membership.value,
+        value: [policyData.access_policies.membership.value ? 'active' : ''],
       },
       {
         technicalKey: 'Dismantler',
-        value: policyData.access_policies.dismantler.value,
+        value: [policyData.access_policies.dismantler.value ? 'active' : ''],
       },
     ];
     this.usage_policies = [
       {
         technicalKey: 'Membership',
-        value: policyData.usage_policies.membership.value,
+        value: [policyData.usage_policies.membership.value ? 'active' : ''],
       },
       {
         technicalKey: 'Dismantler',
-        value: policyData.usage_policies.dismantler.value,
+        value: [policyData.usage_policies.dismantler.value ? 'active' : ''],
       },
       {
         technicalKey: 'FrameworkAgreement.traceability',
-        value: policyData.usage_policies.traceability.value,
+        value: [policyData.usage_policies.traceability?.value?.value || ''],
       },
       {
         technicalKey: 'FrameworkAgreement.quality',
-        value: policyData.usage_policies.quality.value,
+        value: [policyData.usage_policies.quality?.value?.value || ''],
       },
       {
         technicalKey: 'FrameworkAgreement.pcf',
-        value: policyData.usage_policies.pcf.value,
+        value: [policyData.usage_policies.pcf?.value?.value || ''],
       },
       {
         technicalKey: 'PURPOSE',
-        value: policyData.usage_policies.purpose.value,
+        value: [policyData.usage_policies.purpose?.value?.value || ''],
       },
     ];
   }

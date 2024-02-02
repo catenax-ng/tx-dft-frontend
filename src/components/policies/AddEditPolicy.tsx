@@ -147,7 +147,9 @@ function AddEditPolicy() {
               <Controller
                 name={`access_policies.${item.name}.value`}
                 control={control}
-                render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label={item.title} />}
+                render={({ field }) => (
+                  <FormControlLabel control={<Checkbox {...field} checked={field.value} />} label={item.title} />
+                )}
               />
             </FormControl>
           ))}
@@ -162,7 +164,9 @@ function AddEditPolicy() {
               <Controller
                 name={`usage_policies.${item.name}.value`}
                 control={control}
-                render={({ field }) => <FormControlLabel control={<Checkbox {...field} />} label={item.title} />}
+                render={({ field }) => (
+                  <FormControlLabel control={<Checkbox {...field} checked={field.value} />} label={item.title} />
+                )}
               />
             </FormControl>
           ))}
