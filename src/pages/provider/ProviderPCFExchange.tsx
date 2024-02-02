@@ -18,18 +18,19 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { ErrorPage } from 'cx-portal-shared-components';
+import { useTranslation } from 'react-i18next';
 
-import { useAppSelector } from '../features/store';
+import PCFExchangeTable from '../../components/PCFExchangeTable';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function Permissions(props: any) {
-  const { permissions } = useAppSelector(state => state.appSlice);
-  const valid = props.values ? props.values.some((item: string) => permissions?.includes(item)) : true;
-  if (valid) return props.children;
-  else if (permissions.length && props.fullPage) {
-    return (
-      <ErrorPage title="You have no permission to view this content" description="Please contact your administrator" />
-    );
-  } else return null;
-}
+const ProviderPCFExchange = () => {
+  const { t } = useTranslation();
+  return (
+    <PCFExchangeTable
+      type="provider"
+      title={t('pages.pcfExchange')}
+      subtitle={t('content.pcfExchangeTable.providerTitle')}
+    />
+  );
+};
+
+export default ProviderPCFExchange;

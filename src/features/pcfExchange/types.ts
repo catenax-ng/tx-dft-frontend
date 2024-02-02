@@ -18,18 +18,25 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { ErrorPage } from 'cx-portal-shared-components';
+export interface IPCFRequestHistory {
+  requests: string;
+  productId: string;
+  status: string;
+  bpnNumber: string;
+  message: string;
+  requestedTime?: string;
+  lastUpdatedTime?: string;
+}
 
-import { useAppSelector } from '../features/store';
+export interface IPCFResponsePojo {
+  requestId: string;
+  responseId: string;
+  pcfData: object;
+  lastUpdatedTime?: number;
+}
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function Permissions(props: any) {
-  const { permissions } = useAppSelector(state => state.appSlice);
-  const valid = props.values ? props.values.some((item: string) => permissions?.includes(item)) : true;
-  if (valid) return props.children;
-  else if (permissions.length && props.fullPage) {
-    return (
-      <ErrorPage title="You have no permission to view this content" description="Please contact your administrator" />
-    );
-  } else return null;
+export interface IPCFValueState {
+  openDialog: boolean;
+  pcfValueData: IPCFResponsePojo;
+  pcfValueDialog: boolean;
 }

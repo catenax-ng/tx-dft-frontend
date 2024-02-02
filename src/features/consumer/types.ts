@@ -18,6 +18,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { GridSelectionModel } from '@mui/x-data-grid';
+
 export interface IUsageControl {
   typeOfAccess: string;
   value?: string;
@@ -48,6 +50,7 @@ export interface IConsumerDataOffers {
   usagePolicies: IUsageControl[];
   fileName?: string;
   fileContentType?: string;
+  type?: string;
 }
 export interface ILegalEntityName {
   value?: string;
@@ -125,4 +128,7 @@ export interface IConsumerSlice {
   filterSelectedConnector: Partial<IntConnectorItem>;
   contractAgreements: IContractAgreements[];
   isContractAgreementsLoading: boolean;
+  manufacturerPartId: string;
+  bpnNumber: string;
+  selectionModel: GridSelectionModel;
 }

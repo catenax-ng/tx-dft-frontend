@@ -37,7 +37,7 @@ interface IntDialogProps {
 
 const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMultiple }: IntDialogProps) => {
   const [offer] = useState(offerObj);
-  const { title, created, description, publisher, usagePolicies, fileContentType } = offer;
+  const { title, created, description, publisher, usagePolicies, fileContentType, type } = offer;
   const { t } = useTranslation();
 
   function splitWithFirstOcc(str: string) {
@@ -118,11 +118,17 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
         <Button variant="contained" onClick={() => handleClose(false)}>
           {t('button.close')}
         </Button>
-        <Permissions values={['consumer_subscribe_download_data_offers']}>
+        {type === 'data.pcf.exchangeEndpoint' ? (
           <Button variant="contained" onClick={() => handleConfirm(true)}>
-            {t('button.subscribeSelected')}
+            {t('button.requestPCF')}
           </Button>
-        </Permissions>
+        ) : (
+          <Permissions values={['consumer_subscribe_download_data_offers']}>
+            <Button variant="contained" onClick={() => handleConfirm(true)}>
+              {t('button.subscribeSelected')}
+            </Button>
+          </Permissions>
+        )}
       </DialogActions>
     </Dialog>
   );

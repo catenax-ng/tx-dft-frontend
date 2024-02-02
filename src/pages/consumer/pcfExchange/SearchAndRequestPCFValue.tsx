@@ -18,50 +18,58 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-import { Box } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { GridColDef, GridSelectionModel, GridValidRowModel, GridValueGetterParams } from '@mui/x-data-grid';
-import { Button, Dialog, DialogActions, DialogContent, DialogHeader, Typography } from 'cx-portal-shared-components';
-import saveAs from 'file-saver';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogHeader,
+  Input,
+  LoadingButton,
+} from 'cx-portal-shared-components';
 import { isEmpty, isEqual } from 'lodash';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import ConsumeDataFilter from '../../components/ConsumeDataFilter';
-import ConfirmTermsDialog from '../../components/dialogs/ConfirmTermsDialog';
-import OfferDetailsDialog from '../../components/dialogs/OfferDetailsDialog';
-import Permissions from '../../components/Permissions';
-import DataTable from '../../components/table/DataTable';
+import ConfirmTermsDialog from '../../../components/dialogs/ConfirmTermsDialog';
+import OfferDetailsDialog from '../../../components/dialogs/OfferDetailsDialog';
+import Permissions from '../../../components/Permissions';
+import DataTable from '../../../components/table/DataTable';
 import {
+  setBpnNumberValue,
   setContractOffers,
-  setFilterCompanyOptions,
-  setFilterConnectors,
-  setFilterProviderUrl,
-  setFilterSelectedBPN,
-  setFilterSelectedConnector,
   setIsMultipleContractSubscription,
-  setSelectedFilterCompanyOption,
+  setManufacturerPartIdValue,
+  setOffersLoading,
   setSelectedOffer,
   setSelectedOffersList,
   setSelectionModel,
-} from '../../features/consumer/slice';
-import { IConsumerDataOffers } from '../../features/consumer/types';
-import { setSnackbarMessage } from '../../features/notifiication/slice';
-import { useAppDispatch, useAppSelector } from '../../features/store';
-import { handleBlankCellValues } from '../../helpers/ConsumerOfferHelper';
-import ConsumerService from '../../services/ConsumerService';
+} from '../../../features/consumer/slice';
+import { IConsumerDataOffers } from '../../../features/consumer/types';
+import { setSnackbarMessage } from '../../../features/notifiication/slice';
+import { useAppDispatch, useAppSelector } from '../../../features/store';
+import { handleBlankCellValues } from '../../../helpers/ConsumerOfferHelper';
+import ConsumerService from '../../../services/ConsumerService';
+import { ALPHA_NUM_REGEX } from '../../../utils/constants';
 
-export default function ConsumeData() {
+export default function SearchRequestPCFValue() {
   const {
     contractOffers,
     offersLoading,
     selectedOffer,
     selectedOffersList,
     isMultipleContractSubscription,
+    bpnNumber,
+    manufacturerPartId,
     selectionModel,
   } = useAppSelector(state => state.consumerSlice);
   const [isOpenOfferDialog, setIsOpenOfferDialog] = useState<boolean>(false);
   const [isOpenOfferConfirmDialog, setIsOpenOfferConfirmDialog] = useState<boolean>(false);
+
   const [offerSubLoading, setOfferSubLoading] = useState(false);
+
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
@@ -69,26 +77,31 @@ export default function ConsumeData() {
     {
       field: 'title',
       flex: 1,
-      headerName: t('content.consumeData.columns.title'),
+      headerName: t('content.pcfExchange.columns.title'),
     },
     {
       field: 'assetId',
       flex: 1,
-      headerName: t('content.consumeData.columns.assetId'),
+      headerName: t('content.pcfExchange.columns.assetId'),
     },
     {
       field: 'created',
       flex: 1,
-      headerName: t('content.consumeData.columns.created'),
+      headerName: t('content.pcfExchange.columns.created'),
       sortingOrder: ['desc', 'asc'],
       sortComparator: (_v1: any, _v2: any, param1: any, param2: any) => param1.id - param2.id,
       valueGetter: (params: GridValueGetterParams) => handleBlankCellValues(params.row.created),
     },
     {
+      field: 'publisher',
+      flex: 1,
+      headerName: t('content.pcfExchange.columns.publisher'),
+    },
+    {
       field: 'description',
       flex: 1,
       editable: false,
-      headerName: t('content.consumeData.columns.description'),
+      headerName: t('content.pcfExchange.columns.description'),
       valueGetter: (params: GridValueGetterParams) => handleBlankCellValues(params.row.description),
     },
   ];
@@ -113,11 +126,12 @@ export default function ConsumeData() {
       });
       payload = {
         connectorId: selectedOffersList[0].connectorId,
+        providerUrl: selectedOffersList[0].connectorOfferUrl,
         offers: offersList,
         policies: selectedOffersList[0].usagePolicies,
       };
     } else {
-      const { usagePolicies, offerId, assetId, policyId, connectorId } = selectedOffer;
+      const { usagePolicies, offerId, assetId, policyId, connectorId, connectorOfferUrl } = selectedOffer;
       offersList.push({
         offerId: offerId || '',
         assetId: assetId || '',
@@ -125,6 +139,7 @@ export default function ConsumeData() {
       });
       payload = {
         connectorId: connectorId,
+        providerUrl: connectorOfferUrl,
         offers: offersList,
         policies: usagePolicies,
       };
@@ -135,22 +150,21 @@ export default function ConsumeData() {
   const handleConfirmTermDialog = async () => {
     setOfferSubLoading(true);
     await ConsumerService.getInstance()
-      .subscribeToOffers(preparePayload())
+      .requestForPCFValue(manufacturerPartId, preparePayload())
       .then(response => {
         if (response.status == 200) {
-          saveAs(new Blob([response.data]), 'data-offer.zip');
-          dispatch(
-            setSnackbarMessage({
-              message: 'alerts.subscriptionSuccess',
-              type: 'success',
-            }),
-          );
           setIsOpenOfferDialog(false);
           setIsOpenOfferConfirmDialog(false);
           dispatch(setIsMultipleContractSubscription(false));
           dispatch(setSelectedOffer(null));
           dispatch(setSelectedOffersList([]));
           dispatch(setSelectionModel([]));
+          dispatch(
+            setSnackbarMessage({
+              message: response.data.msg,
+              type: 'error',
+            }),
+          );
         }
       })
       .catch(error => console.log('err', error))
@@ -162,12 +176,43 @@ export default function ConsumeData() {
     toggleDialog(true);
   };
 
-  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const showAddDialog = () => {
-    setDialogOpen(prev => !prev);
+  const searchPCFDataOffers = async () => {
+    try {
+      dispatch(setOffersLoading(true));
+      const response = await ConsumerService.getInstance()
+        .searchPCFDataOffers({
+          manufacturerPartId: manufacturerPartId,
+          bpnNumber: bpnNumber,
+        })
+        .then(res => {
+          dispatch(
+            setSnackbarMessage({
+              message: res.msg,
+              type: 'success',
+            }),
+          );
+          return res;
+        });
+      dispatch(setContractOffers(response));
+      dispatch(setOffersLoading(false));
+    } catch (error) {
+      dispatch(setContractOffers([]));
+      dispatch(setOffersLoading(false));
+    }
   };
 
-  const checkoutSelectedOffers = () => {
+  // enter key fetch data
+  const handleKeypress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (['Enter', 'NumpadEnter'].includes(e.key)) {
+      await searchPCFDataOffers();
+    }
+  };
+  const [dialogOpen, setdialogOpen] = useState<boolean>(false);
+  const showAddDialog = () => {
+    setdialogOpen(prev => !prev);
+  };
+
+  const requestPCFValue = () => {
     if (selectedOffersList.length === 1) {
       dispatch(setSelectedOffer(selectedOffersList[0]));
       toggleDialog(true);
@@ -202,14 +247,10 @@ export default function ConsumeData() {
   const init = () => {
     dispatch(setContractOffers([]));
     dispatch(setSelectedOffer(null));
+    dispatch(setManufacturerPartIdValue(null));
+    dispatch(setBpnNumberValue(null));
     dispatch(setSelectedOffersList([]));
     dispatch(setSelectionModel([]));
-    dispatch(setSelectedFilterCompanyOption(null));
-    dispatch(setFilterCompanyOptions([]));
-    dispatch(setFilterProviderUrl(''));
-    dispatch(setFilterSelectedBPN(''));
-    dispatch(setFilterConnectors([]));
-    dispatch(setFilterSelectedConnector(null));
   };
 
   useEffect(() => {
@@ -219,38 +260,71 @@ export default function ConsumeData() {
 
   return (
     <>
-      <Typography variant="h3" mb={1}>
-        {t('pages.consumeData')}
-      </Typography>
-      <Typography variant="body1" mb={4} maxWidth={900}>
-        {t('content.consumeData.description')}
-      </Typography>
-      <ConsumeDataFilter />
-      <Box display="flex" justifyContent="flex-end" my={3}>
-        <Permissions values={['consumer_subscribe_download_data_offers']}>
-          <Button
-            variant="contained"
+      <Grid container spacing={2} alignItems="end">
+        <Grid item xs={4}>
+          <Input
+            value={manufacturerPartId || ''}
+            type="text"
+            onChange={(e: { target: { value: string } }) => dispatch(setManufacturerPartIdValue(e.target.value))}
+            onKeyDown={handleKeypress}
+            fullWidth
             size="small"
-            onClick={checkoutSelectedOffers}
-            disabled={!selectedOffersList.length}
-          >
-            {t('button.subscribeSelected')}
+            label={t('content.pcfExchange.manufacturerPartId')}
+            placeholder={t('content.pcfExchange.manufacturerPartId')}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <Input
+            value={bpnNumber || ''}
+            type="text"
+            inputProps={{ maxLength: 16 }}
+            onChange={e => {
+              const value = e.target.value;
+              if (value === '' || ALPHA_NUM_REGEX.test(value)) {
+                dispatch(setBpnNumberValue(e.target.value));
+              }
+            }}
+            onKeyDown={handleKeypress}
+            fullWidth
+            size="small"
+            label={t('content.pcfExchange.bpnNumber')}
+            placeholder={t('content.pcfExchange.bpnNumber')}
+          />
+        </Grid>
+        <Grid item>
+          <Permissions values={['search_pcf']}>
+            <LoadingButton
+              color="primary"
+              variant="contained"
+              disabled={isEmpty(manufacturerPartId)}
+              label={t('button.search')}
+              loadIndicator={t('content.common.loading')}
+              onButtonClick={searchPCFDataOffers}
+              loading={offersLoading}
+              sx={{ ml: 3 }}
+            />
+          </Permissions>
+        </Grid>
+      </Grid>
+      <Box display="flex" justifyContent="flex-end" my={3}>
+        <Permissions values={['request_for_pcf_value']}>
+          <Button variant="contained" size="small" onClick={requestPCFValue} disabled={!selectedOffersList.length}>
+            {t('button.requestPCF')}
           </Button>
         </Permissions>
       </Box>
-      <Permissions values={['consumer_view_contract_offers']}>
-        <Box sx={{ height: 'auto', overflow: 'auto', width: '100%' }}>
-          <DataTable
-            data={contractOffers}
-            columns={columns}
-            isFetching={offersLoading}
-            checkboxSelection={true}
-            onRowClick={() => onRowClick}
-            handleSelectionModel={newSelectionModel => handleSelectionModel(newSelectionModel)}
-            selectionModel={selectionModel}
-          />
-        </Box>
-      </Permissions>
+      <Box sx={{ height: 'auto', overflow: 'auto', width: '100%' }}>
+        <DataTable
+          data={contractOffers}
+          columns={columns}
+          isFetching={offersLoading}
+          checkboxSelection={true}
+          onRowClick={() => onRowClick}
+          selectionModel={selectionModel}
+          handleSelectionModel={() => handleSelectionModel}
+        />
+      </Box>
+
       {isMultipleContractSubscription && (
         <>
           <OfferDetailsDialog

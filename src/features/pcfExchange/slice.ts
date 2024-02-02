@@ -18,18 +18,30 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { ErrorPage } from 'cx-portal-shared-components';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { useAppSelector } from '../features/store';
+import { IPCFResponsePojo, IPCFValueState } from './types';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function Permissions(props: any) {
-  const { permissions } = useAppSelector(state => state.appSlice);
-  const valid = props.values ? props.values.some((item: string) => permissions?.includes(item)) : true;
-  if (valid) return props.children;
-  else if (permissions.length && props.fullPage) {
-    return (
-      <ErrorPage title="You have no permission to view this content" description="Please contact your administrator" />
-    );
-  } else return null;
-}
+const initialState: IPCFValueState = {
+  openDialog: false,
+  pcfValueData: {} as IPCFResponsePojo,
+  pcfValueDialog: false,
+};
+
+export const viewPcfValueSlice = createSlice({
+  name: 'viewPcfValueSlice',
+  initialState,
+  reducers: {
+    setPcfValueData: (state, action: PayloadAction<IPCFResponsePojo>) => {
+      state.pcfValueData = action.payload;
+    },
+    setPcfValueDialog: (state, action: PayloadAction<boolean>) => {
+      state.pcfValueDialog = action.payload;
+    },
+    handleDialogClose: state => Object.assign(state, initialState),
+  },
+});
+
+export const { setPcfValueData, setPcfValueDialog, handleDialogClose } = viewPcfValueSlice.actions;
+
+export default viewPcfValueSlice.reducer;
