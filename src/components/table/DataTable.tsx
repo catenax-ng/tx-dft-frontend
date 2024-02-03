@@ -19,7 +19,7 @@
  ********************************************************************************/
 
 import { LinearProgress } from '@mui/material';
-import { DataGrid, GridColDef, GridSelectionModel, GridValidRowModel } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridEventListener, GridSelectionModel, GridValidRowModel } from '@mui/x-data-grid';
 import { useState } from 'react';
 
 import NoDataPlaceholder from '../NoDataPlaceholder';
@@ -29,7 +29,7 @@ interface IDataTable {
   columns: GridColDef[];
   isFetching?: boolean;
   checkboxSelection?: boolean;
-  onRowClick?: () => void;
+  onRowClick?: GridEventListener<'rowClick'>;
   handleSelectionModel?: (selectionModel: GridSelectionModel) => void;
   selectionModel?: GridSelectionModel;
 }

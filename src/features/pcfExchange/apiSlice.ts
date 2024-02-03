@@ -24,6 +24,27 @@ import { IPCFRequestHistory } from './types';
 
 export const pcfExchangeSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
+    requestPcfValues: builder.mutation({
+      query: ({ manufacturerPartId, offers }) => {
+        return {
+          method: 'POST',
+          url: `/pcf/request/${manufacturerPartId}`,
+          body: offers,
+        };
+      },
+      extraOptions: {
+        showNotification: true,
+        message: 'PCF request sent!',
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          dispatch(setPageLoading(true));
+          await queryFulfilled;
+        } finally {
+          dispatch(setPageLoading(false));
+        }
+      },
+    }),
     getPcfExchange: builder.query({
       query: ({ type, params }) => {
         return {
@@ -92,4 +113,9 @@ export const pcfExchangeSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetPcfExchangeQuery, useActionOnPCFRequestMutation, useViewPCFDataMutation } = pcfExchangeSlice;
+export const {
+  useRequestPcfValuesMutation,
+  useGetPcfExchangeQuery,
+  useActionOnPCFRequestMutation,
+  useViewPCFDataMutation,
+} = pcfExchangeSlice;

@@ -72,6 +72,11 @@ export default function ConsumeData() {
       headerName: t('content.consumeData.columns.title'),
     },
     {
+      field: 'connectorId',
+      flex: 1,
+      headerName: 'BPN',
+    },
+    {
       field: 'assetId',
       flex: 1,
       headerName: t('content.consumeData.columns.assetId'),
@@ -99,37 +104,20 @@ export default function ConsumeData() {
       dispatch(setSelectedOffer(null));
     }
   };
+
   const preparePayload = () => {
-    let payload;
-    const offersList: unknown[] = [];
-    // multiselect or single selected
-    if (isMultipleContractSubscription) {
-      selectedOffersList.forEach((offer: IConsumerDataOffers) => {
-        offersList.push({
-          offerId: offer.offerId || '',
-          assetId: offer.assetId || '',
-          policyId: offer.policyId || '',
-        });
-      });
-      payload = {
-        connectorId: selectedOffersList[0].connectorId,
-        offers: offersList,
-        policies: selectedOffersList[0].usagePolicies,
-      };
-    } else {
-      const { usagePolicies, offerId, assetId, policyId, connectorId } = selectedOffer;
-      offersList.push({
-        offerId: offerId || '',
-        assetId: assetId || '',
-        policyId: policyId || '',
-      });
-      payload = {
-        connectorId: connectorId,
-        offers: offersList,
-        policies: usagePolicies,
-      };
-    }
-    return payload;
+    const selectedList = isMultipleContractSubscription ? selectedOffersList : [selectedOffer];
+    const offersList = selectedList.map(offer => ({
+      connectorId: offer.connectorId,
+      connectorOfferUrl: offer.connectorOfferUrl,
+      offerId: offer.offerId || '',
+      assetId: offer.assetId || '',
+      policyId: offer.policyId || '',
+    }));
+    return {
+      offers: offersList,
+      usage_policies: selectedList[0].policy.usage_policies,
+    };
   };
 
   const handleConfirmTermDialog = async () => {
@@ -169,14 +157,15 @@ export default function ConsumeData() {
 
   const checkoutSelectedOffers = () => {
     if (selectedOffersList.length === 1) {
+      dispatch(setIsMultipleContractSubscription(false));
       dispatch(setSelectedOffer(selectedOffersList[0]));
       toggleDialog(true);
       return;
     }
     const useCasesList: any[] = [];
     selectedOffersList.forEach((offer: IConsumerDataOffers) => {
-      if (!isEmpty(offer.usagePolicies)) {
-        useCasesList.push(offer.usagePolicies);
+      if (!isEmpty(offer.policy.usage_policies)) {
+        useCasesList.push(offer.policy.usage_policies);
       } else {
         useCasesList.push([]);
       }
@@ -245,7 +234,7 @@ export default function ConsumeData() {
             columns={columns}
             isFetching={offersLoading}
             checkboxSelection={true}
-            onRowClick={() => onRowClick}
+            onRowClick={onRowClick}
             handleSelectionModel={newSelectionModel => handleSelectionModel(newSelectionModel)}
             selectionModel={selectionModel}
           />

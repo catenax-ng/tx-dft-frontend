@@ -25,6 +25,7 @@ import { useTranslation } from 'react-i18next';
 
 import Permissions from '../../components/Permissions';
 import { IConsumerDataOffers } from '../../features/consumer/types';
+import { useRequestPcfValuesMutation } from '../../features/pcfExchange/apiSlice';
 import UsagePolicies from './UsagePolicies';
 
 interface IntDialogProps {
@@ -37,7 +38,16 @@ interface IntDialogProps {
 
 const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMultiple }: IntDialogProps) => {
   const [offer] = useState(offerObj);
-  const { title, created, description, publisher, usagePolicies, fileContentType, type } = offer;
+  const [requestPcfValues] = useRequestPcfValuesMutation();
+  const {
+    title,
+    created,
+    description,
+    publisher,
+    policy: { usage_policies: usagePolicies },
+    fileContentType,
+    type,
+  } = offer;
   const { t } = useTranslation();
 
   function splitWithFirstOcc(str: string) {
@@ -119,7 +129,10 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
           {t('button.close')}
         </Button>
         {type === 'data.pcf.exchangeEndpoint' ? (
-          <Button variant="contained" onClick={() => handleConfirm(true)}>
+          <Button
+            variant="contained"
+            onClick={async () => requestPcfValues({ manufacturerPartId: '', offers: offerObj })}
+          >
             {t('button.requestPCF')}
           </Button>
         ) : (

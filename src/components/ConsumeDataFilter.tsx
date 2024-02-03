@@ -141,7 +141,7 @@ function ConsumeDataFilter() {
         maxLimit: MAX_CONTRACTS_AGREEMENTS,
         manufacturerPartId: manufacturerPartId,
         bpnNumber: bpn,
-        submodel: submodelFilter.value,
+        submodel: submodelFilter?.value || '',
       });
       dispatch(setContractOffers(response.data));
       dispatch(setOffersLoading(false));
@@ -267,7 +267,7 @@ function ConsumeDataFilter() {
             disabled={!handleLoadingButton() && isEmpty(filterSelectedCompanyOption)}
             label={t('button.search')}
             loadIndicator={t('content.common.loading')}
-            onButtonClick={() => fetchConsumerDataOffers()}
+            onButtonClick={fetchConsumerDataOffers}
             loading={offersLoading}
           />
         </Permissions>

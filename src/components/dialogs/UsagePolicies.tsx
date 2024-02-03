@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -21,35 +22,17 @@
 import { Grid } from '@mui/material';
 import { Typography } from 'cx-portal-shared-components';
 import { isEmpty } from 'lodash';
-import { useTranslation } from 'react-i18next';
+import { Key } from 'react';
 
-import { IUsageControl } from '../../features/consumer/types';
-
-function UsagePolicies({ usagePolicies }: { usagePolicies: IUsageControl[] }) {
-  const { t } = useTranslation();
+function UsagePolicies({ usagePolicies }: any) {
   return (
     <>
       {!isEmpty(usagePolicies) ? (
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        Object.entries(usagePolicies).map(([key, item]: any) => (
-          <Grid item xs={6} sx={{ mb: 1 }} key={key}>
-            <Typography variant="body2" sx={{ textTransform: 'capitalize' }}>
-              {key.toLowerCase()}
-            </Typography>
+        usagePolicies.map((policy: any, index: Key) => (
+          <Grid item xs={6} sx={{ mb: 1 }} key={index}>
             <Typography variant="body2">
-              {t('dialog.offerDetails.type')}:<strong>{item.typeOfAccess}</strong>
+              <b>{policy.technicalKey} :</b> {policy.value[0]}
             </Typography>
-
-            {item.typeOfAccess.toLowerCase() !== 'unrestricted' && (
-              <>
-                <Typography variant="body2">
-                  {t('dialog.offerDetails.value')}:
-                  <strong>
-                    {item.value || '-'} {item.durationUnit}
-                  </strong>
-                </Typography>
-              </>
-            )}
           </Grid>
         ))
       ) : (
