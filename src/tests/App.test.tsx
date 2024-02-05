@@ -25,9 +25,9 @@ import { MemoryRouter } from 'react-router-dom';
 import UploadFile from '../components/UploadFile';
 import { setPolicyDialog } from '../features/provider/policies/slice';
 import { store } from '../features/store';
-import CreateData from '../pages/CreateData';
-import Help from '../pages/Help';
-import UploadHistoryNew from '../pages/UploadHistoryNew';
+import CreateData from '../pages/provider/CreateData';
+import Help from '../pages/provider/Help';
+import UploadHistoryNew from '../pages/provider/UploadHistoryNew';
 import { ReduxWrapper } from '../utils/testUtils';
 
 describe('Dashboard', () => {

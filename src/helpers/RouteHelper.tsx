@@ -23,16 +23,16 @@ import ConsumeData from '../pages/consumer/ConsumeData';
 import ConsumerContracts from '../pages/consumer/ConsumerContracts';
 import ConsumerPCFExchange from '../pages/consumer/ConsumerPCFExchange';
 import OffersDownloadHistory from '../pages/consumer/OffersDownloadHistory';
-import CreateData from '../pages/CreateData';
-import Help from '../pages/Help';
 import Home from '../pages/Home';
 import Logout from '../pages/Logout';
 import PageNotFound from '../pages/PageNotFound';
-import Policies from '../pages/Policies';
+import CreateData from '../pages/provider/CreateData';
+import Help from '../pages/provider/Help';
+import Policies from '../pages/provider/Policies';
+import ProviderContracts from '../pages/provider/ProviderContracts';
 import ProviderPCFExchange from '../pages/provider/ProviderPCFExchange';
 import RecurringUpload from '../pages/provider/recurringUpload';
-import ProviderContracts from '../pages/ProviderContracts';
-import UploadHistoryNew from '../pages/UploadHistoryNew';
+import UploadHistoryNew from '../pages/provider/UploadHistoryNew';
 
 export interface IRoutes {
   key?: string;

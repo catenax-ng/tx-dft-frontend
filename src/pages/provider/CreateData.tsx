@@ -27,18 +27,18 @@ import { SyntheticEvent, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import DownloadSamples from '../components/DownloadSamples';
-import AddEditPolicy from '../components/policies/AddEditPolicy';
-import SelectedUseCases from '../components/SelectedUseCases';
-import SelectSubmodel from '../components/SelectSubmodel';
-import SubmodelDataTable from '../components/SubmodelDataTable';
-import SubmodelInfo from '../components/SubmodelInfo';
-import UploadFile from '../components/UploadFile';
-import { fetchSubmodelDetails } from '../features/provider/submodels/actions';
-import { clearRows, setSelectedSubmodel } from '../features/provider/submodels/slice';
-import { ISubmodelList } from '../features/provider/submodels/types';
-import { removeSelectedFiles } from '../features/provider/upload/slice';
-import { useAppDispatch, useAppSelector } from '../features/store';
+import DownloadSamples from '../../components/DownloadSamples';
+import AddEditPolicy from '../../components/policies/AddEditPolicy';
+import SelectedUseCases from '../../components/SelectedUseCases';
+import SelectSubmodel from '../../components/SelectSubmodel';
+import SubmodelDataTable from '../../components/SubmodelDataTable';
+import SubmodelInfo from '../../components/SubmodelInfo';
+import UploadFile from '../../components/UploadFile';
+import { fetchSubmodelDetails } from '../../features/provider/submodels/actions';
+import { clearRows, setSelectedSubmodel } from '../../features/provider/submodels/slice';
+import { ISubmodelList } from '../../features/provider/submodels/types';
+import { removeSelectedFiles } from '../../features/provider/upload/slice';
+import { useAppDispatch, useAppSelector } from '../../features/store';
 
 export default function CreateData() {
   const [activeTab, setActiveTab] = useState(0);
