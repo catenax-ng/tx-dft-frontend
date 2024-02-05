@@ -19,11 +19,11 @@
  ********************************************************************************/
 
 import { ErrorPage } from 'cx-portal-shared-components';
-import { ReactElement } from 'react';
 
 import { useAppSelector } from '../features/store';
 
-export default function Permissions(props: { values: string[]; children: ReactElement; fullPage?: boolean }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function Permissions(props: any) {
   const { permissions } = useAppSelector(state => state.appSlice);
   const valid = props.values ? props.values.some((item: string) => permissions?.includes(item)) : true;
   if (valid) return props.children;

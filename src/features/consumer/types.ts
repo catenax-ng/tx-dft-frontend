@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -18,6 +19,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { GridSelectionModel } from '@mui/x-data-grid';
+
 export interface IUsageControl {
   typeOfAccess: string;
   value?: string;
@@ -30,6 +33,7 @@ export interface IConsumerDataOffers {
   assetId?: string;
   // end assetId
   connectorId?: string;
+  manufacturerPartId?: string;
   connectorOfferUrl?: string;
   title: string;
   version: string;
@@ -45,9 +49,11 @@ export interface IConsumerDataOffers {
   contractInfo?: string;
   offerId?: string;
   // end offerId
+  policy?: any;
   usagePolicies: IUsageControl[];
   fileName?: string;
   fileContentType?: string;
+  type?: string;
 }
 export interface ILegalEntityName {
   value?: string;
@@ -125,4 +131,8 @@ export interface IConsumerSlice {
   filterSelectedConnector: Partial<IntConnectorItem>;
   contractAgreements: IContractAgreements[];
   isContractAgreementsLoading: boolean;
+  manufacturerPartId: string;
+  bpnNumber: string;
+  selectionModel: GridSelectionModel;
+  isPcf: boolean;
 }

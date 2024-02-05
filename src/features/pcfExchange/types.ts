@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -19,27 +18,25 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Grid } from '@mui/material';
-import { Typography } from 'cx-portal-shared-components';
-import { isEmpty } from 'lodash';
-import { Key } from 'react';
-
-function UsagePolicies({ usagePolicies }: any) {
-  return (
-    <>
-      {!isEmpty(usagePolicies) ? (
-        usagePolicies.map((policy: any, index: Key) => (
-          <Grid item xs={6} sx={{ mb: 1 }} key={index}>
-            <Typography variant="body2">
-              <b>{policy.technicalKey} :</b> {policy.value[0]}
-            </Typography>
-          </Grid>
-        ))
-      ) : (
-        <Typography variant="body2">Not Available</Typography>
-      )}
-    </>
-  );
+export interface IPCFRequestHistory {
+  requests: string;
+  productId: string;
+  status: string;
+  bpnNumber: string;
+  message: string;
+  requestedTime?: string;
+  lastUpdatedTime?: string;
 }
 
-export default UsagePolicies;
+export interface IPCFResponsePojo {
+  requestId: string;
+  responseId: string;
+  pcfData: object;
+  lastUpdatedTime?: number;
+}
+
+export interface IPCFValueState {
+  openDialog: boolean;
+  pcfValueData: IPCFResponsePojo;
+  pcfValueDialog: boolean;
+}

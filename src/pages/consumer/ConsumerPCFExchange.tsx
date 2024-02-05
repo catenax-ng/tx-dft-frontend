@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
- * Copyright (c) 2021,2022,2023 T-Systems International GmbH
+ * Copyright (c) 2024 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
@@ -19,27 +18,19 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Grid } from '@mui/material';
-import { Typography } from 'cx-portal-shared-components';
-import { isEmpty } from 'lodash';
-import { Key } from 'react';
+import { useTranslation } from 'react-i18next';
 
-function UsagePolicies({ usagePolicies }: any) {
+import PCFExchangeTable from '../../components/PCFExchangeTable';
+
+const ConsumerPCFExchange = () => {
+  const { t } = useTranslation();
   return (
-    <>
-      {!isEmpty(usagePolicies) ? (
-        usagePolicies.map((policy: any, index: Key) => (
-          <Grid item xs={6} sx={{ mb: 1 }} key={index}>
-            <Typography variant="body2">
-              <b>{policy.technicalKey} :</b> {policy.value[0]}
-            </Typography>
-          </Grid>
-        ))
-      ) : (
-        <Typography variant="body2">Not Available</Typography>
-      )}
-    </>
+    <PCFExchangeTable
+      type="consumer"
+      title={t('pages.pcfExchange')}
+      subtitle={t('content.pcfExchangeTable.consumerTitle')}
+    />
   );
-}
+};
 
-export default UsagePolicies;
+export default ConsumerPCFExchange;

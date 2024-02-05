@@ -25,6 +25,7 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import HistoryIcon from '@mui/icons-material/History';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import RepartitionIcon from '@mui/icons-material/Repartition';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import UploadIcon from '@mui/icons-material/Upload';
 
@@ -38,6 +39,7 @@ export const icons = {
   FormatListBulletedIcon,
   BusinessIcon,
   TextSnippetIcon,
+  RepartitionIcon,
 };
 
 export interface IntMenuItem {
@@ -54,6 +56,18 @@ export interface IntMenu extends IntMenuItem {
 }
 
 // menu items
+const pcfExchangeMenuItem: IntMenuItem = {
+  text: 'pages.pcfExchange',
+  menuIcon: 'RepartitionIcon',
+  permissions: ['view_pcf_history'],
+};
+
+const contractsMenuItem: IntMenuItem = {
+  text: 'pages.contracts',
+  menuIcon: 'FormatListBulletedIcon',
+  permissions: ['provider_view_contract_agreement'],
+};
+
 export const MenuItems: IntMenu[] = [
   {
     text: 'pages.home',
@@ -88,6 +102,11 @@ export const MenuItems: IntMenu[] = [
         permissions: ['auto_config_management'],
       },
       {
+        ...pcfExchangeMenuItem,
+        to: '/provider/pcf-exchange',
+        dataId: 'providerPcfExchange',
+      },
+      {
         text: 'content.policies.title',
         menuIcon: 'TextSnippetIcon',
         to: '/provider/policies',
@@ -102,11 +121,9 @@ export const MenuItems: IntMenu[] = [
         permissions: ['provider_view_history'],
       },
       {
-        text: 'pages.contracts',
-        menuIcon: 'FormatListBulletedIcon',
+        ...contractsMenuItem,
         to: '/provider/contracts',
         dataId: 'pContracts',
-        permissions: ['provider_view_contract_agreement'],
       },
       {
         text: 'pages.help',
@@ -132,6 +149,11 @@ export const MenuItems: IntMenu[] = [
         ],
       },
       {
+        ...pcfExchangeMenuItem,
+        to: '/consumer/pcf-exchange',
+        dataId: 'consumerPcfExchange',
+      },
+      {
         text: 'pages.offerDownloadHistory',
         menuIcon: 'HistoryIcon',
         to: '/consumer/offers-download-history',
@@ -139,11 +161,9 @@ export const MenuItems: IntMenu[] = [
         permissions: ['consumer_view_download_history'],
       },
       {
-        text: 'pages.contracts',
-        menuIcon: 'FormatListBulletedIcon',
+        ...contractsMenuItem,
         to: '/consumer/contracts',
         dataId: 'uploadHistoryMenu',
-        permissions: ['consumer_view_contract_agreement'],
       },
     ],
   },

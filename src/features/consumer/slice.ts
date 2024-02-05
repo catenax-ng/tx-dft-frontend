@@ -18,6 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { GridSelectionModel } from '@mui/x-data-grid';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import moment from 'moment';
 
@@ -41,6 +42,10 @@ const initialState: IConsumerSlice = {
   filterSelectedConnector: {},
   contractAgreements: [],
   isContractAgreementsLoading: false,
+  manufacturerPartId: '',
+  bpnNumber: '',
+  selectionModel: [],
+  isPcf: false,
 };
 
 export const consumerSlice = createSlice({
@@ -70,6 +75,9 @@ export const consumerSlice = createSlice({
     },
     setIsMultipleContractSubscription: (state, action: PayloadAction<boolean>) => {
       state.isMultipleContractSubscription = action.payload;
+    },
+    setIsPcf: (state, action: PayloadAction<boolean>) => {
+      state.isPcf = action.payload;
     },
     setSearchFilterByType: (state, action: PayloadAction<IntConnectorItem>) => {
       state.searchFilterByType = action.payload;
@@ -109,6 +117,15 @@ export const consumerSlice = createSlice({
     setIsContractAgreementsLoading: (state, action: PayloadAction<boolean>) => {
       state.isContractAgreementsLoading = action.payload;
     },
+    setManufacturerPartIdValue: (state, action: PayloadAction<string>) => {
+      state.manufacturerPartId = action.payload;
+    },
+    setBpnNumberValue: (state, action: PayloadAction<string>) => {
+      state.bpnNumber = action.payload;
+    },
+    setSelectionModel: (state, action: PayloadAction<GridSelectionModel>) => {
+      state.selectionModel = action.payload;
+    },
   },
 });
 
@@ -128,5 +145,9 @@ export const {
   setFilterSelectedBPN,
   setContractAgreements,
   setIsContractAgreementsLoading,
+  setManufacturerPartIdValue,
+  setBpnNumberValue,
+  setIsPcf,
+  setSelectionModel,
 } = consumerSlice.actions;
 export default consumerSlice.reducer;

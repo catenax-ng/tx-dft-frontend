@@ -13,7 +13,8 @@
     "consumeData": "Consume Data",
     "contracts": "Contracts",
     "about": "About",
-    "offerDownloadHistory": "Download History"
+    "offerDownloadHistory": "Download History",
+    "pcfExchange": "PCF Exchange"
   },
   "content": {
     "home": {
@@ -194,6 +195,34 @@
       "collapseSidebar": "Collapse sidebar",
       "introduction": "Introduction",
       "moreSubmodelInfo": "More info about submodels"
+    },
+    "pcfExchange": {
+      "description": "Discover the PCF data offer catalog of other Catena-X member companies. You can select an interesting offer and subscribe to it. \n Also find PCF request history with actual data",
+      "providerDescription": "All consumer request for PCF value",
+      "manufacturerPartId": "Enter Manufacturer Part Id",
+      "bpnNumber": "Enter BPN Number",
+      "viewPCFModelTitle": "Received PCF value",
+      "viewPCFModelTitleDescription": "Here you have recieved PCF value from data provider",
+      "columns": {
+        "title": "Title",
+        "assetId": "Asset ID",
+        "created": "Created On",
+        "description": "Description",
+        "publisher": "Publisher"
+      }
+    },
+    "pcfExchangeTable": {
+      "providerTitle": "PCF Exchange Requests Requiring Approval",
+      "consumerTitle": "History of PCF Exchange Requests",
+      "columns": {
+        "productId": "Product Id",
+        "requestedId": "Requested Id",
+        "counterParty": "Counter Party",
+        "message": "Title",
+        "requestedDate": "Requested Date",
+        "lastUpdatedTime": "Last Updated Time",
+        "status": "Status"
+      }
     }
   },
   "dialog": {
@@ -233,7 +262,12 @@
     "okay": "Okay",
     "subscribeSelected": "Subscribe and download",
     "subscribe": "Subscribe",
-    "declineContract": "Decline Contract"
+    "declineContract": "Decline Contract",
+    "requestPCF": "Request to PCF Value",
+    "approvePCFRequest": "Approve PCF Request",
+    "rejectPCFRequest": "Reject PCF Request",
+    "viewPCFData": "View PCF RECEIVED Value",
+    "retryPCFRequest": "Retry PCF notification push"
   },
   "alerts": {
     "invalidFile": "Invalid file format!",

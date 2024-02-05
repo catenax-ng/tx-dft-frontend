@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -20,11 +19,11 @@
  ********************************************************************************/
 import { Refresh } from '@mui/icons-material';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { Box, Grid, LinearProgress } from '@mui/material';
-import { DataGrid, GridColDef, GridRenderCellParams, GridToolbar, GridValidRowModel } from '@mui/x-data-grid';
+import { Box, Grid } from '@mui/material';
+import { GridColDef, GridRenderCellParams, GridValidRowModel } from '@mui/x-data-grid';
 import { IconButton, LoadingButton, Tooltips, Typography } from 'cx-portal-shared-components';
 import { capitalize } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { setPageLoading } from '../features/app/slice';
@@ -33,7 +32,7 @@ import { useAppDispatch } from '../features/store';
 import { handleBlankCellValues } from '../helpers/ConsumerOfferHelper';
 import { CONTRACT_STATES, MAX_CONTRACTS_AGREEMENTS, STATUS_COLOR_MAPPING, USER_TYPE_SWITCH } from '../utils/constants';
 import { convertEpochToDate } from '../utils/utils';
-import NoDataPlaceholder from './NoDataPlaceholder';
+import DataTable from './table/DataTable';
 
 interface IContractsTable {
   type: string;
@@ -41,7 +40,6 @@ interface IContractsTable {
   subtitle: string;
 }
 function ContractsTable({ type, title, subtitle }: IContractsTable) {
-  const [pageSize, setPageSize] = useState<number>(10);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const pageType = `pages.${USER_TYPE_SWITCH[type]}`; // to avoid nested template literals
@@ -179,41 +177,10 @@ function ContractsTable({ type, title, subtitle }: IContractsTable) {
               <Typography variant="body1" maxWidth={900} mb={2}>
                 {t('content.common.ownConnector')} {data.connector}
               </Typography>
-              <DataGrid
-                autoHeight={true}
-                getRowId={row => row.id}
-                rows={data.contracts}
+              <DataTable
+                data={data?.contracts}
                 columns={type === 'provider' ? [...columns, ...actionCol] : columns}
-                loading={isFetching}
-                pagination
-                pageSize={pageSize}
-                onPageSizeChange={setPageSize}
-                rowsPerPageOptions={[10, 25, 50, 100]}
-                components={{
-                  Toolbar: GridToolbar,
-                  LoadingOverlay: LinearProgress,
-                  NoRowsOverlay: () => NoDataPlaceholder('content.common.noData'),
-                  NoResultsOverlay: () => NoDataPlaceholder('content.common.noResults'),
-                }}
-                componentsProps={{
-                  toolbar: {
-                    showQuickFilter: true,
-                    quickFilterProps: { debounceMs: 500 },
-                    printOptions: { disableToolbarButton: true },
-                  },
-                }}
-                disableColumnMenu
-                disableColumnSelector
-                disableDensitySelector
-                disableSelectionOnClick
-                sx={{
-                  '& .MuiDataGrid-columnHeaderTitle': {
-                    textOverflow: 'clip',
-                    whiteSpace: 'break-spaces !important',
-                    maxHeight: 'none !important',
-                    lineHeight: 1.4,
-                  },
-                }}
+                isFetching={isFetching}
               />
             </Box>
           </Grid>

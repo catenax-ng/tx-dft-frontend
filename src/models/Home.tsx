@@ -93,6 +93,10 @@ export const consumeDataSteps: IDataSteps[] = [
   },
   {
     stepNum: 3,
+    stepTitle: 'PCF Exchange',
+  },
+  {
+    stepNum: 4,
     stepTitle: 'content.home.consumeDataSteps.manageContracts',
     stepLink: {
       text: 'pages.contracts',

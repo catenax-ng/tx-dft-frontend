@@ -100,6 +100,7 @@ export const apiSlice = createApi({
     'SettingsConfig',
     'ScheduleConfig',
     'Policies',
+    'PCFExchangeRequest',
   ],
 });
 

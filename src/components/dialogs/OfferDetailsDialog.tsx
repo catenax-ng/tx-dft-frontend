@@ -24,7 +24,9 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Permissions from '../../components/Permissions';
+import { setIsPcf } from '../../features/consumer/slice';
 import { IConsumerDataOffers } from '../../features/consumer/types';
+import { useAppDispatch } from '../../features/store';
 import UsagePolicies from './UsagePolicies';
 
 interface IntDialogProps {
@@ -37,8 +39,17 @@ interface IntDialogProps {
 
 const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMultiple }: IntDialogProps) => {
   const [offer] = useState(offerObj);
-  const { title, created, description, publisher, usagePolicies, fileContentType } = offer;
+  const {
+    title,
+    created,
+    description,
+    publisher,
+    policy: { usage_policies: usagePolicies },
+    fileContentType,
+    type,
+  } = offer;
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
 
   function splitWithFirstOcc(str: string) {
     const regX = /:(.*)/s;
@@ -119,8 +130,18 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
           {t('button.close')}
         </Button>
         <Permissions values={['consumer_subscribe_download_data_offers']}>
-          <Button variant="contained" onClick={() => handleConfirm(true)}>
-            {t('button.subscribeSelected')}
+          <Button
+            variant="contained"
+            onClick={() => {
+              if (type === 'data.pcf.exchangeEndpoint') {
+                dispatch(setIsPcf(true));
+              } else {
+                dispatch(setIsPcf(false));
+              }
+              handleConfirm(true);
+            }}
+          >
+            {type === 'data.pcf.exchangeEndpoint' ? t('button.requestPCF') : t('button.subscribeSelected')}
           </Button>
         </Permissions>
       </DialogActions>

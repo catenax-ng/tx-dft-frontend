@@ -19,31 +19,18 @@
  ********************************************************************************/
 import { SelectList } from 'cx-portal-shared-components';
 import { filter } from 'lodash';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { fetchSubmodelDetails, fetchSubmodelList } from '../features/provider/submodels/actions';
-import { clearRows, setSelectedSubmodel } from '../features/provider/submodels/slice';
-import { ISubmodelList } from '../features/provider/submodels/types';
-import { removeSelectedFiles } from '../features/provider/upload/slice';
+import { fetchSubmodelList } from '../features/provider/submodels/actions';
 import { useAppDispatch, useAppSelector } from '../features/store';
 
-const SelectSubmodel = () => {
-  const { submodelList, selectedSubmodel } = useAppSelector(state => state.submodelSlice);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const SelectSubmodel = ({ defaultValue, onChange, disableClearable }: any) => {
+  const { submodelList } = useAppSelector(state => state.submodelSlice);
   const { useCases } = useAppSelector(state => state.appSlice);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-
-  const handleTypeChange = useCallback(
-    async (item: ISubmodelList) => {
-      dispatch(setSelectedSubmodel(item));
-      dispatch(fetchSubmodelDetails(item.value));
-      // clearing the selected files and rows
-      dispatch(clearRows());
-      dispatch(removeSelectedFiles());
-    },
-    [dispatch],
-  );
 
   useEffect(() => {
     dispatch(fetchSubmodelList(filter(useCases, 'checked').map(e => e.id)));
@@ -53,11 +40,11 @@ const SelectSubmodel = () => {
     <SelectList
       keyTitle="title"
       label={t('content.provider.selectSubmodel')}
-      defaultValue={selectedSubmodel}
-      onChangeItem={e => handleTypeChange(e)}
+      defaultValue={defaultValue}
+      onChangeItem={e => onChange(e)}
       items={submodelList}
       placeholder={t('content.provider.selectSubmodel')}
-      disableClearable={true}
+      disableClearable={disableClearable}
     />
   );
 };

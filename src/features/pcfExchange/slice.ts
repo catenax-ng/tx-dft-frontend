@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -19,27 +18,30 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Grid } from '@mui/material';
-import { Typography } from 'cx-portal-shared-components';
-import { isEmpty } from 'lodash';
-import { Key } from 'react';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-function UsagePolicies({ usagePolicies }: any) {
-  return (
-    <>
-      {!isEmpty(usagePolicies) ? (
-        usagePolicies.map((policy: any, index: Key) => (
-          <Grid item xs={6} sx={{ mb: 1 }} key={index}>
-            <Typography variant="body2">
-              <b>{policy.technicalKey} :</b> {policy.value[0]}
-            </Typography>
-          </Grid>
-        ))
-      ) : (
-        <Typography variant="body2">Not Available</Typography>
-      )}
-    </>
-  );
-}
+import { IPCFResponsePojo, IPCFValueState } from './types';
 
-export default UsagePolicies;
+const initialState: IPCFValueState = {
+  openDialog: false,
+  pcfValueData: {} as IPCFResponsePojo,
+  pcfValueDialog: false,
+};
+
+export const viewPcfValueSlice = createSlice({
+  name: 'viewPcfValueSlice',
+  initialState,
+  reducers: {
+    setPcfValueData: (state, action: PayloadAction<IPCFResponsePojo>) => {
+      state.pcfValueData = action.payload;
+    },
+    setPcfValueDialog: (state, action: PayloadAction<boolean>) => {
+      state.pcfValueDialog = action.payload;
+    },
+    handleDialogClose: state => Object.assign(state, initialState),
+  },
+});
+
+export const { setPcfValueData, setPcfValueDialog, handleDialogClose } = viewPcfValueSlice.actions;
+
+export default viewPcfValueSlice.reducer;
