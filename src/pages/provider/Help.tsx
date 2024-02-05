@@ -27,11 +27,11 @@ import { filter } from 'lodash';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import DownloadSamples from '../components/DownloadSamples';
-import SelectedUseCases from '../components/SelectedUseCases';
-import { useGetHelpPageDataQuery } from '../features/provider/submodels/apiSlice';
-import { HelpPageData } from '../features/provider/submodels/types';
-import { useAppSelector } from '../features/store';
+import DownloadSamples from '../../components/DownloadSamples';
+import SelectedUseCases from '../../components/SelectedUseCases';
+import { useGetHelpPageDataQuery } from '../../features/provider/submodels/apiSlice';
+import { HelpPageData } from '../../features/provider/submodels/types';
+import { useAppSelector } from '../../features/store';
 
 const columns: GridColDef[] = [
   { field: 'name', headerName: 'Name', flex: 1, sortable: false, align: 'left', disableColumnMenu: true },

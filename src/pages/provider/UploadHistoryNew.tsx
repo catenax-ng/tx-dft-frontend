@@ -27,22 +27,22 @@ import { capitalize } from 'lodash';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import UploadHistoryErrorDialog from '../components/dialogs/UploadHistoryErrorDialog';
-import NoDataPlaceholder from '../components/NoDataPlaceholder';
-import Permissions from '../components/Permissions';
-import { Status } from '../enums';
+import UploadHistoryErrorDialog from '../../components/dialogs/UploadHistoryErrorDialog';
+import NoDataPlaceholder from '../../components/NoDataPlaceholder';
+import Permissions from '../../components/Permissions';
+import { Status } from '../../enums';
 import {
   useDeleteHistoryMutation,
   useDownloadCsvMutation,
   useGetHistoryQuery,
-} from '../features/provider/history/apiSlice';
-import { setCurrentProcessId, setErrorsList, setIsLoding } from '../features/provider/history/slice';
-import { useAppDispatch } from '../features/store';
-import { csvFileDownload } from '../helpers/FileDownloadHelper';
-import { ProcessReport } from '../models/ProcessReport';
-import ProviderService from '../services/ProviderService';
-import { MAX_CONTRACTS_AGREEMENTS, STATUS_COLOR_MAPPING } from '../utils/constants';
-import { formatDate } from '../utils/utils';
+} from '../../features/provider/history/apiSlice';
+import { setCurrentProcessId, setErrorsList, setIsLoding } from '../../features/provider/history/slice';
+import { useAppDispatch } from '../../features/store';
+import { csvFileDownload } from '../../helpers/FileDownloadHelper';
+import { ProcessReport } from '../../models/ProcessReport';
+import ProviderService from '../../services/ProviderService';
+import { MAX_CONTRACTS_AGREEMENTS, STATUS_COLOR_MAPPING } from '../../utils/constants';
+import { formatDate } from '../../utils/utils';
 
 function UploadHistoryNew() {
   const [page, setPage] = useState<number>(0);

@@ -27,12 +27,12 @@ import { find } from 'lodash';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import NoDataPlaceholder from '../components/NoDataPlaceholder';
-import AddEditPolicy from '../components/policies/AddEditPolicy';
-import { useDeletePolicyMutation, useGetPoliciesQuery } from '../features/provider/policies/apiSlice';
-import { setPolicyData, setPolicyDialog, setPolicyDialogType } from '../features/provider/policies/slice';
-import { useAppDispatch } from '../features/store';
-import { DEFAULT_POLICY_DATA } from '../utils/constants';
+import NoDataPlaceholder from '../../components/NoDataPlaceholder';
+import AddEditPolicy from '../../components/policies/AddEditPolicy';
+import { useDeletePolicyMutation, useGetPoliciesQuery } from '../../features/provider/policies/apiSlice';
+import { setPolicyData, setPolicyDialog, setPolicyDialogType } from '../../features/provider/policies/slice';
+import { useAppDispatch } from '../../features/store';
+import { DEFAULT_POLICY_DATA } from '../../utils/constants';
 
 function Policies() {
   const [page, setPage] = useState<number>(0);

@@ -20,11 +20,17 @@
 
 import { useTranslation } from 'react-i18next';
 
-import PCFExchangeTable from '../../../components/PCFExchangeTable';
+import ContractsTable from '../../components/ContractsTable';
 
-const ConsumerPCFExchangeHistory = () => {
+const ProviderContracts = () => {
   const { t } = useTranslation();
-  return <PCFExchangeTable type="consumer" title={''} subtitle={t('content.pcfExchangeTable.consumerTitle')} />;
+  return (
+    <ContractsTable
+      type="provider"
+      title={t('content.providerContracts.title')}
+      subtitle={t('content.providerContracts.description')}
+    />
+  );
 };
 
-export default ConsumerPCFExchangeHistory;
+export default ProviderContracts;
