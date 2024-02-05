@@ -46,6 +46,7 @@ import {
 } from '../../features/consumer/slice';
 import { IConsumerDataOffers } from '../../features/consumer/types';
 import { setSnackbarMessage } from '../../features/notifiication/slice';
+import { useRequestPcfValuesMutation } from '../../features/pcfExchange/apiSlice';
 import { useAppDispatch, useAppSelector } from '../../features/store';
 import { handleBlankCellValues } from '../../helpers/ConsumerOfferHelper';
 import ConsumerService from '../../services/ConsumerService';
@@ -58,12 +59,15 @@ export default function ConsumeData() {
     selectedOffersList,
     isMultipleContractSubscription,
     selectionModel,
+    isPcf,
   } = useAppSelector(state => state.consumerSlice);
   const [isOpenOfferDialog, setIsOpenOfferDialog] = useState<boolean>(false);
   const [isOpenOfferConfirmDialog, setIsOpenOfferConfirmDialog] = useState<boolean>(false);
   const [offerSubLoading, setOfferSubLoading] = useState(false);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
+
+  const [requestPcfValues] = useRequestPcfValuesMutation();
 
   const columns: GridColDef[] = [
     {
@@ -121,28 +125,39 @@ export default function ConsumeData() {
   };
 
   const handleConfirmTermDialog = async () => {
-    setOfferSubLoading(true);
-    await ConsumerService.getInstance()
-      .subscribeToOffers(preparePayload())
-      .then(response => {
-        if (response.status == 200) {
+    try {
+      setOfferSubLoading(true);
+
+      const handleSuccess = () => {
+        setIsOpenOfferDialog(false);
+        setIsOpenOfferConfirmDialog(false);
+        dispatch(setIsMultipleContractSubscription(false));
+        dispatch(setSelectedOffer(null));
+        dispatch(setSelectedOffersList([]));
+        dispatch(setSelectionModel([]));
+      };
+
+      if (isPcf) {
+        await requestPcfValues({
+          manufacturerPartId: selectedOffer?.manufacturerPartId,
+          offers: preparePayload(),
+        })
+          .unwrap()
+          .then(handleSuccess);
+      } else {
+        const response = await ConsumerService.getInstance().subscribeToOffers(preparePayload());
+
+        if (response.status === 200) {
           saveAs(new Blob([response.data]), 'data-offer.zip');
-          dispatch(
-            setSnackbarMessage({
-              message: 'alerts.subscriptionSuccess',
-              type: 'success',
-            }),
-          );
-          setIsOpenOfferDialog(false);
-          setIsOpenOfferConfirmDialog(false);
-          dispatch(setIsMultipleContractSubscription(false));
-          dispatch(setSelectedOffer(null));
-          dispatch(setSelectedOffersList([]));
-          dispatch(setSelectionModel([]));
+          dispatch(setSnackbarMessage({ message: 'alerts.subscriptionSuccess', type: 'success' }));
+          handleSuccess();
         }
-      })
-      .catch(error => console.log('err', error))
-      .finally(() => setOfferSubLoading(false));
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setOfferSubLoading(false);
+    }
   };
 
   const onRowClick = (params: any) => {
@@ -237,6 +252,7 @@ export default function ConsumeData() {
             onRowClick={onRowClick}
             handleSelectionModel={newSelectionModel => handleSelectionModel(newSelectionModel)}
             selectionModel={selectionModel}
+            isRowSelectable={params => params.row.type !== 'data.pcf.exchangeEndpoint'}
           />
         </Box>
       </Permissions>

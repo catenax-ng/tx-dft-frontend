@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2021,2022,2023,2024 T-Systems International GmbH
  * Copyright (c) 2022,2023,2024 Contributors to the Eclipse Foundation
@@ -32,6 +33,7 @@ interface IDataTable {
   onRowClick?: GridEventListener<'rowClick'>;
   handleSelectionModel?: (selectionModel: GridSelectionModel) => void;
   selectionModel?: GridSelectionModel;
+  isRowSelectable?: (params: any) => boolean;
 }
 
 function DataTable({
@@ -42,6 +44,7 @@ function DataTable({
   handleSelectionModel,
   onRowClick,
   selectionModel,
+  isRowSelectable,
 }: Readonly<IDataTable>) {
   const [pageSize, setPageSize] = useState<number>(10);
   return (
@@ -50,6 +53,7 @@ function DataTable({
       getRowId={row => row.id}
       rows={data}
       onRowClick={onRowClick}
+      isRowSelectable={isRowSelectable}
       checkboxSelection={checkboxSelection}
       columns={columns}
       loading={isFetching}

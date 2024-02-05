@@ -45,6 +45,7 @@ const initialState: IConsumerSlice = {
   manufacturerPartId: '',
   bpnNumber: '',
   selectionModel: [],
+  isPcf: false,
 };
 
 export const consumerSlice = createSlice({
@@ -74,6 +75,9 @@ export const consumerSlice = createSlice({
     },
     setIsMultipleContractSubscription: (state, action: PayloadAction<boolean>) => {
       state.isMultipleContractSubscription = action.payload;
+    },
+    setIsPcf: (state, action: PayloadAction<boolean>) => {
+      state.isPcf = action.payload;
     },
     setSearchFilterByType: (state, action: PayloadAction<IntConnectorItem>) => {
       state.searchFilterByType = action.payload;
@@ -143,6 +147,7 @@ export const {
   setIsContractAgreementsLoading,
   setManufacturerPartIdValue,
   setBpnNumberValue,
+  setIsPcf,
   setSelectionModel,
 } = consumerSlice.actions;
 export default consumerSlice.reducer;

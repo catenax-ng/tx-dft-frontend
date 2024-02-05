@@ -33,6 +33,7 @@ export interface IConsumerDataOffers {
   assetId?: string;
   // end assetId
   connectorId?: string;
+  manufacturerPartId?: string;
   connectorOfferUrl?: string;
   title: string;
   version: string;
@@ -133,4 +134,5 @@ export interface IConsumerSlice {
   manufacturerPartId: string;
   bpnNumber: string;
   selectionModel: GridSelectionModel;
+  isPcf: boolean;
 }

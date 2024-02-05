@@ -24,8 +24,9 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Permissions from '../../components/Permissions';
+import { setIsPcf } from '../../features/consumer/slice';
 import { IConsumerDataOffers } from '../../features/consumer/types';
-import { useRequestPcfValuesMutation } from '../../features/pcfExchange/apiSlice';
+import { useAppDispatch } from '../../features/store';
 import UsagePolicies from './UsagePolicies';
 
 interface IntDialogProps {
@@ -38,7 +39,6 @@ interface IntDialogProps {
 
 const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMultiple }: IntDialogProps) => {
   const [offer] = useState(offerObj);
-  const [requestPcfValues] = useRequestPcfValuesMutation();
   const {
     title,
     created,
@@ -49,6 +49,7 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
     type,
   } = offer;
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
 
   function splitWithFirstOcc(str: string) {
     const regX = /:(.*)/s;
@@ -128,20 +129,21 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
         <Button variant="contained" onClick={() => handleClose(false)}>
           {t('button.close')}
         </Button>
-        {type === 'data.pcf.exchangeEndpoint' ? (
+        <Permissions values={['consumer_subscribe_download_data_offers']}>
           <Button
             variant="contained"
-            onClick={async () => requestPcfValues({ manufacturerPartId: '', offers: offerObj })}
+            onClick={() => {
+              if (type === 'data.pcf.exchangeEndpoint') {
+                dispatch(setIsPcf(true));
+              } else {
+                dispatch(setIsPcf(false));
+              }
+              handleConfirm(true);
+            }}
           >
-            {t('button.requestPCF')}
+            {type === 'data.pcf.exchangeEndpoint' ? t('button.requestPCF') : t('button.subscribeSelected')}
           </Button>
-        ) : (
-          <Permissions values={['consumer_subscribe_download_data_offers']}>
-            <Button variant="contained" onClick={() => handleConfirm(true)}>
-              {t('button.subscribeSelected')}
-            </Button>
-          </Permissions>
-        )}
+        </Permissions>
       </DialogActions>
     </Dialog>
   );
