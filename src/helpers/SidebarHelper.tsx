@@ -102,11 +102,6 @@ export const MenuItems: IntMenu[] = [
         permissions: ['auto_config_management'],
       },
       {
-        ...pcfExchangeMenuItem,
-        to: '/provider/pcf-exchange',
-        dataId: 'providerPcfExchange',
-      },
-      {
         text: 'content.policies.title',
         menuIcon: 'TextSnippetIcon',
         to: '/provider/policies',
@@ -119,6 +114,11 @@ export const MenuItems: IntMenu[] = [
         to: '/provider/upload-history',
         dataId: 'uploadHistoryMenu',
         permissions: ['provider_view_history'],
+      },
+      {
+        ...pcfExchangeMenuItem,
+        to: '/provider/pcf-exchange',
+        dataId: 'providerPcfExchange',
       },
       {
         ...contractsMenuItem,
@@ -154,16 +154,16 @@ export const MenuItems: IntMenu[] = [
         dataId: 'consumerPcfExchange',
       },
       {
+        ...contractsMenuItem,
+        to: '/consumer/contracts',
+        dataId: 'uploadHistoryMenu',
+      },
+      {
         text: 'pages.offerDownloadHistory',
         menuIcon: 'HistoryIcon',
         to: '/consumer/offers-download-history',
         dataId: 'offersDownloadHistoryMenu',
         permissions: ['consumer_view_download_history'],
-      },
-      {
-        ...contractsMenuItem,
-        to: '/consumer/contracts',
-        dataId: 'uploadHistoryMenu',
       },
     ],
   },

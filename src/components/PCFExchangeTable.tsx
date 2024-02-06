@@ -19,9 +19,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 import { Refresh } from '@mui/icons-material';
-import ApprovalIcon from '@mui/icons-material/Approval';
 import CancelIcon from '@mui/icons-material/Cancel';
-import ReplayIcon from '@mui/icons-material/Replay';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import { Box, Grid } from '@mui/material';
 import { GridColDef, GridValidRowModel } from '@mui/x-data-grid';
@@ -105,7 +104,7 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
     {
       field: 'requestedTime',
       flex: 1,
-      maxWidth: 200,
+      minWidth: 200,
       headerName: t('content.pcfExchangeTable.columns.requestedDate'),
       sortingOrder: ['asc', 'desc'],
       sortComparator: (v1, v2, param1: GridValidRowModel, param2: GridValidRowModel) => param2.id - param1.id,
@@ -180,7 +179,7 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
                     }
                     sx={{ mr: 2 }}
                   >
-                    <ApprovalIcon color="action" fontSize="small" />
+                    <CheckCircleIcon color="action" fontSize="small" />
                   </IconButton>
                 </span>
               </Tooltips>
@@ -223,7 +222,7 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
                   }
                   sx={{ mr: 2 }}
                 >
-                  <ReplayIcon color="primary" fontSize="small" />
+                  <Refresh color="primary" fontSize="small" />
                 </IconButton>
               </span>
             </Tooltips>

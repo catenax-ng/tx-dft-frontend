@@ -20,7 +20,8 @@
  ********************************************************************************/
 
 import { LinearProgress } from '@mui/material';
-import { DataGrid, GridColDef, GridEventListener, GridSelectionModel, GridValidRowModel } from '@mui/x-data-grid';
+import { GridColDef, GridEventListener, GridSelectionModel, GridValidRowModel } from '@mui/x-data-grid';
+import { Table } from 'cx-portal-shared-components';
 import { useState } from 'react';
 
 import NoDataPlaceholder from '../NoDataPlaceholder';
@@ -48,7 +49,8 @@ function DataTable({
 }: Readonly<IDataTable>) {
   const [pageSize, setPageSize] = useState<number>(10);
   return (
-    <DataGrid
+    <Table
+      title={''}
       autoHeight={true}
       getRowId={row => row.id}
       rows={data}
