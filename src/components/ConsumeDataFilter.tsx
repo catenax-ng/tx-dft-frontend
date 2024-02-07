@@ -130,17 +130,17 @@ function ConsumeDataFilter() {
   const fetchConsumerDataOffers = async () => {
     try {
       let bpn = '';
-      if (searchFilterByType.value === 'company') {
-        bpn = filterSelectedCompanyOption.bpn;
-      } else if (searchFilterByType.value === 'bpn') {
+      if (searchFilterByType?.value === 'company') {
+        bpn = filterSelectedCompanyOption?.bpn;
+      } else if (searchFilterByType?.value === 'bpn') {
         bpn = filterSelectedBPN;
       }
       dispatch(setOffersLoading(true));
       const response = await ConsumerService.getInstance().fetchConsumerDataOffers({
         offset: 0,
         maxLimit: MAX_CONTRACTS_AGREEMENTS,
-        manufacturerPartId: manufacturerPartId,
-        bpnNumber: bpn,
+        manufacturerPartId: manufacturerPartId || '',
+        bpnNumber: bpn || '',
         submodel: submodelFilter?.value || '',
       });
       dispatch(setContractOffers(response.data));
@@ -165,114 +165,121 @@ function ConsumeDataFilter() {
   }, [filterSelectedBPN]);
 
   return (
-    <Grid container spacing={2} alignItems="end">
-      <Grid item xs={3}>
-        <Typography variant="h4">Filters</Typography>
-        <SelectList
-          keyTitle="title"
-          label={t('content.consumeData.selectType')}
-          placeholder={t('content.consumeData.selectType')}
-          defaultValue={searchFilterByType}
-          items={ITEMS}
-          onChangeItem={e => handleSearchTypeChange(e)}
-          disableClearable={true}
-        />
-      </Grid>
-      <Grid item xs={3}>
-        {searchFilterByType.value === 'bpn' ? (
+    <>
+      <Typography variant="h4">Search data offers</Typography>
+      <Typography variant="body1" fontSize={14}>
+        Please enter a company name, BPN, or Manufacturer Part ID.
+      </Typography>
+      <Grid container spacing={2} alignItems="end">
+        <Grid item xs={3}>
+          <SelectList
+            keyTitle="title"
+            label={t('content.consumeData.selectType')}
+            placeholder={t('content.consumeData.selectType')}
+            defaultValue={searchFilterByType}
+            items={ITEMS}
+            onChangeItem={e => handleSearchTypeChange(e)}
+            disableClearable={true}
+          />
+        </Grid>
+        <Grid item xs={3}>
+          {searchFilterByType.value === 'bpn' ? (
+            <Input
+              value={filterSelectedBPN}
+              type="text"
+              fullWidth
+              size="small"
+              label={t('content.consumeData.enterBPN')}
+              placeholder={t('content.consumeData.enterBPN')}
+              inputProps={{ maxLength: 16 }}
+              error={bpnError}
+              onChange={handleBPNchange}
+              helperText={t('alerts.bpnValidation')}
+            />
+          ) : (
+            <Autocomplete
+              open={searchOpen}
+              options={filterCompanyOptions}
+              includeInputInList
+              loading={filterCompanyOptionsLoading}
+              onChange={async (event, value: any) => {
+                await onCompanyOptionChange(value);
+              }}
+              onInputChange={debounce(async (event, newInputValue) => {
+                await onChangeSearchInputValue(newInputValue);
+              })}
+              onSelect={() => setSearchOpen(false)}
+              onBlur={() => setSearchOpen(false)}
+              onClose={() => setSearchOpen(false)}
+              isOptionEqualToValue={(option, value) => option.value === value.value}
+              getOptionLabel={option => {
+                return typeof option === 'string' ? option : `${option.value}`;
+              }}
+              noOptionsText={t('content.consumeData.noCompany')}
+              renderInput={params => (
+                <Input
+                  {...params}
+                  label={t('content.consumeData.searchCompany')}
+                  placeholder={t('content.consumeData.searchPlaceholder')}
+                  fullWidth
+                />
+              )}
+              renderOption={(props, option: any) => (
+                <Box
+                  component="li"
+                  {...props}
+                  key={option.bpn}
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'initial!important',
+                    justifyContent: 'initial',
+                  }}
+                >
+                  <Typography variant="subtitle1">{option.value}</Typography>
+                  <Typography variant="subtitle2">{option.bpn}</Typography>
+                </Box>
+              )}
+              sx={{
+                '& .MuiFilledInput-root': {
+                  pt: '0px!important',
+                  minHeight: '55px',
+                },
+              }}
+            />
+          )}
+        </Grid>
+        <Grid item xs={3}>
           <Input
-            value={filterSelectedBPN}
+            value={manufacturerPartId || ''}
             type="text"
+            onChange={(e: { target: { value: string } }) => dispatch(setManufacturerPartIdValue(e.target.value))}
             fullWidth
             size="small"
-            label={t('content.consumeData.enterBPN') + '*'}
-            placeholder={t('content.consumeData.enterBPN')}
-            inputProps={{ maxLength: 16 }}
-            error={bpnError}
-            onChange={handleBPNchange}
-            helperText={t('alerts.bpnValidation')}
+            label={t('content.pcfExchange.manufacturerPartId')}
+            placeholder={t('content.pcfExchange.manufacturerPartId')}
           />
-        ) : (
-          <Autocomplete
-            open={searchOpen}
-            options={filterCompanyOptions}
-            includeInputInList
-            loading={filterCompanyOptionsLoading}
-            onChange={async (event, value: any) => {
-              await onCompanyOptionChange(value);
-            }}
-            onInputChange={debounce(async (event, newInputValue) => {
-              await onChangeSearchInputValue(newInputValue);
-            })}
-            onSelect={() => setSearchOpen(false)}
-            onBlur={() => setSearchOpen(false)}
-            onClose={() => setSearchOpen(false)}
-            isOptionEqualToValue={(option, value) => option.value === value.value}
-            getOptionLabel={option => {
-              return typeof option === 'string' ? option : `${option.value}`;
-            }}
-            noOptionsText={t('content.consumeData.noCompany')}
-            renderInput={params => (
-              <Input
-                {...params}
-                label={t('content.consumeData.searchCompany') + '*'}
-                placeholder={t('content.consumeData.searchPlaceholder')}
-                fullWidth
-              />
-            )}
-            renderOption={(props, option: any) => (
-              <Box
-                component="li"
-                {...props}
-                key={option.bpn}
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'initial!important',
-                  justifyContent: 'initial',
-                }}
-              >
-                <Typography variant="subtitle1">{option.value}</Typography>
-                <Typography variant="subtitle2">{option.bpn}</Typography>
-              </Box>
-            )}
-            sx={{
-              '& .MuiFilledInput-root': {
-                pt: '0px!important',
-                minHeight: '55px',
-              },
-            }}
-          />
-        )}
+        </Grid>
+        <Grid item xs={3}>
+          <SelectSubmodel defaultValue={submodelFilter} onChange={setSubmodelFilter} />
+        </Grid>
+        <Grid item>
+          <Permissions values={['consumer_search_connectors']}>
+            <LoadingButton
+              color="primary"
+              variant="contained"
+              disabled={
+                !(handleLoadingButton() || !isEmpty(filterSelectedCompanyOption) || !isEmpty(manufacturerPartId))
+              }
+              label={t('button.search')}
+              loadIndicator={t('content.common.loading')}
+              onButtonClick={fetchConsumerDataOffers}
+              loading={offersLoading}
+            />
+          </Permissions>
+        </Grid>
       </Grid>
-      <Grid item xs={3}>
-        <Input
-          value={manufacturerPartId || ''}
-          type="text"
-          onChange={(e: { target: { value: string } }) => dispatch(setManufacturerPartIdValue(e.target.value))}
-          fullWidth
-          size="small"
-          label={t('content.pcfExchange.manufacturerPartId')}
-          placeholder={t('content.pcfExchange.manufacturerPartId')}
-        />
-      </Grid>
-      <Grid item xs={3}>
-        <SelectSubmodel defaultValue={submodelFilter} onChange={setSubmodelFilter} />
-      </Grid>
-      <Grid item>
-        <Permissions values={['consumer_search_connectors']}>
-          <LoadingButton
-            color="primary"
-            variant="contained"
-            disabled={!handleLoadingButton() && isEmpty(filterSelectedCompanyOption)}
-            label={t('button.search')}
-            loadIndicator={t('content.common.loading')}
-            onButtonClick={fetchConsumerDataOffers}
-            loading={offersLoading}
-          />
-        </Permissions>
-      </Grid>
-    </Grid>
+    </>
   );
 }
 
