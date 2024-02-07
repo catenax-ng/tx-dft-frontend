@@ -21,7 +21,7 @@
 import { Refresh } from '@mui/icons-material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import ViewInArIcon from '@mui/icons-material/ViewInAr';
+import PageviewIcon from '@mui/icons-material/Pageview';
 import { Box, Grid } from '@mui/material';
 import { GridColDef, GridValidRowModel } from '@mui/x-data-grid';
 import { IconButton, LoadingButton, Tooltips, Typography } from 'cx-portal-shared-components';
@@ -256,7 +256,7 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
                   }
                   sx={{ mr: 2 }}
                 >
-                  <ViewInArIcon color="action" fontSize="small" />
+                  <PageviewIcon color="action" fontSize="small" />
                 </IconButton>
               </span>
             </Tooltips>
