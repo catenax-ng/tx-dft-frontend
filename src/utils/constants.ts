@@ -193,29 +193,21 @@ const HOURS = [...Array(24)].map((_e, i) => ({
 const TRACABILITY_FRAMEWORK = [
   {
     key: 'Version',
-    value: 'active:1.0',
-  },
-  {
-    key: 'Version',
-    value: 'active:1.1',
-  },
-  {
-    key: 'Version',
-    value: 'active:1.2',
+    value: 'active',
   },
 ];
 
 const QUALTIY_FRAMEWORK = [
   {
     key: 'Version',
-    value: 'active:1.0',
+    value: 'active',
   },
 ];
 
 const PCF_FRAMEWORK = [
   {
     key: 'Version',
-    value: 'active:1.0',
+    value: 'active',
   },
 ];
 
