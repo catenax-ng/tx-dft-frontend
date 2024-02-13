@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -18,6 +19,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { CUSTOM_POLICY_FIELDS } from '../../../utils/constants';
 import { apiSlice } from '../../app/apiSlice';
 import { setPageLoading } from '../../app/slice';
 import { setPolicyDialog } from './slice';
@@ -97,6 +99,33 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
+    getPolicyTemplate: builder.query<any, void>({
+      query: () => {
+        return {
+          url: '/policy-hub/policy-types',
+        };
+      },
+      async transformResponse(res: any) {
+        const modifieldData = await res?.reduce((acc: any, curr: any) => {
+          curr.type.forEach((type: any) => {
+            if (!acc[type]) {
+              acc[type] = {};
+            }
+            acc[type][curr.technicalKey] = { ...curr, value: '' };
+          });
+          return { ...CUSTOM_POLICY_FIELDS, ...acc };
+        }, {});
+        return modifieldData;
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          dispatch(setPageLoading(true));
+          await queryFulfilled;
+        } finally {
+          dispatch(setPageLoading(false));
+        }
+      },
+    }),
   }),
 });
 
@@ -107,4 +136,5 @@ export const {
   useCreatePolicyMutation,
   useDeletePolicyMutation,
   useUpdatePolicyMutation,
+  useGetPolicyTemplateQuery,
 } = policiesApiSlice;
