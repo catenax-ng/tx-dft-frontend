@@ -23,7 +23,6 @@ import InfoIcon from '@mui/icons-material/Info';
 import { Box, Card, CardContent, Grid } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { Button, IconButton, Table, Tooltips, Typography } from 'cx-portal-shared-components';
-import { filter } from 'lodash';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -73,8 +72,8 @@ const columns: GridColDef[] = [
 
 export default function Help() {
   const { t } = useTranslation();
-  const { useCases } = useAppSelector(state => state.appSlice);
-  const { isSuccess, data } = useGetHelpPageDataQuery({ usecases: filter(useCases, 'checked').map(e => e.id) });
+  const { selectedUseCases } = useAppSelector(state => state.appSlice);
+  const { isSuccess, data } = useGetHelpPageDataQuery({ usecases: selectedUseCases });
   const refScrollUp = useRef(null);
 
   const handleScrollUp = () => {
