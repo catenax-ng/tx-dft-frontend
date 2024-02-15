@@ -19,6 +19,7 @@
  ********************************************************************************/
 
 import { createSlice } from '@reduxjs/toolkit';
+import { filter } from 'lodash';
 
 import { IAppSlice } from './types';
 
@@ -37,6 +38,7 @@ const initialState: IAppSlice = {
   permissions: [],
   sidebarExpanded: true,
   useCases: [],
+  selectedUseCases: [],
 };
 export const appSlice = createSlice({
   name: 'appSlice',
@@ -53,6 +55,7 @@ export const appSlice = createSlice({
     },
     setUseCases: (state, { payload }) => {
       state.useCases = payload;
+      state.selectedUseCases = filter(payload, 'checked').map(e => e.id);
     },
     setPermissions: (state, { payload }) => {
       state.permissions = payload;

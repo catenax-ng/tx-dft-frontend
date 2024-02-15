@@ -18,7 +18,6 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 import { SelectList } from 'cx-portal-shared-components';
-import { filter } from 'lodash';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -28,13 +27,13 @@ import { useAppDispatch, useAppSelector } from '../features/store';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const SelectSubmodel = ({ defaultValue, onChange, disableClearable }: any) => {
   const { submodelList } = useAppSelector(state => state.submodelSlice);
-  const { useCases } = useAppSelector(state => state.appSlice);
+  const { selectedUseCases } = useAppSelector(state => state.appSlice);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
   useEffect(() => {
-    dispatch(fetchSubmodelList(filter(useCases, 'checked').map(e => e.id)));
-  }, [dispatch, useCases]);
+    dispatch(fetchSubmodelList(selectedUseCases));
+  }, [dispatch, selectedUseCases]);
 
   return (
     <SelectList
