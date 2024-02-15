@@ -99,7 +99,7 @@ export default function Home() {
       </Grid>
       <Grid item xs={6}>
         <Box>
-          <img src="images/sde.png" width={'100%'} />
+          <img src="images/sde.png" width={'100%'} alt="sde" />
         </Box>
       </Grid>
       <Grid item xs={12}>
