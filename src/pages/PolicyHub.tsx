@@ -3,11 +3,15 @@ import { Button, Divider, FormControl } from '@mui/material';
 import { Input, SelectList, Typography } from 'cx-portal-shared-components';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { useGetPolicyTemplateQuery } from '../features/provider/policies/apiSlice';
 
+const SELECT_POLICY_TYPES = ['Brands', 'Version', 'Static'];
+
 const PolicyHub = () => {
-  const { data, isSuccess } = useGetPolicyTemplateQuery();
+  const { t } = useTranslation();
+  const { data, isSuccess } = useGetPolicyTemplateQuery({});
   const [formData, setFormData] = useState<any>({});
   const { handleSubmit, control } = useForm();
 
@@ -50,10 +54,10 @@ const PolicyHub = () => {
     });
 
   const renderFormField = (item: any, type: any, key: any) => {
-    const firstAttribute = item.attribute[0];
+    const firstAttribute = item?.attribute[0];
     if (!firstAttribute) return null;
 
-    if (firstAttribute.key === 'Regex') {
+    if (firstAttribute?.key === 'Regex') {
       return (
         <FormControl fullWidth sx={{ mb: 3 }}>
           <Controller
@@ -68,7 +72,7 @@ const PolicyHub = () => {
                   const {
                     target: { value },
                   } = e;
-                  handleChange(value, type, key);
+                  if (firstAttribute.value.test(value)) handleChange(value, type, key);
                 }}
                 error={!!error}
               />
@@ -76,7 +80,7 @@ const PolicyHub = () => {
           />
         </FormControl>
       );
-    } else if (firstAttribute.key === 'Brands' || firstAttribute.key === 'Version' || firstAttribute.key === 'Static') {
+    } else if (SELECT_POLICY_TYPES.includes(firstAttribute?.key)) {
       return (
         <FormControl fullWidth sx={{ mb: 3 }}>
           <Controller
@@ -106,8 +110,8 @@ const PolicyHub = () => {
 
   if (isSuccess) {
     return (
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {Object.keys(formData).map(type => (
+      <form>
+        {Object.keys(formData)?.map(type => (
           <div key={type}>
             <Typography variant="h6">{type}</Typography>
             <Divider />
@@ -117,8 +121,8 @@ const PolicyHub = () => {
             })}
           </div>
         ))}
-        <Button type="submit" variant="contained" color="primary">
-          Submit
+        <Button type="submit" variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>
+          {t('button.submit')}
         </Button>
       </form>
     );
