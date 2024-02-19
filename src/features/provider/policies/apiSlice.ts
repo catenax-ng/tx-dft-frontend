@@ -99,10 +99,11 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
-    getPolicyTemplate: builder.query<any, void>({
-      query: () => {
+    getPolicyTemplate: builder.query({
+      query: params => {
         return {
           url: '/policy-hub/policy-types',
+          params,
         };
       },
       async transformResponse(res: any) {
@@ -115,7 +116,7 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
           });
           return { ...CUSTOM_POLICY_FIELDS, ...acc };
         }, {});
-        return modifieldData;
+        return modifieldData || [];
       },
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
