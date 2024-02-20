@@ -25,3 +25,17 @@ export interface IAccessPolicyState {
   policyDialog: boolean;
   policyDialogType: string;
 }
+
+export interface IPolicyHubResponse {
+  [key: string]: {
+    [key: string]: {
+      technicalKey: string;
+      type: string[];
+      description?: string;
+      useCase: string[];
+      attribute: { key: string; value: string }[];
+      technicalEnforced: boolean;
+      value: string;
+    };
+  };
+}

@@ -275,28 +275,11 @@ const DEFAULT_POLICY_DATA: PolicyModel = {
   ],
 };
 
-const CUSTOM_POLICY_FIELDS = {
-  Generic: {
-    policyName: {
-      technicalKey: 'policyName',
-      type: ['Generic'],
-      value: '',
-      attribute: [
-        {
-          key: 'Regex',
-          value: '^BPNL[\\w|\\d]{12}$',
-        },
-      ],
-    },
-  },
-};
-
 export {
   ALPHA_NUM_REGEX,
   BPN_TYPE_FIELDS,
   CHECKBOXES,
   CONTRACT_STATES,
-  CUSTOM_POLICY_FIELDS,
   DATE_TIME_FORMAT,
   DEFAULT_POLICY_DATA,
   DURATION_UNIT_MAPPING,

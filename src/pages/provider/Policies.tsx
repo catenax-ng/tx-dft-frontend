@@ -33,6 +33,7 @@ import { useDeletePolicyMutation, useGetPoliciesQuery } from '../../features/pro
 import { setPolicyData, setPolicyDialog, setPolicyDialogType } from '../../features/provider/policies/slice';
 import { useAppDispatch } from '../../features/store';
 import { DEFAULT_POLICY_DATA } from '../../utils/constants';
+import PolicyHub from '../PolicyHub';
 
 function Policies() {
   const [page, setPage] = useState<number>(0);
@@ -136,6 +137,7 @@ function Policies() {
             </Button>
           </Grid>
         </Grid>
+        <PolicyHub />
         <Box>
           <Table
             title=""

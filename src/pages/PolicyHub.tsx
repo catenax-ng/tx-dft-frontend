@@ -1,19 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Divider, FormControl } from '@mui/material';
-import { Input, SelectList, Typography } from 'cx-portal-shared-components';
+import { SelectList, Typography } from 'cx-portal-shared-components';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import InputValidation from '../components/policies/InputValidation';
+import { SELECT_POLICY_TYPES } from '../constants/policies';
 import { useGetPolicyTemplateQuery } from '../features/provider/policies/apiSlice';
-
-const SELECT_POLICY_TYPES = ['Brands', 'Version', 'Static'];
+import { IPolicyHubResponse } from '../features/provider/policies/types';
+import { toReadableCapitalizedCase } from '../utils/utils';
 
 const PolicyHub = () => {
   const { t } = useTranslation();
   const { data, isSuccess } = useGetPolicyTemplateQuery({});
-  const [formData, setFormData] = useState<any>({});
-  const { handleSubmit, control } = useForm();
+  const [formData, setFormData] = useState<IPolicyHubResponse>({});
+  const { handleSubmit, control } = useForm<IPolicyHubResponse>();
 
   useEffect(() => {
     if (isSuccess) setFormData(data);
@@ -63,26 +65,13 @@ const PolicyHub = () => {
           <Controller
             name={formData[type][key].value}
             control={control}
-            render={({ fieldState: { error } }) => (
-              <Input
-                label={formData[type][key].technicalKey}
-                name={item.technicalKey}
-                value={item.value}
-                onChange={e => {
-                  const {
-                    target: { value },
-                  } = e;
-                  if (firstAttribute.value.test(value)) handleChange(value, type, key);
-                }}
-                error={!!error}
-              />
-            )}
+            render={() => <InputValidation item={item} handleChange={handleChange} type={type} />}
           />
         </FormControl>
       );
     } else if (SELECT_POLICY_TYPES.includes(firstAttribute?.key)) {
       return (
-        <FormControl fullWidth sx={{ mb: 3 }}>
+        <FormControl sx={{ mb: 3, width: 300 }}>
           <Controller
             name={formData[type][key].technicalKey}
             control={control}
@@ -92,7 +81,7 @@ const PolicyHub = () => {
                 defaultValue={item.value}
                 items={handleItems(item)}
                 variant="filled"
-                label={item.technicalKey}
+                label={toReadableCapitalizedCase(item.technicalKey)}
                 placeholder="Select a value"
                 type={'text'}
                 error={!!error}

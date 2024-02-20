@@ -19,7 +19,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { CUSTOM_POLICY_FIELDS } from '../../../utils/constants';
+import { CUSTOM_POLICY_FIELDS } from '../../../constants/policies';
 import { apiSlice } from '../../app/apiSlice';
 import { setPageLoading } from '../../app/slice';
 import { setPolicyDialog } from './slice';
