@@ -22,6 +22,7 @@ import { Box, Divider, List, useTheme } from '@mui/material';
 
 import { useAppSelector } from '../../features/store';
 import { MenuItems } from '../../helpers/SidebarHelper';
+import RouteCheck from '../RouteCheck';
 import CollapseMenuItem from './CollapseMenuItem';
 import MenuItemHeading from './MenuHeading';
 import MenuItem from './MenuItem';
@@ -54,17 +55,21 @@ export default function Sidebar() {
               {menuItem.isHeading ? (
                 <MenuItemHeading text={menuItem.text} />
               ) : (
-                <>
-                  <MenuItem key={menuItem.text} item={menuItem} />
-                  <Divider />
-                </>
+                <RouteCheck value={menuItem.to}>
+                  <>
+                    <MenuItem key={menuItem.text} item={menuItem} />
+                    <Divider />
+                  </>
+                </RouteCheck>
               )}
               {/* Menu children */}
               {menuItem.childrens ? (
                 <>
                   <Divider />
                   {menuItem.childrens.map(children => (
-                    <MenuItem key={children.text} item={children} />
+                    <RouteCheck value={children.to}>
+                      <MenuItem key={children.text} item={children} />
+                    </RouteCheck>
                   ))}
                   <Divider />
                 </>

@@ -24,6 +24,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import PageLoading from './components/PageLoading';
 import Permissions from './components/Permissions';
+import RouteCheck from './components/RouteCheck';
 import { IUser } from './features/app/types';
 import Notification from './features/notifiication';
 import { IRoutes, ROUTES } from './helpers/RouteHelper';
@@ -40,9 +41,11 @@ export default function App({ loggedUser }: { loggedUser?: IUser }) {
                 key={route.path}
                 path={route.path}
                 element={
-                  <Permissions values={route.permissions} fullPage={true}>
-                    {route.element}
-                  </Permissions>
+                  <RouteCheck value={route.path} pageNotFound={true}>
+                    <Permissions values={route.permissions} fullPage={true}>
+                      {route.element}
+                    </Permissions>
+                  </RouteCheck>
                 }
               ></Route>
             ))}

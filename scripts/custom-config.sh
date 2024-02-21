@@ -32,7 +32,9 @@ custom_theme_config='{
     "name": "",
     "logoUrl": "",
     "redirectUrl": ""
-  }
+  },
+  "helpLink": "",
+  "restrictedRoutes":[]
 }'
 
 echo -e "Updated configuration 🍻: \n\n$custom_theme_config\n\n"

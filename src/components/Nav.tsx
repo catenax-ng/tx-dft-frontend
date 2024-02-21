@@ -39,6 +39,7 @@ const Nav = () => {
   const avatar = useRef<HTMLDivElement>(null);
   const { loggedInUser } = useAppSelector(state => state.appSlice);
   const NAV_ITEMS = [{ title: 'Logout', to: 'logout' }];
+  const helpLink = customConfig.helpLink || legalNoticeContent.readmePath;
   const [lang, setlang] = useState(i18next.language);
 
   const openCloseMenu = () => setMenuOpen(prevVal => !prevVal);
@@ -80,7 +81,7 @@ const Nav = () => {
           <Button
             color="secondary"
             variant="contained"
-            onClick={() => openInNewTab(legalNoticeContent.readmePath)}
+            onClick={() => openInNewTab(helpLink)}
             size="small"
             sx={{ mr: 3 }}
           >
