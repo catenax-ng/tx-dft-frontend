@@ -66,34 +66,32 @@ const getLoggedUser = () => ({
   company: getCompany(),
   bpn: getBpn(),
   tenant: getTenant(),
-  token: getToken(),
-  parsedToken: getParsedToken(),
 });
 
 const update = () => {
   KC.updateToken(600)
     .then((refreshed: boolean) => {
-      if (refreshed) console.log(`${getUsername()} token refreshed ${refreshed}`);
+      console.log(`${getUsername()} token refreshed ${refreshed}`);
     })
     .catch(() => {
       console.log(`${getUsername()} token refresh failed`);
     });
 };
 
-const initKeycloak = (onAuthenticatedCallback: (loggedUser: IUser) => unknown) => {
+const initKeycloak = (onAuthenticatedCallback: (loggedUser: IUser) => void) => {
   KC.init({
     onLoad: 'login-required',
     pkceMethod: 'S256',
+    enableLogging: true,
   })
     .then(authenticated => {
       if (authenticated) {
         onAuthenticatedCallback(getLoggedUser());
-        setInterval(update, 50000);
       } else {
-        doLogin();
+        console.log(`${getUsername()} authentication failed`);
       }
     })
-    .catch(console.error);
+    .catch(err => console.log(err));
 };
 
 KC.onTokenExpired = () => {
