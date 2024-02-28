@@ -95,15 +95,12 @@ function AddEditPolicy() {
         title={t(policyDialogType === 'Edit' ? 'content.policies.editPolicy' : 'content.policies.addPolicy')}
       />
       <DialogContent>
-        <Typography variant="body2">
-          <b>{t('content.policies.description')}</b>
+        <Typography variant="body2" fontWeight={'bold'}>
+          {t('content.policies.description')}
         </Typography>
         <ol style={{ padding: '0 0 0 16px' }}>
           <li>
             <Typography variant="body2">{t('content.policies.description_1')}</Typography>
-          </li>
-          <li>
-            <Typography variant="body2">{t('content.policies.description_2')}</Typography>
           </li>
           <li>
             <Typography variant="body2">{t('content.policies.description_3')}</Typography>
@@ -132,8 +129,10 @@ function AddEditPolicy() {
             </FormControl>
           )}
           {/* access policy starts */}
-          <Typography fontWeight={'bold'}>{t('content.policies.accessPolicy')}</Typography>
-          <Divider sx={{ mt: 2 }} />
+          <Typography fontWeight={'bold'} variant="body2">
+            {t('content.policies.accessPolicy')}
+          </Typography>
+          <Divider sx={{ mt: 1 }} />
           <ValidateBpn
             control={control}
             watch={watch}
@@ -155,10 +154,10 @@ function AddEditPolicy() {
           ))}
           {/* access policy ends */}
           {/* usage policy starts */}
-          <Typography fontWeight={'bold'} mt={3}>
+          <Typography fontWeight={'bold'} variant="body2" mt={3}>
             {t('content.policies.usagePolicy')}
           </Typography>
-          <Divider sx={{ my: 2 }} />
+          <Divider sx={{ my: 1 }} />
           {CHECKBOXES.map((item: any) => (
             <FormControl fullWidth key={item.name}>
               <Controller
