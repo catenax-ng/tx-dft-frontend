@@ -76,7 +76,7 @@
       "description_1_1": "Unrestricted: everybody within the network can see the data",
       "description_1_2": "Restricted: only visible to the selected companies (search by name or BPN)",
       "description_2": "Select the duration for how long you want to share the data",
-      "description_3": "Define the usage-purpose for the shared data (select via dropdown)",
+      "description_3": "Define the usage-purpose for the shared data",
       "configure": "Next Step - Configure Policies",
       "accessPolicy": "Access Policies",
       "restricted": "Restricted",
