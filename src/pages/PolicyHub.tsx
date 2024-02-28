@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Divider, FormControl } from '@mui/material';
 import { SelectList, Typography } from 'cx-portal-shared-components';
+import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -9,11 +10,15 @@ import InputValidation from '../components/policies/InputValidation';
 import { SELECT_POLICY_TYPES } from '../constants/policies';
 import { useGetPolicyTemplateQuery } from '../features/provider/policies/apiSlice';
 import { IPolicyHubResponse } from '../features/provider/policies/types';
+import { useAppSelector } from '../features/store';
 import { toReadableCapitalizedCase } from '../utils/utils';
 
 const PolicyHub = () => {
   const { t } = useTranslation();
-  const { data, isSuccess } = useGetPolicyTemplateQuery({});
+  const { selectedUseCases, useCaseNames } = useAppSelector(state => state.appSlice);
+  const { data, isSuccess } = useGetPolicyTemplateQuery({
+    useCases: isEmpty(selectedUseCases) ? useCaseNames : selectedUseCases,
+  });
   const [formData, setFormData] = useState<IPolicyHubResponse>({});
   const { handleSubmit, control } = useForm<IPolicyHubResponse>();
 
