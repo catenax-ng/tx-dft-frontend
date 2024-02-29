@@ -103,9 +103,6 @@ function AddEditPolicy() {
             <Typography variant="body2">{t('content.policies.description_1')}</Typography>
           </li>
           <li>
-            <Typography variant="body2">{t('content.policies.description_2')}</Typography>
-          </li>
-          <li>
             <Typography variant="body2">{t('content.policies.description_3')}</Typography>
           </li>
         </ol>

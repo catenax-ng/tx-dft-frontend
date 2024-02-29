@@ -28,7 +28,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import DownloadSamples from '../../components/DownloadSamples';
-import AddEditPolicy from '../../components/policies/AddEditPolicy';
+import AddEditPolicyNew from '../../components/policies/AddEditPolicyNew';
 import SelectedUseCases from '../../components/SelectedUseCases';
 import SelectSubmodel from '../../components/SelectSubmodel';
 import SubmodelDataTable from '../../components/SubmodelDataTable';
@@ -134,7 +134,7 @@ export default function CreateData() {
           <Typography variant="body1">{t('content.provider.selectSubmodel')}</Typography>
         </Box>
       )}
-      <AddEditPolicy />
+      <AddEditPolicyNew />
     </>
   );
 }

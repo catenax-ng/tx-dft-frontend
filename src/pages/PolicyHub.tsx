@@ -1,46 +1,47 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Divider, FormControl } from '@mui/material';
-import { SelectList, Typography } from 'cx-portal-shared-components';
+import InfoIcon from '@mui/icons-material/Info';
+import { Box, Button, Divider, FormControl, FormLabel } from '@mui/material';
+import { Input, SelectList, Tooltips, Typography } from 'cx-portal-shared-components';
 import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import InputValidation from '../components/policies/InputValidation';
 import { SELECT_POLICY_TYPES } from '../constants/policies';
 import { useGetPolicyTemplateQuery } from '../features/provider/policies/apiSlice';
-import { IPolicyHubResponse } from '../features/provider/policies/types';
-import { useAppSelector } from '../features/store';
+import { setPolicyDialog, setPolicyName } from '../features/provider/policies/slice';
+import { useAppDispatch, useAppSelector } from '../features/store';
+import { AddPolicyModel } from '../models/Polices.models';
+import { ALPHA_NUM_REGEX } from '../utils/constants';
 import { toReadableCapitalizedCase } from '../utils/utils';
 
-const PolicyHub = () => {
+const PolicyHub = ({ onSubmit }: any) => {
   const { t } = useTranslation();
   const { selectedUseCases, useCaseNames } = useAppSelector(state => state.appSlice);
+  const { policyDialogType, policyName } = useAppSelector(state => state.policySlice);
   const { data, isSuccess } = useGetPolicyTemplateQuery({
-    useCases: isEmpty(selectedUseCases) ? useCaseNames : selectedUseCases,
+    useCases: useCaseNames,
   });
-  const [formData, setFormData] = useState<IPolicyHubResponse>({});
-  const { handleSubmit, control } = useForm<IPolicyHubResponse>();
+  const [formData, setFormData] = useState<any>({});
+  const [nameError, setNameError] = useState(false);
+  const { control } = useForm();
+  const showPolicyName = policyDialogType === 'Add' || policyDialogType === 'Edit';
+  const dispatch = useAppDispatch();
+  const addPolicyTypes = ['Add', 'FileWithPolicy'].includes(policyDialogType);
 
   useEffect(() => {
-    if (isSuccess) setFormData(data);
-  }, [data, isSuccess]);
+    if (isSuccess) {
+      if (isEmpty(selectedUseCases) && addPolicyTypes) {
+        setFormData(AddPolicyModel.convert(data));
+      } else if (!isEmpty(selectedUseCases) && addPolicyTypes) {
+        setFormData(AddPolicyModel.usecaseFilter(data, selectedUseCases));
+      }
+    }
+  }, [data, isSuccess, selectedUseCases]);
 
-  const onSubmit = () => {
-    // const outputData = formData;
-    // for (const type in outputData) {
-    //   const policies = outputData[type];
-    //   for (const policy in policies) {
-    //     const nestedObject = policies[policy];
-    //     policies[policy] = {
-    //       technicalKey: nestedObject.technicalKey,
-    //       value: nestedObject?.value?.value ? nestedObject.value.value : nestedObject.value,
-    //     };
-    //   }
-    // }
-    // Handle form submission
-    console.log(formData);
-  };
+  useEffect(() => {
+    dispatch(setPolicyName(''));
+  }, [dispatch]);
 
   const handleChange = (e: any, type: any, key: any) => {
     setFormData((prev: any) => ({
@@ -49,7 +50,7 @@ const PolicyHub = () => {
         ...prev[type],
         [key]: {
           ...prev[type][key],
-          value: e || '', //Backend needs the value inside an array
+          value: e || '',
         },
       },
     }));
@@ -64,19 +65,43 @@ const PolicyHub = () => {
     const firstAttribute = item?.attribute[0];
     if (!firstAttribute) return null;
 
+    const formLabel = (
+      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+        <Typography variant={'body3'} mr={0.5} fontWeight={'bold'}>
+          {toReadableCapitalizedCase(item.technicalKey)}
+        </Typography>
+        {!isEmpty(item.description) && (
+          <Tooltips tooltipPlacement="top" tooltipText={item.description}>
+            <span>
+              <InfoIcon fontSize="small" color="disabled" />
+            </span>
+          </Tooltips>
+        )}
+      </Box>
+    );
+
     if (firstAttribute?.key === 'Regex') {
       return (
-        <FormControl fullWidth sx={{ mb: 3 }}>
+        <FormControl fullWidth sx={{ mb: 3, width: 300, '& .MuiBox-root': { marginTop: 0 } }}>
+          <FormLabel>{formLabel}</FormLabel>
           <Controller
             name={formData[type][key].value}
             control={control}
-            render={() => <InputValidation item={item} handleChange={handleChange} type={type} />}
+            render={() => (
+              <Input
+                placeholder="Enter a value"
+                value={item.value}
+                onChange={e => handleChange(e.target.value, type, key)}
+                helperText="Invalid input"
+              />
+            )}
           />
         </FormControl>
       );
     } else if (SELECT_POLICY_TYPES.includes(firstAttribute?.key)) {
       return (
-        <FormControl sx={{ mb: 3, width: 300 }}>
+        <FormControl fullWidth sx={{ mb: 3, width: 300, '& .MuiBox-root': { marginTop: 0 } }}>
+          <FormLabel>{formLabel}</FormLabel>
           <Controller
             name={formData[type][key].technicalKey}
             control={control}
@@ -86,7 +111,7 @@ const PolicyHub = () => {
                 defaultValue={item.value}
                 items={handleItems(item)}
                 variant="filled"
-                label={toReadableCapitalizedCase(item.technicalKey)}
+                label={''}
                 placeholder="Select a value"
                 type={'text'}
                 error={!!error}
@@ -105,19 +130,56 @@ const PolicyHub = () => {
   if (isSuccess) {
     return (
       <form>
+        {showPolicyName && (
+          <FormControl sx={{ mb: 3, width: 300 }}>
+            <Input
+              value={policyName}
+              variant="filled"
+              label={'Policy name'}
+              placeholder={'Enter policy name'}
+              type={'text'}
+              error={nameError}
+              onChange={e => {
+                const { value } = e.target;
+                if (ALPHA_NUM_REGEX.test(value) || value === '') {
+                  setNameError(false);
+                  dispatch(setPolicyName(e.target.value));
+                }
+              }}
+            />
+          </FormControl>
+        )}
         {Object.keys(formData)?.map(type => (
           <div key={type}>
-            <Typography variant="h6">{type}</Typography>
-            <Divider />
+            <Typography variant="body2" fontWeight={'bold'}>
+              {type}
+            </Typography>
+            <Divider sx={{ mb: 2 }} />
             {Object.keys(formData[type]).map(key => {
               const item = formData[type][key];
               return <div key={key}>{renderFormField(item, type, key)}</div>;
             })}
           </div>
         ))}
-        <Button type="submit" variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>
-          {t('button.submit')}
-        </Button>
+        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', my: 1 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              if (showPolicyName && isEmpty(policyName)) {
+                setNameError(true);
+                return;
+              }
+              setNameError(false);
+              onSubmit(formData);
+            }}
+          >
+            {t('button.submit')}
+          </Button>
+          <Button variant="contained" sx={{ ml: 2 }} onClick={() => dispatch(setPolicyDialog(false))}>
+            {t('button.close')}
+          </Button>
+        </Box>
       </form>
     );
   } else return null;

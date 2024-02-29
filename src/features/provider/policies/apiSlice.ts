@@ -19,7 +19,6 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { CUSTOM_POLICY_FIELDS } from '../../../constants/policies';
 import { apiSlice } from '../../app/apiSlice';
 import { setPageLoading } from '../../app/slice';
 import { setPolicyDialog } from './slice';
@@ -105,18 +104,6 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
           url: '/policy-hub/policy-types',
           params,
         };
-      },
-      async transformResponse(res: any) {
-        const modifieldData = await res?.reduce((acc: any, curr: any) => {
-          curr.type.forEach((type: any) => {
-            if (!acc[type]) {
-              acc[type] = {};
-            }
-            acc[type][curr.technicalKey] = { ...curr, value: '' };
-          });
-          return { ...CUSTOM_POLICY_FIELDS, ...acc };
-        }, {});
-        return modifieldData || [];
       },
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {

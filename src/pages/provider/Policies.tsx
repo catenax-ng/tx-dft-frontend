@@ -28,12 +28,11 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import NoDataPlaceholder from '../../components/NoDataPlaceholder';
-import AddEditPolicy from '../../components/policies/AddEditPolicy';
+import AddEditPolicyNew from '../../components/policies/AddEditPolicyNew';
 import { useDeletePolicyMutation, useGetPoliciesQuery } from '../../features/provider/policies/apiSlice';
 import { setPolicyData, setPolicyDialog, setPolicyDialogType } from '../../features/provider/policies/slice';
 import { useAppDispatch } from '../../features/store';
 import { DEFAULT_POLICY_DATA } from '../../utils/constants';
-import PolicyHub from '../PolicyHub';
 
 function Policies() {
   const [page, setPage] = useState<number>(0);
@@ -137,7 +136,6 @@ function Policies() {
             </Button>
           </Grid>
         </Grid>
-        <PolicyHub />
         <Box>
           <Table
             title=""
@@ -172,7 +170,7 @@ function Policies() {
             }}
           />
         </Box>
-        <AddEditPolicy />
+        <AddEditPolicyNew />
       </>
     );
   } else return null;

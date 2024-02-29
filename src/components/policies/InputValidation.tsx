@@ -3,8 +3,6 @@ import { Grid } from '@mui/material';
 import { Button, Input } from 'cx-portal-shared-components';
 import { useState } from 'react';
 
-import { toReadableCapitalizedCase } from '../../utils/utils';
-
 const InputValidation = ({ item, handleChange, type }: any) => {
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState(false);
@@ -30,9 +28,8 @@ const InputValidation = ({ item, handleChange, type }: any) => {
 
   return (
     <Grid container spacing={2} alignItems={'flex-end'}>
-      <Grid item xs={3}>
+      <Grid item xs={4}>
         <Input
-          label={toReadableCapitalizedCase(item.technicalKey)}
           placeholder="Enter a value"
           value={inputValue}
           onChange={e => setInputValue(e.target.value)}
@@ -42,7 +39,7 @@ const InputValidation = ({ item, handleChange, type }: any) => {
       </Grid>
       <Grid item>
         <Button variant="contained" size="small" onClick={handleValidate}>
-          Submit
+          Validate
         </Button>
       </Grid>
       <Grid item>
