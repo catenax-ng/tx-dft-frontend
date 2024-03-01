@@ -5,8 +5,8 @@
 This work is licensed under the [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
 - SPDX-License-Identifier: Apache-2.0
-- SPDX-FileCopyrightText: 2021,2022,2023 T-Systems International GmbH
-- SPDX-FileCopyrightText: 2022,2023 Contributors to the Eclipse Foundation
+- SPDX-FileCopyrightText: 2021,2024 T-Systems International GmbH
+- SPDX-FileCopyrightText: 2022,2024 Contributors to the Eclipse Foundation
 - Source URL: https://github.com/eclipse-tractusx/managed-simple-data-exchanger-frontend
 
 ## Table of contents
@@ -149,7 +149,7 @@ The following table illustrates the stakeholders of SDE and their respective int
 The SDE is divided into two components: Frontend and Backend. The frontend is very minimal with only the basic functionality.<br />
 The backend is implemented in Java to ensure wide adoption following the Clean architecture principles.
 
-<br /><img src="images/solution-strategy.jpeg" height="60%" width="60%" /><br /><br />
+<br /><img src="images/solution-strategy.svg" height="60%" width="60%" /><br /><br />
 
 <br />
 
@@ -162,7 +162,7 @@ Its having 2 components:
 1. Frontend in React;
 2. Backend in Java with SpringBoot;
 
-<br /><br /><img src="images/building-block-view.png" height="60%" width="60%" /><br /><br />
+<br /><br /><img src="images/building-block-view.svg" height="60%" width="60%" /><br /><br />
 
 | SubSystem     	| Short description                                                                                               	 |
 |---------------	|-------------------------------------------------------------------------------------------------------------------|
@@ -189,7 +189,7 @@ Detailed API specs available under:
 
 [https://github.com/catenax-ng/tx-managed-simple-data-exchanger-backend/tree/main#restful-apis-of-dft-simple-data-exchanger](https://github.com/catenax-ng/tx-managed-simple-data-exchanger-backend/tree/main#restful-apis-of-dft-simple-data-exchanger)
 
-Backend API Swagger-ui : [https://dft-api.int.demo.catena-x.net/api/swagger-ui/index.html](https://dft-api.int.demo.catena-x.net/api/swagger-ui/index.html)
+Backend API Swagger-ui EX: [https://domain_url/api/swagger-ui/index.html](https://domain_url/api/swagger-ui/index.html)
 
 <br />
 
@@ -197,7 +197,7 @@ Backend API Swagger-ui : [https://dft-api.int.demo.catena-x.net/api/swagger-ui/i
 
 #### **Serial Part**
 
-<br /><br /><img src="images/serial_part_typization_dft_data_pipeline.png" height="60%" width="60%" /><br /><br />
+<br /><br /><img src="images/serial_part_typization_dft_data_pipeline.svg" height="60%" width="60%" /><br /><br />
 
 | Module               	| Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             	| Execution order 	|
 |----------------------	|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|-----------------	|
@@ -214,7 +214,7 @@ Backend API Swagger-ui : [https://dft-api.int.demo.catena-x.net/api/swagger-ui/i
 
 #### **Single Level BoM As Built**
 
-<br /><br /><img src="images/aspect_relationship_dft_data_pipeline.png" height="60%" width="60%" /><br /><br />
+<br /><br /><img src="images/aspect_relationship_dft_data_pipeline.svg" height="60%" width="60%" /><br /><br />
 
 | Module                           	| Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      	| Execution order 	|
 |----------------------------------	|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|-----------------	|
@@ -231,7 +231,7 @@ Backend API Swagger-ui : [https://dft-api.int.demo.catena-x.net/api/swagger-ui/i
 
 #### **Batch**
 
-<br /><br /><img src="images/batch_dft_data_pipeline.png" height="60%" width="60%" /><br /><br />
+<br /><br /><img src="images/batch_dft_data_pipeline.svg" height="60%" width="60%" /><br /><br />
 
 | Module              	| Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        	| Execution order 	|
 |---------------------	|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|-----------------	|
@@ -248,7 +248,7 @@ Backend API Swagger-ui : [https://dft-api.int.demo.catena-x.net/api/swagger-ui/i
 
 #### **BoM As-Planned - PartAsPlanned**
 
-<br /><br /><img src="images/part_as_planned.png" height="60%" width="60%" /><br /><br />
+<br /><br /><img src="images/part_as_planned.svg" height="60%" width="60%" /><br /><br />
 
 | Module                      	| Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            	| Execution order 	|
 |-----------------------------	|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|-----------------	|
@@ -262,7 +262,7 @@ Backend API Swagger-ui : [https://dft-api.int.demo.catena-x.net/api/swagger-ui/i
 <br />
 
 #### **BoM As-Planned - SingleLevelBoMAsPlanned**
-<br /><br /><img src="images/single_level_bom_as_planned.png" height="60%" width="60%" /><br /><br />
+<br /><br /><img src="images/single_level_bom_as_planned.svg" height="60%" width="60%" /><br /><br />
 
 | Module                                	| Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    	| Execution order 	|
 |---------------------------------------	|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|-----------------	|
@@ -276,7 +276,7 @@ Backend API Swagger-ui : [https://dft-api.int.demo.catena-x.net/api/swagger-ui/i
 <br />
 
 #### **BoM As-Planned - PartSiteInformationAsPlanned**
-<br /><br /><img src="images/part_site_information_as_planned.png" height="60%" width="60%" /><br /><br />
+<br /><br /><img src="images/part_site_information_as_planned.svg" height="60%" width="60%" /><br /><br />
 
 | Module                                     	| Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         	| Execution order 	|
 |--------------------------------------------	|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|-----------------	|
@@ -290,7 +290,7 @@ Backend API Swagger-ui : [https://dft-api.int.demo.catena-x.net/api/swagger-ui/i
 <br />
 
 #### **BoM As-Built - SingleLevelUsageAsBuilt**
-<br /><br /><img src="images/single_level_usage_as_built.png" height="60%" width="60%" /><br /><br />
+<br /><br /><img src="images/single_level_usage_as_built.svg" height="60%" width="60%" /><br /><br />
 
 | Module                                     	      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         	                                                                                                            | Execution order 	|
 |---------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------	|
@@ -304,7 +304,7 @@ Backend API Swagger-ui : [https://dft-api.int.demo.catena-x.net/api/swagger-ui/i
 <br />
 
 #### **PCF - Product Carbon Footprint**
-<br /><br /><img src="images/product_carbon_footprint.png" height="60%" width="60%" /><br /><br />
+<br /><br /><img src="images/product_carbon_footprint.svg" height="60%" width="60%" /><br /><br />
 
 | Module                                     	 | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         	  | Execution order 	 |
 |----------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
@@ -373,8 +373,8 @@ In deployment we are using [ArgoCD](https://argo-cd.readthedocs.io/en/stable/) a
 
 We have 2 applications on ArgoCD , one for frontend and one for backend. Both applications have auto-sync enabled.
 
-<img src="images/argocd-apps.png" height="60%" width="60%" /><br />
-<img src="images/argocd-sync-policy.png" height="30%" width="50%" /><br /><br />
+<img src="images/argocd-apps.svg" height="60%" width="60%" /><br />
+<img src="images/argocd-sync-policy.svg" height="30%" width="50%" /><br /><br />
 
 <br />
 
