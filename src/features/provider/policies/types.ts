@@ -35,14 +35,3 @@ export interface PolicyHubResponse {
   technicalEnforced: boolean;
   value: string;
 }
-export interface IPolicyHubResponse {
-  [key: string]: {
-    technicalKey: string;
-    type: string[];
-    description?: string;
-    useCase: string[];
-    attribute: { key: string; value: string }[];
-    technicalEnforced: boolean;
-    value: string;
-  };
-}

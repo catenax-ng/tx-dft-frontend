@@ -2,23 +2,23 @@
 import InfoIcon from '@mui/icons-material/Info';
 import { Box, Button, Divider, FormControl, FormLabel } from '@mui/material';
 import { Input, SelectList, Tooltips, Typography } from 'cx-portal-shared-components';
-import { isEmpty } from 'lodash';
+import { isArray, isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { SELECT_POLICY_TYPES } from '../constants/policies';
+import { ADD_POLICY_DIALOG_TYPES, SELECT_POLICY_TYPES } from '../constants/policies';
 import { useGetPolicyTemplateQuery } from '../features/provider/policies/apiSlice';
-import { setPolicyDialog, setPolicyName } from '../features/provider/policies/slice';
+import { setPolicyDialog } from '../features/provider/policies/slice';
 import { useAppDispatch, useAppSelector } from '../features/store';
-import { AddPolicyModel } from '../models/Polices.models';
+import { PolicyHubModel } from '../models/Polices.models';
 import { ALPHA_NUM_REGEX } from '../utils/constants';
 import { toReadableCapitalizedCase } from '../utils/utils';
 
 const PolicyHub = ({ onSubmit }: any) => {
   const { t } = useTranslation();
   const { selectedUseCases, useCaseNames } = useAppSelector(state => state.appSlice);
-  const { policyDialogType, policyName } = useAppSelector(state => state.policySlice);
+  const { policyDialogType } = useAppSelector(state => state.policySlice);
   const { data, isSuccess } = useGetPolicyTemplateQuery({
     useCases: useCaseNames,
   });
@@ -27,35 +27,40 @@ const PolicyHub = ({ onSubmit }: any) => {
   const { control } = useForm();
   const showPolicyName = policyDialogType === 'Add' || policyDialogType === 'Edit';
   const dispatch = useAppDispatch();
-  const addPolicyTypes = ['Add', 'FileWithPolicy'].includes(policyDialogType);
+
+  const dialogTypeCheck = ADD_POLICY_DIALOG_TYPES.includes(policyDialogType);
 
   useEffect(() => {
     if (isSuccess) {
-      if (isEmpty(selectedUseCases) && addPolicyTypes) {
-        setFormData(AddPolicyModel.convert(data));
-      } else if (!isEmpty(selectedUseCases) && addPolicyTypes) {
-        setFormData(AddPolicyModel.usecaseFilter(data, selectedUseCases));
+      if (isEmpty(selectedUseCases) && dialogTypeCheck) {
+        setFormData(PolicyHubModel.convert(data));
+      } else if (!isEmpty(selectedUseCases) && dialogTypeCheck) {
+        setFormData(PolicyHubModel.usecaseFilter(data, selectedUseCases));
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, isSuccess, selectedUseCases]);
 
-  useEffect(() => {
-    dispatch(setPolicyName(''));
-  }, [dispatch]);
-
-  const handleChange = (e: any, type: any, key: any) => {
-    setFormData((prev: any) => ({
-      ...prev,
-      [type]: {
-        ...prev[type],
-        [key]: {
-          ...prev[type][key],
-          value: e || '',
-        },
-      },
-    }));
+  const handleChange = (e: any, type: string, key: string) => {
+    setFormData((prev: any) => {
+      const updatedFormData = { ...prev };
+      const policies = updatedFormData[type];
+      // if its a valid policy not a custom values
+      if (isArray(policies)) {
+        // Find the object in the policies array with the given technicalKey
+        const policyToUpdate = policies.find((policy: any) => policy.technicalKey === key);
+        // If the policyToUpdate is found, update its value
+        if (policyToUpdate) {
+          policyToUpdate.value = e || '';
+        }
+      } else {
+        updatedFormData[key] = e || '';
+      }
+      return updatedFormData;
+    });
   };
 
+  
   const handleItems = (items: any) =>
     items.attribute.map((el: any, index: number) => {
       return { index, ...el };
@@ -91,7 +96,7 @@ const PolicyHub = ({ onSubmit }: any) => {
               <Input
                 placeholder="Enter a value"
                 value={item.value}
-                onChange={e => handleChange(e.target.value, type, key)}
+                onChange={e => handleChange(e.target.value, type, item.technicalKey)}
                 helperText="Invalid input"
               />
             )}
@@ -116,7 +121,7 @@ const PolicyHub = ({ onSubmit }: any) => {
                 type={'text'}
                 error={!!error}
                 disableClearable={false}
-                onChangeItem={e => handleChange(e, type, key)}
+                onChangeItem={e => handleChange(e, type, item.technicalKey)}
               />
             )}
           />
@@ -133,7 +138,7 @@ const PolicyHub = ({ onSubmit }: any) => {
         {showPolicyName && (
           <FormControl sx={{ mb: 3, width: 300 }}>
             <Input
-              value={policyName}
+              value={formData.policy_name}
               variant="filled"
               label={'Policy name'}
               placeholder={'Enter policy name'}
@@ -143,35 +148,39 @@ const PolicyHub = ({ onSubmit }: any) => {
                 const { value } = e.target;
                 if (ALPHA_NUM_REGEX.test(value) || value === '') {
                   setNameError(false);
-                  dispatch(setPolicyName(e.target.value));
+                  handleChange(value, 'policy_name', 'policy_name');
                 }
               }}
             />
           </FormControl>
         )}
-        {Object.keys(formData)?.map(type => (
-          <div key={type}>
-            <Typography variant="body2" fontWeight={'bold'}>
-              {type}
-            </Typography>
-            <Divider sx={{ mb: 2 }} />
-            {Object.keys(formData[type]).map(key => {
-              const item = formData[type][key];
-              return <div key={key}>{renderFormField(item, type, key)}</div>;
-            })}
-          </div>
-        ))}
+        {Object.keys(formData)?.map(type => {
+          if (isArray(formData[type])) {
+            return (
+              <div key={type}>
+                <Typography variant="body2" fontWeight={'bold'}>
+                  {type}
+                </Typography>
+                <Divider sx={{ mb: 2 }} />
+                {Object.keys(formData[type]).map(key => {
+                  const item = formData[type][key];
+                  return <div key={key}>{renderFormField(item, type, key)}</div>;
+                })}
+              </div>
+            );
+          } else return null;
+        })}
         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', my: 1 }}>
           <Button
             variant="contained"
             color="primary"
             onClick={() => {
-              if (showPolicyName && isEmpty(policyName)) {
+              if (showPolicyName && isEmpty(formData.policy_name)) {
                 setNameError(true);
                 return;
               }
               setNameError(false);
-              onSubmit(formData);
+              onSubmit(PolicyHubModel.preparePayload(formData));
             }}
           >
             {t('button.submit')}

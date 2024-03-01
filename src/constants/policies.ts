@@ -1,6 +1,14 @@
+import { IDefaultObject } from '../models/Common';
 import { ALPHA_NUM_REGEX } from '../utils/constants';
 
 const SELECT_POLICY_TYPES = ['Brands', 'Version', 'Static'];
+
+const ADD_POLICY_DIALOG_TYPES = ['Add', 'FileWithPolicy'];
+
+const POLICY_TYPES: IDefaultObject = {
+  Access: 'access_policies',
+  Usage: 'usage_policies',
+};
 
 const CUSTOM_POLICY_FIELDS = {
   BasicDetails: [
@@ -19,8 +27,8 @@ const CUSTOM_POLICY_FIELDS = {
 };
 
 const EDIT_SAMPLE_DATA = {
-  policyName: '',
-  Access: [
+  policyName: 'Hey there',
+  access_policies: [
     {
       technicalKey: 'BusinessPartnerNumber',
       type: ['Access', 'Usage'],
@@ -29,6 +37,7 @@ const EDIT_SAMPLE_DATA = {
       useCase: ['Traceability', 'Quality', 'PCF', 'Behavioraltwin', 'Sustainability'],
       attribute: [
         {
+          index: 0,
           key: 'Regex',
           value: '^BPNL[\\w|\\d]{12}$',
         },
@@ -44,16 +53,13 @@ const EDIT_SAMPLE_DATA = {
       useCase: ['Traceability', 'Quality', 'PCF', 'Behavioraltwin', 'Sustainability'],
       attribute: [
         {
+          index: 0,
           key: 'Static',
           value: 'active',
         },
       ],
       technicalEnforced: true,
-      value: {
-        index: 0,
-        key: 'Static',
-        value: 'active',
-      },
+      value: '',
     },
     {
       technicalKey: 'companyRole.dismantler',
@@ -63,28 +69,27 @@ const EDIT_SAMPLE_DATA = {
       useCase: ['Traceability', 'Quality', 'PCF', 'Behavioraltwin', 'Sustainability'],
       attribute: [
         {
+          index: 0,
           key: 'Brands',
           value: 'VW',
         },
         {
+          index: 1,
           key: 'Brands',
           value: 'BMW',
         },
         {
+          index: 2,
           key: 'Brands',
           value: 'Audi',
         },
       ],
       technicalEnforced: true,
-      value: {
-        index: 2,
-        key: 'Brands',
-        value: 'Audi',
-      },
+      value: '',
     },
   ],
-  Usage: {
-    BusinessPartnerNumber: {
+  usage_policies: [
+    {
       technicalKey: 'BusinessPartnerNumber',
       type: ['Access', 'Usage'],
       description:
@@ -92,14 +97,15 @@ const EDIT_SAMPLE_DATA = {
       useCase: ['Traceability', 'Quality', 'PCF', 'Behavioraltwin', 'Sustainability'],
       attribute: [
         {
+          index: 0,
           key: 'Regex',
           value: '^BPNL[\\w|\\d]{12}$',
         },
       ],
       technicalEnforced: true,
-      value: 'BPNL001000TS0100',
+      value: '',
     },
-    Membership: {
+    {
       technicalKey: 'Membership',
       type: ['Access', 'Usage'],
       description:
@@ -107,18 +113,15 @@ const EDIT_SAMPLE_DATA = {
       useCase: ['Traceability', 'Quality', 'PCF', 'Behavioraltwin', 'Sustainability'],
       attribute: [
         {
+          index: 0,
           key: 'Static',
           value: 'active',
         },
       ],
       technicalEnforced: true,
-      value: {
-        index: 0,
-        key: 'Static',
-        value: 'active',
-      },
+      value: '',
     },
-    'FrameworkAgreement.traceability': {
+    {
       technicalKey: 'FrameworkAgreement.traceability',
       type: ['Usage'],
       description:
@@ -126,26 +129,25 @@ const EDIT_SAMPLE_DATA = {
       useCase: ['Traceability'],
       attribute: [
         {
+          index: 0,
           key: 'Version',
           value: '1.0',
         },
         {
+          index: 1,
           key: 'Version',
           value: '1.1',
         },
         {
+          index: 2,
           key: 'Version',
           value: '1.2',
         },
       ],
       technicalEnforced: true,
-      value: {
-        index: 2,
-        key: 'Version',
-        value: '1.2',
-      },
+      value: '',
     },
-    'FrameworkAgreement.quality': {
+    {
       technicalKey: 'FrameworkAgreement.quality',
       type: ['Usage'],
       description:
@@ -153,18 +155,15 @@ const EDIT_SAMPLE_DATA = {
       useCase: ['Quality'],
       attribute: [
         {
+          index: 0,
           key: 'Version',
           value: '1.0',
         },
       ],
       technicalEnforced: true,
-      value: {
-        index: 0,
-        key: 'Version',
-        value: '1.0',
-      },
+      value: '',
     },
-    'FrameworkAgreement.pcf': {
+    {
       technicalKey: 'FrameworkAgreement.pcf',
       type: ['Usage'],
       description:
@@ -172,18 +171,15 @@ const EDIT_SAMPLE_DATA = {
       useCase: ['PCF'],
       attribute: [
         {
+          index: 0,
           key: 'Version',
           value: '1.0',
         },
       ],
       technicalEnforced: true,
-      value: {
-        index: 0,
-        key: 'Version',
-        value: '1.0',
-      },
+      value: '',
     },
-    'FrameworkAgreement.behavioraltwin': {
+    {
       technicalKey: 'FrameworkAgreement.behavioraltwin',
       type: ['Usage'],
       description:
@@ -191,18 +187,15 @@ const EDIT_SAMPLE_DATA = {
       useCase: ['Behavioraltwin'],
       attribute: [
         {
+          index: 0,
           key: 'Version',
           value: '1.0',
         },
       ],
       technicalEnforced: true,
-      value: {
-        index: 0,
-        key: 'Version',
-        value: '1.0',
-      },
+      value: '',
     },
-    'purpose.trace.v1.TraceBattery': {
+    {
       technicalKey: 'purpose.trace.v1.TraceBattery',
       type: ['Usage'],
       description:
@@ -210,18 +203,15 @@ const EDIT_SAMPLE_DATA = {
       useCase: ['Traceability'],
       attribute: [
         {
+          index: 0,
           key: 'Static',
           value: 'purpose.trace.v1.TraceBattery',
         },
       ],
       technicalEnforced: false,
-      value: {
-        index: 0,
-        key: 'Static',
-        value: 'purpose.trace.v1.TraceBattery',
-      },
+      value: '',
     },
-    'purpose.trace.v1.aspects': {
+    {
       technicalKey: 'purpose.trace.v1.aspects',
       type: ['Usage'],
       description:
@@ -229,6 +219,7 @@ const EDIT_SAMPLE_DATA = {
       useCase: ['Traceability'],
       attribute: [
         {
+          index: 0,
           key: 'Static',
           value: 'purpose.trace.v1.aspects',
         },
@@ -236,7 +227,7 @@ const EDIT_SAMPLE_DATA = {
       technicalEnforced: false,
       value: '',
     },
-    'purpose.trace.v1.qualityanalysis': {
+    {
       technicalKey: 'purpose.trace.v1.qualityanalysis',
       type: ['Usage'],
       description:
@@ -244,18 +235,15 @@ const EDIT_SAMPLE_DATA = {
       useCase: ['Traceability'],
       attribute: [
         {
+          index: 0,
           key: 'Static',
           value: 'purpose.trace.v1.qualityanalysis',
         },
       ],
       technicalEnforced: false,
-      value: {
-        index: 0,
-        key: 'Static',
-        value: 'purpose.trace.v1.qualityanalysis',
-      },
+      value: '',
     },
-    'companyRole.dismantler': {
+    {
       technicalKey: 'companyRole.dismantler',
       type: ['Access', 'Usage'],
       description:
@@ -263,44 +251,40 @@ const EDIT_SAMPLE_DATA = {
       useCase: ['Traceability', 'Quality', 'PCF', 'Behavioraltwin', 'Sustainability'],
       attribute: [
         {
+          index: 0,
           key: 'Brands',
           value: 'VW',
         },
         {
+          index: 1,
           key: 'Brands',
           value: 'BMW',
         },
         {
+          index: 2,
           key: 'Brands',
           value: 'Audi',
         },
       ],
       technicalEnforced: true,
-      value: {
-        index: 1,
-        key: 'Brands',
-        value: 'BMW',
-      },
+      value: '',
     },
-    purpose: {
+    {
       technicalKey: 'purpose',
       type: ['Usage'],
       description: '',
       useCase: ['Traceability'],
       attribute: [
         {
+          index: 0,
           key: 'Static',
           value: 'ID Trace 3.1',
         },
       ],
       technicalEnforced: false,
-      value: {
-        index: 0,
-        key: 'Static',
-        value: 'ID Trace 3.1',
-      },
+      value: '',
     },
-  },
+  ],
 };
 
-export { CUSTOM_POLICY_FIELDS, EDIT_SAMPLE_DATA, SELECT_POLICY_TYPES };
+export { ADD_POLICY_DIALOG_TYPES, CUSTOM_POLICY_FIELDS, EDIT_SAMPLE_DATA, POLICY_TYPES, SELECT_POLICY_TYPES };

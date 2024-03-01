@@ -19,6 +19,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { setLoadingHandler } from '../../../helpers/ApiHelper';
 import { apiSlice } from '../../app/apiSlice';
 import { setPageLoading } from '../../app/slice';
 import { setPolicyDialog } from './slice';
@@ -33,6 +34,7 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
         };
       },
       providesTags: ['Policies'],
+      onQueryStarted: setLoadingHandler,
     }),
     createPolicy: builder.mutation({
       query: body => {
@@ -105,14 +107,7 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
           params,
         };
       },
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          dispatch(setPageLoading(true));
-          await queryFulfilled;
-        } finally {
-          dispatch(setPageLoading(false));
-        }
-      },
+      onQueryStarted: setLoadingHandler,
     }),
   }),
 });
