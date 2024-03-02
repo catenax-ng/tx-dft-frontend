@@ -4,7 +4,6 @@ import { Box, Button, Divider, FormControl, FormLabel } from '@mui/material';
 import { Input, SelectList, Tooltips, Typography } from 'cx-portal-shared-components';
 import { isArray, isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { ADD_POLICY_DIALOG_TYPES, SELECT_POLICY_TYPES } from '../constants/policies';
@@ -18,14 +17,14 @@ import { toReadableCapitalizedCase } from '../utils/utils';
 const PolicyHub = ({ onSubmit }: any) => {
   const { t } = useTranslation();
   const { selectedUseCases, useCaseNames } = useAppSelector(state => state.appSlice);
-  const { policyDialogType } = useAppSelector(state => state.policySlice);
+  const { policyDialogType, policyData } = useAppSelector(state => state.policySlice);
   const { data, isSuccess } = useGetPolicyTemplateQuery({
     useCases: useCaseNames,
   });
   const [formData, setFormData] = useState<any>({});
   const [nameError, setNameError] = useState(false);
-  const { control } = useForm();
   const showPolicyName = policyDialogType === 'Add' || policyDialogType === 'Edit';
+  const isEditPolicy = policyDialogType === 'Edit';
   const dispatch = useAppDispatch();
 
   const dialogTypeCheck = ADD_POLICY_DIALOG_TYPES.includes(policyDialogType);
@@ -36,6 +35,8 @@ const PolicyHub = ({ onSubmit }: any) => {
         setFormData(PolicyHubModel.convert(data));
       } else if (!isEmpty(selectedUseCases) && dialogTypeCheck) {
         setFormData(PolicyHubModel.usecaseFilter(data, selectedUseCases));
+      } else if (isEditPolicy) {
+        setFormData(PolicyHubModel.prepareEditData(policyData, data));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,13 +61,7 @@ const PolicyHub = ({ onSubmit }: any) => {
     });
   };
 
-  
-  const handleItems = (items: any) =>
-    items.attribute.map((el: any, index: number) => {
-      return { index, ...el };
-    });
-
-  const renderFormField = (item: any, type: any, key: any) => {
+  const renderFormField = (item: any, type: any) => {
     const firstAttribute = item?.attribute[0];
     if (!firstAttribute) return null;
 
@@ -89,17 +84,11 @@ const PolicyHub = ({ onSubmit }: any) => {
       return (
         <FormControl fullWidth sx={{ mb: 3, width: 300, '& .MuiBox-root': { marginTop: 0 } }}>
           <FormLabel>{formLabel}</FormLabel>
-          <Controller
-            name={formData[type][key].value}
-            control={control}
-            render={() => (
-              <Input
-                placeholder="Enter a value"
-                value={item.value}
-                onChange={e => handleChange(e.target.value, type, item.technicalKey)}
-                helperText="Invalid input"
-              />
-            )}
+          <Input
+            placeholder="Enter a value"
+            value={item.value}
+            onChange={e => handleChange(e.target.value, type, item.technicalKey)}
+            helperText="Invalid input"
           />
         </FormControl>
       );
@@ -107,23 +96,16 @@ const PolicyHub = ({ onSubmit }: any) => {
       return (
         <FormControl fullWidth sx={{ mb: 3, width: 300, '& .MuiBox-root': { marginTop: 0 } }}>
           <FormLabel>{formLabel}</FormLabel>
-          <Controller
-            name={formData[type][key].technicalKey}
-            control={control}
-            render={({ fieldState: { error } }) => (
-              <SelectList
-                keyTitle="value"
-                defaultValue={item.value}
-                items={handleItems(item)}
-                variant="filled"
-                label={''}
-                placeholder="Select a value"
-                type={'text'}
-                error={!!error}
-                disableClearable={false}
-                onChangeItem={e => handleChange(e, type, item.technicalKey)}
-              />
-            )}
+          <SelectList
+            keyTitle="value"
+            defaultValue={item.value}
+            items={item.attribute}
+            variant="filled"
+            label={''}
+            placeholder="Select a value"
+            type={'text'}
+            disableClearable={false}
+            onChangeItem={e => handleChange(e, type, item.technicalKey)}
           />
         </FormControl>
       );
@@ -164,7 +146,7 @@ const PolicyHub = ({ onSubmit }: any) => {
                 <Divider sx={{ mb: 2 }} />
                 {Object.keys(formData[type]).map(key => {
                   const item = formData[type][key];
-                  return <div key={key}>{renderFormField(item, type, key)}</div>;
+                  return <div key={type + item.technicalKey}>{renderFormField(item, type)}</div>;
                 })}
               </div>
             );

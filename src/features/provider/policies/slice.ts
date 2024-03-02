@@ -36,7 +36,7 @@ export const policySlice = createSlice({
   initialState,
   reducers: {
     setPolicyData: (state, action: PayloadAction<PolicyModel>) => {
-      state.policyData = new PolicyModel(action.payload);
+      state.policyData = action.payload;
     },
     setPolicyDialog: (state, action: PayloadAction<boolean>) => {
       state.policyDialog = action.payload;

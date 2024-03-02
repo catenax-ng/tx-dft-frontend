@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { capitalize } from 'lodash';
+import { capitalize, find, isObject, merge } from 'lodash';
 
 import { POLICY_TYPES } from '../constants/policies';
 import { PolicyHubResponse } from '../features/provider/policies/types';
@@ -40,13 +40,49 @@ export class PolicyHubModel {
       if (Array.isArray(policyType)) {
         payload[type] = policyType.map((policy: any) => ({
           ...policy,
-          value: [policy.value.value || ''],
+          value: [isObject(policy.value) ? policy.value.value : policy.value],
         }));
       } else {
         payload[type] = policyType;
       }
     }
-
     return payload;
+  }
+
+  static prepareEditData(targetObject: any, baseData: any) {
+    const sourceObject = PolicyHubModel.convert(baseData);
+    const targetClone = { ...targetObject };
+
+    const handleFieldValues = (policies: any) => {
+      return policies.map((policy: any) => ({
+        ...policy,
+        value: find(policy.attribute, { value: policy.value[0] }) || policy.value[0],
+      }));
+    };
+
+    const accessPoliciesSet = new Set(targetClone.access_policies.map((policy: any) => policy.technicalKey));
+    const usagePoliciesSet = new Set(targetClone.usage_policies.map((policy: any) => policy.technicalKey));
+
+    const accessPolices: any = sourceObject.access_policies
+      .filter((policy: any) => accessPoliciesSet.has(policy.technicalKey))
+      .map((policy: any) => ({
+        ...policy,
+        value: find(policy.attribute, { value: policy.value[0] }) || policy.value[0],
+      }));
+
+    const usagePolicies: any = sourceObject.usage_policies
+      .filter((policy: any) => usagePoliciesSet.has(policy.technicalKey))
+      .map((policy: any) => ({
+        ...policy,
+        value: find(policy.attribute, { value: policy.value[0] }) || policy.value[0],
+      }));
+
+    const mergedObject: any = merge({ access_policies: accessPolices, usage_policies: usagePolicies }, targetClone);
+    const finalObject = {
+      ...mergedObject,
+      access_policies: handleFieldValues(mergedObject.access_policies),
+      usage_policies: handleFieldValues(mergedObject.usage_policies),
+    };
+    return finalObject;
   }
 }
