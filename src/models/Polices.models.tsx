@@ -2,7 +2,6 @@
 
 import { capitalize, find, isEmpty, isObject, merge } from 'lodash';
 
-import { POLICY_TYPES } from '../constants/policies';
 import { PolicyHubResponse } from '../features/provider/policies/types';
 
 export class PolicyHubModel {
@@ -10,11 +9,10 @@ export class PolicyHubModel {
     const fullPolicyData: any = {};
     jsonData.forEach(obj => {
       obj.type.forEach(type => {
-        const newType = POLICY_TYPES[type];
-        if (!fullPolicyData[newType]) {
-          fullPolicyData[newType] = [];
+        if (!fullPolicyData[type]) {
+          fullPolicyData[type] = [];
         }
-        fullPolicyData[newType].push({
+        fullPolicyData[type].push({
           ...obj,
           value: '',
           attribute: obj.attribute.map((el: any, index: number) => {
