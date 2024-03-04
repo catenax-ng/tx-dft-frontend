@@ -26,7 +26,6 @@ import OffersDownloadHistory from '../pages/consumer/OffersDownloadHistory';
 import Home from '../pages/Home';
 import Logout from '../pages/Logout';
 import PageNotFound from '../pages/PageNotFound';
-import PolicyHub from '../pages/PolicyHub';
 import CreateData from '../pages/provider/CreateData';
 import Help from '../pages/provider/Help';
 import Policies from '../pages/provider/Policies';
@@ -43,10 +42,6 @@ export interface IRoutes {
 }
 export const ROUTES: IRoutes[] = [
   // Common routes
-  {
-    path: '/policy-hub',
-    element: <PolicyHub />,
-  },
   {
     path: '/',
     element: <Home />,

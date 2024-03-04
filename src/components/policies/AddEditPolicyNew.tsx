@@ -39,7 +39,6 @@ function AddEditPolicyNew() {
 
   // eslint-disable-next-line no-unused-vars
   const onSubmit = async (payload: any) => {
-    console.log(payload);
     try {
       switch (policyDialogType) {
         case 'Add':
