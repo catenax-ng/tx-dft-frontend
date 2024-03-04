@@ -12,7 +12,7 @@ import { setPolicyDialog } from '../features/provider/policies/slice';
 import { useAppDispatch, useAppSelector } from '../features/store';
 import { PolicyHubModel } from '../models/Polices.models';
 import { ALPHA_NUM_REGEX } from '../utils/constants';
-import { toReadableCapitalizedCase } from '../utils/utils';
+import { removeUnderscore, toReadableCapitalizedCase } from '../utils/utils';
 
 const PolicyHub = ({ onSubmit }: any) => {
   const { t } = useTranslation();
@@ -87,7 +87,12 @@ const PolicyHub = ({ onSubmit }: any) => {
           <Input
             placeholder="Enter a value"
             value={item.value}
-            onChange={e => handleChange(e.target.value, type, item.technicalKey)}
+            onChange={e => {
+              const { value } = e.target;
+              if (ALPHA_NUM_REGEX.test(value) || value === '') {
+                handleChange(e.target.value, type, item.technicalKey);
+              }
+            }}
             helperText="Invalid input"
           />
         </FormControl>
@@ -140,8 +145,8 @@ const PolicyHub = ({ onSubmit }: any) => {
           if (isArray(formData[type])) {
             return (
               <div key={type}>
-                <Typography variant="body2" fontWeight={'bold'}>
-                  {type}
+                <Typography variant="body2" fontWeight={'bold'} textTransform={'capitalize'}>
+                  {removeUnderscore(type)}
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
                 {Object.keys(formData[type]).map(key => {

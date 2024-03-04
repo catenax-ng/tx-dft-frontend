@@ -60,3 +60,5 @@ export const toReadableCapitalizedCase = (input: string): string => {
   const parts = input.replace(/\./g, ' ').split(' ');
   return parts.map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
 };
+
+export const removeUnderscore = (input: string) => input.split('_').join(' ');
