@@ -24,6 +24,8 @@ import { Typography } from 'cx-portal-shared-components';
 import { isEmpty } from 'lodash';
 import { Key } from 'react';
 
+import { toReadableCapitalizedCase } from '../../utils/utils';
+
 function UsagePolicies({ usagePolicies }: any) {
   return (
     <>
@@ -31,7 +33,7 @@ function UsagePolicies({ usagePolicies }: any) {
         usagePolicies.map((policy: any, index: Key) => (
           <Grid item xs={6} sx={{ mb: 1 }} key={index}>
             <Typography variant="body2">
-              <b>{policy.technicalKey} :</b> {policy.value[0]}
+              <b>{toReadableCapitalizedCase(policy.technicalKey)} :</b> {policy.value[0]}
             </Typography>
           </Grid>
         ))
