@@ -2,7 +2,6 @@
 
 import { capitalize, find, isObject, merge } from 'lodash';
 
-import { POLICY_TYPES } from '../constants/policies';
 import { PolicyHubResponse } from '../features/provider/policies/types';
 
 export class PolicyHubModel {
@@ -10,11 +9,10 @@ export class PolicyHubModel {
     const fullPolicyData: any = {};
     jsonData.forEach(obj => {
       obj.type.forEach(type => {
-        const newType = POLICY_TYPES[type];
-        if (!fullPolicyData[newType]) {
-          fullPolicyData[newType] = [];
+        if (!fullPolicyData[type]) {
+          fullPolicyData[type] = [];
         }
-        fullPolicyData[newType].push({
+        fullPolicyData[type].push({
           ...obj,
           value: '',
           attribute: obj.attribute.map((el: any, index: number) => {
@@ -53,36 +51,25 @@ export class PolicyHubModel {
     const sourceObject = PolicyHubModel.convert(baseData);
     const targetClone = { ...targetObject };
 
-    const handleFieldValues = (policies: any) => {
-      return policies.map((policy: any) => ({
+    const handleFieldValues = (policies: any[]) => {
+      return policies.map((policy: PolicyHubResponse) => ({
         ...policy,
         value: find(policy.attribute, { value: policy.value[0] }) || policy.value[0],
       }));
     };
 
-    const accessPoliciesSet = new Set(targetClone.access_policies.map((policy: any) => policy.technicalKey));
-    const usagePoliciesSet = new Set(targetClone.usage_policies.map((policy: any) => policy.technicalKey));
-
-    const accessPolices: any = sourceObject.access_policies
-      .filter((policy: any) => accessPoliciesSet.has(policy.technicalKey))
-      .map((policy: any) => ({
-        ...policy,
-        value: find(policy.attribute, { value: policy.value[0] }) || policy.value[0],
-      }));
-
-    const usagePolicies: any = sourceObject.usage_policies
-      .filter((policy: any) => usagePoliciesSet.has(policy.technicalKey))
-      .map((policy: any) => ({
-        ...policy,
-        value: find(policy.attribute, { value: policy.value[0] }) || policy.value[0],
-      }));
-
-    const mergedObject: any = merge({ access_policies: accessPolices, usage_policies: usagePolicies }, targetClone);
-    const finalObject = {
-      ...mergedObject,
-      access_policies: handleFieldValues(mergedObject.access_policies),
-      usage_policies: handleFieldValues(mergedObject.usage_policies),
-    };
-    return finalObject;
+    for (const fieldName in targetClone) {
+      if (Array.isArray(targetClone[fieldName])) {
+        // Assuming technicalKey is the common field in all policies
+        const technicalKeyField = 'technicalKey';
+        const policySet = new Set(targetClone[fieldName].map((policy: PolicyHubResponse) => policy[technicalKeyField]));
+        const filteredPolicies: PolicyHubResponse[] = sourceObject[fieldName].filter((policy: PolicyHubResponse) =>
+          policySet.has(policy[technicalKeyField]),
+        );
+        const mergedPolicies = merge(filteredPolicies, targetClone[fieldName]);
+        targetClone[fieldName] = handleFieldValues(mergedPolicies);
+      }
+    }
+    return targetClone;
   }
 }

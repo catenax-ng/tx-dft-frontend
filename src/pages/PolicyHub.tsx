@@ -12,7 +12,7 @@ import { setPolicyDialog } from '../features/provider/policies/slice';
 import { useAppDispatch, useAppSelector } from '../features/store';
 import { PolicyHubModel } from '../models/Polices.models';
 import { ALPHA_NUM_REGEX } from '../utils/constants';
-import { removeUnderscore, toReadableCapitalizedCase } from '../utils/utils';
+import { toReadableCapitalizedCase } from '../utils/utils';
 
 const PolicyHub = ({ onSubmit }: any) => {
   const { t } = useTranslation();
@@ -146,7 +146,7 @@ const PolicyHub = ({ onSubmit }: any) => {
             return (
               <div key={type}>
                 <Typography variant="body2" fontWeight={'bold'} textTransform={'capitalize'}>
-                  {removeUnderscore(type)}
+                  {type}
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
                 {Object.keys(formData[type]).map(key => {
