@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { capitalize, find, isObject, merge } from 'lodash';
+import { capitalize, find, isEmpty, isObject, merge } from 'lodash';
 
+import { POLICY_TYPES } from '../constants/policies';
 import { PolicyHubResponse } from '../features/provider/policies/types';
 
 export class PolicyHubModel {
@@ -9,10 +10,11 @@ export class PolicyHubModel {
     const fullPolicyData: any = {};
     jsonData.forEach(obj => {
       obj.type.forEach(type => {
-        if (!fullPolicyData[type]) {
-          fullPolicyData[type] = [];
+        const newType = POLICY_TYPES[type];
+        if (!fullPolicyData[newType]) {
+          fullPolicyData[newType] = [];
         }
-        fullPolicyData[type].push({
+        fullPolicyData[newType].push({
           ...obj,
           value: '',
           attribute: obj.attribute.map((el: any, index: number) => {
@@ -25,9 +27,12 @@ export class PolicyHubModel {
   }
 
   static usecaseFilter(jsonData: PolicyHubResponse[], selectedUseCases?: string[]) {
-    const filteredData = jsonData.filter(obj =>
-      selectedUseCases.some(useCase => obj.useCase.includes(capitalize(useCase))),
-    );
+    let filteredData = jsonData;
+    if (!isEmpty(selectedUseCases)) {
+      filteredData = jsonData.filter(obj =>
+        selectedUseCases.some(useCase => obj.useCase.includes(capitalize(useCase))),
+      );
+    }
     return PolicyHubModel.convert(filteredData);
   }
 
@@ -37,7 +42,7 @@ export class PolicyHubModel {
     for (const [type, policyType] of Object.entries(formData)) {
       if (Array.isArray(policyType)) {
         payload[type] = policyType.map((policy: any) => ({
-          ...policy,
+          technicalKey: policy.technicalKey,
           value: [isObject(policy.value) ? policy.value.value : policy.value],
         }));
       } else {

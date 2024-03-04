@@ -31,9 +31,7 @@ const PolicyHub = ({ onSubmit }: any) => {
 
   useEffect(() => {
     if (isSuccess) {
-      if (isEmpty(selectedUseCases) && dialogTypeCheck) {
-        setFormData(PolicyHubModel.convert(data));
-      } else if (!isEmpty(selectedUseCases) && dialogTypeCheck) {
+      if (dialogTypeCheck) {
         setFormData(PolicyHubModel.usecaseFilter(data, selectedUseCases));
       } else if (isEditPolicy) {
         setFormData(PolicyHubModel.prepareEditData(policyData, data));
