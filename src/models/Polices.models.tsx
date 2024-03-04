@@ -1,36 +1,46 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { capitalize, find, isObject, merge } from 'lodash';
+import { capitalize, isEmpty, isObject } from 'lodash';
 
 import { POLICY_TYPES } from '../constants/policies';
 import { PolicyHubResponse } from '../features/provider/policies/types';
 
 export class PolicyHubModel {
-  static convert(jsonData: PolicyHubResponse[]) {
+  static convert(jsonData: PolicyHubResponse[], targetObject: any) {
     const fullPolicyData: any = {};
+
+    let policyName = '';
+    if (!isEmpty(targetObject)) {
+      policyName = targetObject.policy_name;
+    }
+
     jsonData.forEach(obj => {
       obj.type.forEach(type => {
+
         const newType = POLICY_TYPES[type];
         if (!fullPolicyData[newType]) {
           fullPolicyData[newType] = [];
         }
+        const calculateOptions = PolicyHubModel.getSelectedValueAndAttibutes(targetObject, newType, obj);
+
         fullPolicyData[newType].push({
           ...obj,
-          value: '',
-          attribute: obj.attribute.map((el: any, index: number) => {
-            return { index, ...el };
-          }),
+          value: calculateOptions.selectedValue,
+          attribute: calculateOptions.attributes,
         });
       });
     });
-    return { ...fullPolicyData, policy_name: '' };
+    return { ...fullPolicyData, policy_name: policyName };
   }
 
-  static usecaseFilter(jsonData: PolicyHubResponse[], selectedUseCases?: string[]) {
-    const filteredData = jsonData.filter(obj =>
-      selectedUseCases.some(useCase => obj.useCase.includes(capitalize(useCase))),
-    );
-    return PolicyHubModel.convert(filteredData);
+  static usecaseFilter(jsonData: PolicyHubResponse[], targetObject?: any, selectedUseCases?: string[]) {
+    let filteredData = jsonData;
+    if (!isEmpty(selectedUseCases)) {
+      filteredData = jsonData.filter(obj =>
+        selectedUseCases.some(useCase => obj.useCase.includes(capitalize(useCase))),
+      );
+    }
+    return PolicyHubModel.convert(filteredData, targetObject);
   }
 
   static preparePayload(formData: any) {
@@ -39,7 +49,8 @@ export class PolicyHubModel {
     for (const [type, policyType] of Object.entries(formData)) {
       if (Array.isArray(policyType)) {
         payload[type] = policyType.map((policy: any) => ({
-          ...policy,
+          uuid: policy.id,
+          technicalKey: policy.technicalKey,
           value: [isObject(policy.value) ? policy.value.value : policy.value],
         }));
       } else {
@@ -49,40 +60,24 @@ export class PolicyHubModel {
     return payload;
   }
 
-  static prepareEditData(targetObject: any, baseData: any) {
-    const sourceObject = PolicyHubModel.convert(baseData);
-    const targetClone = { ...targetObject };
-
-    const handleFieldValues = (policies: any) => {
-      return policies.map((policy: any) => ({
-        ...policy,
-        value: find(policy.attribute, { value: policy.value[0] }) || policy.value[0],
-      }));
-    };
-
-    const accessPoliciesSet = new Set(targetClone.access_policies.map((policy: any) => policy.technicalKey));
-    const usagePoliciesSet = new Set(targetClone.usage_policies.map((policy: any) => policy.technicalKey));
-
-    const accessPolices: any = sourceObject.access_policies
-      .filter((policy: any) => accessPoliciesSet.has(policy.technicalKey))
-      .map((policy: any) => ({
-        ...policy,
-        value: find(policy.attribute, { value: policy.value[0] }) || policy.value[0],
-      }));
-
-    const usagePolicies: any = sourceObject.usage_policies
-      .filter((policy: any) => usagePoliciesSet.has(policy.technicalKey))
-      .map((policy: any) => ({
-        ...policy,
-        value: find(policy.attribute, { value: policy.value[0] }) || policy.value[0],
-      }));
-
-    const mergedObject: any = merge({ access_policies: accessPolices, usage_policies: usagePolicies }, targetClone);
-    const finalObject = {
-      ...mergedObject,
-      access_policies: handleFieldValues(mergedObject.access_policies),
-      usage_policies: handleFieldValues(mergedObject.usage_policies),
-    };
-    return finalObject;
+  static getSelectedValueAndAttibutes(targetObject: any, newType: string, obj: any) {
+    let selectedValue: any;
+    if (!isEmpty(targetObject)) {
+      const typeVal = targetObject[newType];
+      typeVal.filter((selectedOption: any) => {
+        if (selectedOption.technicalKey === obj.technicalKey) {
+          selectedValue = selectedOption.value[0];
+        }
+      });
+    }
+    
+    const attributes = obj.attribute.map((el: any, index: number) => {
+      if (!isEmpty(selectedValue) && el.value === selectedValue) {
+        selectedValue = el;
+      }
+      return { index, ...el };
+    });
+    return { attributes: attributes, selectedValue: selectedValue };
   }
+
 }

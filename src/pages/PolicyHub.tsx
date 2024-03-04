@@ -16,10 +16,10 @@ import { removeUnderscore, toReadableCapitalizedCase } from '../utils/utils';
 
 const PolicyHub = ({ onSubmit }: any) => {
   const { t } = useTranslation();
-  const { selectedUseCases, useCaseNames } = useAppSelector(state => state.appSlice);
+  const { selectedUseCases } = useAppSelector(state => state.appSlice);
   const { policyDialogType, policyData } = useAppSelector(state => state.policySlice);
   const { data, isSuccess } = useGetPolicyTemplateQuery({
-    useCases: useCaseNames,
+    useCases: [],
   });
   const [formData, setFormData] = useState<any>({});
   const [nameError, setNameError] = useState(false);
@@ -31,12 +31,10 @@ const PolicyHub = ({ onSubmit }: any) => {
 
   useEffect(() => {
     if (isSuccess) {
-      if (isEmpty(selectedUseCases) && dialogTypeCheck) {
-        setFormData(PolicyHubModel.convert(data));
-      } else if (!isEmpty(selectedUseCases) && dialogTypeCheck) {
-        setFormData(PolicyHubModel.usecaseFilter(data, selectedUseCases));
+      if (dialogTypeCheck) {
+        setFormData(PolicyHubModel.usecaseFilter(data, null, selectedUseCases));
       } else if (isEditPolicy) {
-        setFormData(PolicyHubModel.prepareEditData(policyData, data));
+        setFormData(PolicyHubModel.usecaseFilter(data, policyData, selectedUseCases));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
