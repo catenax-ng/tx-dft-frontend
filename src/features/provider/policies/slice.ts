@@ -28,6 +28,7 @@ const initialState: IAccessPolicyState = {
   policyData: {} as PolicyModel,
   policyDialog: false,
   policyDialogType: '',
+  policyName: '',
 };
 
 export const policySlice = createSlice({
@@ -35,7 +36,7 @@ export const policySlice = createSlice({
   initialState,
   reducers: {
     setPolicyData: (state, action: PayloadAction<PolicyModel>) => {
-      state.policyData = new PolicyModel(action.payload);
+      state.policyData = action.payload;
     },
     setPolicyDialog: (state, action: PayloadAction<boolean>) => {
       state.policyDialog = action.payload;
@@ -44,9 +45,13 @@ export const policySlice = createSlice({
       state.policyDialogType = action.payload;
     },
     handleDialogClose: state => Object.assign(state, initialState),
+    setPolicyName: (state, action: PayloadAction<string>) => {
+      state.policyName = action.payload;
+    },
   },
 });
 
-export const { setPolicyData, setPolicyDialog, setPolicyDialogType, handleDialogClose } = policySlice.actions;
+export const { setPolicyData, setPolicyDialog, setPolicyDialogType, handleDialogClose, setPolicyName } =
+  policySlice.actions;
 
 export default policySlice.reducer;

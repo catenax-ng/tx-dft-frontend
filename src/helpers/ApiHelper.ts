@@ -18,6 +18,18 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { setPageLoading } from '../features/app/slice';
 import { Config } from '../utils/config';
 
 export const HOST = Config.REACT_APP_API_URL;
+
+// Reusable loading state handler
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export function setLoadingHandler(_: any, { dispatch, queryFulfilled }: any) {
+  try {
+    dispatch(setPageLoading(true));
+    return queryFulfilled;
+  } finally {
+    dispatch(setPageLoading(false));
+  }
+}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -18,6 +19,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { setLoadingHandler } from '../../../helpers/ApiHelper';
 import { apiSlice } from '../../app/apiSlice';
 import { setPageLoading } from '../../app/slice';
 import { setPolicyDialog } from './slice';
@@ -32,6 +34,7 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
         };
       },
       providesTags: ['Policies'],
+      onQueryStarted: setLoadingHandler,
     }),
     createPolicy: builder.mutation({
       query: body => {
@@ -97,6 +100,15 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
+    getPolicyTemplate: builder.query({
+      query: params => {
+        return {
+          url: '/policy-hub/policy-types',
+          params,
+        };
+      },
+      onQueryStarted: setLoadingHandler,
+    }),
   }),
 });
 
@@ -107,4 +119,5 @@ export const {
   useCreatePolicyMutation,
   useDeletePolicyMutation,
   useUpdatePolicyMutation,
+  useGetPolicyTemplateQuery,
 } = policiesApiSlice;

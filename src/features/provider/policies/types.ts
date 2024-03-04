@@ -17,6 +17,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Key } from 'react';
+
 import { PolicyModel } from '../../../models/RecurringUpload.models';
 
 export interface IAccessPolicyState {
@@ -24,4 +26,14 @@ export interface IAccessPolicyState {
   policyData: PolicyModel;
   policyDialog: boolean;
   policyDialogType: string;
+  policyName: string;
+}
+export interface PolicyHubResponse {
+  technicalKey: string;
+  type: string[];
+  description: string;
+  useCase: string[];
+  attribute: { key: string; value: string; id?: Key }[];
+  technicalEnforced: boolean;
+  value: string;
 }
