@@ -66,9 +66,9 @@ export default function Sidebar() {
               {menuItem.childrens ? (
                 <>
                   <Divider />
-                  {menuItem.childrens.map(children => (
-                    <RouteCheck value={children.to}>
-                      <MenuItem key={children.text} item={children} />
+                  {menuItem.childrens.map((children, index) => (
+                    <RouteCheck value={children.to} key={children.to + index}>
+                      <MenuItem item={children} />
                     </RouteCheck>
                   ))}
                   <Divider />

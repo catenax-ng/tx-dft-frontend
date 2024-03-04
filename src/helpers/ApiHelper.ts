@@ -25,10 +25,10 @@ export const HOST = Config.REACT_APP_API_URL;
 
 // Reusable loading state handler
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function setLoadingHandler(_: any, { dispatch, queryFulfilled }: any) {
+export async function setLoadingHandler(_: any, { dispatch, queryFulfilled }: any) {
   try {
     dispatch(setPageLoading(true));
-    return queryFulfilled;
+    await queryFulfilled;
   } finally {
     dispatch(setPageLoading(false));
   }
