@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { capitalize, find, isEmpty, isObject, merge } from 'lodash';
+import { capitalize, find, isArray, isEmpty, isObject, keys, mapValues, merge, pickBy } from 'lodash';
 
 import { PolicyHubResponse } from '../features/provider/policies/types';
 
@@ -35,19 +35,16 @@ export class PolicyHubModel {
   }
 
   static preparePayload(formData: any) {
-    const payload: any = {};
-
-    for (const [type, policyType] of Object.entries(formData)) {
-      if (Array.isArray(policyType)) {
-        payload[type] = policyType.map((policy: any) => ({
+    return mapValues(formData, policyType => {
+      if (isArray(policyType)) {
+        return policyType.map((policy: any) => ({
           technicalKey: policy.technicalKey,
           value: [isObject(policy.value) ? policy.value.value : policy.value],
         }));
       } else {
-        payload[type] = policyType;
+        return policyType;
       }
-    }
-    return payload;
+    });
   }
 
   static prepareEditData(targetObject: any, baseData: any) {
@@ -61,18 +58,18 @@ export class PolicyHubModel {
       }));
     };
 
-    for (const fieldName in targetClone) {
-      if (Array.isArray(targetClone[fieldName])) {
-        // Assuming technicalKey is the common field in all policies
-        const technicalKeyField = 'technicalKey';
-        const policySet = new Set(targetClone[fieldName].map((policy: PolicyHubResponse) => policy[technicalKeyField]));
-        const filteredPolicies: PolicyHubResponse[] = sourceObject[fieldName].filter((policy: PolicyHubResponse) =>
-          policySet.has(policy[technicalKeyField]),
-        );
-        const mergedPolicies = merge(filteredPolicies, targetClone[fieldName]);
-        targetClone[fieldName] = handleFieldValues(mergedPolicies);
-      }
-    }
+    const fieldNames = keys(pickBy(targetClone, isArray));
+
+    fieldNames.map(fieldName => {
+      // Assuming technicalKey is the common field in all policies
+      const technicalKeyField = 'technicalKey';
+      const policySet = new Set(targetClone[fieldName].map((policy: PolicyHubResponse) => policy[technicalKeyField]));
+      const filteredPolicies: PolicyHubResponse[] = sourceObject[fieldName].filter((policy: PolicyHubResponse) =>
+        policySet.has(policy[technicalKeyField]),
+      );
+      const mergedPolicies = merge(filteredPolicies, targetClone[fieldName]);
+      targetClone[fieldName] = handleFieldValues(mergedPolicies);
+    });
     return targetClone;
   }
 }
