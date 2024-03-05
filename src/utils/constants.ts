@@ -21,8 +21,6 @@
 import { theme } from 'cx-portal-shared-components';
 
 import { IDefaultObject } from '../models/Common';
-import { PolicyModel } from '../models/RecurringUpload.models';
-import { Config } from './config';
 
 const USER_GUIDE_URL =
   'https://github.com/eclipse-tractusx/managed-simple-data-exchanger-frontend/blob/main/docs/user-guide/README.md';
@@ -59,36 +57,6 @@ const STATUS_COLOR_MAPPING: IDefaultObject = {
 const USER_TYPE_SWITCH: IDefaultObject = {
   provider: 'consumer',
   consumer: 'provider',
-};
-
-const DURATION_UNITS = [
-  {
-    id: 0,
-    title: 'Hour',
-    value: 'HOUR',
-  },
-  {
-    id: 1,
-    title: 'Day',
-    value: 'DAY',
-  },
-  {
-    id: 2,
-    title: 'Month',
-    value: 'MONTH',
-  },
-  {
-    id: 3,
-    title: 'Year',
-    value: 'YEAR',
-  },
-];
-
-const DURATION_UNIT_MAPPING = {
-  HOUR: 'hours',
-  DAY: 'days',
-  MONTH: 'months',
-  YEAR: 'years',
 };
 
 const BPN_TYPE_FIELDS = [
@@ -190,117 +158,23 @@ const HOURS = [...Array(24)].map((_e, i) => ({
   title: `Every ${i + 1} hour`,
 }));
 
-const TRACABILITY_FRAMEWORK = [
-  {
-    key: 'Version',
-    value: 'active',
-  },
-];
-
-const QUALTIY_FRAMEWORK = [
-  {
-    key: 'Version',
-    value: 'active',
-  },
-];
-
-const PCF_FRAMEWORK = [
-  {
-    key: 'Version',
-    value: 'active',
-  },
-];
-
-const PURPOSE_VALUES = [
-  {
-    key: 'ID 3.1 Trace',
-    value: 'ID 3.1 Trace',
-  },
-];
-
-const CHECKBOXES = [
-  { name: 'membership', title: 'Membership', type: 'checkbox', values: '' },
-  { name: 'dismantler', title: 'Dismantler', type: 'checkbox', values: '' },
-];
-const FRAMEWORKS = [
-  { name: 'traceability', title: 'Framework Traceability', type: 'select', values: TRACABILITY_FRAMEWORK },
-  { name: 'quality', title: 'Framework Quality', type: 'select', values: QUALTIY_FRAMEWORK },
-  { name: 'pcf', title: 'Framework PCF', type: 'select', values: PCF_FRAMEWORK },
-  { name: 'purpose', title: 'Select Purpose', type: 'select', values: PURPOSE_VALUES },
-];
-
-const DEFAULT_POLICY_DATA: PolicyModel = {
-  uuid: '',
-  policy_name: '',
-  inputBpn: '',
-  access_policies: [
-    {
-      technicalKey: 'BusinessPartnerNumber',
-      value: [Config.REACT_APP_DEFAULT_COMPANY_BPN],
-    },
-    {
-      technicalKey: 'Membership',
-      value: false,
-    },
-    {
-      technicalKey: 'Dismantler',
-      value: false,
-    },
-  ],
-  usage_policies: [
-    {
-      technicalKey: 'Membership',
-      value: false,
-    },
-    {
-      technicalKey: 'Dismantler',
-      value: false,
-    },
-    {
-      technicalKey: 'FrameworkAgreement.traceability',
-      value: '',
-    },
-    {
-      technicalKey: 'FrameworkAgreement.quality',
-      value: '',
-    },
-    {
-      technicalKey: 'FrameworkAgreement.pcf',
-      value: '',
-    },
-    {
-      technicalKey: 'PURPOSE',
-      value: '',
-    },
-  ],
-};
-
 export {
   ALPHA_NUM_REGEX,
   BPN_TYPE_FIELDS,
-  CHECKBOXES,
   CONTRACT_STATES,
   DATE_TIME_FORMAT,
-  DEFAULT_POLICY_DATA,
-  DURATION_UNIT_MAPPING,
-  DURATION_UNITS,
   EMAIL_CONFIG_FORM_FIELDS,
-  FRAMEWORKS,
   HOURS,
   MAX_CONTRACTS_AGREEMENTS,
   MINIO_FORM_FIELDS,
   ONLY_NUM_REGEX,
   PCF_CONSUMER_STATES,
-  PCF_FRAMEWORK,
   PCF_PUSH_FAILED_STATES,
   PCF_STATES,
-  PURPOSE_VALUES,
-  QUALTIY_FRAMEWORK,
   SCHEDULE_TYPE,
   SFTP_FORM_FIELDS,
   SPACE_CHECK_REGEX,
   STATUS_COLOR_MAPPING,
-  TRACABILITY_FRAMEWORK,
   UPLOAD_CONFIG_FORM_FIELDS,
   USER_GUIDE_URL,
   USER_TYPE_SWITCH,

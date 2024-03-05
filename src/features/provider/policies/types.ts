@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -19,11 +20,9 @@
 
 import { Key } from 'react';
 
-import { PolicyModel } from '../../../models/RecurringUpload.models';
-
 export interface IAccessPolicyState {
   openDialog: boolean;
-  policyData: PolicyModel;
+  policyData: any;
   policyDialog: boolean;
   policyDialogType: string;
   policyName: string;

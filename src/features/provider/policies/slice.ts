@@ -20,12 +20,11 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { PolicyModel } from '../../../models/RecurringUpload.models';
 import { IAccessPolicyState } from './types';
 
 const initialState: IAccessPolicyState = {
   openDialog: false,
-  policyData: {} as PolicyModel,
+  policyData: {},
   policyDialog: false,
   policyDialogType: '',
   policyName: '',
@@ -35,7 +34,7 @@ export const policySlice = createSlice({
   name: 'policySlice',
   initialState,
   reducers: {
-    setPolicyData: (state, action: PayloadAction<PolicyModel>) => {
+    setPolicyData: (state, action: PayloadAction) => {
       state.policyData = action.payload;
     },
     setPolicyDialog: (state, action: PayloadAction<boolean>) => {
