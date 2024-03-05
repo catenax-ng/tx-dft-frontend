@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import InfoIcon from '@mui/icons-material/Info';
-import { Box, Button, Divider, FormControl, FormLabel } from '@mui/material';
-import { Input, SelectList, Tooltips, Typography } from 'cx-portal-shared-components';
-import { isArray, isEmpty } from 'lodash';
-import { useEffect, useState } from 'react';
+import { Box, Button, FormControl, FormLabel, Grid } from '@mui/material';
+import { Input, SelectList, Tab, TabPanel, Tabs, Tooltips, Typography } from 'cx-portal-shared-components';
+import { isArray, isEmpty, keys, pickBy } from 'lodash';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { ADD_POLICY_DIALOG_TYPES, SELECT_POLICY_TYPES } from '../constants/policies';
@@ -23,6 +23,11 @@ const PolicyHub = ({ onSubmit }: any) => {
   });
   const [formData, setFormData] = useState<any>({});
   const [nameError, setNameError] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
+  const handleTabChange = (event: SyntheticEvent, newValue: number) => {
+    setActiveTab(newValue);
+  };
+
   const showPolicyName = policyDialogType === 'Add' || policyDialogType === 'Edit';
   const isEditPolicy = policyDialogType === 'Edit';
   const dispatch = useAppDispatch();
@@ -118,6 +123,7 @@ const PolicyHub = ({ onSubmit }: any) => {
   };
 
   if (isSuccess) {
+    const policyTypes = keys(pickBy(formData, isArray));
     return (
       <form>
         {showPolicyName && (
@@ -139,22 +145,30 @@ const PolicyHub = ({ onSubmit }: any) => {
             />
           </FormControl>
         )}
-        {Object.keys(formData)?.map(type => {
-          if (isArray(formData[type])) {
+        {/* Policy tabs */}
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={activeTab} onChange={handleTabChange} aria-label="polcy type tabs" sx={{ pt: 0 }}>
+            {policyTypes?.map((type: string) => (
+              <Tab key={type} label={type} />
+            ))}
+          </Tabs>
+        </Box>
+        <Box>
+          {policyTypes?.map((type: string, i: number) => {
             return (
-              <div key={type}>
-                <Typography variant="body2" fontWeight={'bold'} textTransform={'capitalize'}>
-                  {type}
-                </Typography>
-                <Divider sx={{ mb: 2 }} />
-                {Object.keys(formData[type]).map(key => {
-                  const item = formData[type][key];
-                  return <div key={type + item.technicalKey}>{renderFormField(item, type)}</div>;
-                })}
-              </div>
+              <TabPanel key={type} index={i} value={activeTab}>
+                <Grid container spacing={3}>
+                  {formData[type].map((item: any) => (
+                    <Grid key={type + item.technicalKey} item xs={5}>
+                      {renderFormField(item, type)}
+                    </Grid>
+                  ))}
+                </Grid>
+              </TabPanel>
             );
-          } else return null;
-        })}
+          })}
+        </Box>
+
         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', my: 1 }}>
           <Button
             variant="contained"
