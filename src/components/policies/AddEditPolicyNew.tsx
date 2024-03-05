@@ -39,6 +39,7 @@ function AddEditPolicyNew() {
 
   // eslint-disable-next-line no-unused-vars
   const onSubmit = async (payload: any) => {
+    console.log(payload);
     try {
       switch (policyDialogType) {
         case 'Add':
@@ -72,12 +73,11 @@ function AddEditPolicyNew() {
           <b>{t('content.policies.description')}</b>
         </Typography>
         <ol style={{ padding: '0 0 0 16px' }}>
-          <li>
-            <Typography variant="body2">{t('content.policies.description_1')}</Typography>
-          </li>
-          <li>
-            <Typography variant="body2">{t('content.policies.description_3')}</Typography>
-          </li>
+          {[1, 2, 3, 4].map(e => (
+            <li key={e}>
+              <Typography variant="body2">{t(`content.policies.description_${e}`)}</Typography>
+            </li>
+          ))}
         </ol>
         <PolicyHub onSubmit={onSubmit} />
       </DialogContent>

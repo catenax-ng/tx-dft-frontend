@@ -23,9 +23,8 @@ import { DefinedError } from 'ajv/dist/core';
 import addFormats from 'ajv-formats';
 
 import { setSnackbarMessage } from '../features/notifiication/slice';
-import { setPolicyData, setPolicyDialog, setPolicyDialogType } from '../features/provider/policies/slice';
+import { setPolicyDialog, setPolicyDialogType } from '../features/provider/policies/slice';
 import { store } from '../features/store';
-import { DEFAULT_POLICY_DATA } from '../utils/constants';
 
 export const schemaValidator = async (data: GridValidRowModel[]) => {
   const ajv = new Ajv2019();
@@ -52,7 +51,6 @@ export const schemaValidator = async (data: GridValidRowModel[]) => {
   });
   if (!result.includes(false)) {
     store.dispatch(setPolicyDialogType('TableWithPolicy'));
-    store.dispatch(setPolicyData(DEFAULT_POLICY_DATA));
     store.dispatch(setPolicyDialog(true));
   }
 };

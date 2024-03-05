@@ -25,12 +25,11 @@ import { useTranslation } from 'react-i18next';
 
 import { setPageLoading } from '../features/app/slice';
 import { setSnackbarMessage } from '../features/notifiication/slice';
-import { setPolicyData, setPolicyDialog, setPolicyDialogType } from '../features/provider/policies/slice';
+import { setPolicyDialog, setPolicyDialogType } from '../features/provider/policies/slice';
 import { removeSelectedFiles, setUploadStatus } from '../features/provider/upload/slice';
 import { useAppDispatch, useAppSelector } from '../features/store';
 import { csvHeaderValidation, fileSizeCheck } from '../helpers/FileDownloadHelper';
 import { Config } from '../utils/config';
-import { DEFAULT_POLICY_DATA } from '../utils/constants';
 import { trimText } from '../utils/utils';
 import InfoSteps from './InfoSteps';
 
@@ -87,7 +86,6 @@ export default function UploadFile() {
           variant="contained"
           onClick={() => {
             dispatch(setPolicyDialogType('FileWithPolicy'));
-            dispatch(setPolicyData(DEFAULT_POLICY_DATA));
             dispatch(setPolicyDialog(true));
           }}
         >

@@ -32,7 +32,6 @@ import AddEditPolicyNew from '../../components/policies/AddEditPolicyNew';
 import { useDeletePolicyMutation, useGetPoliciesQuery } from '../../features/provider/policies/apiSlice';
 import { setPolicyData, setPolicyDialog, setPolicyDialogType } from '../../features/provider/policies/slice';
 import { useAppDispatch } from '../../features/store';
-import { DEFAULT_POLICY_DATA } from '../../utils/constants';
 
 function Policies() {
   const [page, setPage] = useState<number>(0);
@@ -128,7 +127,6 @@ function Policies() {
               size="small"
               onClick={() => {
                 dispatch(setPolicyDialogType('Add'));
-                dispatch(setPolicyData(DEFAULT_POLICY_DATA));
                 dispatch(setPolicyDialog(true));
               }}
             >
