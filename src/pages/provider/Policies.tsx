@@ -23,7 +23,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Box, Grid, LinearProgress } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { Button, IconButton, Table, Tooltips, Typography } from 'cx-portal-shared-components';
-import { find } from 'lodash';
+import { filter, map } from 'lodash';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -31,6 +31,7 @@ import NoDataPlaceholder from '../../components/NoDataPlaceholder';
 import AddEditPolicyNew from '../../components/policies/AddEditPolicyNew';
 import { useDeletePolicyMutation, useGetPoliciesQuery } from '../../features/provider/policies/apiSlice';
 import { setPolicyData, setPolicyDialog, setPolicyDialogType } from '../../features/provider/policies/slice';
+import { PolicyHubResponse } from '../../features/provider/policies/types';
 import { useAppDispatch } from '../../features/store';
 
 function Policies() {
@@ -48,6 +49,12 @@ function Policies() {
   // Delete
   const [deletePolicy] = useDeletePolicyMutation();
 
+  const showAvailablePolicies = (policies: PolicyHubResponse[]) => {
+    const nonEmptyValues = filter(policies, policy => policy.value[0]);
+    const technicalKeys = map(nonEmptyValues, 'technicalKey').join(', ');
+    return technicalKeys || 'Not available';
+  };
+
   const columns: GridColDef[] = [
     {
       field: 'policy_name',
@@ -56,17 +63,27 @@ function Policies() {
       sortable: false,
     },
     {
-      field: 'bpn_numbers',
-      headerName: 'Access BPNs',
+      field: 'Access',
+      headerName: 'Access Policies',
       flex: 1,
       sortable: false,
       renderCell: ({ row }) => {
         return (
-          <Tooltips
-            tooltipPlacement="bottom"
-            tooltipText={find(row.access_policies, { technicalKey: 'BusinessPartnerNumber' })?.value.join(', ')}
-          >
-            <span>{find(row.access_policies, { technicalKey: 'BusinessPartnerNumber' })?.value.join(', ')}</span>
+          <Tooltips tooltipPlacement="bottom" tooltipText={showAvailablePolicies(row.Access)}>
+            <span>{showAvailablePolicies(row.Access)}</span>
+          </Tooltips>
+        );
+      },
+    },
+    {
+      field: 'Usage',
+      headerName: 'Usage Policies',
+      flex: 1,
+      sortable: false,
+      renderCell: ({ row }) => {
+        return (
+          <Tooltips tooltipPlacement="bottom-start" tooltipText={showAvailablePolicies(row.Usage)}>
+            <span>{showAvailablePolicies(row.Usage)}</span>
           </Tooltips>
         );
       },
