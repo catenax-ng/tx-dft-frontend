@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
- * Copyright (c) 2021,2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 T-Systems International GmbH
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -86,12 +86,13 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
       extraOptions: { showNotification: true, message: 'Policy deleted successfully!' },
       invalidatesTags: ['Policies'],
     }),
-    getSinglePolicy: builder.query({
+    getSinglePolicy: builder.mutation({
       query: uuid => {
         return {
           url: `/policy/${uuid}`,
         };
       },
+      onQueryStarted: setLoadingHandler,
     }),
     validateBpn: builder.mutation({
       query: bpn => {
@@ -115,7 +116,7 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
 export const {
   useValidateBpnMutation,
   useGetPoliciesQuery,
-  useGetSinglePolicyQuery,
+  useGetSinglePolicyMutation,
   useCreatePolicyMutation,
   useDeletePolicyMutation,
   useUpdatePolicyMutation,

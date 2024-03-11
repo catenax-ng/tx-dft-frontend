@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2021,2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 T-Systems International GmbH
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -20,6 +20,8 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { NEW_POLICY_ITEM } from '../../../constants/policies';
+import { ISelectList } from '../../../models/Common';
 import { IAccessPolicyState } from './types';
 
 const initialState: IAccessPolicyState = {
@@ -27,7 +29,7 @@ const initialState: IAccessPolicyState = {
   policyData: {},
   policyDialog: false,
   policyDialogType: '',
-  policyName: '',
+  selectedPolicy: NEW_POLICY_ITEM,
 };
 
 export const policySlice = createSlice({
@@ -44,13 +46,13 @@ export const policySlice = createSlice({
       state.policyDialogType = action.payload;
     },
     handleDialogClose: state => Object.assign(state, initialState),
-    setPolicyName: (state, action: PayloadAction<string>) => {
-      state.policyName = action.payload;
+    setSelectedPolicy: (state, action: PayloadAction<ISelectList>) => {
+      state.selectedPolicy = action.payload;
     },
   },
 });
 
-export const { setPolicyData, setPolicyDialog, setPolicyDialogType, handleDialogClose, setPolicyName } =
+export const { setPolicyData, setPolicyDialog, setPolicyDialogType, handleDialogClose, setSelectedPolicy } =
   policySlice.actions;
 
 export default policySlice.reducer;

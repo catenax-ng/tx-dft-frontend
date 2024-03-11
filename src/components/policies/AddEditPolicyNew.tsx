@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
- * Copyright (c) 2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024 T-Systems International GmbH
+ * Copyright (c) 2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -20,6 +20,7 @@
  ********************************************************************************/
 
 import { Dialog, DialogContent, DialogHeader, Typography } from 'cx-portal-shared-components';
+import { omit } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import { uploadFileWithPolicy, uploadTableWithPolicy } from '../../features/provider/policies/actions';
@@ -31,7 +32,7 @@ import PolicyHub from '../../pages/PolicyHub';
 function AddEditPolicyNew() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { policyDialog, policyDialogType } = useAppSelector(state => state.policySlice);
+  const { policyDialog, policyDialogType, selectedPolicy } = useAppSelector(state => state.policySlice);
   const { rows } = useAppSelector(state => state.submodelSlice);
 
   const [createPolicy] = useCreatePolicyMutation();
@@ -39,20 +40,21 @@ function AddEditPolicyNew() {
 
   // eslint-disable-next-line no-unused-vars
   const onSubmit = async (payload: any) => {
-    console.log(payload);
     try {
       switch (policyDialogType) {
         case 'Add':
-          await createPolicy({ ...payload });
+          await createPolicy(payload);
           break;
         case 'Edit':
-          await updatePolicy({ ...payload });
+          await updatePolicy(payload);
           break;
         case 'FileWithPolicy':
-          await dispatch(uploadFileWithPolicy(payload));
+          await dispatch(uploadFileWithPolicy({ ...omit(payload, 'lastUpdatedTime'), type: selectedPolicy.value }));
           break;
         case 'TableWithPolicy':
-          await dispatch(uploadTableWithPolicy({ ...payload, row_data: rows }));
+          await dispatch(
+            uploadTableWithPolicy({ ...omit(payload, 'lastUpdatedTime'), type: selectedPolicy.value, row_data: rows }),
+          );
           break;
         default:
           break;
