@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2024 T-Systems International GmbH
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -19,14 +19,14 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import InfoIcon from '@mui/icons-material/Info';
-import { Box, Button, FormControl, FormLabel, Grid } from '@mui/material';
-import { Input, SelectList, Tab, TabPanel, Tabs, Tooltips, Typography } from 'cx-portal-shared-components';
-import { isArray, isEmpty, keys, pickBy } from 'lodash';
+import { Box, Button, FormControl, Grid } from '@mui/material';
+import { Input, SelectList, Tab, TabPanel, Tabs } from 'cx-portal-shared-components';
+import { isArray, keys, pickBy } from 'lodash';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import FormLabelDescription from '../components/policies/FormLabelDescription';
 import { ADD_POLICY_DIALOG_TYPES, NEW_POLICY_ITEM, SELECT_POLICY_TYPES } from '../constants/policies';
 import {
   useGetPoliciesQuery,
@@ -38,7 +38,6 @@ import { useAppDispatch, useAppSelector } from '../features/store';
 import { ISelectList } from '../models/Common';
 import { PolicyHubModel } from '../models/Polices.models';
 import { ALPHA_NUM_REGEX } from '../utils/constants';
-import { toReadableCapitalizedCase } from '../utils/utils';
 
 const PolicyHub = ({ onSubmit }: any) => {
   const { t } = useTranslation();
@@ -81,8 +80,7 @@ const PolicyHub = ({ onSubmit }: any) => {
   useEffect(() => {
     if (isSuccess) {
       if (dialogTypeCheck) {
-        const convertedData = PolicyHubModel.usecaseFilter(data, selectedUseCases);
-        setFormData(convertedData);
+        setFormData(PolicyHubModel.usecaseFilter(data, selectedUseCases));
       } else if (isEditPolicy) {
         setFormData(PolicyHubModel.prepareEditData(policyData, data));
       }
@@ -145,25 +143,10 @@ const PolicyHub = ({ onSubmit }: any) => {
     const firstAttribute = item?.attribute[0];
     if (!firstAttribute) return null;
 
-    const formLabel = (
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-        <Typography variant={'body3'} mr={0.5} fontWeight={'bold'}>
-          {toReadableCapitalizedCase(item.technicalKey)}
-        </Typography>
-        {!isEmpty(item.description) && (
-          <Tooltips tooltipPlacement="top" tooltipText={item.description}>
-            <span>
-              <InfoIcon fontSize="small" color="disabled" />
-            </span>
-          </Tooltips>
-        )}
-      </Box>
-    );
-
     if (firstAttribute?.key === 'Regex') {
       return (
         <FormControl fullWidth sx={{ '& .MuiBox-root': { marginTop: 0 } }}>
-          <FormLabel>{formLabel}</FormLabel>
+          <FormLabelDescription title={item.technicalKey} description={item.description} />
           <Input
             placeholder="Enter a value"
             value={item.value}
@@ -180,7 +163,7 @@ const PolicyHub = ({ onSubmit }: any) => {
     } else if (SELECT_POLICY_TYPES.includes(firstAttribute?.key)) {
       return (
         <FormControl fullWidth sx={{ '& .MuiBox-root': { marginTop: 0 } }}>
-          <FormLabel>{formLabel}</FormLabel>
+          <FormLabelDescription title={item.technicalKey} description={item.description} />
           <SelectList
             keyTitle="value"
             defaultValue={item.value}
