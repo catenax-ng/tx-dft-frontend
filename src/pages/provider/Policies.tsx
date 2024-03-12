@@ -29,6 +29,7 @@ import { useTranslation } from 'react-i18next';
 
 import NoDataPlaceholder from '../../components/NoDataPlaceholder';
 import AddEditPolicyNew from '../../components/policies/AddEditPolicyNew';
+import SelectedUseCases from '../../components/SelectedUseCases';
 import { useDeletePolicyMutation, useGetPoliciesQuery } from '../../features/provider/policies/apiSlice';
 import { setPolicyData, setPolicyDialog, setPolicyDialogType } from '../../features/provider/policies/slice';
 import { PolicyHubResponse } from '../../features/provider/policies/types';
@@ -131,13 +132,14 @@ function Policies() {
     return (
       <>
         <Grid container spacing={2} alignItems="center" mb={4}>
-          <Grid item xs={9}>
+          <Grid item xs={10}>
             <Typography variant="h3" mb={1}>
               {t('content.policies.title')}
             </Typography>
+            <SelectedUseCases />
             <Typography variant="body1">{t('content.policies.subtitle')}</Typography>
           </Grid>
-          <Grid item xs={3} display={'flex'} justifyContent={'flex-end'}>
+          <Grid item xs={2} display={'flex'} justifyContent={'flex-end'}>
             <Button
               color="primary"
               variant="contained"
