@@ -20,7 +20,7 @@
 
 const SELECT_POLICY_TYPES = ['Brands', 'Version', 'Static', 'DynamicValue'];
 
-const ADD_POLICY_DIALOG_TYPES = ['Add', 'FileWithPolicy'];
+const ADD_POLICY_DIALOG_TYPES = ['Add', 'FileWithPolicy', 'TableWithPolicy'];
 
 const NEW_POLICY_ITEM = { id: 0, title: 'New', value: 'NEW' };
 
