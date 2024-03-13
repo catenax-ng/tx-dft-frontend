@@ -79,7 +79,7 @@ export default function CreateData() {
       </ul>
       <Grid container spacing={2} mb={3} display={'flex'} alignItems={'flex-end'}>
         <Grid item xs={3}>
-          <SelectSubmodel defaultValue={selectedSubmodel} onChange={handleTypeChange} />
+          <SelectSubmodel defaultValue={selectedSubmodel} onChange={handleTypeChange} disableClearable={true} />
         </Grid>
         <Grid item justifyContent={'center'}>
           <Tooltips tooltipPlacement="top" tooltipText={t('content.common.moreSubmodelInfo')}>
