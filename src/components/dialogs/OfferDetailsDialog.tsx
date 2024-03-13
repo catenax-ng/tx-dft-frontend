@@ -44,17 +44,12 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
     created,
     description,
     publisher,
-    policy: { usage_policies: usagePolicies },
-    fileContentType,
+    connectorOfferUrl,
+    policy: { Usage: usagePolicies },
     type,
   } = offer;
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-
-  function splitWithFirstOcc(str: string) {
-    const regX = /:(.*)/s;
-    return str.split(regX);
-  }
 
   return (
     <Dialog open={open}>
@@ -89,12 +84,6 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
                 </Typography>
               </Grid>
               <Grid item xs={6} sx={{ mb: 1 }}>
-                <Typography variant="body2">{t('dialog.offerDetails.dataFormat')}</Typography>
-                <Typography variant="body2">
-                  <strong>{fileContentType || '-'}</strong>
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sx={{ mb: 1 }}>
                 <Typography variant="body2">{t('dialog.offerDetails.description')}</Typography>
                 <Typography variant="body2">
                   <strong>{description || '-'}</strong>
@@ -103,13 +92,13 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
               <Grid item xs={6} sx={{ mb: 1 }}>
                 <Typography variant="body2">{t('dialog.offerDetails.publisher')}</Typography>
                 <Typography variant="body2">
-                  <strong>{splitWithFirstOcc(publisher)[0] || '-'}</strong>
+                  <strong>{publisher || '-'}</strong>
                 </Typography>
               </Grid>
               <Grid item xs={6} sx={{ mb: 1 }}>
                 <Typography variant="body2">{t('dialog.offerDetails.publisherUrl')}</Typography>
                 <Typography variant="body2">
-                  <strong>{splitWithFirstOcc(publisher)[1] || '-'}</strong>
+                  <strong>{connectorOfferUrl || '-'}</strong>
                 </Typography>
               </Grid>
             </Grid>
