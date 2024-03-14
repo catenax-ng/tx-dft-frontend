@@ -71,10 +71,10 @@ export default function CreateData() {
       <Typography variant="body1">{t('content.provider.description_2')}</Typography>
       <ul style={{ margin: 0 }}>
         <li>
-          <Typography variant="body1">{t('content.provider.description_2_1')}</Typography>
+          <Typography variant="body2">{t('content.provider.description_2_1')}</Typography>
         </li>
         <li>
-          <Typography variant="body1">{t('content.provider.description_2_2')}</Typography>
+          <Typography variant="body2">{t('content.provider.description_2_2')}</Typography>
         </li>
       </ul>
       <Grid container spacing={2} mb={3} display={'flex'} alignItems={'flex-end'}>

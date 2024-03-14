@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
- * Copyright (c) 2021,2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2021,2024 T-Systems International GmbH
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -31,7 +31,7 @@ import { useAppDispatch, useAppSelector } from '../features/store';
 import { csvHeaderValidation, fileSizeCheck } from '../helpers/FileDownloadHelper';
 import { Config } from '../utils/config';
 import { trimText } from '../utils/utils';
-import InfoSteps from './InfoSteps';
+import UploadInfo from './provider/UploadInfo';
 
 export default function UploadFile() {
   const { selectedFiles, uploadStatus } = useAppSelector(state => state.uploadFileSlice);
@@ -128,7 +128,7 @@ export default function UploadFile() {
           )}
         </Box>
       </Box>
-      <InfoSteps icon="info" steps={['content.provider.uploadStep_1', 'content.provider.uploadStep_2']} />
+      <UploadInfo />
     </>
   );
 }

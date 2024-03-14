@@ -60,14 +60,18 @@
       "uploadStep_2": "2. Klicken Sie auf „Nächster Schritt – Policies konfigurieren“ um festzulegen wer die Daten (ggf. mit Einschränkungen) sehen darf und um die entsprechenden „Digitalen Zwillinge“ zu erzeugen/registrieren.",
       "manualStep_1": "1. Klicken Sie auf „Zeile einfügen“ um die Daten für eine neue Zeile erfassen zu können. Zur Eingabe müssen Sie das entsprechende Feld anklicken",
       "manualInfo_1": "Um einen neuen Datensatz (Digitalen Zwilling) anzulegen, lassen Sie das Feld UUID bitte leer",
-      "manualInfo_2": "Um einen bestehenden Datensatz zu aktualisieren, geben Sie bitte die UUID dieses Datensatzes (Digitaler Zwilling) an."
+      "manualInfo_2": "Um einen bestehenden Datensatz zu aktualisieren, geben Sie bitte die UUID dieses Datensatzes (Digitaler Zwilling) an.",
+      "manualInfo_3": "Erstellen Sie eine neue Richtlinie oder verwenden Sie eine bereits erstellte."
     },
     "recurringUpload": {
       "description": "Sie können die SDE für automatisierte CSV-Datei-Uploads nutzen. Sie müssen die SFTP/ObjectStorage (e.g. S3, Minio)-Schnittstelle verwenden, um Ihre CSV-Dateien in den Cloud-Speicher zu übertragen. Die SDE lädt dann die CSV-Dateien gemäß den hier angegebenen Parametern hoch."
     },
     "policies": {
       "title": "Policies",
-      "subtitle": "Auf dieser Seite müssen Sie die 'Policy' (Richtlinie) festlegen, die Sie für Ihren 'Recurring Upload' -Prozess (automatische upload von CSv-Files) verwenden möchten. Der Name dieser Richtlinie sollte in Ihrer Upload-Datei enthalten sein und muss eindeutig sein. Bitte verwenden Sie keine kurzen Begriffe wie 'sh' oder 'pa', die in einem neutralen Dateinamen vorkommen könnten.",
+      "subtitle": "Auf dieser Seite ist die Definition von Richtlinien für die Prozesse 'Manueller Upload' und 'Wiederkehrender Upload' möglich. Bitte befolgen Sie diese Vorgaben zur effektiven Erstellung von Richtlinien:",
+      "page_description_1": "Der Richtlinienname muss eindeutig und einzigartig sein, um Konflikte zu vermeiden.",
+      "page_description_2": "Vermeiden Sie die Verwendung kurzer, generischer Phrasen wie 'sh' oder 'pa', um die Spezifität zu erhöhen.",
+      "page_note": "Bei Wiederkehrender Upload-Richtlinien integrieren Sie den Richtliniennamen in die wiederkehrenden Upload-Dateien.",
       "addPolicy": "Richtlinie hinzufügen",
       "EditPolicy": "Richtlinie bearbeiten",
       "description": "Hier legen Sie fest mit wem sie die Daten teilen möchten (via „Access Policies“) und mit welchen Einschränkungen (via „Usage Policies“).",

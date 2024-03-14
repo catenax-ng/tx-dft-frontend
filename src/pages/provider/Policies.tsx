@@ -27,6 +27,7 @@ import { filter, map } from 'lodash';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import InfoSteps from '../../components/InfoSteps';
 import NoDataPlaceholder from '../../components/NoDataPlaceholder';
 import AddEditPolicyNew from '../../components/policies/AddEditPolicyNew';
 import SelectedUseCases from '../../components/SelectedUseCases';
@@ -138,6 +139,13 @@ function Policies() {
             </Typography>
             <SelectedUseCases />
             <Typography variant="body1">{t('content.policies.subtitle')}</Typography>
+            <ul style={{ margin: 0, marginTop: '10px' }}>
+              {[1, 2].map(e => (
+                <li key={e}>
+                  <Typography variant="body2">{t(`content.policies.page_description_${e}`)}</Typography>
+                </li>
+              ))}
+            </ul>
           </Grid>
           <Grid item xs={2} display={'flex'} justifyContent={'flex-end'}>
             <Button
@@ -187,6 +195,7 @@ function Policies() {
             }}
           />
         </Box>
+        <InfoSteps icon="tips" steps={['content.policies.page_note']} sx={{ mt: 3 }} />
         <AddEditPolicyNew />
       </>
     );

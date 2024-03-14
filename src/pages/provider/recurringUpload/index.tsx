@@ -22,6 +22,7 @@ import { Box } from '@mui/material';
 import { Tab, TabPanel, Tabs } from 'cx-portal-shared-components';
 import { ReactElement, SyntheticEvent, useState } from 'react';
 
+import InfoSteps from '../../../components/InfoSteps';
 import PageHeading from '../../../components/PageHeading';
 import { useTriggerUploadMutation } from '../../../features/provider/recurringUpload/apiSlice';
 import EmailConfiguration from './EmailConfiguration';
@@ -72,6 +73,7 @@ function RecurringUpload() {
           </TabPanel>
         ))}
       </Box>
+      <InfoSteps icon="tips" steps={['content.policies.page_note']} sx={{ mt: 3 }} />
     </>
   );
 }

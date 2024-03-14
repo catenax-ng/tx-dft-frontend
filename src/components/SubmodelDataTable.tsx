@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2021,2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2021,2024 T-Systems International GmbH
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -26,6 +26,7 @@ import { addRows, deleteRows, setRows, setSelectionModel } from '../features/pro
 import { useAppDispatch, useAppSelector } from '../features/store';
 import { schemaValidator } from '../helpers/SchemaValidator';
 import InfoSteps from './InfoSteps';
+import UploadInfo from './provider/UploadInfo';
 
 export default function DataTable() {
   const { columns, rows, selectionModel, selectedRows } = useAppSelector(state => state.submodelSlice);
@@ -101,11 +102,7 @@ export default function DataTable() {
           },
         }}
       />
-      <InfoSteps
-        icon="tips"
-        steps={['content.provider.manualInfo_1', 'content.provider.manualInfo_2']}
-        sx={{ mt: 3 }}
-      />
+      <UploadInfo />
     </Box>
   );
 }
