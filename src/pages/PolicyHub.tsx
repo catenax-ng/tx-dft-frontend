@@ -27,113 +27,40 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import FormLabelDescription from '../components/policies/FormLabelDescription';
-import { ADD_POLICY_DIALOG_TYPES, NEW_POLICY_ITEM, SELECT_POLICY_TYPES } from '../constants/policies';
-import {
-  useGetPoliciesQuery,
-  useGetPolicyTemplateQuery,
-  useGetSinglePolicyMutation,
-} from '../features/provider/policies/apiSlice';
-import { setPolicyDialog, setSelectedPolicy } from '../features/provider/policies/slice';
+import PolicySelection from '../components/policies/PolicySelection';
+import { SELECT_POLICY_TYPES } from '../constants/policies';
+import { prepareFormData } from '../features/provider/policies/actions';
+import { useGetPolicyTemplateQuery } from '../features/provider/policies/apiSlice';
+import { handlePolicyFormData, setPolicyDialog } from '../features/provider/policies/slice';
 import { useAppDispatch, useAppSelector } from '../features/store';
-import { ISelectList } from '../models/Common';
 import { PolicyHubModel } from '../models/Polices.models';
 import { ALPHA_NUM_REGEX } from '../utils/constants';
 
 const PolicyHub = ({ onSubmit }: any) => {
   const { t } = useTranslation();
-  const { selectedUseCases, useCaseNames } = useAppSelector(state => state.appSlice);
-  const { policyDialogType, policyData, selectedPolicy } = useAppSelector(state => state.policySlice);
-
-  const isEditPolicy = policyDialogType === 'Edit';
-
-  const showPolicySelection = policyDialogType === 'FileWithPolicy' || policyDialogType === 'TableWithPolicy';
+  const { useCaseNames } = useAppSelector(state => state.appSlice);
+  const { policyFormData } = useAppSelector(state => state.policySlice);
 
   const { data, isSuccess } = useGetPolicyTemplateQuery({
     useCases: useCaseNames,
   });
-  const { data: policyListResponse, isSuccess: isPolicyDataSuccess } = useGetPoliciesQuery(
-    {},
-    { skip: !showPolicySelection },
-  );
-  const [getSinglePolicy] = useGetSinglePolicyMutation();
 
-  const [formData, setFormData] = useState<any>({});
   const [activeTab, setActiveTab] = useState(0);
-  const [policyList, setPolicyList] = useState([]);
-  const handleTabChange = (event: SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_event: SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
   const dispatch = useAppDispatch();
-
-  const dialogTypeCheck = ADD_POLICY_DIALOG_TYPES.includes(policyDialogType);
-
   const { handleSubmit, control, reset } = useForm();
 
   useEffect(() => {
-    reset(formData);
-  }, [formData, reset]);
-
-  useEffect(() => {
-    dispatch(setSelectedPolicy(NEW_POLICY_ITEM));
-  }, [dispatch]);
+    reset(policyFormData);
+  }, [policyFormData, reset]);
 
   useEffect(() => {
     if (isSuccess) {
-      if (dialogTypeCheck) {
-        setFormData(PolicyHubModel.usecaseFilter(data, selectedUseCases));
-      } else if (isEditPolicy) {
-        setFormData(PolicyHubModel.prepareEditData(policyData, data));
-      }
+      dispatch(prepareFormData({ data }));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, isSuccess, selectedUseCases]);
-
-  useEffect(() => {
-    if (isPolicyDataSuccess) {
-      const list = policyListResponse?.items.map((policy: any) => {
-        return {
-          id: policy.uuid,
-          title: policy.policy_name,
-          value: 'EXISTING',
-        };
-      });
-      setPolicyList([NEW_POLICY_ITEM, ...list]);
-    }
-  }, [isPolicyDataSuccess, policyListResponse]);
-
-  const handleChange = (e: any, type: string, key: string) => {
-    setFormData((prev: any) => {
-      const updatedFormData = { ...prev };
-      const policies = updatedFormData[type];
-      // if its a valid policy not a custom values
-      if (isArray(policies)) {
-        // Find the object in the policies array with the given technicalKey
-        const policyToUpdate = policies.find((policy: any) => policy.technicalKey === key);
-        // If the policyToUpdate is found, update its value
-        if (policyToUpdate) {
-          policyToUpdate.value = e || '';
-        }
-      } else {
-        updatedFormData[key] = e || '';
-      }
-      return updatedFormData;
-    });
-  };
-
-  const handlePolicySelection = async (item: ISelectList) => {
-    dispatch(setSelectedPolicy(item));
-    if (item.value === 'NEW') {
-      setFormData(PolicyHubModel.usecaseFilter(data, selectedUseCases));
-    } else {
-      await getSinglePolicy(item.id)
-        .unwrap()
-        .then((res: any) => {
-          if (res) {
-            setFormData(PolicyHubModel.prepareEditData(res, data));
-          }
-        });
-    }
-  };
+  }, [data, dispatch, isSuccess]);
 
   const formSubmit = (formOutput: any) => {
     onSubmit(PolicyHubModel.preparePayload(formOutput));
@@ -153,7 +80,7 @@ const PolicyHub = ({ onSubmit }: any) => {
             onChange={e => {
               const { value } = e.target;
               if (ALPHA_NUM_REGEX.test(value) || value === '') {
-                handleChange(value, type, item.technicalKey);
+                dispatch(handlePolicyFormData({ value, type, key: item.technicalKey }));
               }
             }}
             helperText="Invalid input"
@@ -173,7 +100,7 @@ const PolicyHub = ({ onSubmit }: any) => {
             placeholder="Select a value"
             type={'text'}
             disableClearable={false}
-            onChangeItem={e => handleChange(e, type, item.technicalKey)}
+            onChangeItem={e => dispatch(handlePolicyFormData({ value: e, type, key: item.technicalKey }))}
           />
         </FormControl>
       );
@@ -183,26 +110,10 @@ const PolicyHub = ({ onSubmit }: any) => {
   };
 
   if (isSuccess) {
-    const policyTypes = keys(pickBy(formData, isArray));
+    const policyTypes = keys(pickBy(policyFormData, isArray));
     return (
       <form>
-        {showPolicySelection && (
-          <Box>
-            <FormControl sx={{ mb: 3, width: 300 }}>
-              <SelectList
-                keyTitle="title"
-                defaultValue={selectedPolicy}
-                items={policyList}
-                variant="filled"
-                label={'Create new or choose existing policy'}
-                placeholder="Select a value"
-                type={'text'}
-                disableClearable={false}
-                onChangeItem={handlePolicySelection}
-              />
-            </FormControl>
-          </Box>
-        )}
+        <PolicySelection data={data} />
         <FormControl sx={{ mb: 3, width: 300 }}>
           <Controller
             name="policy_name"
@@ -215,7 +126,7 @@ const PolicyHub = ({ onSubmit }: any) => {
             }}
             render={({ fieldState: { error } }) => (
               <Input
-                value={formData.policy_name}
+                value={policyFormData.policy_name}
                 variant="filled"
                 label={'Policy name'}
                 placeholder={'Enter policy name'}
@@ -224,7 +135,7 @@ const PolicyHub = ({ onSubmit }: any) => {
                 onChange={e => {
                   const { value } = e.target;
                   if (ALPHA_NUM_REGEX.test(value) || value === '') {
-                    handleChange(value, 'policy_name', 'policy_name');
+                    dispatch(handlePolicyFormData({ value, type: 'policy_name', key: 'policy_name' }));
                   }
                 }}
                 helperText={'Name required (min. 3 characters)'}
@@ -245,7 +156,7 @@ const PolicyHub = ({ onSubmit }: any) => {
             return (
               <TabPanel key={type} index={i} value={activeTab}>
                 <Grid container spacing={3}>
-                  {formData[type].map((item: any) => (
+                  {policyFormData[type].map((item: any) => (
                     <Grid key={type + item.technicalKey} item xs={5}>
                       {renderFormField(item, type)}
                     </Grid>

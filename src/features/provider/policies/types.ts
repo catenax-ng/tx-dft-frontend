@@ -28,6 +28,7 @@ export interface IAccessPolicyState {
   policyDialog: boolean;
   policyDialogType: string;
   selectedPolicy: ISelectList;
+  policyFormData: any;
 }
 export interface PolicyHubResponse {
   technicalKey: string;

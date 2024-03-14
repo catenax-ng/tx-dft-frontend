@@ -21,6 +21,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { Status } from '../../../enums';
+import { PolicyHubModel } from '../../../models/Polices.models';
 import { ProcessReport } from '../../../models/ProcessReport';
 import ProviderService from '../../../services/ProviderService';
 import { setPageLoading } from '../../app/slice';
@@ -28,7 +29,8 @@ import { setSnackbarMessage } from '../../notifiication/slice';
 import { RootState } from '../../store';
 import { clearRows } from '../submodels/slice';
 import { removeSelectedFiles, setUploadData, setUploadStatus } from '../upload/slice';
-import { handleDialogClose } from './slice';
+import { handleDialogClose, setPolicyFormData } from './slice';
+import { PolicyHubResponse } from './types';
 
 const defaultUploadData: ProcessReport = {
   processId: '',
@@ -45,7 +47,7 @@ const defaultUploadData: ProcessReport = {
   endDate: undefined,
 };
 
-const clearUpload = createAsyncThunk('/clear-upload', async (arg, { dispatch }) => {
+const clearUpload = createAsyncThunk('/clear-upload', (_arg, { dispatch }) => {
   dispatch(setPageLoading(false));
   dispatch(setUploadStatus(true));
   dispatch(clearRows());
@@ -78,7 +80,7 @@ const handleAlerts = createAsyncThunk('/handle-alerts', (data: ProcessReport, { 
   }
 });
 
-const processingReport = createAsyncThunk('/process-report', async (arg: any, { dispatch }) => {
+const processingReport = createAsyncThunk('/process-report', (arg: any, { dispatch }) => {
   dispatch(setUploadData(arg.data));
   if (arg?.data?.status !== Status.completed && arg?.data?.status !== Status.failed) {
     // if status !== 'COMPLETED' && status !== 'FAILED' -> repeat in interval with 2 seconds to refresh data
@@ -104,8 +106,8 @@ const processingReport = createAsyncThunk('/process-report', async (arg: any, { 
 });
 
 // Get process id
-const getProcessId = createAsyncThunk('/get-process-id', async (processId: string, { dispatch }) => {
-  setTimeout(async () => {
+const getProcessId = createAsyncThunk('/get-process-id', (processId: string, { dispatch }) => {
+  setTimeout(() => {
     ProviderService.getInstance()
       .getReportById(processId)
       .then(response => {
@@ -123,22 +125,22 @@ const getProcessId = createAsyncThunk('/get-process-id', async (processId: strin
 
 const uploadFileWithPolicy = createAsyncThunk('/upload-file-with-policy', async (data: any, { dispatch, getState }) => {
   const state = getState() as RootState;
+  const { selectedFiles, currentUploadData } = state.uploadFileSlice;
+  const { selectedSubmodel } = state.submodelSlice;
+
   const formData = new FormData();
-  formData.append('file', state.uploadFileSlice.selectedFiles[0]);
+  formData.append('file', selectedFiles[0]);
   formData.append('meta_data', JSON.stringify(data));
-  formData.append('submodel', state.submodelSlice.selectedSubmodel.value);
+  formData.append('submodel', selectedSubmodel.value);
 
   try {
     dispatch(setPageLoading(true));
-    const response = await ProviderService.getInstance().uploadData(
-      state.submodelSlice.selectedSubmodel.value,
-      formData,
-    );
+    const response = await ProviderService.getInstance().uploadData(selectedSubmodel.value, formData);
     const uploadSubmodelData = response?.data;
     // first call
     if (uploadSubmodelData) dispatch(getProcessId(uploadSubmodelData));
   } catch (error) {
-    dispatch(setUploadData({ ...state.uploadFileSlice.currentUploadData, status: Status.failed }));
+    dispatch(setUploadData({ ...currentUploadData, status: Status.failed }));
     clearUpload();
   }
 });
@@ -162,4 +164,19 @@ const uploadTableWithPolicy = createAsyncThunk(
   },
 );
 
-export { uploadFileWithPolicy, uploadTableWithPolicy };
+const prepareFormData = createAsyncThunk(
+  'transform-policy-hub-data',
+  ({ data, edit }: { data: PolicyHubResponse[]; edit?: boolean }, { getState, dispatch }) => {
+    const state = getState() as RootState;
+    const { selectedUseCases } = state.appSlice;
+    const { policyData, policyDialogType } = state.policySlice;
+    const isEdit = policyDialogType === 'Edit';
+    if (isEdit || edit) {
+      dispatch(setPolicyFormData(PolicyHubModel.prepareEditData(policyData, data)));
+    } else {
+      dispatch(setPolicyFormData(PolicyHubModel.usecaseFilter(data, selectedUseCases)));
+    }
+  },
+);
+
+export { prepareFormData, uploadFileWithPolicy, uploadTableWithPolicy };

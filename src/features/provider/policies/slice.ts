@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2022,2024 T-Systems International GmbH
  * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
@@ -19,6 +20,7 @@
  ********************************************************************************/
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { isArray } from 'lodash';
 
 import { NEW_POLICY_ITEM } from '../../../constants/policies';
 import { ISelectList } from '../../../models/Common';
@@ -30,6 +32,7 @@ const initialState: IAccessPolicyState = {
   policyDialog: false,
   policyDialogType: '',
   selectedPolicy: NEW_POLICY_ITEM,
+  policyFormData: {},
 };
 
 export const policySlice = createSlice({
@@ -49,10 +52,37 @@ export const policySlice = createSlice({
     setSelectedPolicy: (state, action: PayloadAction<ISelectList>) => {
       state.selectedPolicy = action.payload;
     },
+    setPolicyFormData: (state, action: PayloadAction) => {
+      state.policyFormData = action.payload;
+    },
+    handlePolicyFormData: (state, action: PayloadAction<any>) => {
+      const { value, type, key } = action.payload;
+      const updatedFormData = { ...state.policyFormData };
+      const policies = updatedFormData[type];
+      // if its a valid policy not a custom values
+      if (isArray(policies)) {
+        // Find the object in the policies array with the given technicalKey
+        const policyToUpdate = policies.find((policy: any) => policy.technicalKey === key);
+        // If the policyToUpdate is found, update its value
+        if (policyToUpdate) {
+          policyToUpdate.value = value || '';
+        }
+      } else {
+        updatedFormData[key] = value || '';
+      }
+      state.policyFormData = updatedFormData;
+    },
   },
 });
 
-export const { setPolicyData, setPolicyDialog, setPolicyDialogType, handleDialogClose, setSelectedPolicy } =
-  policySlice.actions;
+export const {
+  setPolicyData,
+  setPolicyDialog,
+  setPolicyDialogType,
+  handleDialogClose,
+  setSelectedPolicy,
+  setPolicyFormData,
+  handlePolicyFormData,
+} = policySlice.actions;
 
 export default policySlice.reducer;
