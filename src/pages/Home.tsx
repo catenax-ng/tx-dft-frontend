@@ -35,7 +35,7 @@ import { setUseCases } from '../features/app/slice';
 import { IUseCase } from '../features/app/types';
 import { clearRows, setSelectedSubmodel } from '../features/provider/submodels/slice';
 import { ISubmodelList } from '../features/provider/submodels/types';
-import { removeSelectedFiles, setUploadStatus } from '../features/provider/upload/slice';
+import { removeSelectedFiles } from '../features/provider/upload/slice';
 import { useAppDispatch, useAppSelector } from '../features/store';
 import { consumeDataSteps, provideDataSteps } from '../models/Home';
 import { USER_GUIDE_URL } from '../utils/constants';
@@ -51,7 +51,6 @@ export default function Home() {
     (usecase: IUseCase) => {
       // Clearing all the ongoing uploads
       dispatch(setSelectedSubmodel({} as ISubmodelList));
-      dispatch(setUploadStatus(true));
       dispatch(clearRows());
       dispatch(removeSelectedFiles());
 

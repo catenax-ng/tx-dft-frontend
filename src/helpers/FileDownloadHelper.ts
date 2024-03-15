@@ -47,8 +47,10 @@ const csvHeaderValidation = (file: File, row: GridValidRowModel) => {
       // seperate header from first row and columns from rest all
       const [header] = fileData.split('\n').map((item: any) => item.trim().split(';'));
       const validateHeaders = isEqual(header, Object.keys(row));
-      if (validateHeaders) store.dispatch(setSelectedFiles(file));
-      else store.dispatch(setSnackbarMessage({ type: 'error', message: 'alerts.incorrectColumns' }));
+      if (validateHeaders) {
+        localStorage.setItem('uploadedfileData', fileData);
+        store.dispatch(setSelectedFiles(file));
+      } else store.dispatch(setSnackbarMessage({ type: 'error', message: 'alerts.incorrectColumns' }));
     };
     reader.readAsText(file);
   } else

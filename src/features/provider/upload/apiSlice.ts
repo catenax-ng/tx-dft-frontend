@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2021,2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024 T-Systems International GmbH
+ * Copyright (c) 2024 Contributors to the Eclipse Foundation
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -16,20 +16,22 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
+
 import { apiSlice } from '../../app/apiSlice';
 import { setPageLoading } from '../../app/slice';
 
-export const providerHistorySlice = apiSlice.injectEndpoints({
+export const uploadApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
-    getHistory: builder.query({
-      query: params => {
+    uploadFile: builder.mutation({
+      query: ({ submodel, data }) => {
         return {
-          url: '/processing-report',
-          params,
+          method: 'POST',
+          url: `${submodel}/upload`,
+          body: data,
         };
       },
-      providesTags: ['UploadHistory'],
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+      invalidatesTags: ['Policies'],
+      async onQueryStarted(_args, { dispatch, queryFulfilled }) {
         try {
           dispatch(setPageLoading(true));
           await queryFulfilled;
@@ -38,31 +40,16 @@ export const providerHistorySlice = apiSlice.injectEndpoints({
         }
       },
     }),
-    deleteHistory: builder.mutation({
-      query: ({ processId, csvType }) => ({
-        url: `${csvType}/delete/${processId}`,
-        method: 'DELETE',
-      }),
-      extraOptions: { showNotification: true, message: 'alerts.deleteSuccess' },
-      invalidatesTags: ['UploadHistory'],
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          dispatch(setPageLoading(true));
-          await queryFulfilled;
-        } finally {
-          dispatch(setPageLoading(false));
-        }
-      },
-    }),
-    downloadCsv: builder.mutation({
-      query: ({ csvType, processId }) => {
+    uploadManualEntry: builder.mutation({
+      query: ({ submodel, data }) => {
         return {
-          method: 'GET',
-          url: `/${csvType}/download/${processId}/csv`,
-          responseHandler: response => response.blob(),
+          method: 'POST',
+          url: `${submodel}/manualentry`,
+          body: data,
         };
       },
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+      invalidatesTags: ['Policies'],
+      async onQueryStarted(_args, { dispatch, queryFulfilled }) {
         try {
           dispatch(setPageLoading(true));
           await queryFulfilled;
@@ -72,7 +59,6 @@ export const providerHistorySlice = apiSlice.injectEndpoints({
       },
     }),
   }),
-  overrideExisting: false,
 });
 
-export const { useGetHistoryQuery, useDeleteHistoryMutation, useDownloadCsvMutation } = providerHistorySlice;
+export const { useUploadFileMutation, useUploadManualEntryMutation } = uploadApiSlice;

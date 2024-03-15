@@ -20,7 +20,6 @@
  ********************************************************************************/
 
 import { Dialog, DialogContent, DialogHeader, Typography } from 'cx-portal-shared-components';
-import { omit } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import { uploadFileWithPolicy, uploadTableWithPolicy } from '../../features/provider/policies/actions';
@@ -32,29 +31,25 @@ import PolicyHub from '../../pages/PolicyHub';
 function AddEditPolicyNew() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { policyDialog, policyDialogType, selectedPolicy } = useAppSelector(state => state.policySlice);
-  const { rows } = useAppSelector(state => state.submodelSlice);
+  const { policyDialog, policyDialogType } = useAppSelector(state => state.policySlice);
 
   const [createPolicy] = useCreatePolicyMutation();
   const [updatePolicy] = useUpdatePolicyMutation();
 
-  // eslint-disable-next-line no-unused-vars
-  const onSubmit = async (payload: any) => {
+  const onSubmit = async (formData: any) => {
     try {
       switch (policyDialogType) {
         case 'Add':
-          await createPolicy(payload);
+          await createPolicy(formData);
           break;
         case 'Edit':
-          await updatePolicy(payload);
+          await updatePolicy(formData);
           break;
         case 'FileWithPolicy':
-          await dispatch(uploadFileWithPolicy({ ...omit(payload, 'lastUpdatedTime'), type: selectedPolicy.value }));
+          await dispatch(uploadFileWithPolicy(formData));
           break;
         case 'TableWithPolicy':
-          await dispatch(
-            uploadTableWithPolicy({ ...omit(payload, 'lastUpdatedTime'), type: selectedPolicy.value, row_data: rows }),
-          );
+          await dispatch(uploadTableWithPolicy(formData));
           break;
         default:
           break;

@@ -20,47 +20,23 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Status } from '../../../enums';
-import { ProcessReport } from '../../../models/ProcessReport';
 import { IUploadFileSlice } from './types';
 
 const initialState: IUploadFileSlice = {
-  currentUploadData: {
-    processId: '',
-    referenceProcessId: '',
-    csvType: '',
-    numberOfItems: 0,
-    numberOfCreatedItems: 0,
-    numberOfUpdatedItems: 0,
-    numberOfDeletedItems: 0,
-    numberOfFailedItems: 0,
-    numberOfSucceededItems: 0,
-    status: Status.inProgress,
-    startDate: '',
-    endDate: undefined,
-  },
-  uploadStatus: false,
   selectedFiles: [],
 };
 export const uploadFileSlice = createSlice({
   name: 'providerSlice',
   initialState,
   reducers: {
-    setUploadData: (state, action: PayloadAction<ProcessReport>) => {
-      state.currentUploadData = action.payload;
-    },
-    setUploadStatus: (state, action: PayloadAction<boolean>) => {
-      state.uploadStatus = action.payload;
-    },
     setSelectedFiles: (state, action: PayloadAction<File>) => {
       state.selectedFiles = [action.payload];
     },
     removeSelectedFiles: state => {
       state.selectedFiles = [];
-      state.uploadStatus = false;
     },
   },
 });
 
-export const { setUploadData, setSelectedFiles, setUploadStatus, removeSelectedFiles } = uploadFileSlice.actions;
+export const { setSelectedFiles, removeSelectedFiles } = uploadFileSlice.actions;
 export default uploadFileSlice.reducer;

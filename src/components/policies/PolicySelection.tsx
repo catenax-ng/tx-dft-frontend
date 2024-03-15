@@ -88,7 +88,7 @@ function PolicySelection({ data }: { data: PolicyHubResponse[] }) {
             label={'Create new or choose existing policy'}
             placeholder="Select a value"
             type={'text'}
-            disableClearable={false}
+            disableClearable={true}
             onChangeItem={handlePolicySelection}
           />
         </FormControl>

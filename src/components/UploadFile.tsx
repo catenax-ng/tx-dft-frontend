@@ -26,7 +26,7 @@ import { useTranslation } from 'react-i18next';
 import { setPageLoading } from '../features/app/slice';
 import { setSnackbarMessage } from '../features/notifiication/slice';
 import { setPolicyDialog, setPolicyDialogType } from '../features/provider/policies/slice';
-import { removeSelectedFiles, setUploadStatus } from '../features/provider/upload/slice';
+import { removeSelectedFiles } from '../features/provider/upload/slice';
 import { useAppDispatch, useAppSelector } from '../features/store';
 import { csvHeaderValidation, fileSizeCheck } from '../helpers/FileDownloadHelper';
 import { Config } from '../utils/config';
@@ -34,13 +34,12 @@ import { trimText } from '../utils/utils';
 import UploadInfo from './provider/UploadInfo';
 
 export default function UploadFile() {
-  const { selectedFiles, uploadStatus } = useAppSelector(state => state.uploadFileSlice);
+  const { selectedFiles } = useAppSelector(state => state.uploadFileSlice);
   const { row } = useAppSelector(state => state.submodelSlice);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
   const handleFiles = (file: File) => {
-    dispatch(setUploadStatus(false));
     dispatch(setPageLoading(false));
     const maxFileSize = parseInt(Config.REACT_APP_FILESIZE);
     if (file.size < maxFileSize) {
@@ -104,7 +103,7 @@ export default function UploadFile() {
               }}
             />
           </Box>
-          {selectedFiles.length && !uploadStatus ? (
+          {selectedFiles.length ? (
             <Box sx={{ display: 'flex', mt: 2, flexDirection: 'column' }}>
               <DropPreview
                 onDelete={() => dispatch(removeSelectedFiles())}

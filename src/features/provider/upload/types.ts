@@ -18,10 +18,6 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { ProcessReport } from '../../../models/ProcessReport';
-
 export interface IUploadFileSlice {
-  currentUploadData: ProcessReport;
-  uploadStatus: boolean;
   selectedFiles: File[];
 }
