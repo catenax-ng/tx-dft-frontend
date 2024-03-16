@@ -120,7 +120,7 @@ export default function ConsumeData() {
     }));
     return {
       offers: offersList,
-      usage_policies: selectedList[0].policy.usage_policies,
+      usage_policies: selectedList[0].policy.Usage,
     };
   };
 
@@ -179,8 +179,8 @@ export default function ConsumeData() {
     }
     const useCasesList: any[] = [];
     selectedOffersList.forEach((offer: IConsumerDataOffers) => {
-      if (!isEmpty(offer.policy.usage_policies)) {
-        useCasesList.push(offer.policy.usage_policies);
+      if (!isEmpty(offer.policy.Usage)) {
+        useCasesList.push(offer.policy.Usage);
       } else {
         useCasesList.push([]);
       }
