@@ -16,8 +16,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
+import { setLoadingHandler } from '../../../helpers/ApiHelper';
 import { apiSlice } from '../../app/apiSlice';
-import { setPageLoading } from '../../app/slice';
 import { IContractAgreements } from '../../consumer/types';
 
 export const contractsSlice = apiSlice.injectEndpoints({
@@ -49,14 +49,7 @@ export const contractsSlice = apiSlice.injectEndpoints({
       }),
       extraOptions: { showNotification: true, message: 'alerts.contractDeclined' },
       invalidatesTags: ['DeleteContract'],
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          dispatch(setPageLoading(true));
-          await queryFulfilled;
-        } finally {
-          dispatch(setPageLoading(false));
-        }
-      },
+      onQueryStarted: setLoadingHandler,
     }),
   }),
 });

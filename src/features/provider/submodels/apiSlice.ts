@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
@@ -19,8 +20,8 @@
 
 import { indexOf } from 'lodash';
 
+import { setLoadingHandler } from '../../../helpers/ApiHelper';
 import { apiSlice } from '../../app/apiSlice';
-import { setPageLoading } from '../../app/slice';
 
 export const helpApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -31,14 +32,12 @@ export const helpApiSlice = apiSlice.injectEndpoints({
           params,
         };
       },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       transformResponse: (response: any[]) => {
         const pageData = response.map(submodel => {
           return {
             name: submodel.title,
             description: submodel.description,
             id: submodel.id,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             rows: Object.entries(submodel.items.properties).map(([key, value]: any, index) => ({
               id: index,
               name: key,
@@ -50,14 +49,7 @@ export const helpApiSlice = apiSlice.injectEndpoints({
         });
         return pageData;
       },
-      async onQueryStarted(args, { dispatch, queryFulfilled }) {
-        try {
-          dispatch(setPageLoading(true));
-          await queryFulfilled;
-        } finally {
-          dispatch(setPageLoading(false));
-        }
-      },
+      onQueryStarted: setLoadingHandler,
     }),
     downloadSample: builder.mutation({
       query: ({ submodel, type }) => {

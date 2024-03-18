@@ -20,8 +20,8 @@
 
 import moment from 'moment';
 
+import { setLoadingHandler } from '../../helpers/ApiHelper';
 import { apiSlice } from '../app/apiSlice';
-import { setPageLoading } from '../app/slice';
 import { IConsumerDataOffers } from './types';
 
 export const consumerApiSlice = apiSlice.injectEndpoints({
@@ -53,14 +53,7 @@ export const consumerApiSlice = apiSlice.injectEndpoints({
         };
       },
       extraOptions: { showNotification: true, message: 'alerts.subscriptionSuccess' },
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          dispatch(setPageLoading(true));
-          await queryFulfilled;
-        } finally {
-          dispatch(setPageLoading(false));
-        }
-      },
+      onQueryStarted: setLoadingHandler,
     }),
   }),
 });

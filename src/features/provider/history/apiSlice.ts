@@ -16,8 +16,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
+import { setLoadingHandler } from '../../../helpers/ApiHelper';
 import { apiSlice } from '../../app/apiSlice';
-import { setPageLoading } from '../../app/slice';
 
 export const providerHistorySlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -29,14 +29,7 @@ export const providerHistorySlice = apiSlice.injectEndpoints({
         };
       },
       providesTags: ['UploadHistory'],
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          dispatch(setPageLoading(true));
-          await queryFulfilled;
-        } finally {
-          dispatch(setPageLoading(false));
-        }
-      },
+      onQueryStarted: setLoadingHandler,
     }),
     deleteHistory: builder.mutation({
       query: ({ processId, csvType }) => ({
@@ -45,14 +38,7 @@ export const providerHistorySlice = apiSlice.injectEndpoints({
       }),
       extraOptions: { showNotification: true, message: 'alerts.deleteSuccess' },
       invalidatesTags: ['UploadHistory'],
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          dispatch(setPageLoading(true));
-          await queryFulfilled;
-        } finally {
-          dispatch(setPageLoading(false));
-        }
-      },
+      onQueryStarted: setLoadingHandler,
     }),
     downloadCsv: builder.mutation({
       query: ({ csvType, processId }) => {
@@ -62,17 +48,9 @@ export const providerHistorySlice = apiSlice.injectEndpoints({
           responseHandler: response => response.blob(),
         };
       },
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          dispatch(setPageLoading(true));
-          await queryFulfilled;
-        } finally {
-          dispatch(setPageLoading(false));
-        }
-      },
+      onQueryStarted: setLoadingHandler,
     }),
   }),
-  overrideExisting: false,
 });
 
 export const { useGetHistoryQuery, useDeleteHistoryMutation, useDownloadCsvMutation } = providerHistorySlice;

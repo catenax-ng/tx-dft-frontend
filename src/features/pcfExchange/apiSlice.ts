@@ -17,6 +17,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { setLoadingHandler } from '../../helpers/ApiHelper';
 import { apiSlice } from '../app/apiSlice';
 import { setPageLoading } from '../app/slice';
 import { setPcfValueData, setPcfValueDialog } from './slice';
@@ -36,14 +37,7 @@ export const pcfExchangeSlice = apiSlice.injectEndpoints({
         showNotification: true,
         message: 'PCF request sent!',
       },
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          dispatch(setPageLoading(true));
-          await queryFulfilled;
-        } finally {
-          dispatch(setPageLoading(false));
-        }
-      },
+      onQueryStarted: setLoadingHandler,
     }),
     getPcfExchange: builder.query({
       query: ({ type, params }) => {
@@ -59,14 +53,7 @@ export const pcfExchangeSlice = apiSlice.injectEndpoints({
         });
         return { pcfdatahistory: modifieldData };
       },
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          dispatch(setPageLoading(true));
-          await queryFulfilled;
-        } finally {
-          dispatch(setPageLoading(false));
-        }
-      },
+      onQueryStarted: setLoadingHandler,
     }),
 
     viewPCFData: builder.mutation({
@@ -101,14 +88,7 @@ export const pcfExchangeSlice = apiSlice.injectEndpoints({
         showNotification: true,
         message: 'Action on PCF request completed and sending notification to consumer',
       },
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          dispatch(setPageLoading(true));
-          await queryFulfilled;
-        } finally {
-          dispatch(setPageLoading(false));
-        }
-      },
+      onQueryStarted: setLoadingHandler,
     }),
   }),
 });

@@ -85,6 +85,7 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
       },
       extraOptions: { showNotification: true, message: 'Policy deleted successfully!' },
       invalidatesTags: ['Policies'],
+      onQueryStarted: setLoadingHandler,
     }),
     getSinglePolicy: builder.mutation({
       query: uuid => {

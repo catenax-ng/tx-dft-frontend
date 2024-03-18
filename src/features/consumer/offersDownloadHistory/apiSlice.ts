@@ -18,8 +18,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { setLoadingHandler } from '../../../helpers/ApiHelper';
 import { apiSlice } from '../../app/apiSlice';
-import { setPageLoading } from '../../app/slice';
 
 export const offersDownloadHistoryApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -42,14 +42,16 @@ export const offersDownloadHistoryApiSlice = apiSlice.injectEndpoints({
         };
       },
       invalidatesTags: ['DownloadHistoryList'],
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          dispatch(setPageLoading(true));
-          await queryFulfilled;
-        } finally {
-          dispatch(setPageLoading(false));
-        }
+      onQueryStarted: setLoadingHandler,
+    }),
+    getUploadErrors: builder.mutation({
+      query: processId => {
+        return {
+          method: 'GET',
+          url: `/processing-report/failure-details/${processId}`,
+        };
       },
+      onQueryStarted: setLoadingHandler,
     }),
   }),
 });

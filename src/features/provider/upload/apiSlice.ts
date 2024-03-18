@@ -17,8 +17,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { setLoadingHandler } from '../../../helpers/ApiHelper';
 import { apiSlice } from '../../app/apiSlice';
-import { setPageLoading } from '../../app/slice';
 
 export const uploadApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -31,14 +31,7 @@ export const uploadApiSlice = apiSlice.injectEndpoints({
         };
       },
       invalidatesTags: ['Policies'],
-      async onQueryStarted(_args, { dispatch, queryFulfilled }) {
-        try {
-          dispatch(setPageLoading(true));
-          await queryFulfilled;
-        } finally {
-          dispatch(setPageLoading(false));
-        }
-      },
+      onQueryStarted: setLoadingHandler,
     }),
     uploadManualEntry: builder.mutation({
       query: ({ submodel, data }) => {
@@ -49,14 +42,7 @@ export const uploadApiSlice = apiSlice.injectEndpoints({
         };
       },
       invalidatesTags: ['Policies'],
-      async onQueryStarted(_args, { dispatch, queryFulfilled }) {
-        try {
-          dispatch(setPageLoading(true));
-          await queryFulfilled;
-        } finally {
-          dispatch(setPageLoading(false));
-        }
-      },
+      onQueryStarted: setLoadingHandler,
     }),
   }),
 });
