@@ -22,6 +22,6 @@ const SELECT_POLICY_TYPES = ['Brands', 'Version', 'Static', 'DynamicValue'];
 
 const ADD_POLICY_DIALOG_TYPES = ['Add', 'FileWithPolicy', 'TableWithPolicy'];
 
-const NEW_POLICY_ITEM = { id: 0, title: 'New', value: 'NEW' };
+const NEW_POLICY_ITEM = { id: 0, title: 'Create New Policy', value: 'NEW' };
 
 export { ADD_POLICY_DIALOG_TYPES, NEW_POLICY_ITEM, SELECT_POLICY_TYPES };
