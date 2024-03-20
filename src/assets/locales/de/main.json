@@ -86,25 +86,7 @@
       "note": "Hinweis: Wenn Sie keine BPN vergeben, sind die Daten nur für Ihre Organisation zugänglich.",
       "unAccess": "Uneingeschränkter Zugang!",
       "warningText": "Wenn Sie keine BPN vergeben, sind die Daten nur für Sie zugänglich.",
-      "usagePolicy": "Nutzungsrichtlinien",
-      "duration": "Nutzungsdauer",
-      "durationNote": "Erlaubte Nutzungsdauer ab Vertragsstart",
-      "selectDuration": "Wähle Dauer",
-      "durationValues": {
-        "hour": "Stunde",
-        "day": "Tag",
-        "month": "Monat",
-        "year": "Jahr"
-      },
-      "purpose": "Nutzungszweck",
-      "purposeNote": "Nutzung nur für nachfolgenden Zweck zugelassen",
-      "role": "Rolle",
-      "roleNote": "Nutzung nur für Individuen mit Rolle/Eigenschaft zugelassen",
-      "custom": "Nutzerdefinierte Bedingung",
-      "customNote": "Folgende Regel(n) gelten weiterhin für die Nutzung",
-      "purposeLabel": "Wählen Sie den Zweck aus",
-      "roleLabel": "Bitte fügen sie eine Rolle ein",
-      "customLabel": "Bitte geben Sie Ihre benutzerdefinierten Bedingungen ein"
+      "usagePolicy": "Nutzungsrichtlinien"
     },
     "uploadHistory": {
       "description": "Dies ist ein Überblick über die Datenbereitstellung ihres Unternehmens an das Catena-X Ökosystem. Alle Aktivitäten werden hier gelistet, d.h. die Erstellung, Updates, Löschung von Daten. Vergangene Versionen der bereitgestellten Daten können heruntergeladen werden.",

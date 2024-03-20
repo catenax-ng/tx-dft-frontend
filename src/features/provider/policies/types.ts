@@ -37,5 +37,5 @@ export interface PolicyHubResponse {
   useCase: string[];
   attribute: { key: string; value: string; id?: Key }[];
   technicalEnforced: boolean;
-  value: string;
+  value: any;
 }
