@@ -35,12 +35,8 @@ export default function DataTable() {
 
   return (
     <Box>
-      <InfoSteps
-        icon="info"
-        steps={['content.provider.manualStep_1', 'content.provider.uploadStep_2']}
-        sx={{ mb: 3 }}
-      />
-      <Box display="flex" justifyContent="space-between" mb={3}>
+      <UploadInfo/>
+      <Box display="flex" justifyContent="space-between" my={3}>
         <Box>
           <Button variant="contained" size="small" onClick={() => dispatch(addRows())}>
             {t('content.provider.addRow')}
@@ -102,7 +98,11 @@ export default function DataTable() {
           },
         }}
       />
-      <UploadInfo />
+      <InfoSteps
+        icon="tips"
+        steps={['content.provider.manualInfo_1', 'content.provider.manualInfo_2']}
+        sx={{ mt: 3 }}
+      />
     </Box>
   );
 }

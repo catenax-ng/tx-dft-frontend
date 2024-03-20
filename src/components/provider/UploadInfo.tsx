@@ -24,8 +24,7 @@ function UploadInfo() {
   return (
     <InfoSteps
       icon="tips"
-      steps={['content.provider.manualInfo_1', 'content.provider.manualInfo_2', 'content.provider.manualInfo_3']}
-      sx={{ mt: 3 }}
+      steps={['content.provider.uploadStep_1', 'content.provider.uploadStep_2', 'content.provider.uploadStep_3']}
     />
   );
 }
