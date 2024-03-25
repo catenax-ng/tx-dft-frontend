@@ -27,7 +27,7 @@ import { useAppDispatch, useAppSelector } from '../../features/store';
 function ViewPCFData() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { pcfValueData, pcfValueDialog } = useAppSelector(state => state.viewPcfValueSlice);
+  const { pcfValueData, pcfValueDialog } = useAppSelector(state => state.pcfExchangeSlice);
 
   return (
     <Dialog open={pcfValueDialog}>

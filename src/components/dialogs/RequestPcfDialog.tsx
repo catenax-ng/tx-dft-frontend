@@ -41,7 +41,7 @@ type IRequestPcfFormData = {
 
 function RequestPcfDialog() {
   const { t } = useTranslation();
-  const { requestPcfDialog } = useAppSelector(state => state.viewPcfValueSlice);
+  const { requestPcfDialog } = useAppSelector(state => state.pcfExchangeSlice);
   const dispatch = useAppDispatch();
   const [partnerCheckDialog, setPartnerCheckDialog] = useState(false);
 

@@ -21,10 +21,12 @@
 import { Refresh } from '@mui/icons-material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import InfoIcon from '@mui/icons-material/Info';
 import PageviewIcon from '@mui/icons-material/Pageview';
 import { Box, Grid } from '@mui/material';
 import { GridColDef, GridValidRowModel } from '@mui/x-data-grid';
 import { IconButton, LoadingButton, Tooltips, Typography } from 'cx-portal-shared-components';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Permissions from '../components/Permissions';
@@ -33,15 +35,18 @@ import {
   useGetPcfExchangeQuery,
   useViewPCFDataMutation,
 } from '../features/pcfExchange/apiSlice';
+import { handleConfirmActionDialog } from '../features/pcfExchange/slice';
+import { useAppDispatch } from '../features/store';
 import { handleBlankCellValues } from '../helpers/ConsumerOfferHelper';
 import {
+  ACTION_STATE_MAPPING,
   MAX_CONTRACTS_AGREEMENTS,
   PCF_CONSUMER_STATES,
   PCF_PUSH_FAILED_STATES,
-  PCF_STATES,
   USER_TYPE_SWITCH,
 } from '../utils/constants';
 import { convertEpochToDate } from '../utils/utils';
+import ConfirmPrompt from './dialogs/ConfirmPrompt';
 import ViewPCFData from './dialogs/ViewPCFData';
 import DataTable from './table/DataTable';
 
@@ -53,6 +58,8 @@ interface IPCFExchangeTable {
 function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>) {
   const { t } = useTranslation();
   const pageType = `pages.${USER_TYPE_SWITCH[type]}`; // to avoid nested template literals
+  const [rowData, setRowData] = useState<Record<string, string>>({});
+  const dispatch = useAppDispatch();
 
   const { data, isFetching, isSuccess, refetch } = useGetPcfExchangeQuery({
     type: type,
@@ -62,14 +69,15 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
     },
   });
 
-  const [pcfRequestAction] = useActionOnPCFRequestMutation({});
+  const [pcfRequestAction] = useActionOnPCFRequestMutation();
 
-  const [viewPCFData] = useViewPCFDataMutation({});
+  const [viewPCFData] = useViewPCFDataMutation();
 
   const columns: GridColDef[] = [
     {
       field: 'productId',
       flex: 1,
+      minWidth: 250,
       headerName: t('content.pcfExchangeTable.columns.productId'),
       valueGetter: ({ row }) => row?.assetId,
       valueFormatter: ({ value }) => value?.productId,
@@ -125,9 +133,20 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
       flex: 1,
       headerName: t('content.pcfExchangeTable.columns.status'),
       renderCell: ({ row }) => (
-        <Tooltips tooltipPlacement="top-start" tooltipArrow={false} tooltipText={handleBlankCellValues(row.status)}>
-          <span>{handleBlankCellValues(row.status)}</span>
-        </Tooltips>
+        <>
+          {row.remark && (
+            <Tooltips tooltipPlacement="bottom" tooltipText={row.remark}>
+              <span>
+                <IconButton aria-label="info" size="small">
+                  <InfoIcon color="action" fontSize="small" />
+                </IconButton>
+              </span>
+            </Tooltips>
+          )}
+          <Tooltips tooltipPlacement="top-start" tooltipArrow={false} tooltipText={handleBlankCellValues(row.status)}>
+            <span>{handleBlankCellValues(row.status)}</span>
+          </Tooltips>
+        </>
       ),
     },
     {
@@ -159,9 +178,8 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
       sortable: false,
       disableExport: true,
       renderCell: ({ row }) => {
-        const checkState = PCF_STATES.some(e => e === row.status);
         const checkFailedState = PCF_PUSH_FAILED_STATES.some(e => e === row.status);
-        if (checkState) {
+        if (row.status === 'REQUESTED') {
           return (
             <>
               <Tooltips tooltipPlacement="bottom" tooltipText={t('button.approvePCFRequest')}>
@@ -169,14 +187,10 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
                   <IconButton
                     aria-label="approval"
                     size="small"
-                    onClick={() =>
-                      pcfRequestAction({
-                        productId: row.productId,
-                        requestId: row.requestId,
-                        bpnNumber: row.bpnNumber,
-                        status: 'APPROVED',
-                      })
-                    }
+                    onClick={() => {
+                      setRowData({ ...row, status: 'approve' });
+                      dispatch(handleConfirmActionDialog(true));
+                    }}
                     sx={{ mr: 2 }}
                   >
                     <CheckCircleIcon color="action" fontSize="small" />
@@ -189,14 +203,39 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
                   <IconButton
                     aria-label="reject"
                     size="small"
-                    onClick={() =>
-                      pcfRequestAction({
-                        productId: row.productId,
-                        requestId: row.requestId,
-                        bpnNumber: row.bpnNumber,
-                        status: 'REJECTED',
-                      })
-                    }
+                    onClick={() => {
+                      setRowData({ ...row, status: 'reject' });
+                      dispatch(handleConfirmActionDialog(true));
+                    }}
+                    sx={{ mr: 2 }}
+                  >
+                    <CancelIcon color="action" fontSize="small" />
+                  </IconButton>
+                </span>
+              </Tooltips>
+            </>
+          );
+        } else if (row.status === 'PENDING_DATA_FROM_PROVIDER') {
+          return (
+            <>
+              {row?.message && (
+                <Tooltips tooltipPlacement="bottom" tooltipText={row.message}>
+                  <span>
+                    <IconButton aria-label="info" size="small">
+                      <InfoIcon color="action" fontSize="small" />
+                    </IconButton>
+                  </span>
+                </Tooltips>
+              )}
+              <Tooltips tooltipPlacement="bottom" tooltipText={t('button.rejectPCFRequest')}>
+                <span>
+                  <IconButton
+                    aria-label="reject"
+                    size="small"
+                    onClick={() => {
+                      setRowData({ ...row, status: 'reject' });
+                      dispatch(handleConfirmActionDialog(true));
+                    }}
                     sx={{ mr: 2 }}
                   >
                     <CancelIcon color="action" fontSize="small" />
@@ -265,6 +304,20 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
       },
     },
   ];
+  const handleDialogSubmit = () => {
+    try {
+      pcfRequestAction({
+        productId: rowData.productId,
+        requestId: rowData.requestId,
+        bpnNumber: rowData.bpnNumber,
+        status: ACTION_STATE_MAPPING[rowData.status],
+      })
+        .unwrap()
+        .then(() => dispatch(handleConfirmActionDialog(false)));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (isSuccess) {
     return (
@@ -302,6 +355,7 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
         <Box>
           <ViewPCFData />
         </Box>
+        <ConfirmPrompt status={rowData.status} handleDialogSubmit={handleDialogSubmit} />
       </>
     );
   } else return null;

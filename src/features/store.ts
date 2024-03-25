@@ -26,7 +26,7 @@ import { apiSlice } from './app/apiSlice';
 import appSlice from './app/slice';
 import consumerSlice from './consumer/slice';
 import notificationSlice from './notifiication/slice';
-import viewPcfValueSlice from './pcfExchange/slice';
+import pcfExchangeSlice from './pcfExchange/slice';
 import uploadHistorySlice from './provider/history/slice';
 import policySlice from './provider/policies/slice';
 import submodelSlice from './provider/submodels/slice';
@@ -40,7 +40,7 @@ export const reducers = {
   notificationSlice: notificationSlice,
   submodelSlice: submodelSlice,
   uploadHistorySlice: uploadHistorySlice,
-  viewPcfValueSlice: viewPcfValueSlice,
+  pcfExchangeSlice: pcfExchangeSlice,
   [apiSlice.reducerPath]: apiSlice.reducer,
 };
 

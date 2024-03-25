@@ -27,10 +27,11 @@ const initialState: IPCFValueState = {
   pcfValueData: {} as IPCFResponsePojo,
   pcfValueDialog: false,
   requestPcfDialog: false,
+  confirmActionDialog: false,
 };
 
-export const viewPcfValueSlice = createSlice({
-  name: 'viewPcfValueSlice',
+export const pcfExchangeSlice = createSlice({
+  name: 'pcfExchangeSlice',
   initialState,
   reducers: {
     setPcfValueData: (state, action: PayloadAction<IPCFResponsePojo>) => {
@@ -43,10 +44,18 @@ export const viewPcfValueSlice = createSlice({
     handleReqestPcfDialog: (state, action: PayloadAction<boolean>) => {
       state.requestPcfDialog = action.payload;
     },
+    handleConfirmActionDialog: (state, action: PayloadAction<boolean>) => {
+      state.confirmActionDialog = action.payload;
+    },
   },
 });
 
-export const { setPcfValueData, setPcfValueDialog, handleDialogClose, handleReqestPcfDialog } =
-  viewPcfValueSlice.actions;
+export const {
+  setPcfValueData,
+  setPcfValueDialog,
+  handleDialogClose,
+  handleReqestPcfDialog,
+  handleConfirmActionDialog,
+} = pcfExchangeSlice.actions;
 
-export default viewPcfValueSlice.reducer;
+export default pcfExchangeSlice.reducer;

@@ -59,6 +59,11 @@ const USER_TYPE_SWITCH: IDefaultObject = {
   consumer: 'provider',
 };
 
+const ACTION_STATE_MAPPING: Record<string, string> = {
+  approve: 'APPROVED',
+  reject: 'REJECTED',
+};
+
 const BPN_TYPE_FIELDS = [
   {
     id: 1,
@@ -159,6 +164,7 @@ const HOURS = [...Array(24)].map((_e, i) => ({
 }));
 
 export {
+  ACTION_STATE_MAPPING,
   ALPHA_NUM_REGEX,
   BPN_TYPE_FIELDS,
   CONTRACT_STATES,
