@@ -74,7 +74,6 @@ export const pcfExchangeSlice = apiSlice.injectEndpoints({
         }
       },
     }),
-
     actionOnPCFRequest: builder.mutation({
       query: body => {
         return {
@@ -90,6 +89,20 @@ export const pcfExchangeSlice = apiSlice.injectEndpoints({
       },
       onQueryStarted: setLoadingHandler,
     }),
+    requestNonExistPcfData: builder.mutation({
+      query: body => {
+        return {
+          url: '/pcf/request/nonexistdataoffer',
+          method: 'POST',
+          body,
+        };
+      },
+      extraOptions: {
+        showNotification: true,
+      },
+      invalidatesTags: ['PCFExchangeRequest'],
+      onQueryStarted: setLoadingHandler,
+    }),
   }),
 });
 
@@ -98,4 +111,5 @@ export const {
   useGetPcfExchangeQuery,
   useActionOnPCFRequestMutation,
   useViewPCFDataMutation,
+  useRequestNonExistPcfDataMutation,
 } = pcfExchangeSlice;

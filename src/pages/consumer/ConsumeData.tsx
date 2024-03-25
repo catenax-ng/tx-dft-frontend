@@ -29,6 +29,7 @@ import { useTranslation } from 'react-i18next';
 import ConsumeDataFilter from '../../components/ConsumeDataFilter';
 import ConfirmTermsDialog from '../../components/dialogs/ConfirmTermsDialog';
 import OfferDetailsDialog from '../../components/dialogs/OfferDetailsDialog';
+import RequestPcfDialog from '../../components/dialogs/RequestPcfDialog';
 import Permissions from '../../components/Permissions';
 import DataTable from '../../components/table/DataTable';
 import {
@@ -47,6 +48,7 @@ import {
 import { IConsumerDataOffers } from '../../features/consumer/types';
 import { setSnackbarMessage } from '../../features/notifiication/slice';
 import { useRequestPcfValuesMutation } from '../../features/pcfExchange/apiSlice';
+import { handleReqestPcfDialog } from '../../features/pcfExchange/slice';
 import { useAppDispatch, useAppSelector } from '../../features/store';
 import { handleBlankCellValues } from '../../helpers/ConsumerOfferHelper';
 import ConsumerService from '../../services/ConsumerService';
@@ -231,6 +233,9 @@ export default function ConsumeData() {
       </Typography>
       <ConsumeDataFilter />
       <Box display="flex" justifyContent="flex-end" my={3}>
+        <Button variant="contained" size="small" onClick={() => dispatch(handleReqestPcfDialog(true))} sx={{ mr: 2 }}>
+          {t('button.newPcfRequest')}
+        </Button>
         <Permissions values={['consumer_subscribe_download_data_offers']}>
           <Button
             variant="contained"
@@ -308,6 +313,7 @@ export default function ConsumeData() {
           </Button>
         </DialogActions>
       </Dialog>
+      <RequestPcfDialog />
     </>
   );
 }

@@ -252,7 +252,8 @@
     "approvePCFRequest": "Approve PCF Request",
     "rejectPCFRequest": "Reject PCF Request",
     "viewPCFData": "View PCF RECEIVED Value",
-    "retryPCFRequest": "Retry PCF notification push"
+    "retryPCFRequest": "Retry PCF notification push",
+    "newPcfRequest": "Request PCF"
   },
   "alerts": {
     "invalidFile": "Invalid file format!",

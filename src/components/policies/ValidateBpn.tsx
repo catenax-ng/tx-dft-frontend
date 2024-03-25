@@ -19,88 +19,35 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Autocomplete, Box, FormControl, Grid, Stack } from '@mui/material';
-import {
-  Button,
-  Chip,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogHeader,
-  Input,
-  LoadingButton,
-  SelectList,
-  Typography,
-} from 'cx-portal-shared-components';
-import { debounce, inRange, isEmpty, uniq } from 'lodash';
-import { useEffect, useState } from 'react';
-import { Controller, useFieldArray } from 'react-hook-form';
+import { Autocomplete, Box, FormControl, Grid } from '@mui/material';
+import { Input, SelectList, Typography } from 'cx-portal-shared-components';
+import { debounce, inRange } from 'lodash';
+import { useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 
 import { setFfilterCompanyOptionsLoading, setFilterCompanyOptions } from '../../features/consumer/slice';
 import { ILegalEntityContent, IntOption } from '../../features/consumer/types';
-import { setSnackbarMessage } from '../../features/notifiication/slice';
-import { useValidateBpnMutation } from '../../features/provider/policies/apiSlice';
 import { useAppDispatch, useAppSelector } from '../../features/store';
 import ConsumerService from '../../services/ConsumerService';
-import { Config } from '../../utils/config';
 import { ALPHA_NUM_REGEX, BPN_TYPE_FIELDS } from '../../utils/constants';
 
-function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any) {
-  const [searchPopup, setsearchPopup] = useState(false);
+function ValidateBpn() {
+  const [searchPopup, setSearchPopup] = useState(false);
   const [selectType, setSelectType] = useState(BPN_TYPE_FIELDS[0]);
   const [conKey, setConKey] = useState(uuid());
 
-  const [addBpnPrompt, setAddBpnPrompt] = useState(false);
-  const { replace } = useFieldArray({ name: 'access_policies.bpn_numbers.value', control });
-
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-
-  const [validateBpn, { isLoading, data }] = useValidateBpnMutation();
+  const { control, resetField } = useFormContext();
   const { filterCompanyOptions, filterCompanyOptionsLoading } = useAppSelector(state => state.consumerSlice);
-
-  const addBpn = () => {
-    if (inputBpn) {
-      setValue(
-        'access_policies.bpn_numbers.value',
-        uniq([...getValues('access_policies.bpn_numbers.value'), inputBpn]),
-      );
-      resetField('inputBpn', { defaultValue: '' });
-    }
-  };
-  const deleteBpn = (bpn: string) => {
-    if (bpn !== Config.REACT_APP_DEFAULT_COMPANY_BPN) {
-      const newList = getValues('access_policies.bpn_numbers.value').filter((item: string) => item !== bpn);
-      replace(newList);
-    }
-  };
-
-  const onFormSubmit = async () => {
-    if (!inRange(inputBpn.length, 1, 16)) {
-      await validateBpn(inputBpn);
-      setConKey(uuid());
-    }
-  };
-
-  useEffect(() => {
-    if (data?.bpnStatus === 'FULL_PARTNER') {
-      dispatch(setSnackbarMessage({ message: data?.msg, type: 'success' }));
-      setValue(
-        'access_policies.bpn_numbers.value',
-        uniq([...getValues('access_policies.bpn_numbers.value'), inputBpn]),
-      );
-    } else if (data?.bpnStatus === 'PARTNER') setAddBpnPrompt(true);
-    else if (data?.bpnStatus === 'NOT_PARTNER') dispatch(setSnackbarMessage({ message: data?.msg, type: 'error' }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, dispatch]);
 
   // get company name on input change
   const onChangeSearchInputValue = async (params: string) => {
     const searchStr = params.toLowerCase();
     if (searchStr.length > 2) {
-      setsearchPopup(true);
+      setSearchPopup(true);
       dispatch(setFilterCompanyOptions([]));
       dispatch(setFfilterCompanyOptionsLoading(true));
       const res: [] = await ConsumerService.getInstance().searchLegalEntities(searchStr);
@@ -116,7 +63,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
         dispatch(setFilterCompanyOptions(filterContent));
       }
     } else {
-      setsearchPopup(false);
+      setSearchPopup(false);
       dispatch(setFilterCompanyOptions([]));
     }
   };
@@ -124,7 +71,7 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
   return (
     <>
       <Grid container spacing={2} alignItems="flex-end">
-        <Grid item xs={4}>
+        <Grid item xs={5}>
           <SelectList
             keyTitle="title"
             label={t('content.consumeData.selectType')}
@@ -132,7 +79,8 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
             size="small"
             onChangeItem={e => {
               setSelectType(e);
-              resetField('inputBpn', { defaultValue: '' });
+              resetField('bpnNumber', { defaultValue: '' });
+              setConKey(uuid());
             }}
             items={BPN_TYPE_FIELDS}
             defaultValue={selectType}
@@ -140,57 +88,49 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
             disableClearable
           />
         </Grid>
-        <Grid item xs={4}>
-          {selectType.value === 'bpn' ? (
-            <FormControl fullWidth>
-              <Controller
-                name="inputBpn"
-                control={control}
-                rules={{
-                  validate: val => {
-                    if (inRange(val.length, 1, 16)) {
-                      return val;
-                    }
-                  },
-                }}
-                render={({ field, fieldState: { error } }) => (
+        <Grid item xs={7}>
+          <FormControl fullWidth>
+            <Controller
+              name="bpnNumber"
+              control={control}
+              rules={{
+                required: true,
+                validate: val => {
+                  if (inRange(val.length, 1, 16)) {
+                    return val;
+                  }
+                },
+              }}
+              render={({ field, fieldState: { error } }) =>
+                selectType.value === 'bpn' ? (
                   <Input
                     label={t('content.consumeData.enterBPN')}
                     placeholder={t('content.consumeData.enterBPN')}
                     variant="filled"
                     value={field.value}
-                    inputProps={{ maxLength: 16 }}
                     onChange={e => {
                       const value = e.target.value;
                       if (value === '' || ALPHA_NUM_REGEX.test(value)) {
-                        field.onChange(e);
+                        console.log(value);
+                        field.onChange(value);
                       }
                     }}
                     error={!!error}
                     helperText="Incorrect BPN"
                   />
-                )}
-              />
-            </FormControl>
-          ) : (
-            <FormControl fullWidth>
-              <Controller
-                name="inputBpn"
-                control={control}
-                render={({ field: { onChange } }) => (
+                ) : (
                   <Autocomplete
                     key={conKey}
                     open={searchPopup}
                     options={filterCompanyOptions}
                     includeInputInList
                     loading={filterCompanyOptionsLoading}
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    onChange={(e, value: any) => onChange(value.bpn)}
-                    onInputChange={debounce(async (event, newInputValue) => {
+                    onChange={(_e, value: any) => field.onChange(value?.bpn)}
+                    onInputChange={debounce(async (_event, newInputValue) => {
                       await onChangeSearchInputValue(newInputValue);
                     }, 1000)}
-                    onClose={() => setsearchPopup(false)}
-                    onBlur={() => setsearchPopup(false)}
+                    onClose={() => setSearchPopup(false)}
+                    onBlur={() => setSearchPopup(false)}
                     isOptionEqualToValue={(option, value) => option.value === value.value}
                     getOptionLabel={option => {
                       return typeof option === 'string' ? option : `${option.value}`;
@@ -202,6 +142,8 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
                         label={t('content.consumeData.searchCompany')}
                         placeholder={t('content.consumeData.searchPlaceholder')}
                         fullWidth
+                        error={!!error}
+                        helperText="Select a company"
                       />
                     )}
                     renderOption={(props, option: IntOption) => (
@@ -221,64 +163,12 @@ function ValidateBpn({ control, resetField, getValues, setValue, inputBpn }: any
                       </Box>
                     )}
                   />
-                )}
-              />
-            </FormControl>
-          )}
-        </Grid>
-        <Grid item>
-          <LoadingButton
-            sx={{ ml: 1, mt: 2 }}
-            variant="contained"
-            label={t('button.add')}
-            onButtonClick={() => onFormSubmit()}
-            loading={isLoading}
-            loadIndicator={t('content.common.loading')}
-            disabled={isEmpty(inputBpn)}
-          />
+                )
+              }
+            />
+          </FormControl>
         </Grid>
       </Grid>
-      <Box sx={{ my: 2 }}>
-        <Typography variant="body2" mb={2}>
-          {t('content.policies.note')}
-        </Typography>
-        <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
-          {getValues('access_policies.bpn_numbers.value')?.map((bpnNum: string) => (
-            <Chip
-              color="secondary"
-              label={bpnNum}
-              key={bpnNum + 1}
-              onClick={() => deleteBpn(bpnNum)}
-              withIcon={bpnNum !== Config.REACT_APP_DEFAULT_COMPANY_BPN}
-            />
-          ))}
-        </Stack>
-      </Box>
-      {addBpnPrompt ? (
-        <Dialog open={addBpnPrompt}>
-          <DialogHeader title={t('content.consumeData.noConnectors')} />
-          <DialogContent>{data?.msg}</DialogContent>
-          <DialogActions>
-            <Button
-              variant="contained"
-              onClick={() => {
-                setAddBpnPrompt(false);
-              }}
-            >
-              {t('button.cancel')}
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => {
-                addBpn();
-                setAddBpnPrompt(false);
-              }}
-            >
-              {t('button.add')}
-            </Button>
-          </DialogActions>
-        </Dialog>
-      ) : null}
     </>
   );
 }

@@ -101,6 +101,7 @@ export const policiesApiSlice = apiSlice.injectEndpoints({
           url: `/unified-bpn-validation/${bpn}`,
         };
       },
+      onQueryStarted: setLoadingHandler,
     }),
     getPolicyTemplate: builder.query({
       query: params => {

@@ -1,6 +1,6 @@
 /********************************************************************************
- * Copyright (c) 2021,2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 T-Systems International GmbH
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -26,6 +26,7 @@ const initialState: IPCFValueState = {
   openDialog: false,
   pcfValueData: {} as IPCFResponsePojo,
   pcfValueDialog: false,
+  requestPcfDialog: false,
 };
 
 export const viewPcfValueSlice = createSlice({
@@ -39,9 +40,13 @@ export const viewPcfValueSlice = createSlice({
       state.pcfValueDialog = action.payload;
     },
     handleDialogClose: state => Object.assign(state, initialState),
+    handleReqestPcfDialog: (state, action: PayloadAction<boolean>) => {
+      state.requestPcfDialog = action.payload;
+    },
   },
 });
 
-export const { setPcfValueData, setPcfValueDialog, handleDialogClose } = viewPcfValueSlice.actions;
+export const { setPcfValueData, setPcfValueDialog, handleDialogClose, handleReqestPcfDialog } =
+  viewPcfValueSlice.actions;
 
 export default viewPcfValueSlice.reducer;

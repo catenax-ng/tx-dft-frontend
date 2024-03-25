@@ -39,4 +39,5 @@ export interface IPCFValueState {
   openDialog: boolean;
   pcfValueData: IPCFResponsePojo;
   pcfValueDialog: boolean;
+  requestPcfDialog: boolean;
 }

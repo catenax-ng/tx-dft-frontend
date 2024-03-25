@@ -35,7 +35,7 @@ export default function DataTable() {
 
   return (
     <Box>
-      <UploadInfo/>
+      <UploadInfo />
       <Box display="flex" justifyContent="space-between" my={3}>
         <Box>
           <Button variant="contained" size="small" onClick={() => dispatch(addRows())}>
