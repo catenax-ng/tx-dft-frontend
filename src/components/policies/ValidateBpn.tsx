@@ -104,7 +104,7 @@ function ValidateBpn() {
               render={({ field, fieldState: { error } }) =>
                 selectType.value === 'bpn' ? (
                   <Input
-                    label={t('content.consumeData.enterBPN')}
+                    label={`${t('content.consumeData.enterBPN')}*`}
                     placeholder={t('content.consumeData.enterBPN')}
                     variant="filled"
                     value={field.value}
@@ -139,7 +139,7 @@ function ValidateBpn() {
                     renderInput={params => (
                       <Input
                         {...params}
-                        label={t('content.consumeData.searchCompany')}
+                        label={`${t('content.consumeData.searchCompany')}*`}
                         placeholder={t('content.consumeData.searchPlaceholder')}
                         fullWidth
                         error={!!error}

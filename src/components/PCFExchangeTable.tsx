@@ -138,7 +138,7 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
             <Tooltips tooltipPlacement="bottom" tooltipText={row.remark}>
               <span>
                 <IconButton aria-label="info" size="small">
-                  <InfoIcon color="action" fontSize="small" />
+                  <InfoIcon color="primary" fontSize="small" />
                 </IconButton>
               </span>
             </Tooltips>
@@ -219,10 +219,10 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
           return (
             <>
               {row?.message && (
-                <Tooltips tooltipPlacement="bottom" tooltipText={row.message}>
+                <Tooltips tooltipPlacement="bottom" tooltipText={`Consumer message: ${row.message}`}>
                   <span>
-                    <IconButton aria-label="info" size="small">
-                      <InfoIcon color="action" fontSize="small" />
+                    <IconButton aria-label="info" size="small" sx={{ mr: 2 }}>
+                      <InfoIcon color="primary" fontSize="small" />
                     </IconButton>
                   </span>
                 </Tooltips>

@@ -123,7 +123,6 @@ function ConsumeDataFilter() {
   };
   const handleLoadingButton = () => {
     if (ALPHA_NUM_REGEX.test(filterSelectedBPN) && filterSelectedBPN.length == 16) {
-      console.log(ALPHA_NUM_REGEX.test(filterSelectedBPN));
       return true;
     } else return false;
   };

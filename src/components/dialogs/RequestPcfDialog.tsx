@@ -114,7 +114,7 @@ function RequestPcfDialog() {
                       <Input
                         {...field}
                         variant="filled"
-                        label={'Product ID'}
+                        label={'Product ID*'}
                         placeholder={'Enter a value'}
                         type={'text'}
                         error={!!error}
@@ -136,7 +136,7 @@ function RequestPcfDialog() {
                         {...field}
                         multiline
                         minRows={3}
-                        label={'Message'}
+                        label={'Message*'}
                         placeholder={'Enter your message'}
                         error={!!error}
                       />
