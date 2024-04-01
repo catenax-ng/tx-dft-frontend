@@ -22,7 +22,7 @@ import { Box } from '@mui/material';
 import { GridColDef, GridSelectionModel, GridValidRowModel, GridValueGetterParams } from '@mui/x-data-grid';
 import { Button, Dialog, DialogActions, DialogContent, DialogHeader, Typography } from 'cx-portal-shared-components';
 import saveAs from 'file-saver';
-import { isEmpty, isEqual } from 'lodash';
+import { isEmpty, isEqual, map, pick } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -32,6 +32,7 @@ import OfferDetailsDialog from '../../components/dialogs/OfferDetailsDialog';
 import RequestPcfDialog from '../../components/dialogs/RequestPcfDialog';
 import Permissions from '../../components/Permissions';
 import DataTable from '../../components/table/DataTable';
+import { useGetOfferPolicyDetailsMutation } from '../../features/consumer/apiSlice';
 import {
   setContractOffers,
   setFilterCompanyOptions,
@@ -70,6 +71,7 @@ export default function ConsumeData() {
   const { t } = useTranslation();
 
   const [requestPcfValues] = useRequestPcfValuesMutation();
+  const [getPolicyDetails] = useGetOfferPolicyDetailsMutation();
 
   const columns: GridColDef[] = [
     {
@@ -162,40 +164,43 @@ export default function ConsumeData() {
     }
   };
 
-  const onRowClick = (params: any) => {
-    dispatch(setSelectedOffer(params.row));
-    toggleDialog(true);
-  };
-
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const showAddDialog = () => {
     setDialogOpen(prev => !prev);
   };
 
-  const checkoutSelectedOffers = () => {
-    if (selectedOffersList.length === 1) {
-      dispatch(setIsMultipleContractSubscription(false));
-      dispatch(setSelectedOffer(selectedOffersList[0]));
-      toggleDialog(true);
-      return;
-    }
-    const useCasesList: any[] = [];
-    selectedOffersList.forEach((offer: IConsumerDataOffers) => {
-      if (!isEmpty(offer.policy.Usage)) {
-        useCasesList.push(offer.policy.Usage);
-      } else {
-        useCasesList.push([]);
+  const checkoutSelectedOffers = async (offers: IConsumerDataOffers[]) => {
+    console.log('selectedOffersList', offers);
+    try {
+      const extractedData = map(offers, item => pick(item, ['assetId', 'connectorOfferUrl']));
+      const offerDetails = await getPolicyDetails(extractedData).unwrap();
+      console.log('policies', offerDetails);
+      if (offerDetails.length === 1) {
+        dispatch(setIsMultipleContractSubscription(false));
+        dispatch(setSelectedOffer(offerDetails[0]));
+        toggleDialog(true);
+        return;
       }
-    });
-    const isUsagePoliciesEqual = useCasesList.every((item, index, array) => isEqual(item, array[0]));
-    if (isUsagePoliciesEqual) {
-      setIsOpenOfferDialog(true);
-      dispatch(setIsMultipleContractSubscription(true));
-    } else {
-      showAddDialog();
-      setIsOpenOfferDialog(false);
-      dispatch(setIsMultipleContractSubscription(false));
+      const usagePolicies: IConsumerDataOffers[] = offerDetails.map((offer: IConsumerDataOffers) =>
+        isEmpty(offer.policy.Usage) ? [] : offer.policy.Usage,
+      );
+      const isUsagePoliciesEqual = usagePolicies.every((item, index, array) => isEqual(item, array[0]));
+      if (isUsagePoliciesEqual) {
+        setIsOpenOfferDialog(true);
+        dispatch(setIsMultipleContractSubscription(true));
+      } else {
+        setIsOpenOfferDialog(false);
+        showAddDialog();
+        dispatch(setIsMultipleContractSubscription(false));
+      }
+    } catch (error) {
+      console.log('getPolicyDetails', error);
     }
+  };
+
+  const onRowClick = (params: GridValidRowModel) => {
+    checkoutSelectedOffers([params.row]);
+    toggleDialog(true);
   };
 
   const handleSelectionModel = (newSelectionModel: GridSelectionModel) => {
@@ -223,6 +228,29 @@ export default function ConsumeData() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const renderOfferDialogs = (offerObj: IConsumerDataOffers, offerCount: number) => (
+    <>
+      <OfferDetailsDialog
+        open={isOpenOfferDialog}
+        offerObj={offerObj}
+        handleConfirm={setIsOpenOfferConfirmDialog}
+        handleClose={toggleDialog}
+        isMultiple={offerCount > 1}
+      />
+      <ConfirmTermsDialog
+        offerObj={{
+          offers: offerCount > 0 ? [offerObj] : [],
+          provider: offerObj?.publisher || '',
+          offerCount: offerCount,
+        }}
+        isProgress={offerSubLoading}
+        open={isOpenOfferConfirmDialog}
+        handleConfirm={handleConfirmTermDialog}
+        handleClose={setIsOpenOfferConfirmDialog}
+      />
+    </>
+  );
+
   return (
     <>
       <Typography variant="h3" mb={1}>
@@ -240,7 +268,7 @@ export default function ConsumeData() {
           <Button
             variant="contained"
             size="small"
-            onClick={checkoutSelectedOffers}
+            onClick={() => checkoutSelectedOffers(selectedOffersList)}
             disabled={!selectedOffersList.length}
           >
             {t('button.subscribeSelected')}
@@ -261,49 +289,10 @@ export default function ConsumeData() {
           />
         </Box>
       </Permissions>
-      {isMultipleContractSubscription && (
-        <>
-          <OfferDetailsDialog
-            open={isOpenOfferDialog}
-            offerObj={selectedOffersList[0]}
-            handleConfirm={setIsOpenOfferConfirmDialog}
-            handleClose={toggleDialog}
-            isMultiple
-          />
-          <ConfirmTermsDialog
-            offerObj={{
-              offers: selectedOffersList || [],
-              provider: selectedOffersList[0]?.publisher ? selectedOffersList[0].publisher : ' ',
-              offerCount: selectedOffersList.length,
-            }}
-            isProgress={offerSubLoading}
-            open={isOpenOfferConfirmDialog}
-            handleConfirm={handleConfirmTermDialog}
-            handleClose={setIsOpenOfferConfirmDialog}
-          />
-        </>
-      )}
-      {selectedOffer && (
-        <>
-          <OfferDetailsDialog
-            open={isOpenOfferDialog}
-            offerObj={selectedOffer}
-            handleConfirm={setIsOpenOfferConfirmDialog}
-            handleClose={toggleDialog}
-          />
-          <ConfirmTermsDialog
-            offerObj={{
-              offers: selectedOffer ? [selectedOffer] : [],
-              provider: selectedOffer ? selectedOffer.publisher : ' ',
-              offerCount: 0,
-            }}
-            isProgress={offerSubLoading}
-            open={isOpenOfferConfirmDialog}
-            handleConfirm={handleConfirmTermDialog}
-            handleClose={setIsOpenOfferConfirmDialog}
-          />
-        </>
-      )}
+
+      {isMultipleContractSubscription && renderOfferDialogs(selectedOffersList[0], selectedOffersList.length)}
+      {selectedOffer && renderOfferDialogs(selectedOffer, 0)}
+
       <Dialog open={dialogOpen}>
         <DialogHeader title={t('dialog.samePolicies.title')} />
         <DialogContent>{t('dialog.samePolicies.content')}</DialogContent>

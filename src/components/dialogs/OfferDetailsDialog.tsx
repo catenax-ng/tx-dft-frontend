@@ -20,7 +20,6 @@
 
 import { Divider, Grid } from '@mui/material';
 import { Button, Dialog, DialogActions, DialogContent, DialogHeader, Typography } from 'cx-portal-shared-components';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Permissions from '../../components/Permissions';
@@ -38,7 +37,6 @@ interface IntDialogProps {
 }
 
 const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMultiple }: IntDialogProps) => {
-  const [offer] = useState(offerObj);
   const {
     title,
     created,
@@ -47,9 +45,18 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
     connectorOfferUrl,
     policy: { Usage: usagePolicies },
     type,
-  } = offer;
+  } = offerObj;
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+
+  const renderDetailItem = (label: string, value: string) => (
+    <Grid item xs={6} sx={{ mb: 1 }}>
+      <Typography variant="body2">{label}</Typography>
+      <Typography variant="body2">
+        <strong>{value || '-'}</strong>
+      </Typography>
+    </Grid>
+  );
 
   return (
     <Dialog open={open}>
@@ -71,36 +78,11 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
         <>
           <DialogContent dividers>
             <Grid container mt={3}>
-              <Grid item xs={6} sx={{ mb: 1 }}>
-                <Typography variant="body2">{t('dialog.offerDetails.titleText')}</Typography>
-                <Typography variant="body2">
-                  <strong>{title || '-'}</strong>
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sx={{ mb: 1 }}>
-                <Typography variant="body2">{t('dialog.offerDetails.created')}</Typography>
-                <Typography variant="body2">
-                  <strong>{created || '-'}</strong>
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sx={{ mb: 1 }}>
-                <Typography variant="body2">{t('dialog.offerDetails.description')}</Typography>
-                <Typography variant="body2">
-                  <strong>{description || '-'}</strong>
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sx={{ mb: 1 }}>
-                <Typography variant="body2">{t('dialog.offerDetails.publisher')}</Typography>
-                <Typography variant="body2">
-                  <strong>{publisher || '-'}</strong>
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sx={{ mb: 1 }}>
-                <Typography variant="body2">{t('dialog.offerDetails.publisherUrl')}</Typography>
-                <Typography variant="body2">
-                  <strong>{connectorOfferUrl || '-'}</strong>
-                </Typography>
-              </Grid>
+              {renderDetailItem(t('dialog.offerDetails.titleText'), title)}
+              {renderDetailItem(t('dialog.offerDetails.created'), created)}
+              {renderDetailItem(t('dialog.offerDetails.description'), description)}
+              {renderDetailItem(t('dialog.offerDetails.publisher'), publisher)}
+              {renderDetailItem(t('dialog.offerDetails.publisherUrl'), connectorOfferUrl)}
             </Grid>
             <Divider sx={{ m: 1 }} />
             <Grid container>

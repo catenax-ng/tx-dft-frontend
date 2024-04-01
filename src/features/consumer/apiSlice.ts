@@ -31,15 +31,14 @@ export const consumerApiSlice = apiSlice.injectEndpoints({
         return { method: 'GET', url: '/query-data-offers', params };
       },
       transformResponse(payload: IConsumerDataOffers[]) {
-        const modifiedData = payload
-          .sort(
-            (contract1: IConsumerDataOffers, contract2: IConsumerDataOffers) =>
-              moment(contract1.created, 'DD/MM/YYYY HH:mm:ss').unix() -
-              moment(contract2.created, 'DD/MM/YYYY HH:mm:ss').unix(),
-          )
-          .map((item: IConsumerDataOffers, index: number) => {
-            return { ...item, ...{ id: index } };
-          });
+        const sortedData = payload.sort(
+          (contract1: IConsumerDataOffers, contract2: IConsumerDataOffers) =>
+            moment(contract1.created, 'DD/MM/YYYY HH:mm:ss').unix() -
+            moment(contract2.created, 'DD/MM/YYYY HH:mm:ss').unix(),
+        );
+        const modifiedData = sortedData.map((item: IConsumerDataOffers, index: number) => {
+          return { ...item, ...{ id: index } };
+        });
         return modifiedData;
       },
     }),
@@ -55,7 +54,18 @@ export const consumerApiSlice = apiSlice.injectEndpoints({
       extraOptions: { showNotification: true, message: 'alerts.subscriptionSuccess' },
       onQueryStarted: setLoadingHandler,
     }),
+    getOfferPolicyDetails: builder.mutation({
+      query: body => {
+        return {
+          url: '/offer-policy-details',
+          method: 'POST',
+          body,
+        };
+      },
+      onQueryStarted: setLoadingHandler,
+    }),
   }),
 });
 
-export const { useSubscribeAndDownloadMutation, useFetchDataOffersMutation } = consumerApiSlice;
+export const { useSubscribeAndDownloadMutation, useFetchDataOffersMutation, useGetOfferPolicyDetailsMutation } =
+  consumerApiSlice;
