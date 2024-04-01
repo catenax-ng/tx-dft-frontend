@@ -232,6 +232,10 @@
       "point1": "Sie sind befugt, Ihre Organisation in diesem Fall zu vertreten.",
       "point2": "Sie haben die Zugangs- und Nutzungspolicies gelesen und verstanden.",
       "point3": "Ihre Organisation ist verpflichtet, die Bedingungen der Zugangs- und Nutzungspolicy einzuhalten."
+    },
+    "prompt": {
+      "confirm": "Bitte bestätigen",
+      "requestPcf": "Sind Sie sicher, dass Sie diese PCF-Anfrage '{{ status }}' möchten?"
     }
   },
   "button": {

@@ -233,6 +233,10 @@
       "point1": "You are entitled to represent your organization.",
       "point2": "You have read and understood the access/usage policy.",
       "point3": "Your organization will be responsible to adhere by the rules stated in the access/usage policy."
+    },
+    "prompt": {
+      "confirm": "Please Confirm",
+      "requestPcf": "Are you sure you want to '{{ status }}' this PCF request"
     }
   },
   "button": {

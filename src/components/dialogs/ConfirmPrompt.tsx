@@ -16,9 +16,8 @@ function ConfirmPrompt({ status, handleDialogSubmit }: { status: string; handleD
         width: '40%',
       }}
     >
-      <DialogHeader title={t('button.confirm')} />
-      <DialogContent>{`Are you sure you want to ${status} this PCF request?
-`}</DialogContent>
+      <DialogHeader title={t('dialog.prompt.confirm')} />
+      <DialogContent>{t('dialog.prompt.requestPcf', { status: status })}</DialogContent>
       <DialogActions>
         <Button
           variant="contained"
