@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Box, FormControl } from '@mui/material';
+import { Badge, Box, FormControl } from '@mui/material';
 import { Button, Dialog, DialogActions, DialogContent, DialogHeader, Input } from 'cx-portal-shared-components';
 import { useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
@@ -132,14 +132,22 @@ function RequestPcfDialog() {
                       maxLength: 250,
                     }}
                     render={({ field, fieldState: { error } }) => (
-                      <Input
-                        {...field}
-                        multiline
-                        minRows={3}
-                        label={'Message*'}
-                        placeholder={'Enter your message'}
-                        error={!!error}
-                      />
+                      <>
+                        <Badge
+                          badgeContent={`${field.value.length}/250`}
+                          color={field.value.length < 251 ? 'secondary' : 'error'}
+                          sx={{ position: 'absolute', top: 34, right: 30 }}
+                        />
+                        <Input
+                          {...field}
+                          multiline
+                          minRows={3}
+                          label={'Message*'}
+                          placeholder={'Enter your message'}
+                          error={!!error}
+                          inputProps={{ maxlength: 250 }}
+                        />
+                      </>
                     )}
                   />
                 </FormControl>
