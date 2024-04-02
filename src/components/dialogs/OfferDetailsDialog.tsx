@@ -104,7 +104,7 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
           <Button
             variant="contained"
             onClick={() => {
-              if (type === 'data.pcf.exchangeEndpoint') {
+              if (type === 'PCFExchangeEndpoint') {
                 dispatch(setIsPcf(true));
               } else {
                 dispatch(setIsPcf(false));
@@ -112,7 +112,7 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
               handleConfirm(true);
             }}
           >
-            {type === 'data.pcf.exchangeEndpoint' ? t('button.requestPCF') : t('button.subscribeSelected')}
+            {type === 'PCFExchangeEndpoint' ? t('button.requestPCF') : t('button.subscribeSelected')}
           </Button>
         </Permissions>
       </DialogActions>

@@ -133,6 +133,8 @@
         "title": "Titel",
         "assetId": "Asset ID",
         "created": "erstellt am",
+        "sematicVersion": "Sematic Version",
+        "publisher" :"Anbieter",
         "description": "Beschreibung"
       }
     },
@@ -192,7 +194,7 @@
         "assetId": "Asset ID",
         "created": "Created On",
         "description": "Description",
-        "publisher": "Publisher"
+        "publisher": "Anbieter"
       }
     },
     "pcfExchangeTable": {

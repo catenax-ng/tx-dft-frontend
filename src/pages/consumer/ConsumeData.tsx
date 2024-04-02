@@ -80,9 +80,9 @@ export default function ConsumeData() {
       headerName: t('content.consumeData.columns.title'),
     },
     {
-      field: 'connectorId',
+      field: 'publisher',
       flex: 1,
-      headerName: 'BPN',
+      headerName: t('content.consumeData.columns.publisher'),
     },
     {
       field: 'assetId',
@@ -90,12 +90,9 @@ export default function ConsumeData() {
       headerName: t('content.consumeData.columns.assetId'),
     },
     {
-      field: 'created',
+      field: 'sematicVersion',
       flex: 1,
-      headerName: t('content.consumeData.columns.created'),
-      sortingOrder: ['desc', 'asc'],
-      sortComparator: (_v1: any, _v2: any, param1: any, param2: any) => param1.id - param2.id,
-      valueGetter: (params: GridValueGetterParams) => handleBlankCellValues(params.row.created),
+      headerName: t('content.consumeData.columns.sematicVersion'),
     },
     {
       field: 'description',
@@ -174,13 +171,28 @@ export default function ConsumeData() {
     try {
       const extractedData = map(offers, item => pick(item, ['assetId', 'connectorOfferUrl']));
       const offerDetails = await getPolicyDetails(extractedData).unwrap();
-      console.log('policies', offerDetails);
+
+      const mergeSelectedOffers: IConsumerDataOffers[] = offerDetails.map((policyOffer: IConsumerDataOffers) => {
+        const filterOffer = offers.find((orgOffer: IConsumerDataOffers) => {
+          return orgOffer.assetId === policyOffer.assetId;
+        });
+        const mapOffer = {
+          ...policyOffer,
+          ...filterOffer,
+        };
+        return mapOffer;
+      },
+      );
+
+      dispatch(setSelectedOffersList(mergeSelectedOffers));
+
       if (offerDetails.length === 1) {
         dispatch(setIsMultipleContractSubscription(false));
-        dispatch(setSelectedOffer(offerDetails[0]));
+        dispatch(setSelectedOffer(mergeSelectedOffers[0]));
         toggleDialog(true);
         return;
       }
+
       const usagePolicies: IConsumerDataOffers[] = offerDetails.map((offer: IConsumerDataOffers) =>
         isEmpty(offer.policy.Usage) ? [] : offer.policy.Usage,
       );
@@ -200,7 +212,6 @@ export default function ConsumeData() {
 
   const onRowClick = (params: GridValidRowModel) => {
     checkoutSelectedOffers([params.row]);
-    toggleDialog(true);
   };
 
   const handleSelectionModel = (newSelectionModel: GridSelectionModel) => {
@@ -285,13 +296,12 @@ export default function ConsumeData() {
             onRowClick={onRowClick}
             handleSelectionModel={newSelectionModel => handleSelectionModel(newSelectionModel)}
             selectionModel={selectionModel}
-            isRowSelectable={params => params.row.type !== 'data.pcf.exchangeEndpoint'}
+            isRowSelectable={params => params.row.type !== 'PCFExchangeEndpoint'}
           />
         </Box>
       </Permissions>
 
-      {isMultipleContractSubscription && renderOfferDialogs(selectedOffersList[0], selectedOffersList.length)}
-      {selectedOffer && renderOfferDialogs(selectedOffer, 0)}
+      {isOpenOfferDialog && renderOfferDialogs(selectedOffersList[0], selectedOffersList.length)}
 
       <Dialog open={dialogOpen}>
         <DialogHeader title={t('dialog.samePolicies.title')} />

@@ -134,6 +134,8 @@
         "title": "Title",
         "assetId": "Asset ID",
         "created": "Created On",
+        "sematicVersion": "Sematic Version",
+        "publisher" :"Publisher",
         "description": "Description"
       }
     },
