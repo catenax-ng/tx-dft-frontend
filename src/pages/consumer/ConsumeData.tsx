@@ -41,6 +41,8 @@ import {
   setFilterSelectedBPN,
   setFilterSelectedConnector,
   setIsMultipleContractSubscription,
+  setOpenOfferConfirmDialog,
+  setOpenOfferDetailsDialog,
   setSelectedFilterCompanyOption,
   setSelectedOffer,
   setSelectedOffersList,
@@ -63,9 +65,8 @@ export default function ConsumeData() {
     isMultipleContractSubscription,
     selectionModel,
     isPcf,
+    openOfferDetailsDialog,
   } = useAppSelector(state => state.consumerSlice);
-  const [isOpenOfferDialog, setIsOpenOfferDialog] = useState<boolean>(false);
-  const [isOpenOfferConfirmDialog, setIsOpenOfferConfirmDialog] = useState<boolean>(false);
   const [offerSubLoading, setOfferSubLoading] = useState(false);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
@@ -104,7 +105,7 @@ export default function ConsumeData() {
   ];
 
   const toggleDialog = (flag: boolean) => {
-    setIsOpenOfferDialog(flag);
+    dispatch(setOpenOfferDetailsDialog(flag));
     if (flag === false) {
       dispatch(setSelectedOffer(null));
     }
@@ -130,8 +131,8 @@ export default function ConsumeData() {
       setOfferSubLoading(true);
 
       const handleSuccess = () => {
-        setIsOpenOfferDialog(false);
-        setIsOpenOfferConfirmDialog(false);
+        dispatch(setOpenOfferDetailsDialog(false));
+        dispatch(setOpenOfferConfirmDialog(false));
         dispatch(setIsMultipleContractSubscription(false));
         dispatch(setSelectedOffer(null));
         dispatch(setSelectedOffersList([]));
@@ -167,23 +168,13 @@ export default function ConsumeData() {
   };
 
   const checkoutSelectedOffers = async (offers: IConsumerDataOffers[]) => {
-    console.log('selectedOffersList', offers);
     try {
       const extractedData = map(offers, item => pick(item, ['assetId', 'connectorOfferUrl']));
       const offerDetails = await getPolicyDetails(extractedData).unwrap();
-
-      const mergeSelectedOffers: IConsumerDataOffers[] = offerDetails.map((policyOffer: IConsumerDataOffers) => {
-        const filterOffer = offers.find((orgOffer: IConsumerDataOffers) => {
-          return orgOffer.assetId === policyOffer.assetId;
-        });
-        const mapOffer = {
-          ...policyOffer,
-          ...filterOffer,
-        };
-        return mapOffer;
-      },
-      );
-
+      const mergeSelectedOffers: IConsumerDataOffers[] = offerDetails.map((policyOffer: IConsumerDataOffers) => ({
+        ...policyOffer,
+        ...offers.find((orgOffer: IConsumerDataOffers) => orgOffer.assetId === policyOffer.assetId),
+      }));
       dispatch(setSelectedOffersList(mergeSelectedOffers));
 
       if (offerDetails.length === 1) {
@@ -198,10 +189,10 @@ export default function ConsumeData() {
       );
       const isUsagePoliciesEqual = usagePolicies.every((item, index, array) => isEqual(item, array[0]));
       if (isUsagePoliciesEqual) {
-        setIsOpenOfferDialog(true);
+        dispatch(setOpenOfferDetailsDialog(true));
         dispatch(setIsMultipleContractSubscription(true));
       } else {
-        setIsOpenOfferDialog(false);
+        dispatch(setOpenOfferDetailsDialog(false));
         showAddDialog();
         dispatch(setIsMultipleContractSubscription(false));
       }
@@ -241,13 +232,7 @@ export default function ConsumeData() {
 
   const renderOfferDialogs = (offerObj: IConsumerDataOffers, offerCount: number) => (
     <>
-      <OfferDetailsDialog
-        open={isOpenOfferDialog}
-        offerObj={offerObj}
-        handleConfirm={setIsOpenOfferConfirmDialog}
-        handleClose={toggleDialog}
-        isMultiple={offerCount > 1}
-      />
+      <OfferDetailsDialog offerObj={offerObj} isMultiple={offerCount > 1} />
       <ConfirmTermsDialog
         offerObj={{
           offers: offerCount > 0 ? [offerObj] : [],
@@ -255,9 +240,7 @@ export default function ConsumeData() {
           offerCount: offerCount,
         }}
         isProgress={offerSubLoading}
-        open={isOpenOfferConfirmDialog}
         handleConfirm={handleConfirmTermDialog}
-        handleClose={setIsOpenOfferConfirmDialog}
       />
     </>
   );
@@ -301,7 +284,7 @@ export default function ConsumeData() {
         </Box>
       </Permissions>
 
-      {isOpenOfferDialog && renderOfferDialogs(selectedOffersList[0], selectedOffersList.length)}
+      {openOfferDetailsDialog && renderOfferDialogs(selectedOffersList[0], selectedOffersList.length)}
 
       <Dialog open={dialogOpen}>
         <DialogHeader title={t('dialog.samePolicies.title')} />

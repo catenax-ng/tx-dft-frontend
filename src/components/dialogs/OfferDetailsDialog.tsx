@@ -23,30 +23,30 @@ import { Button, Dialog, DialogActions, DialogContent, DialogHeader, Typography 
 import { useTranslation } from 'react-i18next';
 
 import Permissions from '../../components/Permissions';
-import { setIsPcf } from '../../features/consumer/slice';
+import { setIsPcf, setOpenOfferConfirmDialog, setOpenOfferDetailsDialog } from '../../features/consumer/slice';
 import { IConsumerDataOffers } from '../../features/consumer/types';
-import { useAppDispatch } from '../../features/store';
+import { useAppDispatch, useAppSelector } from '../../features/store';
 import UsagePolicies from './UsagePolicies';
 
 interface IntDialogProps {
-  open: boolean;
   offerObj?: IConsumerDataOffers;
-  handleConfirm?: (state: boolean) => void;
-  handleClose?: (state: boolean) => void;
   isMultiple?: boolean;
 }
 
-const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMultiple }: IntDialogProps) => {
+const OfferDetailsDialog = ({ offerObj, isMultiple }: IntDialogProps) => {
   const {
     title,
-    created,
     description,
+    sematicVersion,
     publisher,
     connectorOfferUrl,
     policy: { Usage: usagePolicies },
     type,
-  } = offerObj;
+  } = offerObj ?? ({} as IConsumerDataOffers);
+
   const { t } = useTranslation();
+  const { openOfferDetailsDialog } = useAppSelector(state => state.consumerSlice);
+
   const dispatch = useAppDispatch();
 
   const renderDetailItem = (label: string, value: string) => (
@@ -59,8 +59,12 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
   );
 
   return (
-    <Dialog open={open}>
-      <DialogHeader closeWithIcon onCloseWithIcon={() => handleClose(false)} title={t('dialog.offerDetails.title')} />
+    <Dialog open={openOfferDetailsDialog}>
+      <DialogHeader
+        closeWithIcon
+        onCloseWithIcon={() => dispatch(setOpenOfferDetailsDialog(false))}
+        title={t('dialog.offerDetails.title')}
+      />
       {isMultiple ? (
         <>
           <DialogContent dividers sx={{ pt: 3 }}>
@@ -79,7 +83,7 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
           <DialogContent dividers>
             <Grid container mt={3}>
               {renderDetailItem(t('dialog.offerDetails.titleText'), title)}
-              {renderDetailItem(t('dialog.offerDetails.created'), created)}
+              {renderDetailItem(t('dialog.offerDetails.sematicVersion'), sematicVersion)}
               {renderDetailItem(t('dialog.offerDetails.description'), description)}
               {renderDetailItem(t('dialog.offerDetails.publisher'), publisher)}
               {renderDetailItem(t('dialog.offerDetails.publisherUrl'), connectorOfferUrl)}
@@ -97,7 +101,7 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
         </>
       )}
       <DialogActions>
-        <Button variant="contained" onClick={() => handleClose(false)}>
+        <Button variant="contained" onClick={() => dispatch(setOpenOfferDetailsDialog(false))}>
           {t('button.close')}
         </Button>
         <Permissions values={['consumer_subscribe_download_data_offers']}>
@@ -109,7 +113,7 @@ const OfferDetailsDialog = ({ open, offerObj, handleConfirm, handleClose, isMult
               } else {
                 dispatch(setIsPcf(false));
               }
-              handleConfirm(true);
+              dispatch(setOpenOfferConfirmDialog(true));
             }}
           >
             {type === 'PCFExchangeEndpoint' ? t('button.requestPCF') : t('button.subscribeSelected')}

@@ -46,6 +46,8 @@ const initialState: IConsumerSlice = {
   bpnNumber: '',
   selectionModel: [],
   isPcf: false,
+  openOfferDetailsDialog: false,
+  openOfferConfirmDialog: false,
 };
 
 export const consumerSlice = createSlice({
@@ -126,6 +128,12 @@ export const consumerSlice = createSlice({
     setSelectionModel: (state, action: PayloadAction<GridSelectionModel>) => {
       state.selectionModel = action.payload;
     },
+    setOpenOfferDetailsDialog: (state, action: PayloadAction<boolean>) => {
+      state.openOfferDetailsDialog = action.payload;
+    },
+    setOpenOfferConfirmDialog: (state, action: PayloadAction<boolean>) => {
+      state.openOfferConfirmDialog = action.payload;
+    },
   },
 });
 
@@ -149,5 +157,7 @@ export const {
   setBpnNumberValue,
   setIsPcf,
   setSelectionModel,
+  setOpenOfferDetailsDialog,
+  setOpenOfferConfirmDialog,
 } = consumerSlice.actions;
 export default consumerSlice.reducer;

@@ -135,7 +135,7 @@
         "assetId": "Asset ID",
         "created": "Created On",
         "sematicVersion": "Sematic Version",
-        "publisher" :"Publisher",
+        "publisher": "Publisher",
         "description": "Description"
       }
     },
@@ -223,6 +223,7 @@
       "value": "Value",
       "titleText": "Title",
       "created": "Created on",
+      "sematicVersion": "Sematic Version",
       "dataFormat": "Data format",
       "description": "Description",
       "publisher": "Publisher",

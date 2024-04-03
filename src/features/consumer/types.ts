@@ -54,6 +54,7 @@ export interface IConsumerDataOffers {
   fileName?: string;
   fileContentType?: string;
   type?: string;
+  sematicVersion: string;
 }
 export interface ILegalEntityName {
   value?: string;
@@ -135,4 +136,6 @@ export interface IConsumerSlice {
   bpnNumber: string;
   selectionModel: GridSelectionModel;
   isPcf: boolean;
+  openOfferDetailsDialog: boolean;
+  openOfferConfirmDialog: boolean;
 }
