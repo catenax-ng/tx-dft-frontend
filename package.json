@@ -94,6 +94,7 @@
   "scripts": {
     "start": "vite --host --port 3000",
     "build": "tsc && vite build",
+    "preview": "vite preview --host --port 3000",
     "build:sources": "zip -r product-dft-frontend.zip src package.json **/package.json package-lock.json",
     "test": "jest",
     "test:watch": "jest --watch",
