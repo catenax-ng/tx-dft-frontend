@@ -23,8 +23,8 @@ import './styles/index.scss';
 
 import { ThemeProvider } from '@mui/material';
 import { SharedCssBaseline } from 'cx-portal-shared-components';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 
 import App from './App';
@@ -38,15 +38,14 @@ clearConsoles();
 I18nService.init();
 
 UserService.initKeycloak(user => {
-  ReactDOM.render(
-    <React.StrictMode>
+  createRoot(document.getElementById('root')).render(
+    <StrictMode>
       <SharedCssBaseline />
       <Provider store={store}>
         <ThemeProvider theme={sdeTheme}>
           <App loggedUser={user} />
         </ThemeProvider>
       </Provider>
-    </React.StrictMode>,
-    document.getElementById('root'),
+    </StrictMode>,
   );
 });

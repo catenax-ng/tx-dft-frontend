@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /********************************************************************************
  * Copyright (c) 2021,2022 FEV Consulting GmbH
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
@@ -22,8 +23,8 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
-// eslint-disable-next-line import/no-extraneous-dependencies
 import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 
 // https://github.com/akiran/react-slick/issues/742#issuecomment-298992238
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

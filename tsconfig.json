@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es2021",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "ES2020",
+    "lib": ["DOM", "DOM.iterable", "ES2020"],
+    "types": ["vite/client", "jest"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -9,7 +10,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "node",
     "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "resolveJsonModule": true,
@@ -18,5 +19,5 @@
     "strictNullChecks": false,
     "jsx": "react-jsx"
   },
-  "include": ["src"]
+  "include": ["vite.config.ts", ".eslintrc", "src"]
 }

@@ -27,7 +27,7 @@ function About() {
   return (
     <>
       <Typography variant="h3" mb={3}>
-        {t('pages.about')}
+        {`${t('pages.about')}`}
       </Typography>
       <AboutCard {...aboutContent} />
     </>
