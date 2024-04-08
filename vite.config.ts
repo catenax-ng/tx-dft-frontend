@@ -19,6 +19,7 @@
  ********************************************************************************/
 
 import react from '@vitejs/plugin-react';
+import reactRefresh from '@vitejs/plugin-react-refresh';
 import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 import svgr from 'vite-plugin-svgr';
@@ -28,11 +29,17 @@ export default defineConfig({
   plugins: [
     react(),
     svgr(),
+    reactRefresh(),
     tsconfigPaths(),
     checker({
       typescript: true,
     }),
   ],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/setUpTests.ts',
+  },
   optimizeDeps: { exclude: ['fsevents'] },
   build: {
     outDir: 'build',

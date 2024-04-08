@@ -20,7 +20,14 @@
  ********************************************************************************/
 
 import { LinearProgress } from '@mui/material';
-import { DataGrid, GridColDef, GridEventListener, GridSelectionModel, GridValidRowModel } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridColDef,
+  GridEventListener,
+  GridRowParams,
+  GridSelectionModel,
+  GridValidRowModel,
+} from '@mui/x-data-grid';
 import { useState } from 'react';
 
 import NoDataPlaceholder from '../NoDataPlaceholder';
@@ -31,9 +38,9 @@ interface IDataTable {
   isFetching?: boolean;
   checkboxSelection?: boolean;
   onRowClick?: GridEventListener<'rowClick'>;
-  handleSelectionModel?: any;
+  handleSelectionModel?: (selectionModel: GridSelectionModel) => void;
   selectionModel?: GridSelectionModel;
-  isRowSelectable?: any;
+  isRowSelectable?: (params: GridRowParams) => boolean;
 }
 
 function DataTable({
