@@ -18,10 +18,10 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Button, Input, SelectList, Typography } from '@catena-x/portal-shared-components';
 import { CircularProgress, FormControl, Grid, TextFieldProps } from '@mui/material';
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { Button, Input, SelectList, Typography } from 'cx-portal-shared-components';
 import { capitalize, find, isEmpty } from 'lodash';
 import moment from 'moment';
 import { useEffect, useState } from 'react';

@@ -19,8 +19,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Input, LoadingButton, SelectList, Typography } from '@catena-x/portal-shared-components';
 import { Autocomplete, Box, Grid } from '@mui/material';
-import { Input, LoadingButton, SelectList, Typography } from 'cx-portal-shared-components';
 import { debounce, isEmpty } from 'lodash';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -35,33 +35,18 @@ import {
   setFilterSelectedConnector,
   setManufacturerPartIdValue,
   setOffersLoading,
-  setSearchFilterByType,
   setSelectedFilterCompanyOption,
 } from '../features/consumer/slice';
 import { ILegalEntityContent, IntConnectorItem, IntOption } from '../features/consumer/types';
 import { useAppDispatch, useAppSelector } from '../features/store';
 import ConsumerService from '../services/ConsumerService';
-import { ALPHA_NUM_REGEX, MAX_CONTRACTS_AGREEMENTS } from '../utils/constants';
+import { ALPHA_NUM_REGEX, MAX_CONTRACTS_AGREEMENTS, BPN_TYPE_FIELDS } from '../utils/constants';
 import Permissions from './Permissions';
 import SelectSubmodel from './SelectSubmodel';
-
-const ITEMS: IntConnectorItem[] = [
-  {
-    id: 1,
-    title: 'Company Name',
-    value: 'company',
-  },
-  {
-    id: 2,
-    title: 'Business Partner Number',
-    value: 'bpn',
-  },
-];
 
 function ConsumeDataFilter() {
   const {
     offersLoading,
-    searchFilterByType,
     filterSelectedCompanyOption,
     filterCompanyOptions,
     filterCompanyOptionsLoading,
@@ -71,6 +56,7 @@ function ConsumeDataFilter() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [bpnError, setBpnError] = useState(false);
   const [submodelFilter, setSubmodelFilter] = useState<any>({});
+  const [searchFilterByType, setSearchFilterByType] = useState(BPN_TYPE_FIELDS[0]);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
@@ -102,7 +88,7 @@ function ConsumeDataFilter() {
 
   // on change search type filter option
   const handleSearchTypeChange = (value: IntConnectorItem) => {
-    dispatch(setSearchFilterByType(value));
+    setSearchFilterByType(value);
     dispatch(setSelectedFilterCompanyOption(null));
     dispatch(setFilterProviderUrl(''));
     dispatch(setFilterSelectedBPN(''));
@@ -150,7 +136,6 @@ function ConsumeDataFilter() {
     }
   };
   const init = () => {
-    dispatch(setSearchFilterByType(ITEMS[0]));
     dispatch(setManufacturerPartIdValue(''));
   };
   useEffect(() => {
@@ -175,8 +160,9 @@ function ConsumeDataFilter() {
             keyTitle="title"
             label={t('content.consumeData.selectType')}
             placeholder={t('content.consumeData.selectType')}
+            value={searchFilterByType}
             defaultValue={searchFilterByType}
-            items={ITEMS}
+            items={BPN_TYPE_FIELDS}
             onChangeItem={e => handleSearchTypeChange(e)}
             disableClearable={true}
           />

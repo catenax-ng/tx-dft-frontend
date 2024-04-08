@@ -18,8 +18,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Typography } from '@catena-x/portal-shared-components';
 import { Backdrop, CircularProgress } from '@mui/material';
-import { Typography } from 'cx-portal-shared-components';
 
 import { useAppSelector } from '../features/store';
 

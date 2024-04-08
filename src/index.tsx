@@ -1,7 +1,7 @@
 /********************************************************************************
  * Copyright (c) 2021,2022 FEV Consulting GmbH
- * Copyright (c) 2021,2022,2023 T-Systems International GmbH
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2021,2024 T-Systems International GmbH
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -21,8 +21,8 @@
 
 import './styles/index.scss';
 
+import { SharedCssBaseline, SharedThemeProvider } from '@catena-x/portal-shared-components';
 import { ThemeProvider } from '@mui/material';
-import { SharedCssBaseline } from 'cx-portal-shared-components';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
@@ -38,13 +38,15 @@ clearConsoles();
 I18nService.init();
 
 UserService.initKeycloak(user => {
-  createRoot(document.getElementById('root')).render(
+  createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <SharedCssBaseline />
       <Provider store={store}>
-        <ThemeProvider theme={sdeTheme}>
-          <App loggedUser={user} />
-        </ThemeProvider>
+        <SharedThemeProvider>
+          <ThemeProvider theme={sdeTheme}>
+            <App loggedUser={user} />
+          </ThemeProvider>
+        </SharedThemeProvider>
       </Provider>
     </StrictMode>,
   );

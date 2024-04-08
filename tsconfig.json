@@ -12,12 +12,11 @@
     "noFallthroughCasesInSwitch": true,
     "module": "ESNext",
     "moduleResolution": "node",
-    "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "strictNullChecks": false,
     "jsx": "react-jsx"
   },
-  "include": ["vite.config.ts", ".eslintrc", "src"]
+  "include": ["vite.config.ts", "src"]
 }

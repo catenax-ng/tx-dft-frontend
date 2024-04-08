@@ -18,11 +18,11 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Button, Dialog, DialogActions, DialogContent, DialogHeader } from '@catena-x/portal-shared-components';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Box, List, ListItem } from '@mui/material';
-import { GridColDef } from '@mui/x-data-grid';
-import { Button, Dialog, DialogActions, DialogContent, DialogHeader, Table } from 'cx-portal-shared-components';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { isEmpty } from 'lodash';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -42,19 +42,16 @@ const DownloadHistoryErrorDialog: React.FC<IDownloadHistoryErrorDialog> = ({
 }) => {
   const { t } = useTranslation();
   const [page, setPage] = useState<number>(0);
-  const [pageSize] = useState<number>(10);
 
   const handleStatusIcon = (val: string | boolean) => {
     return val ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />;
   };
   const handleColumnValue = (row: IDefaultObject) => (
-    <>
-      <List>
-        <ListItem sx={{ pl: 0 }}>Contract Negotiated: {handleStatusIcon(row?.agreementId)}</ListItem>
-        <ListItem sx={{ pl: 0 }}>Data tranfer Initiated: {handleStatusIcon(row?.transferProcessId)}</ListItem>
-        <ListItem sx={{ pl: 0 }}>Download status: {handleStatusIcon(isEmpty(row?.downloadErrorMsg))}</ListItem>
-      </List>
-    </>
+    <List>
+      <ListItem sx={{ pl: 0 }}>Contract Negotiated: {handleStatusIcon(row?.agreementId)}</ListItem>
+      <ListItem sx={{ pl: 0 }}>Data tranfer Initiated: {handleStatusIcon(row?.transferProcessId)}</ListItem>
+      <ListItem sx={{ pl: 0 }}>Download status: {handleStatusIcon(isEmpty(row?.downloadErrorMsg))}</ListItem>
+    </List>
   );
   const columns: GridColDef[] = [
     {
@@ -96,8 +93,8 @@ const DownloadHistoryErrorDialog: React.FC<IDownloadHistoryErrorDialog> = ({
       />
       <DialogContent dividers sx={{ py: 3 }}>
         <Box sx={{ mt: 2 }}>
-          <Table
-            title={''}
+          <DataGrid
+            autoHeight
             getRowId={row => row.offerId}
             disableColumnMenu
             disableColumnSelector
@@ -105,10 +102,10 @@ const DownloadHistoryErrorDialog: React.FC<IDownloadHistoryErrorDialog> = ({
             disableSelectionOnClick
             columns={columns}
             rows={errorTableData}
-            pageSize={pageSize}
+            pageSize={10}
             page={page}
             getRowHeight={() => 'auto'}
-            onPageChange={newPage => setPage(newPage)}
+            onPageChange={(newPage: number) => setPage(newPage)}
             rowsPerPageOptions={[10, 15, 20, 100]}
             sx={{
               '& .MuiDataGrid-columnHeaderTitle, & .MuiDataGrid-cell': {

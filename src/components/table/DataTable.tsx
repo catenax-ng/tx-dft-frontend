@@ -20,8 +20,7 @@
  ********************************************************************************/
 
 import { LinearProgress } from '@mui/material';
-import { GridColDef, GridEventListener, GridSelectionModel, GridValidRowModel } from '@mui/x-data-grid';
-import { Table } from 'cx-portal-shared-components';
+import { DataGrid, GridColDef, GridEventListener, GridSelectionModel, GridValidRowModel } from '@mui/x-data-grid';
 import { useState } from 'react';
 
 import NoDataPlaceholder from '../NoDataPlaceholder';
@@ -32,9 +31,9 @@ interface IDataTable {
   isFetching?: boolean;
   checkboxSelection?: boolean;
   onRowClick?: GridEventListener<'rowClick'>;
-  handleSelectionModel?: (selectionModel: GridSelectionModel) => void;
+  handleSelectionModel?: any;
   selectionModel?: GridSelectionModel;
-  isRowSelectable?: (params: any) => boolean;
+  isRowSelectable?: any;
 }
 
 function DataTable({
@@ -49,8 +48,7 @@ function DataTable({
 }: Readonly<IDataTable>) {
   const [pageSize, setPageSize] = useState<number>(10);
   return (
-    <Table
-      title={''}
+    <DataGrid
       autoHeight={true}
       getRowId={row => row.id}
       rows={data}

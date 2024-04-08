@@ -17,7 +17,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-import { SelectList } from 'cx-portal-shared-components';
+import { SelectList } from '@catena-x/portal-shared-components';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 

@@ -18,10 +18,10 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { IconButton, Tooltips, Typography } from '@catena-x/portal-shared-components';
 import DownloadIcon from '@mui/icons-material/Download';
 import { LinearProgress } from '@mui/material';
-import { GridColDef } from '@mui/x-data-grid';
-import { IconButton, Table, Tooltips, Typography } from 'cx-portal-shared-components';
+import { DataGrid, GridColDef, GridValidRowModel } from '@mui/x-data-grid';
 import saveAs from 'file-saver';
 import { capitalize } from 'lodash';
 import moment from 'moment';
@@ -52,7 +52,7 @@ function OffersDownloadHistory() {
   const dispatch = useAppDispatch();
 
   const handleErrorDialog = () => setShowErrorDialog(prev => !prev);
-  const renderStatusCell = (row: ProcessReport) => {
+  const renderStatusCell = (row: GridValidRowModel) => {
     if (row.downloadFailed > 0) {
       return (
         <Typography
@@ -98,7 +98,18 @@ function OffersDownloadHistory() {
       .finally(() => dispatch(setPageLoading(false)));
   }
 
-  const columns: GridColDef[] = [
+  type RecordWithCategory = {
+    referenceProcessId: string;
+    processId: string;
+    providerUrl: string;
+    startDate: Date;
+    endDate: Date;
+    numberOfItems: number;
+    downloadSuccessed: number;
+    downloadFailed: number;
+  };
+
+  const columns: GridColDef<RecordWithCategory>[] = [
     {
       field: 'processId',
       headerName: 'Process Id',
@@ -184,7 +195,7 @@ function OffersDownloadHistory() {
       headerName: 'Status',
       minWidth: 150,
       sortable: false,
-      renderCell: ({ row }) => renderStatusCell(row),
+      renderCell: ({ row }: GridValidRowModel) => renderStatusCell(row),
     },
     {
       field: 'actions',
@@ -193,7 +204,7 @@ function OffersDownloadHistory() {
       headerAlign: 'center',
       sortable: false,
       flex: 1,
-      renderCell: ({ row }) => {
+      renderCell: ({ row }: GridValidRowModel) => {
         return (
           <Permissions values={['consumer_download_data_offer']}>
             <Tooltips tooltipPlacement="bottom" tooltipText="Download">
@@ -220,10 +231,10 @@ function OffersDownloadHistory() {
           showButton={true}
           buttonText="button.refresh"
         />
-        <Table
+        <DataGrid
+          autoHeight
           loading={isFetching}
           rowCount={data.totalItems}
-          title={''}
           getRowId={row => row.processId}
           disableColumnMenu
           disableColumnSelector

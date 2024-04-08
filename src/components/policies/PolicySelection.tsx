@@ -19,8 +19,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { SelectList } from '@catena-x/portal-shared-components';
 import { Box, FormControl } from '@mui/material';
-import { SelectList } from 'cx-portal-shared-components';
 import { useEffect, useState } from 'react';
 
 import { NEW_POLICY_ITEM } from '../../constants/policies';

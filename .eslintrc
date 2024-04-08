@@ -8,8 +8,8 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "extends": ["airbnb-typescript", "airbnb/hooks", "plugin:@typescript-eslint/recommended"],
-  "plugins": ["react", "@typescript-eslint", "import", "simple-import-sort"],
+  "extends": ["plugin:@typescript-eslint/recommended"],
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "import", "simple-import-sort"],
   "env": {
     "browser": true,
     "es6": true

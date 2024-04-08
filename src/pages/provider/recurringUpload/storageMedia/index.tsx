@@ -19,7 +19,7 @@
  ********************************************************************************/
 
 import { Box } from '@mui/material';
-import { Tab, TabPanel, Tabs, Typography } from 'cx-portal-shared-components';
+import { Tab, TabPanel, Tabs, Typography } from '@catena-x/portal-shared-components';
 import { ReactElement, SyntheticEvent, useState } from 'react';
 
 import { useGetStorageMediaQuery } from '../../../../features/provider/recurringUpload/apiSlice';
