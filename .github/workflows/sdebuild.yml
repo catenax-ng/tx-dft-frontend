@@ -22,7 +22,7 @@ name: sdebuild-fe
 on:
   push:
     branches:
-      - 'DST_PIP12_ITR5'
+      - 'react/18-new'
     tags:
       - 'v*.*.*'
       - 'v*.*.*-*'
