@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
  * Copyright (c) 2021,2022 FEV Consulting GmbH
  * Copyright (c) 2021,2022,2023 T-Systems International GmbH
@@ -23,10 +23,17 @@ import '@testing-library/jest-dom/vitest';
 
 import * as matchers from '@testing-library/jest-dom/matchers';
 import { cleanup } from '@testing-library/react';
-import { afterEach, expect } from 'vitest';
+import { afterEach, beforeEach, expect, vi } from 'vitest';
 
 // Extend Vitest's expect method with methods from react-testing-library
 expect.extend(matchers);
+
+beforeEach(() => {
+  vi.mock('react-i18next', () => ({
+    useTranslation: () => ({ t: (key: any) => key }),
+    Trans: ({ children }: any) => children,
+  }));
+});
 
 // Run cleanup after each test case (e.g., clearing jsdom)
 afterEach(() => {
