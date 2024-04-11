@@ -40,7 +40,7 @@ import {
 import { ILegalEntityContent, IntConnectorItem, IntOption } from '../features/consumer/types';
 import { useAppDispatch, useAppSelector } from '../features/store';
 import ConsumerService from '../services/ConsumerService';
-import { ALPHA_NUM_REGEX, BPN_TYPE_FIELDS,MAX_CONTRACTS_AGREEMENTS } from '../utils/constants';
+import { ALPHA_NUM_REGEX, BPN_TYPE_FIELDS, MAX_CONTRACTS_AGREEMENTS } from '../utils/constants';
 import Permissions from './Permissions';
 import SelectSubmodel from './SelectSubmodel';
 

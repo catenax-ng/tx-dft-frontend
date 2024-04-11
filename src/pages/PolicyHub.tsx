@@ -146,9 +146,7 @@ const PolicyHub = ({ onSubmit }: any) => {
         {/* Policy tabs */}
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={activeTab} onChange={handleTabChange} aria-label="polcy type tabs" sx={{ pt: 0 }}>
-            {policyTypes?.map((type: string) => (
-              <Tab key={type} label={type} />
-            ))}
+            {policyTypes?.map((type: string) => <Tab key={type} label={type} />)}
           </Tabs>
         </Box>
         <Box>

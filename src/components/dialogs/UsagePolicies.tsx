@@ -32,7 +32,7 @@ function UsagePolicies({ usagePolicies }: any) {
       {!isEmpty(usagePolicies) ? (
         usagePolicies.map((policy: any, index: Key) => (
           <Grid item xs={6} sx={{ mb: 1 }} key={index}>
-            <Typography variant="body2">
+            <Typography variant="body1">
               <b>{toReadableCapitalizedCase(policy.technicalKey)} :</b> {policy.value[0]}
             </Typography>
           </Grid>
