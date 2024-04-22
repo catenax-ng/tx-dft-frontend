@@ -19,8 +19,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Typography } from '@catena-x/portal-shared-components';
 import { Grid } from '@mui/material';
-import { Typography } from 'cx-portal-shared-components';
 import { isEmpty } from 'lodash';
 import { Key } from 'react';
 
@@ -32,7 +32,7 @@ function UsagePolicies({ usagePolicies }: any) {
       {!isEmpty(usagePolicies) ? (
         usagePolicies.map((policy: any, index: Key) => (
           <Grid item xs={6} sx={{ mb: 1 }} key={index}>
-            <Typography variant="body2">
+            <Typography variant="body1">
               <b>{toReadableCapitalizedCase(policy.technicalKey)} :</b> {policy.value[0]}
             </Typography>
           </Grid>

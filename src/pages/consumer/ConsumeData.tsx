@@ -18,9 +18,16 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogHeader,
+  Typography,
+} from '@catena-x/portal-shared-components';
 import { Box } from '@mui/material';
 import { GridColDef, GridSelectionModel, GridValidRowModel, GridValueGetterParams } from '@mui/x-data-grid';
-import { Button, Dialog, DialogActions, DialogContent, DialogHeader, Typography } from 'cx-portal-shared-components';
 import saveAs from 'file-saver';
 import { isEmpty, isEqual, map, pick } from 'lodash';
 import { useEffect, useState } from 'react';
@@ -187,7 +194,7 @@ export default function ConsumeData() {
       const usagePolicies: IConsumerDataOffers[] = offerDetails.map((offer: IConsumerDataOffers) =>
         isEmpty(offer.policy.Usage) ? [] : offer.policy.Usage,
       );
-      const isUsagePoliciesEqual = usagePolicies.every((item, index, array) => isEqual(item, array[0]));
+      const isUsagePoliciesEqual = usagePolicies.every((item, _index, array) => isEqual(item, array[0]));
       if (isUsagePoliciesEqual) {
         dispatch(setOpenOfferDetailsDialog(true));
         dispatch(setIsMultipleContractSubscription(true));
@@ -277,9 +284,9 @@ export default function ConsumeData() {
             isFetching={offersLoading}
             checkboxSelection={true}
             onRowClick={onRowClick}
-            handleSelectionModel={newSelectionModel => handleSelectionModel(newSelectionModel)}
+            handleSelectionModel={(newSelectionModel: GridSelectionModel) => handleSelectionModel(newSelectionModel)}
             selectionModel={selectionModel}
-            isRowSelectable={params => params.row.type !== 'PCFExchangeEndpoint'}
+            isRowSelectable={(params: any) => params.row.type !== 'PCFExchangeEndpoint'}
           />
         </Box>
       </Permissions>

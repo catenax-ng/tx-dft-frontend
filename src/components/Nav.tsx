@@ -19,8 +19,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Button, LanguageSwitch, Typography, UserAvatar, UserMenu, UserNav } from '@catena-x/portal-shared-components';
 import { Box, Divider, Paper, useTheme } from '@mui/material';
-import { Button, LanguageSwitch, Typography, UserAvatar, UserMenu, UserNav } from 'cx-portal-shared-components';
 import i18next, { changeLanguage } from 'i18next';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -40,7 +40,7 @@ const Nav = () => {
   const { loggedInUser } = useAppSelector(state => state.appSlice);
   const NAV_ITEMS = [{ title: 'Logout', to: 'logout' }];
   const helpLink = customConfig.helpLink || legalNoticeContent.readmePath;
-  const [lang, setlang] = useState(i18next.language);
+  const [lang, setLang] = useState(i18next.language);
 
   const openCloseMenu = () => setMenuOpen(prevVal => !prevVal);
   const onClickAway = (e: MouseEvent | TouchEvent) => {
@@ -96,9 +96,13 @@ const Nav = () => {
           <UserMenu
             open={menuOpen}
             userName={loggedInUser.name}
-            top={50}
             userRole={loggedInUser.company}
             onClickAway={onClickAway}
+            sx={{
+              top: '50px',
+              width: '256px',
+              position: 'absolute',
+            }}
           >
             <UserNav sx={{ my: 1 }} component={Link} items={NAV_ITEMS} />
             <Divider />
@@ -109,7 +113,7 @@ const Nav = () => {
               }))}
               onChange={e => {
                 changeLanguage(e);
-                setlang(e);
+                setLang(e);
               }}
             />
           </UserMenu>

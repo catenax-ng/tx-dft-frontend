@@ -30,7 +30,7 @@ import Notification from './features/notifiication';
 import { IRoutes, ROUTES } from './helpers/RouteHelper';
 import Main from './Main';
 
-export default function App({ loggedUser }: { loggedUser?: IUser }) {
+export default function App({ loggedUser }: Readonly<{ loggedUser?: IUser }>) {
   return (
     <BrowserRouter>
       <Suspense fallback={''}>

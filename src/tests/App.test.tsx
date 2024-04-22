@@ -21,6 +21,7 @@
 
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { describe, expect, test } from 'vitest';
 
 import UploadFile from '../components/UploadFile';
 import { setPolicyDialog } from '../features/provider/policies/slice';
@@ -44,7 +45,7 @@ describe('Dashboard', () => {
 
   test('help page', () => {
     render(
-      <MemoryRouter initialEntries={[{ pathname: '/help' }]}>
+      <MemoryRouter initialEntries={[{ pathname: '/provide/help' }]}>
         <Help />
       </MemoryRouter>,
       { wrapper: ReduxWrapper },
@@ -54,12 +55,12 @@ describe('Dashboard', () => {
 
   test('Render Policies Dialog Componenet', async () => {
     render(
-      <MemoryRouter initialEntries={[{ pathname: '/create-data' }]}>
+      <MemoryRouter initialEntries={[{ pathname: '/provider/manual-upload' }]}>
         <CreateData />
       </MemoryRouter>,
       { wrapper: ReduxWrapper },
     );
     store?.dispatch(setPolicyDialog(true));
-    expect(screen.queryByText('Policies')).toBeInTheDocument();
+    expect(screen.queryByText('Add Policy')).toBeInTheDocument();
   });
 });

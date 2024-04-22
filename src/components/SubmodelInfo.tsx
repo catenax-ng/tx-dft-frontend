@@ -19,9 +19,9 @@
  ********************************************************************************/
 import '../styles/submodelDetails.scss';
 
+import { Tooltips } from '@catena-x/portal-shared-components';
 import InfoIcon from '@mui/icons-material/Info';
 import { Box } from '@mui/material';
-import { Tooltips } from 'cx-portal-shared-components';
 import { v4 as uuidv4 } from 'uuid';
 
 import { useAppSelector } from '../features/store';

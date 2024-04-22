@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (c) 2021,2022,2023 T-Systems International GmbH
+ * Copyright (c) 2021,2023 T-Systems International GmbH
  * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { theme } from 'cx-portal-shared-components';
+import { theme } from '@catena-x/portal-shared-components';
 
 import { IDefaultObject } from '../models/Common';
 

@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { ReactChild, ReactFragment } from 'react';
+import { ReactElement } from 'react';
 
 import customConfig from '../assets/customConfig/custom-config.json';
 import PageNotFound from '../pages/PageNotFound';
@@ -29,8 +29,8 @@ const RouteCheck = ({
   children,
 }: {
   value: string;
-  pageNotFound?: ReactFragment;
-  children: ReactChild;
+  pageNotFound?: boolean;
+  children: ReactElement;
 }) => {
   const existsInArray = customConfig?.restrictedRoutes?.includes(value);
   if (!existsInArray) return <>{children}</>;

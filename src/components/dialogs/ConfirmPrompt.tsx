@@ -1,10 +1,10 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogHeader } from 'cx-portal-shared-components';
+import { Button, Dialog, DialogActions, DialogContent, DialogHeader } from '@catena-x/portal-shared-components';
 import { useTranslation } from 'react-i18next';
 
 import { handleConfirmActionDialog } from '../../features/pcfExchange/slice';
 import { useAppDispatch, useAppSelector } from '../../features/store';
 
-function ConfirmPrompt({ status, handleDialogSubmit }: { status: string; handleDialogSubmit: () => void }) {
+function ConfirmPrompt({ status, handleDialogSubmit }: Readonly<{ status: string; handleDialogSubmit: () => void }>) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { confirmActionDialog } = useAppSelector(state => state.pcfExchangeSlice);

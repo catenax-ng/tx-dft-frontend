@@ -33,3 +33,10 @@ body {
   outline: none !important;
   box-shadow: none !important;
 }
+
+.MuiButtonBase-root {
+  &.MuiButton-root,
+  &.MuiTab-root {
+    text-transform: none;
+  }
+}

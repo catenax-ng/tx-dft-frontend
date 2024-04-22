@@ -18,6 +18,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
+import { IconButton, LoadingButton, Tooltips, Typography } from '@catena-x/portal-shared-components';
 import { Refresh } from '@mui/icons-material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -25,7 +26,6 @@ import InfoIcon from '@mui/icons-material/Info';
 import PageviewIcon from '@mui/icons-material/Pageview';
 import { Box, Grid } from '@mui/material';
 import { GridColDef, GridValidRowModel } from '@mui/x-data-grid';
-import { IconButton, LoadingButton, Tooltips, Typography } from 'cx-portal-shared-components';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -115,7 +115,7 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
       minWidth: 200,
       headerName: t('content.pcfExchangeTable.columns.requestedDate'),
       sortingOrder: ['asc', 'desc'],
-      sortComparator: (v1, v2, param1: GridValidRowModel, param2: GridValidRowModel) => param2.id - param1.id,
+      sortComparator: (_v1, _v2, param1: GridValidRowModel, param2: GridValidRowModel) => param2.id - param1.id,
       valueGetter: ({ row }) => convertEpochToDate(row?.requestedTime),
       valueFormatter: ({ value }) => convertEpochToDate(value?.requestedTime),
       renderCell: ({ row }) =>
@@ -155,7 +155,7 @@ function PCFExchangeTable({ type, title, subtitle }: Readonly<IPCFExchangeTable>
       maxWidth: 200,
       headerName: t('content.pcfExchangeTable.columns.lastUpdatedTime'),
       sortingOrder: ['asc', 'desc'],
-      sortComparator: (v1, v2, param1: GridValidRowModel, param2: GridValidRowModel) => param2.id - param1.id,
+      sortComparator: (_v1, _v2, param1: GridValidRowModel, param2: GridValidRowModel) => param2.id - param1.id,
       valueGetter: ({ row }) => convertEpochToDate(row?.lastUpdatedTime),
       valueFormatter: ({ value }) => convertEpochToDate(value?.lastUpdatedTime),
       renderCell: ({ row }) =>

@@ -17,11 +17,11 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
+import { IconButton, LoadingButton, Tooltips, Typography } from '@catena-x/portal-shared-components';
 import { Refresh } from '@mui/icons-material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Box, Grid } from '@mui/material';
 import { GridColDef, GridRenderCellParams, GridValidRowModel } from '@mui/x-data-grid';
-import { IconButton, LoadingButton, Tooltips, Typography } from 'cx-portal-shared-components';
 import { capitalize } from 'lodash';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -97,7 +97,7 @@ function ContractsTable({ type, title, subtitle }: IContractsTable) {
       maxWidth: 200,
       headerName: t('content.contractHistory.columns.contractSigningDate'),
       sortingOrder: ['asc', 'desc'],
-      sortComparator: (v1, v2, param1: GridValidRowModel, param2: GridValidRowModel) => param2.id - param1.id,
+      sortComparator: (_v1, _v2, param1: GridValidRowModel, param2: GridValidRowModel) => param2.id - param1.id,
       valueGetter: ({ row }) => convertEpochToDate(row.contractAgreementInfo?.contractSigningDate),
       valueFormatter: ({ value }) => convertEpochToDate(value?.contractSigningDate),
       renderCell: ({ row }) =>

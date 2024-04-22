@@ -19,8 +19,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Input, SelectList, Typography } from '@catena-x/portal-shared-components';
 import { Autocomplete, Box, FormControl, Grid } from '@mui/material';
-import { Input, SelectList, Typography } from 'cx-portal-shared-components';
 import { debounce, inRange } from 'lodash';
 import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
