@@ -17,8 +17,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
+import { Button, Typography } from '@catena-x/portal-shared-components';
 import { Box, Grid, TextareaAutosize, useTheme } from '@mui/material';
-import { Button, Typography } from 'cx-portal-shared-components';
 import { useTranslation } from 'react-i18next';
 
 import { setSnackbarMessage } from '../features/notifiication/slice';

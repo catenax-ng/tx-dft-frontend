@@ -29,9 +29,9 @@ enum FileType {
 }
 
 enum FileSize {
-  'Bytes' = 'bytes',
-  'KB' = 'KB',
-  'MB' = 'MB',
+  Bytes = 'bytes',
+  KB = 'KB',
+  MB = 'MB',
 }
 
 export { FileSize, FileType, Status };

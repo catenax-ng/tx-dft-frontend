@@ -31,6 +31,7 @@ export const offersDownloadHistoryApiSlice = apiSlice.injectEndpoints({
         };
       },
       providesTags: ['DownloadHistoryList'],
+      onQueryStarted: setLoadingHandler,
     }),
     downloadDataOffers: builder.mutation({
       query: params => {

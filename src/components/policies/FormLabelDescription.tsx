@@ -18,9 +18,9 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
+import { Tooltips, Typography } from '@catena-x/portal-shared-components';
 import InfoIcon from '@mui/icons-material/Info';
 import { Box } from '@mui/material';
-import { Tooltips, Typography } from 'cx-portal-shared-components';
 import { isEmpty } from 'lodash';
 
 import { toReadableCapitalizedCase } from '../../utils/utils';

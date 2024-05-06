@@ -18,18 +18,17 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Box, Grid } from '@mui/material';
-import { GridColDef } from '@mui/x-data-grid';
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogHeader,
-  Table,
   Tooltips,
   Typography,
-} from 'cx-portal-shared-components';
+} from '@catena-x/portal-shared-components';
+import { Box, Grid } from '@mui/material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -90,9 +89,9 @@ const UploadHistoryErrorDialog: React.FC<UploadHistoryErrorDialogProps> = ({ ope
             </Grid>
           </Grid>
           <Box sx={{ mt: 2 }}>
-            <Table
+            <DataGrid
+              autoHeight
               loading={isLoading}
-              title={''}
               getRowId={row => row.uuid}
               disableColumnMenu
               disableColumnSelector

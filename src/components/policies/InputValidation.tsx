@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Button, Input } from '@catena-x/portal-shared-components';
 import { Grid } from '@mui/material';
-import { Button, Input } from 'cx-portal-shared-components';
 import { useState } from 'react';
 
 const InputValidation = ({ item, handleChange, type }: any) => {

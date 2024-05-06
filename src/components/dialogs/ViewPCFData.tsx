@@ -18,7 +18,14 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Button, Dialog, DialogActions, DialogContent, DialogHeader, Typography } from 'cx-portal-shared-components';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogHeader,
+  Typography,
+} from '@catena-x/portal-shared-components';
 import { useTranslation } from 'react-i18next';
 
 import { setPcfValueDialog } from '../../features/pcfExchange/slice';

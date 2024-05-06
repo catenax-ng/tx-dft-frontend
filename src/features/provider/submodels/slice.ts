@@ -91,8 +91,8 @@ export const submodelSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(fetchSubmodelList.fulfilled, (state, { payload }) => {
-      const list = payload.map((e: { id: string; name: string }, index: number) => {
-        const item = { id: index, title: e.name, value: e.id };
+      const list = payload.map((e: { id: string; name: string; version: string }, index: number) => {
+        const item = { id: index, title: `${e.name} - ${e.version}`, value: e.id };
         return item;
       });
       state.submodelList = list;
