@@ -38,6 +38,7 @@ import {
   setSelectedFilterCompanyOption,
 } from '../features/consumer/slice';
 import { ILegalEntityContent, IntConnectorItem, IntOption } from '../features/consumer/types';
+import { ISubmodelList } from '../features/provider/submodels/types';
 import { useAppDispatch, useAppSelector } from '../features/store';
 import ConsumerService from '../services/ConsumerService';
 import { ALPHA_NUM_REGEX, BPN_TYPE_FIELDS, MAX_CONTRACTS_AGREEMENTS } from '../utils/constants';
@@ -55,7 +56,7 @@ function ConsumeDataFilter() {
   } = useAppSelector(state => state.consumerSlice);
   const [searchOpen, setSearchOpen] = useState(false);
   const [bpnError, setBpnError] = useState(false);
-  const [submodelFilter, setSubmodelFilter] = useState<any>({});
+  const [submodelFilter, setSubmodelFilter] = useState<ISubmodelList>();
   const [searchFilterByType, setSearchFilterByType] = useState(BPN_TYPE_FIELDS[0]);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
@@ -126,7 +127,7 @@ function ConsumeDataFilter() {
         maxLimit: MAX_CONTRACTS_AGREEMENTS,
         manufacturerPartId: manufacturerPartId || '',
         bpnNumber: bpn || '',
-        submodel: submodelFilter?.value || '',
+        submodel: submodelFilter?.semanticId || '',
       });
       dispatch(setContractOffers(response.data));
       dispatch(setOffersLoading(false));

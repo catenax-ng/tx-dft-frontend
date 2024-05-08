@@ -21,13 +21,13 @@
 import { GridColDef, GridSelectionModel, GridValidRowModel } from '@mui/x-data-grid';
 
 export interface ISubmodelList {
-  id: number;
-  title: string;
-  value: string;
+  id: string;
+  name: string;
+  version: string;
+  semanticId: string;
 }
 export interface ISubmodelsSlice {
   selectedSubmodel: ISubmodelList;
-  submodelList: ISubmodelList[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   submodelDetails: any;
   columns: GridColDef[];

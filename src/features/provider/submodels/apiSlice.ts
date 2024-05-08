@@ -22,6 +22,7 @@ import { indexOf } from 'lodash';
 
 import { setLoadingHandler } from '../../../helpers/ApiHelper';
 import { apiSlice } from '../../app/apiSlice';
+import { ISubmodelList } from './types';
 
 export const helpApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -60,7 +61,24 @@ export const helpApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
+    getSubmodelsList: builder.query({
+      query: params => {
+        return {
+          method: 'GET',
+          url: '/submodels',
+          params,
+        };
+      },
+      transformResponse: (res: ISubmodelList[]) => {
+        const list = res?.map((e: ISubmodelList) => {
+          const item = { id: e.id, name: `${e.name} - ${e.version}`, semanticId: e.semanticId };
+          return item;
+        });
+        return list;
+      },
+      onQueryStarted: setLoadingHandler,
+    }),
   }),
 });
 
-export const { useGetHelpPageDataQuery, useDownloadSampleMutation } = helpApiSlice;
+export const { useGetHelpPageDataQuery, useDownloadSampleMutation, useGetSubmodelsListQuery } = helpApiSlice;

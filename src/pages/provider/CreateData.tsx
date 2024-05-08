@@ -46,14 +46,14 @@ export default function CreateData() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
-  const handleChange = (event: SyntheticEvent, newValue: number) => {
+  const handleChange = (_event: SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
 
   const handleTypeChange = useCallback(
     async (item: ISubmodelList) => {
       dispatch(setSelectedSubmodel(item));
-      dispatch(fetchSubmodelDetails(item.value));
+      dispatch(fetchSubmodelDetails(item.id));
       // clearing the selected files and rows
       dispatch(clearRows());
       dispatch(removeSelectedFiles());
@@ -92,7 +92,7 @@ export default function CreateData() {
         </Grid>
         {!isEmpty(selectedSubmodel) ? (
           <Grid item xs={6}>
-            <DownloadSamples submodel={selectedSubmodel.value} />
+            <DownloadSamples submodel={selectedSubmodel.id} />
           </Grid>
         ) : null}
       </Grid>

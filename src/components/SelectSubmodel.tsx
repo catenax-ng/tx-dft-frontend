@@ -18,34 +18,31 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 import { SelectList } from '@catena-x/portal-shared-components';
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { fetchSubmodelList } from '../features/provider/submodels/actions';
-import { useAppDispatch, useAppSelector } from '../features/store';
+import { useGetSubmodelsListQuery } from '../features/provider/submodels/apiSlice';
+import { useAppSelector } from '../features/store';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const SelectSubmodel = ({ defaultValue, onChange, disableClearable }: any) => {
-  const { submodelList } = useAppSelector(state => state.submodelSlice);
   const { selectedUseCases } = useAppSelector(state => state.appSlice);
-  const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    dispatch(fetchSubmodelList(selectedUseCases));
-  }, [dispatch, selectedUseCases]);
+  const { data, isSuccess } = useGetSubmodelsListQuery({ usecases: selectedUseCases });
 
-  return (
-    <SelectList
-      keyTitle="title"
-      label={t('content.provider.selectSubmodel')}
-      defaultValue={defaultValue}
-      onChangeItem={e => onChange(e)}
-      items={submodelList}
-      placeholder={t('content.provider.selectSubmodel')}
-      disableClearable={disableClearable}
-    />
-  );
+  if (isSuccess) {
+    return (
+      <SelectList
+        keyTitle="name"
+        label={t('content.provider.selectSubmodel')}
+        defaultValue={defaultValue}
+        onChangeItem={e => onChange(e)}
+        items={data}
+        placeholder={t('content.provider.selectSubmodel')}
+        disableClearable={disableClearable}
+      />
+    );
+  } else return null;
 };
 
 export default SelectSubmodel;

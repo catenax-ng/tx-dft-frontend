@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /********************************************************************************
@@ -25,12 +24,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { includes, indexOf } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 
-import { fetchSubmodelDetails, fetchSubmodelList } from './actions';
+import { fetchSubmodelDetails } from './actions';
 import { ISubmodelList, ISubmodelsSlice } from './types';
 
 const initialState: ISubmodelsSlice = {
   selectedSubmodel: {} as ISubmodelList,
-  submodelList: [],
   submodelDetails: {},
   columns: [],
   rows: [],
@@ -90,13 +88,6 @@ export const submodelSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(fetchSubmodelList.fulfilled, (state, { payload }) => {
-      const list = payload.map((e: { id: string; name: string; version: string }, index: number) => {
-        const item = { id: index, title: `${e.name} - ${e.version}`, value: e.id };
-        return item;
-      });
-      state.submodelList = list;
-    });
     builder.addCase(fetchSubmodelDetails.pending, state => {
       state.row = {};
       state.rows = [];
