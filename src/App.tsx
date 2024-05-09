@@ -25,17 +25,16 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import PageLoading from './components/PageLoading';
 import Permissions from './components/Permissions';
 import RouteCheck from './components/RouteCheck';
-import { IUser } from './features/app/types';
 import Notification from './features/notifiication';
 import { IRoutes, ROUTES } from './helpers/RouteHelper';
 import Main from './Main';
 
-export default function App({ loggedUser }: Readonly<{ loggedUser?: IUser }>) {
+export default function App() {
   return (
     <BrowserRouter>
       <Suspense fallback={''}>
         <Routes>
-          <Route path="/" element={<Main loggedUser={loggedUser} />}>
+          <Route path="/" element={<Main />}>
             {ROUTES.map((route: IRoutes) => (
               <Route
                 key={route.path}

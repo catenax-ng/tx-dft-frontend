@@ -20,7 +20,9 @@
 
 import Keycloak from 'keycloak-js';
 
+import { setLoggedInUser } from '../features/app/slice';
 import { IUser } from '../features/app/types';
+import { store } from '../features/store';
 import { getCentralIdp, getClientId, getClientRealm } from './EnvironmentService';
 
 const keycloakConfig: Keycloak.KeycloakConfig = {
@@ -87,6 +89,7 @@ const initKeycloak = (onAuthenticatedCallback: (loggedUser: IUser) => void) => {
     .then(authenticated => {
       if (authenticated) {
         onAuthenticatedCallback(getLoggedUser());
+        store.dispatch(setLoggedInUser(getLoggedUser()));
       } else {
         console.log(`${getUsername()} authentication failed`);
       }

@@ -22,21 +22,18 @@ import { Outlet } from 'react-router-dom';
 
 import customConfig from './assets/customConfig/custom-config.json';
 import AppLayout from './components/layouts/AppLayout';
-import { IUser } from './features/app/types';
 import UserService from './services/UserService';
 
-export default function Main({ loggedUser }: { loggedUser: IUser }) {
+export default function Main() {
   document.title = customConfig.title;
 
-  return (
-    <>
-      {UserService.hasValidResource() ? (
-        <AppLayout loggedUser={loggedUser}>
-          <Outlet />
-        </AppLayout>
-      ) : (
-        <ErrorPage header="This webpage is not available." title="Sorry for the inconvenience." />
-      )}
-    </>
-  );
+  if (UserService.hasValidResource()) {
+    return (
+      <AppLayout>
+        <Outlet />
+      </AppLayout>
+    );
+  } else {
+    return <ErrorPage header="This webpage is not available." title="Sorry for the inconvenience." />;
+  }
 }

@@ -37,14 +37,14 @@ import { clearConsoles } from './utils/utils';
 clearConsoles();
 I18nService.init();
 
-UserService.initKeycloak(user => {
+UserService.initKeycloak(() => {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <SharedCssBaseline />
       <Provider store={store}>
         <SharedThemeProvider>
           <ThemeProvider theme={sdeTheme}>
-            <App loggedUser={user} />
+            <App />
           </ThemeProvider>
         </SharedThemeProvider>
       </Provider>
