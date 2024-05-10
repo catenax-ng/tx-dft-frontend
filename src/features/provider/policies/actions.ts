@@ -57,7 +57,7 @@ const uploadFileWithPolicy = createAsyncThunk('/upload-file-with-policy', async 
   try {
     await dispatch(
       uploadApiSlice.endpoints.uploadFile.initiate({
-        submodel: selectedSubmodel.value,
+        submodel: selectedSubmodel.id,
         data: formData,
       }),
     )
