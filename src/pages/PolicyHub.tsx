@@ -25,6 +25,7 @@ import { isArray, keys, pickBy } from 'lodash';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { v4 as uuid } from 'uuid';
 
 import FormLabelDescription from '../components/policies/FormLabelDescription';
 import PolicySelection from '../components/policies/PolicySelection';
@@ -146,16 +147,16 @@ const PolicyHub = ({ onSubmit }: any) => {
         {/* Policy tabs */}
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={activeTab} onChange={handleTabChange} aria-label="polcy type tabs" sx={{ pt: 0 }}>
-            {policyTypes?.map((type: string) => <Tab key={type} label={type} />)}
+            {policyTypes?.map((type: string) => <Tab key={uuid()} label={type} />)}
           </Tabs>
         </Box>
         <Box>
           {policyTypes?.map((type: string, i: number) => {
             return (
-              <TabPanel key={type} index={i} value={activeTab}>
+              <TabPanel key={uuid()} index={i} value={activeTab}>
                 <Grid container spacing={3}>
                   {policyFormData[type].map((item: any) => (
-                    <Grid key={type + item.technicalKey} item xs={5}>
+                    <Grid key={uuid()} item xs={5}>
                       {renderFormField(item, type)}
                     </Grid>
                   ))}

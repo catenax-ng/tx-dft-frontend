@@ -89,7 +89,7 @@ const uploadTableWithPolicy = createAsyncThunk(
     try {
       await dispatch(
         uploadApiSlice.endpoints.uploadManualEntry.initiate({
-          submodel: selectedSubmodel.value,
+          submodel: selectedSubmodel.id,
           data: {
             ...omit(formData, 'lastUpdatedTime'),
             row_data: rows,
