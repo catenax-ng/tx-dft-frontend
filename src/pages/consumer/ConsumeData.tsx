@@ -126,6 +126,7 @@ export default function ConsumeData() {
       offerId: offer.offerId || '',
       assetId: offer.assetId || '',
       policyId: offer.policyId || '',
+      hasPolicy: offer.hasPolicy || '',
     }));
     return {
       offers: offersList,

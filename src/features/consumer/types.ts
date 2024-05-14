@@ -55,6 +55,7 @@ export interface IConsumerDataOffers {
   fileContentType?: string;
   type?: string;
   sematicVersion: string;
+  hasPolicy?: any; 
 }
 export interface ILegalEntityName {
   value?: string;
