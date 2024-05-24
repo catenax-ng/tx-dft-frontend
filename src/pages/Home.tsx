@@ -67,7 +67,7 @@ export default function Home() {
       <Grid item xs={6}>
         <Typography variant="h3">{t('content.home.header')}</Typography>
         <Typography variant="body1" my={2}>
-          {loggedInUser.company}
+          Supplier C
         </Typography>
         <Typography variant="h4" mb={1}>
           {t('content.common.introduction')}
