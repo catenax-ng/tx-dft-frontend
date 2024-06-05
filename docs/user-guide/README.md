@@ -142,20 +142,28 @@ You can upload CSV files of various supported Submodels.
 
 At the moment, Simple Data Exchanger supports data proving options for below list of submodels,
 
-- Serial Part.
-- Single Level Bom AsBuilt.
-- Batch.
-- Part AsPlanned.
-- Single Level Bom AsPlanned.
-- Part Site Information AsPlanned.
-- Single Level Usage AsBuilt.
-- Product Carbon Footprint
+- Serial Part - 1.0.0
+- Serial Part - 3.0.0
+- Single Level Bom AsBuilt - 1.0.0
+- Single Level Bom AsBuilt - 3.0.0
+- Batch - 2.0.0
+- Batch - 3.0.0
+- Part AsPlanned - 1.0.0
+- Part Type Information - 1.0.0
+- Single Level Bom AsPlanned - 1.0.1
+- Single Level Bom AsPlanned - 3.0.0
+- Part Site Information AsPlanned - 1.0.0
+- Single Level Usage AsBuilt - 1.0.1
+- Single Level Usage AsBuilt - 3.0.0
+- Product Carbon Footprint (pcf) - 6.0.0
 
 You can click on the button "Choose a file" and select the proper CSV file present in your file system or you can just drag and drop your file in the drop area under upload file component.
 
 <img src="images/sde-configure-policy.svg" height="60%" width="60%" />
 
 After successful file upload of the supported file format i.e. CSV, the button "Next Step - Configure Policies" will be enabled and after clicking on the same, Policy selection dialog will be shown where we need to configure Access and Usage policy.
+
+User can create new or choose existing policy.
 
 Use can configure access and usage polices accordingly. 
 
@@ -177,7 +185,7 @@ You can add other sub-model  similarly.
 
 <img src="images/sde-recurring-upload.svg" height="60%" width="60%" />
 
-You can utilize the SDE for automated CSV file uploads. You must use the SFTP/Minio interface to transfer your CSV files to cloud storage. The SDE will then upload the CSV files according to the parameters.
+You can utilize the SDE for automated CSV file uploads. You must use the Object Storage/SFTP interface to transfer your CSV files to cloud storage. The SDE will then upload the CSV files according to the parameters.
 
 - Schedules
 
@@ -201,13 +209,13 @@ User can change the above parameters accordingly.
 
 <img src="images/policies.svg" height="60%" width="60%" />
 
-On this page, you need to define the policy to be used for your 'Recurring Upload' process. The policy name should be included in your upload file, and it must be unique.
+User can add and edit the policies in this page by clicking add policy button. So that policies for manual upload process is possible and  for recurring upload process. The policy name should be included in your upload file for recurring upload, and it must be unique.
 
 After clicking on the add policy button, Add Policy  dialog will be shown where we need to configure Policy Name, Access and Usage policies.
 
 <img src="images/add-policy.svg" height="60%" width="60%" />
 
-Once configuring both the policies, we need to click on "SUBMIT" button to finish and create policy. This is the process of creating new policy through SDE application. User can use this policy while uploading the file in SFTP/Minio storage.
+Once configuring both the policies, we need to click on "SUBMIT" button to finish and create policy. This is the process of creating new policy through SDE application. User can use this policy in manual upload or while uploading the file in Object Storage/SFTP storage.
 
 ## Upload history
 
@@ -250,11 +258,10 @@ This page contains an overview of the data exchange contracts your organization 
 
 The table includes below columns:
 
-- Asset ID (ID of the Asset);
-- Consumer Counter Party Address (Counter party address of the contract agreement);
-- Signing Date (Signing date of the contract agreement);
-- End Date (End date of the contract agreement, if duration restriction under usage policies is unrestricted while creating data then there is no end date and its unlimited);
-- Status (FINALIZED or TERMINATED or ERROR or DECLINED);
+- Asset ID (ID of the Asset)
+- Consumer Counter Party Address (Counter party address of the contract agreement)
+- Signing Date (Signing date of the contract agreement)
+- Status (FINALIZED or TERMINATED or ERROR or DECLINED)
 
 ## Help
 
@@ -269,12 +276,12 @@ This dynamic help page provides the submodel informations of selected use case i
 <img src="images/sde-consume-data-page.svg" height="60%" width="90%" />
 
 After clicking on the "Consume Data" link in the sidebar navigation menu, user will be redirected to this Consumer view page. On this page, we need to select search type as Company Name or Business Partner Number to enable the search. User can use Manufacturer Part Id and even select sub-model for particular search.
+Result will shown in the table as:-
+
 - Title (This is title of the data offer or name of the submodel);
 - Asset ID (ID of the Asset);
 - Created On (Created Date of the offer);
 - Description (Description of the data offer);
-
-The table provides convinient features like Filter by, Sorting, Global search, Pagination, Export.
 
 <img src="images/offer-details-view-subscribe-download.svg" height="40%" width="40%" />
 
@@ -289,6 +296,10 @@ User can also subscribe to multiple data offers at a time by ticking or checking
 Please note that, user can only subscribe to multiple data offers if the offers have exact similar usage policies configured.
 After clicking on Subscribe and download button and agreeing to the terms and conditions, the contract agreements establishment process will start for all of the selected data offers for the subscription.
 Zip file will be downloaded with respected data offers sub-models csv file with actual data which was used to create the data offers.
+
+<img src="images/pcf.svg" height="60%" width="60%" />
+
+User can also request PCF by clicking Request PCF button. User need to enter Product ID, Select search type - Company Name/Business Partner Number and Message for pcf  request.
 
 ## PCF Exchange
 
@@ -307,7 +318,6 @@ The table includes below columns:
 - Asset ID (ID of the Asset);
 - Provider Counter Party Address (Counter party address of the contract agreement);
 - Signing Date (Signing date of the contract agreement);
-- End Date (End date of the contract agreement, if duration restriction under usage policies is unrestricted while creating data then there is no end date and its unlimited);
 - Status (FINALIZED or TERMINATED or ERROR or DECLINED);
 
 ## Download History
