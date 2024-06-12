@@ -278,10 +278,11 @@ This dynamic help page provides the submodel informations of selected use case i
 After clicking on the "Consume Data" link in the sidebar navigation menu, user will be redirected to this Consumer view page. On this page, we need to select search type as Company Name or Business Partner Number to enable the search. User can use Manufacturer Part Id and even select sub-model for particular search.
 Result will shown in the table as:-
 
-- Title (This is title of the data offer or name of the submodel);
-- Asset ID (ID of the Asset);
-- Created On (Created Date of the offer);
-- Description (Description of the data offer);
+- Title
+- Publisher
+- Asset ID 
+- Sematic Version
+- Description
 
 <img src="images/offer-details-view-subscribe-download.svg" height="40%" width="40%" />
 
